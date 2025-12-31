@@ -1,5 +1,15 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import mmcv
+from projects.mmdet3d_plugin.utils.mmcv_compat import (
+    dump as mmcv_dump, load as mmcv_load, track_iter_progress, 
+    mkdir_or_exist, imread
+)
+# mmcv 호환성을 위한 alias
+class mmcv:
+    dump = staticmethod(mmcv_dump)
+    load = staticmethod(mmcv_load)
+    track_iter_progress = staticmethod(track_iter_progress)
+    mkdir_or_exist = staticmethod(mkdir_or_exist)
+    imread = staticmethod(imread)
 import numpy as np
 from collections import OrderedDict
 from nuscenes.utils.geometry_utils import view_points

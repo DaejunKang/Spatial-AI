@@ -95,3 +95,19 @@ def to_tensor(data):
         return torch.tensor(data)
 
 
+def replace_ImageToTensor(pipelines):
+    """Replace ImageToTensor to DefaultFormatBundle in pipeline.
+    
+    Args:
+        pipelines: List of pipeline configs.
+    
+    Returns:
+        List: Modified pipeline configs.
+    """
+    pipelines = pipelines.copy()
+    for i, pipeline in enumerate(pipelines):
+        if pipeline['type'] == 'ImageToTensor':
+            pipelines[i] = {'type': 'DefaultFormatBundle'}
+    return pipelines
+
+

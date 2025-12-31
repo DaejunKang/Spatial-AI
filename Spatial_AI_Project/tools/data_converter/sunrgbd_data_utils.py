@@ -1,5 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import mmcv
+from projects.mmdet3d_plugin.utils.mmcv_compat import (
+    check_file_exist, list_from_file, imread, mkdir_or_exist
+)
+# mmcv 호환성을 위한 alias
+class mmcv:
+    check_file_exist = staticmethod(check_file_exist)
+    list_from_file = staticmethod(list_from_file)
+    imread = staticmethod(imread)
+    mkdir_or_exist = staticmethod(mkdir_or_exist)
 import numpy as np
 from concurrent import futures as futures
 from os import path as osp

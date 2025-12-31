@@ -1,10 +1,21 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import torch
-from mmcv.runner import save_checkpoint
+from projects.mmdet3d_plugin.utils.mmcv_compat import save_checkpoint
 from torch import nn as nn
 
-from mmdet.apis import init_model
+# init_model은 mmdet에 의존하므로 직접 구현하거나 제거
+def init_model(config, checkpoint):
+    """모델 초기화 (mmdet.apis.init_model 대체)"""
+    from projects.mmdet3d_plugin.utils.mmcv_compat import Config, load_checkpoint
+    try:
+        from mmdet3d.models import build_model
+        cfg = Config.fromfile(config)
+        model = build_model(cfg.model, test_cfg=cfg.get('test_cfg'))
+        load_checkpoint(model, checkpoint)
+        return model
+    except ImportError:
+        raise ImportError("init_model requires mmdet3d")
 
 
 def fuse_conv_bn(conv, bn):

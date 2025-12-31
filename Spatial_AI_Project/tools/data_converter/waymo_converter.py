@@ -10,7 +10,15 @@ except ImportError:
         'Please run "pip install waymo-open-dataset-tf-2-2-0==1.2.0" '
         'to install the official devkit first.')
 
-import mmcv
+from projects.mmdet3d_plugin.utils.mmcv_compat import (
+    track_parallel_progress, imfrombytes, imwrite, mkdir_or_exist
+)
+# mmcv 호환성을 위한 alias
+class mmcv:
+    track_parallel_progress = staticmethod(track_parallel_progress)
+    imfrombytes = staticmethod(imfrombytes)
+    imwrite = staticmethod(imwrite)
+    mkdir_or_exist = staticmethod(mkdir_or_exist)
 import numpy as np
 import tensorflow as tf
 from glob import glob

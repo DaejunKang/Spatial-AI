@@ -1,7 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
-import mmcv
-from mmcv import Config
+from projects.mmdet3d_plugin.utils.mmcv_compat import Config, load as mmcv_load
+# mmcv 호환성을 위한 alias
+class mmcv:
+    load = staticmethod(mmcv_load)
 
 from mmdet3d.datasets import build_dataset
 

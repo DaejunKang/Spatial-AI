@@ -3,7 +3,19 @@
 # ---------------------------------------------
 #  Modified by Zhiqi Li
 # ---------------------------------------------
-import mmcv
+from projects.mmdet3d_plugin.utils.mmcv_compat import (
+    dump as mmcv_dump, load as mmcv_load, mkdir_or_exist, 
+    track_iter_progress, check_file_exist, imread, is_filepath
+)
+# mmcv 호환성을 위한 alias
+class mmcv:
+    dump = staticmethod(mmcv_dump)
+    load = staticmethod(mmcv_load)
+    mkdir_or_exist = staticmethod(mkdir_or_exist)
+    track_iter_progress = staticmethod(track_iter_progress)
+    check_file_exist = staticmethod(check_file_exist)
+    imread = staticmethod(imread)
+    is_filepath = staticmethod(is_filepath)
 import numpy as np
 import os
 from collections import OrderedDict

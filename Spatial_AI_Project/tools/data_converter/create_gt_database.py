@@ -1,9 +1,22 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import mmcv
 import numpy as np
 import pickle
-from mmcv import track_iter_progress
-from mmcv.ops import roi_align
+from projects.mmdet3d_plugin.utils.mmcv_compat import (
+    track_iter_progress, mkdir_or_exist, imwrite
+)
+# mmcv 호환성을 위한 alias
+class mmcv:
+    track_iter_progress = staticmethod(track_iter_progress)
+    mkdir_or_exist = staticmethod(mkdir_or_exist)
+    imwrite = staticmethod(imwrite)
+
+# roi_align은 torchvision.ops에서 사용 가능
+try:
+    from torchvision.ops import roi_align as roi_align
+except ImportError:
+    # fallback: 간단한 구현 또는 에러 처리
+    def roi_align(*args, **kwargs):
+        raise NotImplementedError("roi_align requires torchvision or mmcv")
 from os import path as osp
 from pycocotools import mask as maskUtils
 from pycocotools.coco import COCO

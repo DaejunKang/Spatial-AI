@@ -1,28 +1,56 @@
+# ---------------------------------------------
 # Copyright (c) OpenMMLab. All rights reserved.
+# ---------------------------------------------
+#  Modified by Zhiqi Li
+# ---------------------------------------------
+ 
 from __future__ import division
 
 import argparse
 import copy
-import mmcv
 import os
 import time
 import torch
 import warnings
-from mmcv import Config, DictAction
-from mmcv.runner import get_dist_info, init_dist, wrap_fp16_model
 from os import path as osp
 
-from mmdet import __version__ as mmdet_version
-from mmdet3d import __version__ as mmdet3d_version
-#from mmdet3d.apis import train_model
+# mmcv/mmdet 대체 모듈 사용
+from projects.mmdet3d_plugin.utils.mmcv_compat import (
+    Config, DictAction, get_dist_info, init_dist, mkdir_or_exist,
+    TORCH_VERSION, digit_version, import_modules_from_strings
+)
+from projects.mmdet3d_plugin.utils.mmdet_compat import set_random_seed
 
-from mmdet3d.datasets import build_dataset
-from mmdet3d.models import build_model
-from mmdet3d.utils import collect_env, get_root_logger
-from mmdet.apis import set_random_seed
-from mmseg import __version__ as mmseg_version
+# mmdet3d는 여전히 필요 (CUDA 의존성 없이 사용 가능한 부분만)
+try:
+    from mmdet3d import __version__ as mmdet3d_version
+    from mmdet3d.datasets import build_dataset
+    from mmdet3d.models import build_model
+    from mmdet3d.utils import collect_env, get_root_logger
+except ImportError:
+    # mmdet3d가 없는 경우를 위한 fallback
+    mmdet3d_version = 'unknown'
+    def build_dataset(cfg):
+        raise NotImplementedError("build_dataset requires mmdet3d")
+    def build_model(cfg, **kwargs):
+        raise NotImplementedError("build_model requires mmdet3d")
+    def collect_env():
+        return {}
+    def get_root_logger(**kwargs):
+        import logging
+        return logging.getLogger()
 
-from mmcv.utils import TORCH_VERSION, digit_version
+# 버전 정보 (없어도 동작하도록)
+try:
+    from mmdet import __version__ as mmdet_version
+except ImportError:
+    mmdet_version = 'unknown'
+
+try:
+    from mmseg import __version__ as mmseg_version
+except ImportError:
+    mmseg_version = 'unknown'
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a detector')
@@ -101,7 +129,6 @@ def main():
         cfg.merge_from_dict(args.cfg_options)
     # import modules from string list.
     if cfg.get('custom_imports', None):
-        from mmcv.utils import import_modules_from_strings
         import_modules_from_strings(**cfg['custom_imports'])
 
     # import modules from plguin/xx, registry will be updated
@@ -127,11 +154,15 @@ def main():
                     _module_path = _module_path + '.' + m
                 print(_module_path)
                 plg_lib = importlib.import_module(_module_path)
-            
-            from projects.mmdet3d_plugin.bevformer.apis import custom_train_model
+
+            from projects.mmdet3d_plugin.bevformer.apis.train import custom_train_model
     # set cudnn_benchmark
     if cfg.get('cudnn_benchmark', False):
         torch.backends.cudnn.benchmark = True
+    # set tf32
+    if cfg.get('close_tf32', False):
+        torch.backends.cuda.matmul.allow_tf32 = False
+        torch.backends.cudnn.allow_tf32 = False
 
     # work_dir is determined in this priority: CLI > segment in file > filename
     if args.work_dir is not None:
@@ -141,24 +172,21 @@ def main():
         # use config filename as default work_dir if cfg.work_dir is None
         cfg.work_dir = osp.join('./work_dirs',
                                 osp.splitext(osp.basename(args.config))[0])
-    #if args.resume_from is not None:
-
-    if args.resume_from is not None and osp.isfile(args.resume_from): 
+    # if args.resume_from is not None:
+    if args.resume_from is not None and osp.isfile(args.resume_from):
         cfg.resume_from = args.resume_from
-
     if args.gpu_ids is not None:
         cfg.gpu_ids = args.gpu_ids
     else:
         cfg.gpu_ids = range(1) if args.gpus is None else range(args.gpus)
-    if digit_version(TORCH_VERSION) != digit_version('1.8.1'):
-        cfg.optimizer['type'] = 'AdamW'
+    if digit_version(TORCH_VERSION) == digit_version('1.8.1') and cfg.optimizer['type'] == 'AdamW':
+        cfg.optimizer['type'] = 'AdamW2' # fix bug in Adamw
     if args.autoscale_lr:
         # apply the linear scaling rule (https://arxiv.org/abs/1706.02677)
         cfg.optimizer['lr'] = cfg.optimizer['lr'] * len(cfg.gpu_ids) / 8
 
     # init distributed env first, since logger depends on the dist info.
     if args.launcher == 'none':
-        assert False, 'DOT NOT SUPPORT!!!'
         distributed = False
     else:
         distributed = True
@@ -168,7 +196,7 @@ def main():
         cfg.gpu_ids = range(world_size)
 
     # create work_dir
-    mmcv.mkdir_or_exist(osp.abspath(cfg.work_dir))
+    mkdir_or_exist(osp.abspath(cfg.work_dir))
     # dump config
     cfg.dump(osp.join(cfg.work_dir, osp.basename(args.config)))
     # init the logger before other steps
@@ -215,22 +243,8 @@ def main():
         test_cfg=cfg.get('test_cfg'))
     model.init_weights()
 
-    eval_model_config = copy.deepcopy(cfg.model)
-    eval_model = build_model(
-        eval_model_config,
-        train_cfg=cfg.get('train_cfg'),
-        test_cfg=cfg.get('test_cfg'))
-    
-    fp16_cfg = cfg.get('fp16', None)
-    if fp16_cfg is not None:
-        wrap_fp16_model(eval_model)
-
-    #eval_model.init_weights()
-    eval_model.load_state_dict(model.state_dict())
-
     logger.info(f'Model:\n{model}')
-    from projects.mmdet3d_plugin.datasets import custom_build_dataset
-    datasets = [custom_build_dataset(cfg.data.train)]
+    datasets = [build_dataset(cfg.data.train)]
     if len(cfg.workflow) == 2:
         val_dataset = copy.deepcopy(cfg.data.val)
         # in case we use a dataset wrapper
@@ -242,7 +256,7 @@ def main():
         # which do not affect AP/AR calculation later
         # refer to https://mmdetection3d.readthedocs.io/en/latest/tutorials/customize_runtime.html#customize-workflow  # noqa
         val_dataset.test_mode = False
-        datasets.append(custom_build_dataset(val_dataset))
+        datasets.append(build_dataset(val_dataset))
     if cfg.checkpoint_config is not None:
         # save mmdet version, config file content and class names in
         # checkpoints as meta data
@@ -260,7 +274,6 @@ def main():
         model,
         datasets,
         cfg,
-        eval_model=eval_model,
         distributed=distributed,
         validate=(not args.no_validate),
         timestamp=timestamp,

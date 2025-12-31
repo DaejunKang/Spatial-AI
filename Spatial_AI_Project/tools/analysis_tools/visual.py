@@ -3,7 +3,7 @@
 #  Modified by Zhiqi Li
 # ---------------------------------------------
 
-import mmcv
+# mmcv는 이 파일에서 직접 사용되지 않음 (필요시 추가)
 from nuscenes.nuscenes import NuScenes
 from PIL import Image
 from nuscenes.utils.geometry_utils import view_points, box_in_image, BoxVisibility, transform_matrix

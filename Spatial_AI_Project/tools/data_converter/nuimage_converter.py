@@ -1,7 +1,17 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import base64
-import mmcv
+from projects.mmdet3d_plugin.utils.mmcv_compat import (
+    imwrite, mkdir_or_exist, track_parallel_progress, 
+    track_iter_progress, dump as mmcv_dump
+)
+# mmcv 호환성을 위한 alias
+class mmcv:
+    imwrite = staticmethod(imwrite)
+    mkdir_or_exist = staticmethod(mkdir_or_exist)
+    track_parallel_progress = staticmethod(track_parallel_progress)
+    track_iter_progress = staticmethod(track_iter_progress)
+    dump = staticmethod(mmcv_dump)
 import numpy as np
 from nuimages import NuImages
 from nuimages.utils.utils import mask_decode, name_to_index_mapping

@@ -4,25 +4,38 @@
 #  Modified by Zhiqi Li
 # ---------------------------------------------
 import argparse
-import mmcv
 import os
 import torch
 import warnings
-from mmcv import Config, DictAction
-from mmcv.cnn import fuse_conv_bn
-from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
-from mmcv.runner import (get_dist_info, init_dist, load_checkpoint,
-                         wrap_fp16_model)
-
-from mmdet3d.apis import single_gpu_test
-from mmdet3d.datasets import build_dataset
-from projects.mmdet3d_plugin.datasets.builder import build_dataloader
-from mmdet3d.models import build_model
-from mmdet.apis import set_random_seed
-from projects.mmdet3d_plugin.bevformer.apis.test import custom_multi_gpu_test
-from mmdet.datasets import replace_ImageToTensor
 import time
 import os.path as osp
+
+# mmcv/mmdet 대체 모듈 사용
+from projects.mmdet3d_plugin.utils.mmcv_compat import (
+    Config, DictAction, fuse_conv_bn, MMDataParallel, MMDistributedDataParallel,
+    get_dist_info, init_dist, load_checkpoint, wrap_fp16_model,
+    import_modules_from_strings
+)
+from projects.mmdet3d_plugin.utils.mmdet_compat import (
+    set_random_seed, replace_ImageToTensor
+)
+
+# mmdet3d는 여전히 필요 (CUDA 의존성 없이 사용 가능한 부분만)
+try:
+    from mmdet3d.apis import single_gpu_test
+    from mmdet3d.datasets import build_dataset
+    from mmdet3d.models import build_model
+except ImportError:
+    # mmdet3d가 없는 경우를 위한 fallback
+    def single_gpu_test(*args, **kwargs):
+        raise NotImplementedError("single_gpu_test requires mmdet3d")
+    def build_dataset(cfg):
+        raise NotImplementedError("build_dataset requires mmdet3d")
+    def build_model(cfg, **kwargs):
+        raise NotImplementedError("build_model requires mmdet3d")
+
+from projects.mmdet3d_plugin.datasets.builder import build_dataloader
+from projects.mmdet3d_plugin.bevformer.apis.test import custom_multi_gpu_test
 
 
 def parse_args():
@@ -127,7 +140,6 @@ def main():
         cfg.merge_from_dict(args.cfg_options)
     # import modules from string list.
     if cfg.get('custom_imports', None):
-        from mmcv.utils import import_modules_from_strings
         import_modules_from_strings(**cfg['custom_imports'])
 
     # import modules from plguin/xx, registry will be updated

@@ -2,7 +2,9 @@
 import argparse
 import numpy as np
 import warnings
-from mmcv import Config, DictAction, mkdir_or_exist, track_iter_progress
+from projects.mmdet3d_plugin.utils.mmcv_compat import (
+    Config, DictAction, mkdir_or_exist, track_iter_progress, import_modules_from_strings
+)
 from os import path as osp
 
 from mmdet3d.core.bbox import (Box3DMode, CameraInstance3DBoxes, Coord3DMode,
@@ -57,7 +59,7 @@ def build_data_cfg(config_path, skip_type, cfg_options):
         cfg.merge_from_dict(cfg_options)
     # import modules from string list.
     if cfg.get('custom_imports', None):
-        from mmcv.utils import import_modules_from_strings
+        # import_modules_from_strings는 이미 import됨
         import_modules_from_strings(**cfg['custom_imports'])
     # extract inner dataset of `RepeatDataset` as `cfg.data.train`
     # so we don't need to worry about it later
