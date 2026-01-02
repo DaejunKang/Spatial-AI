@@ -8,8 +8,7 @@ import copy
 from collections import OrderedDict
 import torch
 from ...utils.mmdet_compat import DETECTORS
-from ...utils.mmdet3d_compat import bbox3d2result, MVXTwoStageDetector
-from mmdet3d.models.builder import build_head
+from ...utils.mmdet3d_compat import bbox3d2result, MVXTwoStageDetector, build_head
 from Ref_AI_project.mmdet3d_plugin.models.utils.grid_mask import GridMask
 
 
