@@ -183,5 +183,6 @@ BBOX_CODERS = Registry('bbox_coder')
 MATCH_COST = Registry('match_cost')
 PIPELINES = Registry('pipeline')
 DATASETS = Registry('dataset')
+TRANSFORMER = Registry('transformer')
 
 

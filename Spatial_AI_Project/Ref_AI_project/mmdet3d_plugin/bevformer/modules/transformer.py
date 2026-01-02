@@ -11,7 +11,7 @@ from mmcv.cnn import xavier_init
 from mmcv.cnn.bricks.transformer import build_transformer_layer_sequence
 from mmcv.runner.base_module import BaseModule
 
-from mmdet.models.utils.builder import TRANSFORMER
+from ...utils.registry import TRANSFORMER
 from torch.nn.init import normal_
 from Ref_AI_project.mmdet3d_plugin.models.utils.visual import save_tensor
 from mmcv.runner.base_module import BaseModule

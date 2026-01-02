@@ -112,9 +112,24 @@ def replace_ImageToTensor(pipelines):
 
 
 # ==================== Model Builder Registry ====================
-from .registry import Registry, build_from_cfg
+from .registry import Registry, build_from_cfg, HEADS, TRANSFORMER
 
 # mmdet.models.builder의 레지스트리들을 대체
 BACKBONES = Registry('backbone')
-HEADS = Registry('head')
+# HEADS와 TRANSFORMER는 registry.py에서 이미 정의됨
+
+
+# ==================== Match Cost Builder ====================
+def build_match_cost(cfg, default_args=None):
+    """Build match cost from config dict.
+    
+    Args:
+        cfg (dict): Config dict. It should at least contain the key "type".
+        default_args (dict, optional): Default initialization arguments.
+    
+    Returns:
+        obj: The constructed match cost.
+    """
+    from .registry import MATCH_COST
+    return build_from_cfg(cfg, MATCH_COST, default_args)
 
