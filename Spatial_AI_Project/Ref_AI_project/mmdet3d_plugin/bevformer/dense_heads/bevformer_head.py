@@ -2,7 +2,7 @@ import copy
 import torch
 import torch.nn as nn
 
-from mmcv.cnn import Linear, bias_init_with_prob
+from ...utils.mmcv_compat import Linear, bias_init_with_prob
 from ...utils.mmcv_compat import TORCH_VERSION, digit_version
 from ...utils.mmdet_compat import multi_apply, reduce_mean, inverse_sigmoid
 from ...utils.registry import HEADS

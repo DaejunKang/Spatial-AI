@@ -103,7 +103,7 @@ def worker_init_fn(worker_id, num_workers, rank, seed):
 
 # Copyright (c) OpenMMLab. All rights reserved.
 import platform
-from mmcv.utils import Registry, build_from_cfg
+from ..utils.registry import Registry, build_from_cfg
 
 from mmdet.datasets import DATASETS
 from mmdet.datasets.builder import _concat_dataset

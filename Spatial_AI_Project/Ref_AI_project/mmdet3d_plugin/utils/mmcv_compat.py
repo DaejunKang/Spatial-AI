@@ -627,3 +627,112 @@ class Hook:
 
 # ==================== Optimizer Registry ====================
 OPTIMIZERS = Registry('optimizer')
+
+
+# ==================== CNN 관련 함수들 ====================
+def xavier_init(module, gain=1, bias=0, distribution='normal'):
+    """Xavier 초기화 (mmcv.cnn.xavier_init 호환)
+    
+    Args:
+        module: 초기화할 모듈
+        gain: 스케일 팩터
+        bias: bias 초기값
+        distribution: 'normal' 또는 'uniform'
+    """
+    if hasattr(module, 'weight') and module.weight is not None:
+        if distribution == 'normal':
+            nn.init.xavier_normal_(module.weight, gain=gain)
+        else:
+            nn.init.xavier_uniform_(module.weight, gain=gain)
+    if hasattr(module, 'bias') and module.bias is not None:
+        nn.init.constant_(module.bias, bias)
+
+
+def constant_init(module, val, bias=0):
+    """상수 초기화 (mmcv.cnn.constant_init 호환)
+    
+    Args:
+        module: 초기화할 모듈
+        val: weight 초기값
+        bias: bias 초기값
+    """
+    if hasattr(module, 'weight') and module.weight is not None:
+        nn.init.constant_(module.weight, val)
+    if hasattr(module, 'bias') and module.bias is not None:
+        nn.init.constant_(module.bias, bias)
+
+
+def bias_init_with_prob(prior_prob=0.01):
+    """Classification layer의 bias를 확률에 맞게 초기화 (mmcv.cnn.bias_init_with_prob 호환)
+    
+    Args:
+        prior_prob: 사전 확률
+    
+    Returns:
+        float: bias 초기값
+    """
+    return float(-np.log((1 - prior_prob) / prior_prob))
+
+
+# Linear는 torch.nn.Linear를 그대로 사용
+Linear = nn.Linear
+
+
+def build_norm_layer(cfg, num_features, postfix=''):
+    """Normalization layer 빌드 (mmcv.cnn.build_norm_layer 호환, 간단한 버전)
+    
+    Args:
+        cfg: 설정 딕셔너리 (type만 사용)
+        num_features: feature 수
+        postfix: 레이어 이름 postfix
+    
+    Returns:
+        tuple: (레이어 이름, 레이어)
+    """
+    if isinstance(cfg, dict):
+        norm_type = cfg.get('type', 'BN2d')
+    else:
+        norm_type = cfg
+    
+    if norm_type == 'BN2d':
+        norm = nn.BatchNorm2d(num_features)
+    elif norm_type == 'BN1d':
+        norm = nn.BatchNorm1d(num_features)
+    elif norm_type == 'BN3d':
+        norm = nn.BatchNorm3d(num_features)
+    elif norm_type == 'LN':
+        norm = nn.LayerNorm(num_features)
+    elif norm_type == 'GN':
+        num_groups = cfg.get('num_groups', 32) if isinstance(cfg, dict) else 32
+        norm = nn.GroupNorm(num_groups, num_features)
+    else:
+        raise ValueError(f'Unsupported norm type: {norm_type}')
+    
+    name = f'norm{postfix}'
+    return name, norm
+
+
+def build_conv_layer(cfg, *args, **kwargs):
+    """Convolution layer 빌드 (mmcv.cnn.build_conv_layer 호환, 간단한 버전)
+    
+    Args:
+        cfg: 설정 딕셔너리
+        *args, **kwargs: Conv 레이어 인자
+    
+    Returns:
+        Conv 레이어
+    """
+    if isinstance(cfg, dict):
+        conv_type = cfg.get('type', 'Conv2d')
+    else:
+        conv_type = 'Conv2d'
+        args = (cfg,) + args
+    
+    if conv_type == 'Conv2d':
+        return nn.Conv2d(*args, **kwargs)
+    elif conv_type == 'Conv1d':
+        return nn.Conv1d(*args, **kwargs)
+    elif conv_type == 'Conv3d':
+        return nn.Conv3d(*args, **kwargs)
+    else:
+        raise ValueError(f'Unsupported conv type: {conv_type}')

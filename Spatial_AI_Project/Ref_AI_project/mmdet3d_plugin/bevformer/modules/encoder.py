@@ -14,8 +14,7 @@ from mmcv.cnn.bricks.registry import (ATTENTION,
                                       TRANSFORMER_LAYER_SEQUENCE)
 from mmcv.cnn.bricks.transformer import TransformerLayerSequence
 from ...utils.mmcv_compat import force_fp32, auto_fp16
-from mmcv.utils import TORCH_VERSION, digit_version
-from mmcv.utils import ext_loader
+from ...utils.mmcv_compat import TORCH_VERSION, digit_version, ext_loader
 from .custom_base_transformer_layer import MyCustomBaseTransformerLayer
 ext_module = ext_loader.load_ext(
     '_ext', ['ms_deform_attn_backward', 'ms_deform_attn_forward'])
