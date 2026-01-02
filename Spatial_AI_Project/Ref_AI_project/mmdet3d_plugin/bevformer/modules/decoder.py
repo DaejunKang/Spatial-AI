@@ -20,10 +20,8 @@ from mmcv.cnn.bricks.registry import (ATTENTION,
 from mmcv.cnn.bricks.transformer import TransformerLayerSequence
 import math
 from ...utils.mmcv_compat import BaseModule, ModuleList, Sequential
-from mmcv.utils import (ConfigDict, build_from_cfg, deprecated_api_warning,
-                        to_2tuple)
-
-from mmcv.utils import ext_loader
+from ...utils.mmcv_compat import (ConfigDict, deprecated_api_warning, to_2tuple, ext_loader)
+from ...utils.registry import build_from_cfg
 from .multi_scale_deformable_attn_function import MultiScaleDeformableAttnFunction_fp32, \
     MultiScaleDeformableAttnFunction_fp16
 

@@ -4,7 +4,7 @@ from mmcv.cnn import xavier_init
 from mmcv.cnn.bricks.transformer import build_transformer_layer_sequence
 from ...utils.registry import TRANSFORMER
 from torch.nn.init import normal_
-from mmcv.runner.base_module import BaseModule
+from ...utils.mmcv_compat import BaseModule
 from .temporal_self_attention import TemporalSelfAttention
 from .spatial_cross_attention import MSDeformableAttention3D
 from .decoder import CustomMSDeformableAttention
