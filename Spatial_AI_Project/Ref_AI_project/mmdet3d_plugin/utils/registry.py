@@ -135,6 +135,41 @@ class Registry:
         return obj_cls(**args, **kwargs)
 
 
+def build_from_cfg(cfg, registry, default_args=None):
+    """Build a module from config dict.
+    
+    Args:
+        cfg (dict): Config dict. It should at least contain the key "type".
+        registry (:obj:`Registry`): The registry to search the type from.
+        default_args (dict, optional): Default initialization arguments.
+    
+    Returns:
+        obj: The constructed object.
+    """
+    if not isinstance(cfg, dict):
+        raise TypeError(f'cfg must be a dict, but got {type(cfg)}')
+    if 'type' not in cfg:
+        raise KeyError(f'cfg must contain the key "type", but got {cfg}')
+    if not isinstance(registry, Registry):
+        raise TypeError(f'registry must be an mmcv.Registry object, '
+                        f'but got {type(registry)}')
+    
+    args = cfg.copy()
+    obj_type = args.pop('type')
+    if isinstance(obj_type, str):
+        obj_cls = registry.get(obj_type)
+        if obj_cls is None:
+            raise KeyError(f'{obj_type} is not in the {registry._name} registry')
+    else:
+        obj_cls = obj_type
+    
+    if default_args is not None:
+        for name, value in default_args.items():
+            args.setdefault(name, value)
+    
+    return obj_cls(**args)
+
+
 # 전역 레지스트리 인스턴스 생성
 DETECTORS = Registry('detector')
 HEADS = Registry('head')

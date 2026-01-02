@@ -1,5 +1,5 @@
-from mmcv.runner.hooks.hook import HOOKS, Hook
-from Ref_AI_project.mmdet3d_plugin.models.utils import run_time
+from ...utils.mmcv_compat import HOOKS, Hook
+from ..utils import run_time
 
 
 @HOOKS.register_module()

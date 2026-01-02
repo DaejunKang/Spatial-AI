@@ -111,3 +111,10 @@ def replace_ImageToTensor(pipelines):
     return pipelines
 
 
+# ==================== Model Builder Registry ====================
+from .registry import Registry, build_from_cfg
+
+# mmdet.models.builder의 레지스트리들을 대체
+BACKBONES = Registry('backbone')
+HEADS = Registry('head')
+

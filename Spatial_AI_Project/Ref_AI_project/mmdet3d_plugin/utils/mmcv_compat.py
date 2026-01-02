@@ -493,3 +493,137 @@ def digit_version(version_str):
             break
     return version_digits
 
+
+# ==================== Runner 관련 (force_fp32, auto_fp16, BaseModule) ====================
+def force_fp32(apply_to=None, out_fp16=False):
+    """FP32 강제 데코레이터 (mmcv.runner.force_fp32 호환)
+    
+    Args:
+        apply_to: 적용할 인자 목록 (사용하지 않음)
+        out_fp16: 출력을 FP16으로 변환할지 여부 (사용하지 않음)
+    
+    Returns:
+        decorator: 데코레이터 함수
+    """
+    def decorator(func):
+        # 실제로는 함수를 그대로 반환 (PyTorch의 autocast 사용 권장)
+        return func
+    return decorator
+
+
+def auto_fp16(apply_to=None, out_fp16=False):
+    """FP16 자동 데코레이터 (mmcv.runner.auto_fp16 호환)
+    
+    Args:
+        apply_to: 적용할 인자 목록 (사용하지 않음)
+        out_fp16: 출력을 FP16으로 변환할지 여부 (사용하지 않음)
+    
+    Returns:
+        decorator: 데코레이터 함수
+    """
+    def decorator(func):
+        # 실제로는 함수를 그대로 반환 (PyTorch의 autocast 사용 권장)
+        return func
+    return decorator
+
+
+class BaseModule(nn.Module):
+    """기본 모듈 클래스 (mmcv.runner.BaseModule 호환)
+    
+    init_cfg를 지원하는 기본 모듈 클래스
+    """
+    def __init__(self, init_cfg=None):
+        super(BaseModule, self).__init__()
+        self._is_init = False
+        self.init_cfg = init_cfg
+        
+        # init_cfg가 있으면 초기화
+        if init_cfg is not None:
+            self.init_weights()
+    
+    def init_weights(self):
+        """가중치 초기화"""
+        if self._is_init:
+            return
+        
+        if self.init_cfg is not None:
+            # init_cfg에 따른 초기화 로직 (간단한 버전)
+            # 실제 사용 시 필요에 따라 확장 가능
+            pass
+        
+        # 하위 모듈 초기화
+        for module in self.children():
+            if hasattr(module, 'init_weights'):
+                module.init_weights()
+        
+        self._is_init = True
+
+
+# ==================== Hook 시스템 ====================
+from .registry import Registry
+
+HOOKS = Registry('hook')
+
+
+class Hook:
+    """Hook 기본 클래스 (mmcv.runner.hooks.hook.Hook 호환)"""
+    
+    def before_run(self, runner):
+        """Runner 시작 전 호출"""
+        pass
+    
+    def after_run(self, runner):
+        """Runner 종료 후 호출"""
+        pass
+    
+    def before_epoch(self, runner):
+        """Epoch 시작 전 호출"""
+        pass
+    
+    def after_epoch(self, runner):
+        """Epoch 종료 후 호출"""
+        pass
+    
+    def before_iter(self, runner):
+        """Iteration 시작 전 호출"""
+        pass
+    
+    def after_iter(self, runner):
+        """Iteration 종료 후 호출"""
+        pass
+    
+    def before_train_epoch(self, runner):
+        """Train epoch 시작 전 호출"""
+        pass
+    
+    def after_train_epoch(self, runner):
+        """Train epoch 종료 후 호출"""
+        pass
+    
+    def before_train_iter(self, runner):
+        """Train iteration 시작 전 호출"""
+        pass
+    
+    def after_train_iter(self, runner):
+        """Train iteration 종료 후 호출"""
+        pass
+    
+    def before_val_epoch(self, runner):
+        """Val epoch 시작 전 호출"""
+        pass
+    
+    def after_val_epoch(self, runner):
+        """Val epoch 종료 후 호출"""
+        pass
+    
+    def before_val_iter(self, runner):
+        """Val iteration 시작 전 호출"""
+        pass
+    
+    def after_val_iter(self, runner):
+        """Val iteration 종료 후 호출"""
+        pass
+
+
+# ==================== Optimizer Registry ====================
+OPTIMIZERS = Registry('optimizer')
