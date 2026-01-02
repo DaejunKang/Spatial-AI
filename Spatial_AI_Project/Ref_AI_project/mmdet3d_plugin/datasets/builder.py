@@ -6,15 +6,14 @@ import random
 from functools import partial
 
 import numpy as np
-from mmcv.parallel import collate
-from mmcv.runner import get_dist_info
-from mmcv.utils import Registry, build_from_cfg
 from torch.utils.data import DataLoader
+from torch.utils.data.dataloader import default_collate
 
-from mmdet.datasets.samplers import GroupSampler
-from Ref_AI_project.mmdet3d_plugin.datasets.samplers.group_sampler import DistributedGroupSampler
-from Ref_AI_project.mmdet3d_plugin.datasets.samplers.distributed_sampler import DistributedSampler
-from Ref_AI_project.mmdet3d_plugin.datasets.samplers.sampler import build_sampler
+from ..utils.mmcv_compat import get_dist_info
+from ..utils.registry import Registry, build_from_cfg
+from .samplers.group_sampler import DistributedGroupSampler as GroupSampler, DistributedGroupSampler
+from .samplers.distributed_sampler import DistributedSampler
+from .samplers.sampler import build_sampler
 
 def build_dataloader(dataset,
                      samples_per_gpu,

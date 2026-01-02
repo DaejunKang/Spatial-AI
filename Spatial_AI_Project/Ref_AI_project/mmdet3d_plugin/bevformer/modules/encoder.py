@@ -13,7 +13,7 @@ from mmcv.cnn.bricks.registry import (ATTENTION,
                                       TRANSFORMER_LAYER,
                                       TRANSFORMER_LAYER_SEQUENCE)
 from mmcv.cnn.bricks.transformer import TransformerLayerSequence
-from mmcv.runner import force_fp32, auto_fp16
+from ...utils.mmcv_compat import force_fp32, auto_fp16
 from mmcv.utils import TORCH_VERSION, digit_version
 from mmcv.utils import ext_loader
 from .custom_base_transformer_layer import MyCustomBaseTransformerLayer
