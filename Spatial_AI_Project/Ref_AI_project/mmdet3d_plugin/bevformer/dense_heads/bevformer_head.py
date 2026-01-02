@@ -4,9 +4,7 @@ import torch.nn as nn
 
 from ...utils.mmcv_compat import Linear, bias_init_with_prob
 from ...utils.mmcv_compat import TORCH_VERSION, digit_version
-from ...utils.mmdet_compat import multi_apply, reduce_mean, inverse_sigmoid
-from ...utils.registry import HEADS
-from mmdet.models.dense_heads import DETRHead
+from ...utils.mmdet_compat import multi_apply, reduce_mean, inverse_sigmoid, HEADS, DETRHead
 from mmdet3d.core.bbox.coders import build_bbox_coder
 from Ref_AI_project.mmdet3d_plugin.core.bbox.util import normalize_bbox
 from ...utils.mmcv_compat import force_fp32, auto_fp16
