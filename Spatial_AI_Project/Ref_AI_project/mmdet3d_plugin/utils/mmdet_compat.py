@@ -116,6 +116,7 @@ from .registry import Registry, build_from_cfg, HEADS, TRANSFORMER
 
 # mmdet.models.builder의 레지스트리들을 대체
 BACKBONES = Registry('backbone')
+DETECTORS = Registry('detector')
 # HEADS와 TRANSFORMER는 registry.py에서 이미 정의됨
 
 

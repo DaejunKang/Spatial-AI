@@ -10,7 +10,7 @@ from mmdet3d.core.bbox.coders import build_bbox_coder
 from traitlets import import_item
 from Ref_AI_project.mmdet3d_plugin.core.bbox.util import normalize_bbox
 from mmcv.cnn.bricks.transformer import build_positional_encoding
-from mmcv.runner import BaseModule, force_fp32
+from ...utils.mmcv_compat import BaseModule, force_fp32
 from Ref_AI_project.mmdet3d_plugin.models.utils.bricks import run_time
 import numpy as np
 import mmcv
