@@ -13,11 +13,11 @@ import torch.nn as nn
 from mmcv.cnn import xavier_init, constant_init
 from mmcv.cnn.bricks.registry import ATTENTION
 import math
-from mmcv.runner.base_module import BaseModule, ModuleList, Sequential
+from ...utils.mmcv_compat import BaseModule, ModuleList, Sequential
 from ...utils.mmcv_compat import (ConfigDict, to_2tuple, deprecated_api_warning)
 from ...utils.registry import build_from_cfg
 
-from mmcv.utils import ext_loader
+from ...utils.mmcv_compat import ext_loader
 ext_module = ext_loader.load_ext(
     '_ext', ['ms_deform_attn_backward', 'ms_deform_attn_forward'])
 

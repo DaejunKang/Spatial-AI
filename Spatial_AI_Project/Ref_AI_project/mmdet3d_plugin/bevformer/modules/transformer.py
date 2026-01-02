@@ -12,7 +12,7 @@ from ...utils.mmcv_compat import xavier_init, BaseModule
 from ...utils.registry import TRANSFORMER
 from torch.nn.init import normal_
 from Ref_AI_project.mmdet3d_plugin.models.utils.visual import save_tensor
-from mmcv.runner.base_module import BaseModule
+from ...utils.mmcv_compat import BaseModule
 from torchvision.transforms.functional import rotate
 from .temporal_self_attention import TemporalSelfAttention
 from .spatial_cross_attention import MSDeformableAttention3D

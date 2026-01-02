@@ -8,7 +8,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from ...utils.mmcv_compat import (Linear, build_activation_layer, build_conv_layer, build_norm_layer)
-from mmcv.runner.base_module import BaseModule, ModuleList, Sequential
+from ...utils.mmcv_compat import BaseModule, ModuleList, Sequential
 from mmcv.utils import (ConfigDict, build_from_cfg, deprecated_api_warning, to_2tuple)
 from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.registry import (ATTENTION, FEEDFORWARD_NETWORK, POSITIONAL_ENCODING, TRANSFORMER_LAYER,

@@ -18,7 +18,7 @@ from mmcv.cnn.bricks.transformer import build_attention
 import math
 from ...utils.mmcv_compat import force_fp32, auto_fp16
 
-from mmcv.runner.base_module import BaseModule, ModuleList, Sequential
+from ...utils.mmcv_compat import BaseModule, ModuleList, Sequential
 
 from mmcv.utils import ext_loader
 from .multi_scale_deformable_attn_function import MultiScaleDeformableAttnFunction_fp32, \

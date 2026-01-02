@@ -677,6 +677,10 @@ def bias_init_with_prob(prior_prob=0.01):
 # Linear는 torch.nn.Linear를 그대로 사용
 Linear = nn.Linear
 
+# ModuleList와 Sequential은 torch.nn에서 직접 사용
+ModuleList = nn.ModuleList
+Sequential = nn.Sequential
+
 
 def build_norm_layer(cfg, num_features, postfix=''):
     """Normalization layer 빌드 (mmcv.cnn.build_norm_layer 호환, 간단한 버전)
