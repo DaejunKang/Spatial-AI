@@ -7,8 +7,7 @@
 import torch
 from ...utils.mmcv_compat import force_fp32, auto_fp16
 from ...utils.mmdet_compat import DETECTORS
-from mmdet3d.core import bbox3d2result
-from mmdet3d.models.detectors.mvx_two_stage import MVXTwoStageDetector
+from ...utils.mmdet3d_compat import bbox3d2result, MVXTwoStageDetector
 from Ref_AI_project.mmdet3d_plugin.models.utils.grid_mask import GridMask
 import time
 import copy

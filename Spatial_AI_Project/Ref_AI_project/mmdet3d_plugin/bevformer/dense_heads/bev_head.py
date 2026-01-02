@@ -6,7 +6,7 @@ import torch.nn.functional as F
 from ...utils.mmcv_compat import Linear, bias_init_with_prob, TORCH_VERSION, digit_version
 
 from ...utils.mmdet_compat import multi_apply, reduce_mean, inverse_sigmoid, HEADS, DETRHead
-from mmdet3d.core.bbox.coders import build_bbox_coder
+from ...utils.mmdet3d_compat import build_bbox_coder
 from traitlets import import_item
 from Ref_AI_project.mmdet3d_plugin.core.bbox.util import normalize_bbox
 from ...utils.mmcv_compat import build_positional_encoding
@@ -17,8 +17,8 @@ import mmcv
 import cv2 as cv
 from Ref_AI_project.mmdet3d_plugin.bevformer.modules import PerceptionTransformerBEVEncoder
 from ...utils.mmdet_compat import build_transformer
-from mmdet3d.models.builder import build_head
-from mmdet3d.models.dense_heads.free_anchor3d_head import FreeAnchor3DHead
+from ...utils.mmdet3d_compat import build_head
+from ...utils.mmdet3d_compat import FreeAnchor3DHead
 
 @HEADS.register_module()
 class BEVHead(BaseModule):
