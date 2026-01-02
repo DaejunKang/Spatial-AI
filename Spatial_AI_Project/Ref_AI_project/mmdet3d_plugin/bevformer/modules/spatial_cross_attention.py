@@ -5,7 +5,7 @@
 #  Modified by Zhiqi Li
 # ---------------------------------------------
 
-from mmcv.ops.multi_scale_deform_attn import multi_scale_deformable_attn_pytorch
+from ...utils.mmcv_compat import multi_scale_deformable_attn_pytorch
 import warnings
 import torch
 import torch.nn as nn
