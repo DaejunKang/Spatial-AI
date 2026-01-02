@@ -9,10 +9,7 @@ import numpy as np
 import torch
 import copy
 import warnings
-from mmcv.cnn.bricks.registry import (ATTENTION,
-                                      TRANSFORMER_LAYER,
-                                      TRANSFORMER_LAYER_SEQUENCE)
-from mmcv.cnn.bricks.transformer import TransformerLayerSequence
+from ...utils.mmcv_compat import (ATTENTION, TRANSFORMER_LAYER, TRANSFORMER_LAYER_SEQUENCE, TransformerLayerSequence)
 from ...utils.mmcv_compat import force_fp32, auto_fp16
 from ...utils.mmcv_compat import TORCH_VERSION, digit_version, ext_loader
 from .custom_base_transformer_layer import MyCustomBaseTransformerLayer

@@ -11,10 +11,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from ...utils.mmcv_compat import xavier_init, constant_init
-from mmcv.cnn.bricks.registry import (ATTENTION,
-                                      TRANSFORMER_LAYER,
-                                      TRANSFORMER_LAYER_SEQUENCE)
-from mmcv.cnn.bricks.transformer import build_attention
+from ...utils.mmcv_compat import (ATTENTION, TRANSFORMER_LAYER, TRANSFORMER_LAYER_SEQUENCE, build_attention)
 import math
 from ...utils.mmcv_compat import force_fp32, auto_fp16, BaseModule, ModuleList, Sequential, ext_loader
 from .multi_scale_deformable_attn_function import MultiScaleDeformableAttnFunction_fp32, \

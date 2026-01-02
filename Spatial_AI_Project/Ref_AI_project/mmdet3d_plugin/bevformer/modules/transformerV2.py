@@ -10,7 +10,7 @@ from .spatial_cross_attention import MSDeformableAttention3D
 from .decoder import CustomMSDeformableAttention
 from mmcv.cnn import build_norm_layer, build_conv_layer
 import torch.utils.checkpoint as checkpoint
-from mmdet.models.backbones.resnet import Bottleneck, BasicBlock
+from ...utils.mmdet_compat import Bottleneck, BasicBlock
 
 
 class ResNetFusion(BaseModule):

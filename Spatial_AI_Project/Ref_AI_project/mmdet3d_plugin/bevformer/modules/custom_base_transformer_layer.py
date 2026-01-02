@@ -12,8 +12,8 @@ import torch.nn as nn
 
 from ...utils.mmcv_compat import ConfigDict, deprecated_api_warning, Linear, build_activation_layer, build_norm_layer, BaseModule, ModuleList, Sequential
 
-from mmcv.cnn.bricks.registry import (ATTENTION, FEEDFORWARD_NETWORK, POSITIONAL_ENCODING,
-                                      TRANSFORMER_LAYER, TRANSFORMER_LAYER_SEQUENCE)
+from ...utils.mmcv_compat import (ATTENTION, FEEDFORWARD_NETWORK, POSITIONAL_ENCODING,
+                                   TRANSFORMER_LAYER, TRANSFORMER_LAYER_SEQUENCE)
 
 # Avoid BC-breaking of importing MultiScaleDeformableAttention from this file
 try:

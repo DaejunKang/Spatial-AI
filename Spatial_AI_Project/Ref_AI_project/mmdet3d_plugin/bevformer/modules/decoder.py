@@ -15,9 +15,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import xavier_init, constant_init
-from mmcv.cnn.bricks.registry import (ATTENTION,
-                                      TRANSFORMER_LAYER_SEQUENCE)
-from mmcv.cnn.bricks.transformer import TransformerLayerSequence
+from ...utils.mmcv_compat import (ATTENTION, TRANSFORMER_LAYER_SEQUENCE, TransformerLayerSequence)
 import math
 from ...utils.mmcv_compat import BaseModule, ModuleList, Sequential
 from ...utils.mmcv_compat import (ConfigDict, deprecated_api_warning, to_2tuple, ext_loader)

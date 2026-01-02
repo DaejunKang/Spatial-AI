@@ -11,7 +11,7 @@ import warnings
 import torch
 import torch.nn as nn
 from mmcv.cnn import xavier_init, constant_init
-from mmcv.cnn.bricks.registry import ATTENTION
+from ...utils.mmcv_compat import ATTENTION
 import math
 from ...utils.mmcv_compat import BaseModule, ModuleList, Sequential
 from ...utils.mmcv_compat import (ConfigDict, to_2tuple, deprecated_api_warning)

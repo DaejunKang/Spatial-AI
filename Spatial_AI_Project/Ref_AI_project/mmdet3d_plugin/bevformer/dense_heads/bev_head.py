@@ -9,7 +9,7 @@ from ...utils.mmdet_compat import multi_apply, reduce_mean, inverse_sigmoid, HEA
 from mmdet3d.core.bbox.coders import build_bbox_coder
 from traitlets import import_item
 from Ref_AI_project.mmdet3d_plugin.core.bbox.util import normalize_bbox
-from mmcv.cnn.bricks.transformer import build_positional_encoding
+from ...utils.mmcv_compat import build_positional_encoding
 from ...utils.mmcv_compat import BaseModule, force_fp32
 from Ref_AI_project.mmdet3d_plugin.models.utils.bricks import run_time
 import numpy as np
