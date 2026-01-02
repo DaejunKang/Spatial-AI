@@ -16,11 +16,7 @@ from mmcv.cnn.bricks.registry import (ATTENTION,
                                       TRANSFORMER_LAYER_SEQUENCE)
 from mmcv.cnn.bricks.transformer import build_attention
 import math
-from ...utils.mmcv_compat import force_fp32, auto_fp16
-
-from ...utils.mmcv_compat import BaseModule, ModuleList, Sequential
-
-from mmcv.utils import ext_loader
+from ...utils.mmcv_compat import force_fp32, auto_fp16, BaseModule, ModuleList, Sequential, ext_loader
 from .multi_scale_deformable_attn_function import MultiScaleDeformableAttnFunction_fp32, \
     MultiScaleDeformableAttnFunction_fp16
 from Ref_AI_project.mmdet3d_plugin.models.utils.bricks import run_time
