@@ -1,20 +1,19 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import numpy as np
 import pickle
-from projects.mmdet3d_plugin.utils.mmcv_compat import (
+from Ref_AI_project.mmdet3d_plugin.utils.mmcv_compat import (
     track_iter_progress, mkdir_or_exist, imwrite
 )
-# mmcv 호환성을 위한 alias
+# mmcv ?�환?�을 ?�한 alias
 class mmcv:
     track_iter_progress = staticmethod(track_iter_progress)
     mkdir_or_exist = staticmethod(mkdir_or_exist)
     imwrite = staticmethod(imwrite)
 
-# roi_align은 torchvision.ops에서 사용 가능
-try:
+# roi_align?� torchvision.ops?�서 ?�용 가??try:
     from torchvision.ops import roi_align as roi_align
 except ImportError:
-    # fallback: 간단한 구현 또는 에러 처리
+    # fallback: 간단??구현 ?�는 ?�러 처리
     def roi_align(*args, **kwargs):
         raise NotImplementedError("roi_align requires torchvision or mmcv")
 from os import path as osp

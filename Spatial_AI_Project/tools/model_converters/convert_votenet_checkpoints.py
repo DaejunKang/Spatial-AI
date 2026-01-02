@@ -2,7 +2,7 @@
 import argparse
 import tempfile
 import torch
-from projects.mmdet3d_plugin.utils.mmcv_compat import Config, load_state_dict
+from Ref_AI_project.mmdet3d_plugin.utils.mmcv_compat import Config, load_state_dict
 
 from mmdet3d.models import build_detector
 

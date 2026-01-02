@@ -2,7 +2,7 @@
 import argparse
 import numpy as np
 import warnings
-from projects.mmdet3d_plugin.utils.mmcv_compat import (
+from Ref_AI_project.mmdet3d_plugin.utils.mmcv_compat import (
     Config, DictAction, mkdir_or_exist, track_iter_progress, import_modules_from_strings
 )
 from os import path as osp
@@ -59,8 +59,7 @@ def build_data_cfg(config_path, skip_type, cfg_options):
         cfg.merge_from_dict(cfg_options)
     # import modules from string list.
     if cfg.get('custom_imports', None):
-        # import_modules_from_strings는 이미 import됨
-        import_modules_from_strings(**cfg['custom_imports'])
+        # import_modules_from_strings???��? import??        import_modules_from_strings(**cfg['custom_imports'])
     # extract inner dataset of `RepeatDataset` as `cfg.data.train`
     # so we don't need to worry about it later
     if cfg.data.train['type'] == 'RepeatDataset':

@@ -1,6 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
-from projects.mmdet3d_plugin.utils.mmcv_compat import Config, DictAction
+from Ref_AI_project.mmdet3d_plugin.utils.mmcv_compat import Config, DictAction
 
 
 def parse_args():

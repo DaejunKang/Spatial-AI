@@ -1,13 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import torch
-from projects.mmdet3d_plugin.utils.mmcv_compat import save_checkpoint
+from Ref_AI_project.mmdet3d_plugin.utils.mmcv_compat import save_checkpoint
 from torch import nn as nn
 
-# init_model은 mmdet에 의존하므로 직접 구현하거나 제거
+# init_model?� mmdet???�존?��?�?직접 구현?�거???�거
 def init_model(config, checkpoint):
-    """모델 초기화 (mmdet.apis.init_model 대체)"""
-    from projects.mmdet3d_plugin.utils.mmcv_compat import Config, load_checkpoint
+    """모델 초기??(mmdet.apis.init_model ?��?"""
+    from Ref_AI_project.mmdet3d_plugin.utils.mmcv_compat import Config, load_checkpoint
     try:
         from mmdet3d.models import build_model
         cfg = Config.fromfile(config)

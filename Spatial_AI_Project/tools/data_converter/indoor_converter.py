@@ -1,6 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from projects.mmdet3d_plugin.utils.mmcv_compat import dump as mmcv_dump
-# mmcv 호환성을 위한 alias
+from Ref_AI_project.mmdet3d_plugin.utils.mmcv_compat import dump as mmcv_dump
+# mmcv ?�환?�을 ?�한 alias
 class mmcv:
     dump = staticmethod(mmcv_dump)
 import numpy as np

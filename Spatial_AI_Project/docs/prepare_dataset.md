@@ -23,19 +23,19 @@ Using the above code will generate `nuscenes_infos_temporal_{train,val}.pkl`.
 **Folder structure**
 ```
 bevformer
-â”œâ”€â”€ projects/
-â”œâ”€â”€ tools/
-â”œâ”€â”€ configs/
-â”œâ”€â”€ ckpts/
-â”‚   â”œâ”€â”€ r101_dcn_fcos3d_pretrain.pth
-â”œâ”€â”€ data/
-â”‚   â”œâ”€â”€ can_bus/
-â”‚   â”œâ”€â”€ nuscenes/
-â”‚   â”‚   â”œâ”€â”€ maps/
-â”‚   â”‚   â”œâ”€â”€ samples/
-â”‚   â”‚   â”œâ”€â”€ sweeps/
-â”‚   â”‚   â”œâ”€â”€ v1.0-test/
-|   |   â”œâ”€â”€ v1.0-trainval/
-|   |   â”œâ”€â”€ nuscenes_infos_temporal_train.pkl
-|   |   â”œâ”€â”€ nuscenes_infos_temporal_val.pkl
+?œâ??€ Ref_AI_project/
+?œâ??€ tools/
+?œâ??€ configs/
+?œâ??€ ckpts/
+??  ?œâ??€ r101_dcn_fcos3d_pretrain.pth
+?œâ??€ data/
+??  ?œâ??€ can_bus/
+??  ?œâ??€ nuscenes/
+??  ??  ?œâ??€ maps/
+??  ??  ?œâ??€ samples/
+??  ??  ?œâ??€ sweeps/
+??  ??  ?œâ??€ v1.0-test/
+|   |   ?œâ??€ v1.0-trainval/
+|   |   ?œâ??€ nuscenes_infos_temporal_train.pkl
+|   |   ?œâ??€ nuscenes_infos_temporal_val.pkl
 ```

@@ -1,8 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from projects.mmdet3d_plugin.utils.mmcv_compat import (
+from Ref_AI_project.mmdet3d_plugin.utils.mmcv_compat import (
     check_file_exist, list_from_file, mkdir_or_exist, load as mmcv_load, dump as mmcv_dump
 )
-# mmcv 호환성을 위한 alias
+# mmcv ?�환?�을 ?�한 alias
 class mmcv:
     check_file_exist = staticmethod(check_file_exist)
     list_from_file = staticmethod(list_from_file)

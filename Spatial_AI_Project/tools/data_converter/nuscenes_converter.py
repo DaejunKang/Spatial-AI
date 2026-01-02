@@ -3,11 +3,11 @@
 # ---------------------------------------------
 #  Modified by Zhiqi Li
 # ---------------------------------------------
-from projects.mmdet3d_plugin.utils.mmcv_compat import (
+from Ref_AI_project.mmdet3d_plugin.utils.mmcv_compat import (
     dump as mmcv_dump, load as mmcv_load, mkdir_or_exist, 
     track_iter_progress, check_file_exist, imread, is_filepath
 )
-# mmcv 호환성을 위한 alias
+# mmcv ?�환?�을 ?�한 alias
 class mmcv:
     dump = staticmethod(mmcv_dump)
     load = staticmethod(mmcv_load)

@@ -10,23 +10,23 @@ import warnings
 import time
 import os.path as osp
 
-# mmcv/mmdet 대체 모듈 사용
-from projects.mmdet3d_plugin.utils.mmcv_compat import (
+# mmcv/mmdet ?��?모듈 ?�용
+from Ref_AI_project.mmdet3d_plugin.utils.mmcv_compat import (
     Config, DictAction, fuse_conv_bn, MMDataParallel, MMDistributedDataParallel,
     get_dist_info, init_dist, load_checkpoint, wrap_fp16_model,
     import_modules_from_strings
 )
-from projects.mmdet3d_plugin.utils.mmdet_compat import (
+from Ref_AI_project.mmdet3d_plugin.utils.mmdet_compat import (
     set_random_seed, replace_ImageToTensor
 )
 
-# mmdet3d는 여전히 필요 (CUDA 의존성 없이 사용 가능한 부분만)
+# mmdet3d???�전???�요 (CUDA ?�존???�이 ?�용 가?�한 부분만)
 try:
     from mmdet3d.apis import single_gpu_test
     from mmdet3d.datasets import build_dataset
     from mmdet3d.models import build_model
 except ImportError:
-    # mmdet3d가 없는 경우를 위한 fallback
+    # mmdet3d가 ?�는 경우�??�한 fallback
     def single_gpu_test(*args, **kwargs):
         raise NotImplementedError("single_gpu_test requires mmdet3d")
     def build_dataset(cfg):
@@ -34,8 +34,8 @@ except ImportError:
     def build_model(cfg, **kwargs):
         raise NotImplementedError("build_model requires mmdet3d")
 
-from projects.mmdet3d_plugin.datasets.builder import build_dataloader
-from projects.mmdet3d_plugin.bevformer.apis.test import custom_multi_gpu_test
+from Ref_AI_project.mmdet3d_plugin.datasets.builder import build_dataloader
+from Ref_AI_project.mmdet3d_plugin.bevformer.apis.test import custom_multi_gpu_test
 
 
 def parse_args():

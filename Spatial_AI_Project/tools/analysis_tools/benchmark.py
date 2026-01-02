@@ -2,13 +2,13 @@
 import argparse
 import time
 import torch
-from projects.mmdet3d_plugin.utils.mmcv_compat import (
+from Ref_AI_project.mmdet3d_plugin.utils.mmcv_compat import (
     Config, MMDataParallel, load_checkpoint, wrap_fp16_model
 )
 import sys
 sys.path.append('.')
-from projects.mmdet3d_plugin.datasets.builder import build_dataloader
-from projects.mmdet3d_plugin.datasets import custom_build_dataset
+from Ref_AI_project.mmdet3d_plugin.datasets.builder import build_dataloader
+from Ref_AI_project.mmdet3d_plugin.datasets import custom_build_dataset
 # from mmdet3d.datasets import build_dataloader, build_dataset
 from mmdet3d.models import build_detector
 #from tools.misc.fuse_conv_bn import fuse_module

@@ -9,21 +9,21 @@ import torch
 import warnings
 from os import path as osp
 
-# mmcv/mmdet 대체 모듈 사용
-from projects.mmdet3d_plugin.utils.mmcv_compat import (
+# mmcv/mmdet ?��?모듈 ?�용
+from Ref_AI_project.mmdet3d_plugin.utils.mmcv_compat import (
     Config, DictAction, get_dist_info, init_dist, wrap_fp16_model,
     mkdir_or_exist, TORCH_VERSION, digit_version, import_modules_from_strings
 )
-from projects.mmdet3d_plugin.utils.mmdet_compat import set_random_seed
+from Ref_AI_project.mmdet3d_plugin.utils.mmdet_compat import set_random_seed
 
-# mmdet3d는 여전히 필요 (CUDA 의존성 없이 사용 가능한 부분만)
+# mmdet3d???�전???�요 (CUDA ?�존???�이 ?�용 가?�한 부분만)
 try:
     from mmdet3d import __version__ as mmdet3d_version
     from mmdet3d.datasets import build_dataset
     from mmdet3d.models import build_model
     from mmdet3d.utils import collect_env, get_root_logger
 except ImportError:
-    # mmdet3d가 없는 경우를 위한 fallback
+    # mmdet3d가 ?�는 경우�??�한 fallback
     mmdet3d_version = 'unknown'
     def build_dataset(cfg):
         raise NotImplementedError("build_dataset requires mmdet3d")
@@ -35,7 +35,7 @@ except ImportError:
         import logging
         return logging.getLogger()
 
-# 버전 정보 (없어도 동작하도록)
+# 버전 ?�보 (?�어???�작?�도�?
 try:
     from mmdet import __version__ as mmdet_version
 except ImportError:
@@ -149,7 +149,7 @@ def main():
                 print(_module_path)
                 plg_lib = importlib.import_module(_module_path)
             
-            from projects.mmdet3d_plugin.bevformer.apis import custom_train_model
+            from Ref_AI_project.mmdet3d_plugin.bevformer.apis import custom_train_model
     # set cudnn_benchmark
     if cfg.get('cudnn_benchmark', False):
         torch.backends.cudnn.benchmark = True
@@ -250,7 +250,7 @@ def main():
     eval_model.load_state_dict(model.state_dict())
 
     logger.info(f'Model:\n{model}')
-    from projects.mmdet3d_plugin.datasets import custom_build_dataset
+    from Ref_AI_project.mmdet3d_plugin.datasets import custom_build_dataset
     datasets = [custom_build_dataset(cfg.data.train)]
     if len(cfg.workflow) == 2:
         val_dataset = copy.deepcopy(cfg.data.val)
