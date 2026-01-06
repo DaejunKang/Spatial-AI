@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 자율주행 AI 개발을 위한 센서 데이터 시각화 유틸리티
 - LiDAR 포인트 클라우드 시각화
@@ -13,6 +14,13 @@ from typing import List, Tuple, Optional, Dict, Union
 import torch
 from PIL import Image
 import cv2
+
+# 한글 폰트 설정
+try:
+    plt.rcParams['font.family'] = 'DejaVu Sans'
+    plt.rcParams['axes.unicode_minus'] = False
+except:
+    pass
 
 
 class LiDARVisualizer:

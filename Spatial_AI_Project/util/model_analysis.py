@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 자율주행 AI 개발을 위한 모델 분석 유틸리티
 - 모델 성능 분석
@@ -12,6 +13,13 @@ from typing import Dict, List, Tuple, Optional, Union
 import torch
 from collections import defaultdict
 import pandas as pd
+
+# 한글 폰트 설정
+try:
+    plt.rcParams['font.family'] = 'DejaVu Sans'
+    plt.rcParams['axes.unicode_minus'] = False
+except:
+    pass
 
 
 class PerformanceAnalyzer:

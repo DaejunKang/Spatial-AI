@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 자율주행 AI 개발을 위한 Feature 시각화 유틸리티
 - 중간 레이어 feature 시각화
@@ -14,6 +15,13 @@ import torch
 import torch.nn.functional as F
 from PIL import Image
 import cv2
+
+# 한글 폰트 설정
+try:
+    plt.rcParams['font.family'] = 'DejaVu Sans'
+    plt.rcParams['axes.unicode_minus'] = False
+except:
+    pass
 
 
 class FeatureVisualizer:
