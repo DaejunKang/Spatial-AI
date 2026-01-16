@@ -3,6 +3,7 @@ import tensorflow as tf
 import numpy as np
 import cv2
 import argparse
+import json
 from glob import glob
 from tqdm import tqdm
 
@@ -50,26 +51,18 @@ def save_image(frame, frame_idx, output_dir):
         img_path = os.path.join(cam_dir, f'{frame_idx:06d}.png')
         cv2.imwrite(img_path, img_bgr)
 
-def save_pose(frame, frame_idx, output_dir):
+def get_pose(frame):
     """
-    Save vehicle global pose (4x4 matrix).
+    Return vehicle global pose (4x4 matrix) as list.
     """
-    pose_dir = os.path.join(output_dir, 'poses')
-    ensure_dir(pose_dir)
-    
     # transform is a list of 16 floats (row-major)
     pose = np.array(frame.pose.transform).reshape(4, 4)
-    
-    pose_path = os.path.join(pose_dir, f'{frame_idx:06d}.txt')
-    np.savetxt(pose_path, pose, fmt='%.8f')
+    return pose.tolist()
 
-def save_calib(frame, frame_idx, output_dir):
+def get_calib(frame):
     """
-    Save camera calibrations (Intrinsics and Extrinsics).
+    Return camera calibrations (Intrinsics and Extrinsics) as dictionary.
     """
-    calib_dir = os.path.join(output_dir, 'calib')
-    ensure_dir(calib_dir)
-    
     cam_name_map = {
         1: 'FRONT',
         2: 'FRONT_LEFT',
@@ -78,30 +71,25 @@ def save_calib(frame, frame_idx, output_dir):
         5: 'SIDE_RIGHT'
     }
 
-    calib_file = os.path.join(calib_dir, f'{frame_idx:06d}.txt')
-    
-    with open(calib_file, 'w') as f:
-        for camera in frame.context.camera_calibrations:
-            cam_name = cam_name_map.get(camera.name, 'UNKNOWN')
-            if cam_name == 'UNKNOWN':
-                continue
-            
-            # Extrinsic: Vehicle to Camera
-            # Note: Waymo stores extrinsic as Transform from Camera to Vehicle usually? 
-            # Proto says: "transform from camera frame to vehicle frame"
-            extrinsic = np.array(camera.extrinsic.transform).reshape(4, 4)
-            
-            # Intrinsic: [f_u, f_v, c_u, c_v, k{1, 2}, p{1, 2}, k{3}]
-            intrinsic = np.array(camera.intrinsic)
-            
-            f.write(f'Camera: {cam_name}\n')
-            f.write('Extrinsic (Camera to Vehicle):\n')
-            np.savetxt(f, extrinsic, fmt='%.8f')
-            f.write('Intrinsic (1d array: f_u, f_v, c_u, c_v, ...):\n')
-            np.savetxt(f, intrinsic[None, :], fmt='%.8f') # Save as row
-            f.write(f'Width: {camera.width}\n')
-            f.write(f'Height: {camera.height}\n')
-            f.write('-' * 20 + '\n')
+    calibs = {}
+    for camera in frame.context.camera_calibrations:
+        cam_name = cam_name_map.get(camera.name, 'UNKNOWN')
+        if cam_name == 'UNKNOWN':
+            continue
+        
+        # Extrinsic: Vehicle to Camera
+        extrinsic = np.array(camera.extrinsic.transform).reshape(4, 4).tolist()
+        
+        # Intrinsic: [f_u, f_v, c_u, c_v, k{1, 2}, p{1, 2}, k{3}]
+        intrinsic = np.array(camera.intrinsic).tolist()
+        
+        calibs[cam_name] = {
+            'extrinsic': extrinsic, # Camera to Vehicle
+            'intrinsic': intrinsic,
+            'width': camera.width,
+            'height': camera.height
+        }
+    return calibs
 
 def extract_tfrecord(tfrecord_path, output_dir):
     if dataset_pb2 is None:
@@ -111,13 +99,38 @@ def extract_tfrecord(tfrecord_path, output_dir):
     dataset = tf.data.TFRecordDataset(tfrecord_path, compression_type='')
     
     print(f"Processing {tfrecord_path}...")
+    
+    vehicle_poses = {} # Key: frame_idx, Value: 4x4 matrix
+    calibration_info = None # Assuming calibration is constant for the segment (usually true)
+    
+    # Pre-create image dirs
+    ensure_dir(os.path.join(output_dir, 'images'))
+    
     for i, data in enumerate(tqdm(dataset)):
         frame = dataset_pb2.Frame()
         frame.ParseFromString(bytearray(data.numpy()))
         
+        # Save Images
         save_image(frame, i, output_dir)
-        save_pose(frame, i, output_dir)
-        save_calib(frame, i, output_dir)
+        
+        # Store Pose
+        vehicle_poses[f'{i:06d}'] = get_pose(frame)
+        
+        # Store Calibration (Only once from the first frame)
+        if calibration_info is None:
+            calibration_info = get_calib(frame)
+            
+    # Save Poses to JSON
+    poses_dir = os.path.join(output_dir, 'poses')
+    ensure_dir(poses_dir)
+    with open(os.path.join(poses_dir, 'vehicle_poses.json'), 'w') as f:
+        json.dump(vehicle_poses, f, indent=4)
+        
+    # Save Calibration to JSON
+    calib_dir = os.path.join(output_dir, 'calibration')
+    ensure_dir(calib_dir)
+    with open(os.path.join(calib_dir, 'intrinsics_extrinsics.json'), 'w') as f:
+        json.dump(calibration_info, f, indent=4)
 
 def main():
     parser = argparse.ArgumentParser(description='Extract data from Waymo Open Dataset TFRecords')
