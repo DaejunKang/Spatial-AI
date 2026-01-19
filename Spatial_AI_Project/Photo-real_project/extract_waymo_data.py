@@ -62,7 +62,7 @@ def save_image_and_mask(frame, frame_idx, output_dir, calibrations):
         cv2.imwrite(img_path, img_bgr)
         
         # --- Save GT Segmentation (if available) ---
-        if img.camera_segmentation_label.panoptic_label:
+        if img.HasField('camera_segmentation_label') and img.camera_segmentation_label.panoptic_label:
              # This depends on exact version, usually it's a PNG inside bytes
              # panoptic_label usually contains instance_id + semantic_id
              # For 2D sem seg, we might just want to save the raw PNG
@@ -143,9 +143,9 @@ def save_image_and_mask(frame, frame_idx, output_dir, calibrations):
                 
             points_3d_cam = corners_c[:3, :].T
             projected_points, _ = cv2.projectPoints(points_3d_cam, r_vec, t_vec, camera_matrix, dist_coeffs)
-            projected_points = projected_points.squeeze().astype(np.int32)
+            projected_points = projected_points.reshape(-1, 2).astype(np.int32)
             
-            if len(projected_points) > 0:
+            if len(projected_points) > 2: # Need at least 3 points for hull (actually can be 0, but hull needs points)
                 hull = cv2.convexHull(projected_points)
                 cv2.fillConvexPoly(mask, hull, 0)
                 
@@ -321,10 +321,10 @@ def save_lidar_and_depth(frame, frame_idx, output_dir, calibrations):
     
     # Prepare depth buffers
     depth_maps = {} # cam_name -> image
-    for cam_name_str in cam_name_map.values():
-         # Need width/height. Use calibrations
-         # We need to find which ID maps to this string
-         pass
+    for cam_id, cam_name_str in cam_name_map.items():
+         if cam_id in calibrations:
+             calib = calibrations[cam_id]
+             depth_maps[cam_name_str] = np.zeros((calib.height, calib.width), dtype=np.float32)
 
     # Efficient way: Iterate all points, check cp_points
     # cp_points: [N, 6] -> [cam_id_1, x_1, y_1, cam_id_2, x_2, y_2]
