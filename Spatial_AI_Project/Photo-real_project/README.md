@@ -47,19 +47,49 @@ python Spatial_AI_Project/Photo-real_project/download_waymo.py /path/to/waymo_ra
 ```
 
 ### 2.2 Extract Data
-Extracts images, poses (JSON), calibrations (JSON), and initial masks (from 3D boxes).
+
+#### Option A: Aggressive Extractor (Recommended - No waymo_open_dataset required)
+This extractor directly parses TFRecords without requiring the `waymo_open_dataset` package. It automatically detects images using magic headers and works with both SequenceExample and Example formats.
 
 ```bash
+# Install minimal dependencies
+pip install -r Spatial_AI_Project/Photo-real_project/requirements_extract.txt
+
+# Extract data
 python Spatial_AI_Project/Photo-real_project/extract_waymo_data.py /path/to/waymo_raw /path/to/waymo_extracted
 ```
+
+**Features:**
+- ✅ No `waymo_open_dataset` dependency required
+- ✅ Automatic image detection via JPEG/PNG magic headers
+- ✅ Supports both video sequences (SequenceExample) and snapshots (Example)
+- ✅ Generates empty masks (for COLMAP compatibility)
+- ✅ Outputs extraction statistics in JSON
 
 **Output Structure:**
 ```
 /path/to/waymo_extracted/segment_xxxx/
-├── images/ (Original Images)
-├── masks/ (Dynamic Object Masks from 3D Box)
-├── poses/vehicle_poses.json
-└── calibration/intrinsics_extrinsics.json
+├── segment_xxxx/
+│   ├── images/
+│   │   ├── FRONT/
+│   │   ├── FRONT_LEFT/
+│   │   ├── FRONT_RIGHT/
+│   │   ├── SIDE_LEFT/
+│   │   └── SIDE_RIGHT/
+│   ├── masks/
+│   │   └── (same structure as images, empty black masks)
+│   └── extraction_stats.json
+```
+
+#### Option B: Original Extractor (Requires waymo_open_dataset)
+If you need poses and calibrations, use the original extractor (requires `waymo_open_dataset` package):
+
+```bash
+# Install waymo_open_dataset (Python 3.7-3.10)
+pip install waymo-open-dataset-tf-2-11-0==1.6.0
+
+# Use original extractor (if available)
+# This version extracts poses and calibrations in addition to images
 ```
 
 ## 3. Advanced Preprocessing (Optional but Recommended)

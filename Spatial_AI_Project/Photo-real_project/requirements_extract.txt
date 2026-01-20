@@ -1,0 +1,7 @@
+# Requirements for extract_waymo_data.py (Aggressive Extractor)
+# This extractor does NOT require waymo_open_dataset package
+
+tensorflow>=2.0.0
+numpy>=1.19.0
+opencv-python>=4.5.0
+tqdm>=4.60.0
