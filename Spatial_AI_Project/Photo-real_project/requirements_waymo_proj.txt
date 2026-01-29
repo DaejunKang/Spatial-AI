@@ -1,0 +1,5 @@
+tensorflow>=2.6.0
+numpy
+opencv-python
+tqdm
+waymo-open-dataset-tf-2-11-0 # Or compatible version
