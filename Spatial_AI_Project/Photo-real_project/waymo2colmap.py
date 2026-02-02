@@ -4,37 +4,11 @@ import numpy as np
 import argparse
 import sqlite3
 
-def qvec2rotmat(qvec):
-    """
-    Convert quaternion to rotation matrix.
-    qvec = [w, x, y, z]
-    """
-    return np.array([
-        [1 - 2 * qvec[2]**2 - 2 * qvec[3]**2,
-         2 * qvec[1] * qvec[2] - 2 * qvec[0] * qvec[3],
-         2 * qvec[3] * qvec[1] + 2 * qvec[0] * qvec[2]],
-        [2 * qvec[1] * qvec[2] + 2 * qvec[0] * qvec[3],
-         1 - 2 * qvec[1]**2 - 2 * qvec[3]**2,
-         2 * qvec[2] * qvec[3] - 2 * qvec[0] * qvec[1]],
-        [2 * qvec[3] * qvec[1] - 2 * qvec[0] * qvec[2],
-         2 * qvec[2] * qvec[3] + 2 * qvec[0] * qvec[1],
-         1 - 2 * qvec[1]**2 - 2 * qvec[2]**2]])
-
-def rotmat2qvec(R):
-    """
-    Convert rotation matrix to quaternion.
-    """
-    Rxx, Ryx, Rzx, Rxy, Ryy, Rzy, Rxz, Ryz, Rzz = R.flat
-    K = np.array([
-        [Rxx - Ryy - Rzz, 0, 0, 0],
-        [Ryx + Rxy, Ryy - Rxx - Rzz, 0, 0],
-        [Rzx + Rxz, Rzy + Ryz, Rzz - Rxx - Ryy, 0],
-        [Ryz - Rzy, Rzx - Rxz, Rxy - Ryx, Rxx + Ryy + Rzz]]) / 3.0
-    vals, vecs = np.linalg.eigh(K)
-    q = vecs[[3, 0, 1, 2], np.argmax(vals)]
-    if q[0] < 0:
-        q *= -1
-    return q
+# Import common utilities
+from waymo_utils import (
+    quaternion_to_rotation_matrix as qvec2rotmat,
+    rotation_matrix_to_quaternion as rotmat2qvec
+)
 
 def write_cameras_txt(cameras, output_path):
     """

@@ -18,32 +18,27 @@ except ImportError:
     print("Please install it in a compatible environment (Python 3.7 - 3.10 recommended).")
     dataset_pb2 = None
 
-def ensure_dir(path):
-    if not os.path.exists(path):
-        os.makedirs(path)
+# Import common utilities
+from waymo_utils import (
+    ensure_dir,
+    get_camera_name_map,
+    project_3d_box_to_2d,
+    get_calibration_dict
+)
 
 def save_image_and_mask(frame, frame_idx, output_dir):
     """
     Save images from 5 cameras and generate masks for dynamic objects.
     """
-    # Camera names mapping based on Waymo Proto
-    cam_name_map = {
-        1: 'FRONT',
-        2: 'FRONT_LEFT',
-        3: 'FRONT_RIGHT',
-        4: 'SIDE_LEFT',
-        5: 'SIDE_RIGHT'
-    }
+    # Camera names mapping
+    cam_name_map = get_camera_name_map()
 
     # Extract 3D Labels (Laser Labels)
     labels = frame.laser_labels
     
-    # We need to project these labels to each camera.
-    # Waymo provides a helper, but implementing projection manually allows better control without heavy util dependencies if possible.
-    # However, projection requires strict math. Let's use basic projection logic.
-    
     # Pre-parse calibration for this frame
-    calibrations = {c.name: c for c in frame.context.camera_calibrations}
+    calibrations = get_calibration_dict(frame)
+    calibrations_raw = {c.name: c for c in frame.context.camera_calibrations}
 
     for img in frame.images:
         cam_name = cam_name_map.get(img.name, 'UNKNOWN')
@@ -64,97 +59,36 @@ def save_image_and_mask(frame, frame_idx, output_dir):
         
         # --- Generate Mask ---
         # 1. Get Calibration
-        calib = calibrations[img.name]
-        extrinsic = np.array(calib.extrinsic.transform).reshape(4, 4) # Camera to Vehicle
-        intrinsic = np.array(calib.intrinsic) # [fu, fv, cu, cv, k1, k2, p1, p2, k3]
-        width, height = calib.width, calib.height
+        cam_name = cam_name_map.get(img.name, 'UNKNOWN')
+        if cam_name not in calibrations:
+            continue
+            
+        calib_data = calibrations[cam_name]
+        T_v_c = calib_data['extrinsic']  # Camera to Vehicle
+        intrinsic = calib_data['intrinsic']
+        width, height = calib_data['width'], calib_data['height']
         
         # 2. Compute Transform: Vehicle -> Camera
-        # T_camera_vehicle = inv(T_vehicle_camera)
-        T_v_c = extrinsic
         T_c_v = np.linalg.inv(T_v_c)
         
         # 3. Create Mask Image (White = Valid/Static, Black = Invalid/Dynamic)
-        # Usually COLMAP masks: 0 (black) is ignored.
-        # So we draw dynamic objects as BLACK (0), background as WHITE (255).
         mask = np.ones((height, width), dtype=np.uint8) * 255
         
-        # 4. Project Labels
+        # 4. Project Labels using common utility
         for label in labels:
             # Filter for dynamic objects (Vehicle, Pedestrian, Cyclist)
-            # Type: UNKNOWN=0, VEHICLE=1, PEDESTRIAN=2, SIGN=3, CYCLIST=4
             if label.type not in [1, 2, 4]: 
                 continue
-                
-            box = label.box
             
-            # Box Center (in Vehicle Frame)
-            center_v = np.array([box.center_x, box.center_y, box.center_z, 1.0])
+            # Project 3D box to 2D
+            projected_points = project_3d_box_to_2d(
+                label.box, T_c_v, intrinsic, width, height
+            )
             
-            # Transform to Camera Frame
-            center_c = T_c_v @ center_v
-            
-            # Check if in front of camera (z > 0)
-            if center_c[2] <= 0:
-                continue
-                
-            # Get 8 corners of the 3D Box in Vehicle Frame
-            l, w, h = box.length, box.width, box.height
-            heading = box.heading
-            
-            # Rotation around Z-axis (Vehicle Frame)
-            cos_h = np.cos(heading)
-            sin_h = np.sin(heading)
-            R_z = np.array([
-                [cos_h, -sin_h, 0],
-                [sin_h, cos_h, 0],
-                [0, 0, 1]
-            ])
-            
-            # 8 Corners relative to center
-            x_corners = [l/2, l/2, -l/2, -l/2, l/2, l/2, -l/2, -l/2]
-            y_corners = [w/2, -w/2, -w/2, w/2, w/2, -w/2, -w/2, w/2]
-            z_corners = [h/2, h/2, h/2, h/2, -h/2, -h/2, -h/2, -h/2]
-            
-            corners_3d = np.vstack([x_corners, y_corners, z_corners]) # 3x8
-            corners_3d = R_z @ corners_3d # Rotate
-            corners_3d = corners_3d + np.array([box.center_x, box.center_y, box.center_z]).reshape(3, 1) # Translate
-            
-            # Add homogeneous coord
-            corners_3d_homo = np.vstack([corners_3d, np.ones((1, 8))]) # 4x8
-            
-            # Transform to Camera Frame
-            corners_c = T_c_v @ corners_3d_homo # 4x8
-            
-            # Project to Image Plane
-            # u = fx * x / z + cx
-            # v = fy * y / z + cy
-            # Distortions are ignored here for simplicity (usually okay for masking)
-            # or we can use opencv projectPoints
-            
-            fx, fy, cx, cy = intrinsic[0], intrinsic[1], intrinsic[2], intrinsic[3]
-            k1, k2, p1, p2, k3 = intrinsic[4], intrinsic[5], intrinsic[6], intrinsic[7], intrinsic[8]
-            
-            # Use OpenCV for accurate projection with distortion
-            r_vec, _ = cv2.Rodrigues(np.eye(3))
-            t_vec = np.zeros((3, 1))
-            dist_coeffs = np.array([k1, k2, p1, p2, k3])
-            camera_matrix = np.array([[fx, 0, cx], [0, fy, cy], [0, 0, 1]])
-            
-            # Only project points in front of camera
-            valid_corners = corners_c[2, :] > 0
-            if not np.any(valid_corners):
-                continue
-                
-            points_3d_cam = corners_c[:3, :].T # Nx3
-            
-            projected_points, _ = cv2.projectPoints(points_3d_cam, r_vec, t_vec, camera_matrix, dist_coeffs)
-            projected_points = projected_points.squeeze().astype(np.int32)
-            
-            # Draw Convex Hull of the projected points as mask
-            if len(projected_points) > 0:
+            # Draw mask if projection successful
+            if projected_points is not None and len(projected_points) > 0:
                 hull = cv2.convexHull(projected_points)
-                cv2.fillConvexPoly(mask, hull, 0) # Fill with BLACK (0)
+                cv2.fillConvexPoly(mask, hull, 0)  # Fill with BLACK (0)
                 
         # Save Mask
         # COLMAP expects .png.mask extension usually, or just a separate folder.
@@ -180,32 +114,17 @@ def get_calib(frame):
     """
     Return camera calibrations (Intrinsics and Extrinsics) as dictionary.
     """
-    cam_name_map = {
-        1: 'FRONT',
-        2: 'FRONT_LEFT',
-        3: 'FRONT_RIGHT',
-        4: 'SIDE_LEFT',
-        5: 'SIDE_RIGHT'
-    }
-
-    calibs = {}
-    for camera in frame.context.camera_calibrations:
-        cam_name = cam_name_map.get(camera.name, 'UNKNOWN')
-        if cam_name == 'UNKNOWN':
-            continue
-        
-        # Extrinsic: Vehicle to Camera
-        extrinsic = np.array(camera.extrinsic.transform).reshape(4, 4).tolist()
-        
-        # Intrinsic: [f_u, f_v, c_u, c_v, k{1, 2}, p{1, 2}, k{3}]
-        intrinsic = np.array(camera.intrinsic).tolist()
-        
+    calibs = get_calibration_dict(frame)
+    
+    # Convert numpy arrays to lists for JSON serialization
+    for cam_name, calib_data in calibs.items():
         calibs[cam_name] = {
-            'extrinsic': extrinsic, # Camera to Vehicle
-            'intrinsic': intrinsic,
-            'width': camera.width,
-            'height': camera.height
+            'extrinsic': calib_data['extrinsic'].tolist(),
+            'intrinsic': calib_data['intrinsic'].tolist(),
+            'width': calib_data['width'],
+            'height': calib_data['height']
         }
+    
     return calibs
 
 def extract_tfrecord(tfrecord_path, output_dir):
