@@ -5,7 +5,7 @@ import argparse
 import sqlite3
 
 # Import common utilities
-from waymo_utils import (
+from ..parsing.waymo_utils import (
     quaternion_to_rotation_matrix as qvec2rotmat,
     rotation_matrix_to_quaternion as rotmat2qvec
 )

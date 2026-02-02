@@ -2,8 +2,8 @@ import os
 import argparse
 from glob import glob
 from tqdm import tqdm
-from segmentation import SemanticSegmentor
-from inpainting import Inpainter
+from .segmentation import SemanticSegmentor
+from .inpainting import Inpainter
 import cv2
 
 def main():

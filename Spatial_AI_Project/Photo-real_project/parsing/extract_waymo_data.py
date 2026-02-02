@@ -19,7 +19,7 @@ except ImportError:
     dataset_pb2 = None
 
 # Import common utilities
-from waymo_utils import (
+from .waymo_utils import (
     ensure_dir,
     get_camera_name_map,
     project_3d_box_to_2d,
