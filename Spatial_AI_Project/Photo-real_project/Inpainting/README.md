@@ -8,6 +8,7 @@ Photo-real_project의 Inpainting 모듈입니다. 시계열 정보를 활용하�
 Inpainting/
 ├── __init__.py
 ├── step1_temporal_accumulation.py  # 시계열 누적 기반 인페인팅
+├── step2_geometric_guide.py        # 기하학적 가이드 생성
 └── README.md
 ```
 
@@ -56,6 +57,29 @@ python step1_temporal_accumulation.py \
 **출력:**
 - `step1_warped/`: 시계열 누적으로 구멍이 메워진 이미지
 
+### 3. Step 2: 기하학적 가이드 생성 (Geometric Guide)
+
+Step 1에서 채워지지 않은 구멍을 RANSAC 기반 평면 피팅으로 기하학적으로 채웁니다.
+
+```bash
+python step2_geometric_guide.py /path/to/preprocessing/output
+```
+
+**옵션:**
+- `--no_lidar`: LiDAR depth를 사용하지 않고 pseudo depth 생성
+- `--ground_ratio`: 바닥 평면 추정에 사용할 이미지 하단 비율 (기본값: 0.6)
+
+**예시:**
+```bash
+python step2_geometric_guide.py \
+    /data/waymo/nre_format \
+    --ground_ratio 0.65
+```
+
+**출력:**
+- `step2_depth_guide/`: 기하학적으로 채워진 depth guide maps
+- `step2_hole_masks/`: 채워야 할 구멍 영역 마스크
+
 ## 🧠 알고리즘 설명
 
 ### Step 1: Temporal Accumulation
@@ -75,6 +99,26 @@ python step1_temporal_accumulation.py \
 3. Z-buffering으로 가시성 처리
 4. 작은 구멍은 OpenCV inpainting으로 채움
 5. 원본 이미지와 블렌딩 (정적 영역은 원본 유지)
+
+### Step 2: Geometric Guide Generation
+
+**구멍 감지 (Hole Detection):**
+
+1. Step 1 결과에서 검은색 픽셀(밝기 < 10)을 구멍으로 감지
+2. Morphological closing으로 노이즈 제거
+3. 작은 구멍(< 50 픽셀)은 무시
+
+**평면 피팅 (RANSAC Plane Fitting):**
+
+1. 이미지 하단 40% 영역에서 바닥 평면 샘플링
+2. RANSAC으로 아웃라이어에 강건한 평면 추정 (Z = aX + bY + c)
+3. 구멍 영역의 depth 값을 평면 방정식으로 예측
+4. 음수 depth 값 클리핑 및 정규화
+
+**Fallback 전략:**
+
+- 유효한 depth 포인트가 부족하면 OpenCV inpainting 사용
+- LiDAR depth가 없으면 선형 gradient pseudo depth 생성
 
 ## 📊 입출력 데이터 포맷
 
@@ -125,16 +169,29 @@ data_root/
     └── ...
 ```
 
+### 출력: Step 2 Geometric Guides
+
+```
+data_root/
+├── step2_depth_guide/
+│   ├── seq0_000001_FRONT.png      # 기하학적으로 채워진 depth
+│   └── ...
+└── step2_hole_masks/
+    ├── seq0_000001_FRONT.png      # 255=구멍, 0=채워짐
+    └── ...
+```
+
 ## 🔧 의존성
 
 ```bash
-pip install opencv-python numpy open3d tqdm
+pip install opencv-python numpy open3d tqdm scikit-learn
 ```
 
 **필수:**
 - `opencv-python`: 이미지 처리
 - `numpy`: 수치 연산
-- `open3d`: 3D 포인트 클라우드 처리
+- `open3d`: 3D 포인트 클라우드 처리 (Step 1)
+- `scikit-learn`: RANSAC 회귀 (Step 2)
 - `tqdm`: 프로그레스 바
 
 ## ⚙️ 고급 설정
@@ -168,10 +225,10 @@ python step1_temporal_accumulation.py /data/waymo/nre_format \
 
 ## 🚀 다음 단계
 
-Step 1 완료 후, 추가 인페인팅 단계를 적용할 수 있습니다:
+Step 2 완료 후, 추가 인페인팅 단계를 적용할 수 있습니다:
 
-- **Step 2 (예정)**: Generative Inpainting (Stable Diffusion 기반)
-- **Step 3 (예정)**: Multi-view Consistency Refinement
+- **Step 3 (예정)**: Generative Inpainting (Stable Diffusion 기반)
+- **Step 4 (예정)**: Multi-view Consistency Refinement
 
 ## 📝 참고사항
 
@@ -181,7 +238,7 @@ Step 1 완료 후, 추가 인페인팅 단계를 적용할 수 있습니다:
 
 ## 🐛 문제 해결
 
-### "No points accumulated" 경고
+### "No points accumulated" 경고 (Step 1)
 
 **원인:**
 - Depth 파일이 없거나 경로가 잘못됨
@@ -192,6 +249,17 @@ Step 1 완료 후, 추가 인페인팅 단계를 적용할 수 있습니다:
 1. Depth 파일 경로 확인: `data_root/depths/`
 2. Mask 확인: `cv2.imread(mask_path)`로 로드했을 때 255 값이 있는지 확인
 3. Pose JSON 구조 확인
+
+### "Insufficient valid depth points" 경고 (Step 2)
+
+**원인:**
+- Step 1 결과에 유효한 depth 포인트가 너무 적음
+- 바닥 평면 추정을 위한 샘플이 부족함
+
+**해결:**
+1. `--ground_ratio` 값을 조정 (예: 0.5로 낮추면 더 많은 영역 사용)
+2. Step 1의 voxel_size를 줄여 더 조밀한 포인트 클라우드 생성
+3. `--no_lidar` 옵션 사용하여 pseudo depth로 대체
 
 ### Open3D 오류
 
