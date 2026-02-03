@@ -9,6 +9,7 @@ Inpainting/
 ├── __init__.py
 ├── step1_temporal_accumulation.py  # 시계열 누적 기반 인페인팅
 ├── step2_geometric_guide.py        # 기하학적 가이드 생성
+├── step3_final_inpainting.py       # Multi-view Consistent 최종 인페인팅
 └── README.md
 ```
 
@@ -80,6 +81,30 @@ python step2_geometric_guide.py \
 - `step2_depth_guide/`: 기하학적으로 채워진 depth guide maps
 - `step2_hole_masks/`: 채워야 할 구멍 영역 마스크
 
+### 4. Step 3: Multi-view Consistent 최종 인페인팅
+
+Step 1과 Step 2의 결과를 결합하여 생성형 AI 기반 최종 인페인팅을 수행합니다.
+
+```bash
+python step3_final_inpainting.py /path/to/preprocessing/output
+```
+
+**옵션:**
+- `--use_ai`: 생성형 AI (Stable Diffusion) 사용 (기본값: False, OpenCV inpainting)
+- `--noise_level`: 텍스처 노이즈 레벨 (0-255, 기본값: 5)
+
+**예시:**
+```bash
+# OpenCV 기반 (빠르고 가벼움)
+python step3_final_inpainting.py /data/waymo/nre_format
+
+# Stable Diffusion 기반 (더 자연스러운 결과)
+python step3_final_inpainting.py /data/waymo/nre_format --use_ai
+```
+
+**출력:**
+- `step3_final_inpainted/`: 최종 인페인팅 결과
+
 ## 🧠 알고리즘 설명
 
 ### Step 1: Temporal Accumulation
@@ -119,6 +144,28 @@ python step2_geometric_guide.py \
 
 - 유효한 depth 포인트가 부족하면 OpenCV inpainting 사용
 - LiDAR depth가 없으면 선형 gradient pseudo depth 생성
+
+### Step 3: Multi-view Consistent Final Inpainting
+
+**Fusion Logic (이미지 병합):**
+
+1. Step 1 warped 이미지에서 검은색 픽셀(구멍) 감지
+2. Step 2 hole mask와 병합하여 최종 구멍 마스크 생성
+3. 원본 이미지 + Warped 이미지 융합 (warped 우선순위 높음)
+4. Base 이미지 생성
+
+**Inpainting (생성형 AI):**
+
+1. Base 이미지와 구멍 마스크를 Stable Diffusion에 입력
+2. Depth guide를 conditioning으로 사용 (ControlNet)
+3. Prompt: "realistic road surface, asphalt texture"
+4. 생성된 결과와 원본 블렌딩
+
+**Texture Enhancement:**
+
+1. 인페인팅된 영역에 Gaussian noise 추가
+2. 부드러운 블렌딩으로 자연스러운 경계
+3. Sim-to-Real 텍스처 갭 완화
 
 ## 📊 입출력 데이터 포맷
 
@@ -181,6 +228,16 @@ data_root/
     └── ...
 ```
 
+### 출력: Step 3 Final Inpainted Images
+
+```
+data_root/
+└── step3_final_inpainted/
+    ├── seq0_000001_FRONT.png      # 최종 완성된 이미지
+    ├── seq0_000001_FRONT_LEFT.png
+    └── ...
+```
+
 ## 🔧 의존성
 
 ```bash
@@ -208,6 +265,29 @@ pip install opencv-python numpy open3d tqdm scikit-learn
 # depth = depth_estimator.predict(image)
 ```
 
+### 생성형 AI 통합
+
+`step3_final_inpainting.py`에서 Stable Diffusion을 사용하려면:
+
+```python
+# step3_final_inpainting.py 내부 _initialize_generative_model() 수정
+from diffusers import StableDiffusionInpaintPipeline
+import torch
+
+model_id = "stabilityai/stable-diffusion-2-inpainting"
+self.pipe = StableDiffusionInpaintPipeline.from_pretrained(
+    model_id,
+    torch_dtype=torch.float16
+)
+self.pipe = self.pipe.to("cuda")
+```
+
+**실행:**
+```bash
+pip install diffusers transformers accelerate
+python step3_final_inpainting.py /data/waymo/nre_format --use_ai
+```
+
 ### 메모리 최적화
 
 대용량 시퀀스 처리 시 메모리 부족이 발생하면:
@@ -223,12 +303,28 @@ python step1_temporal_accumulation.py /data/waymo/nre_format \
     --voxel_size 0.1
 ```
 
-## 🚀 다음 단계
+## 🚀 전체 파이프라인
 
-Step 2 완료 후, 추가 인페인팅 단계를 적용할 수 있습니다:
+완전한 인페인팅 파이프라인:
 
-- **Step 3 (예정)**: Generative Inpainting (Stable Diffusion 기반)
-- **Step 4 (예정)**: Multi-view Consistency Refinement
+```bash
+# 0. Preprocessing
+cd preprocessing
+python waymo2nre.py /path/to/waymo/raw /path/to/output
+
+# 1. 시계열 누적
+cd ../Inpainting
+python step1_temporal_accumulation.py /path/to/output
+
+# 2. 기하학적 가이드
+python step2_geometric_guide.py /path/to/output
+
+# 3. 최종 인페인팅
+python step3_final_inpainting.py /path/to/output --use_ai
+```
+
+**결과:**
+- `step3_final_inpainted/`: 동적 객체가 제거되고 정적 배경으로 채워진 완성 이미지
 
 ## 📝 참고사항
 
