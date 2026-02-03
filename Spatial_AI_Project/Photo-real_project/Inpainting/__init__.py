@@ -35,9 +35,15 @@ except ImportError:
     FinalInpainter = None
     run_generative_inpainting = None
 
+try:
+    from .training_dataset_builder import TrainingDatasetBuilder
+except ImportError:
+    TrainingDatasetBuilder = None
+
 __all__ = [
     "TemporalStaticAccumulator",
     "GeometricGuideGenerator",
     "FinalInpainter",
     "run_generative_inpainting",
+    "TrainingDatasetBuilder",
 ]

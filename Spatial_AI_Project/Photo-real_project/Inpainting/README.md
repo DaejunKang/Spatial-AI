@@ -10,6 +10,7 @@ Inpainting/
 ├── step1_temporal_accumulation.py  # 시계열 누적 기반 인페인팅
 ├── step2_geometric_guide.py        # 기하학적 가이드 생성
 ├── step3_final_inpainting.py       # Multi-view Consistent 최종 인페인팅
+├── training_dataset_builder.py     # 생성형 AI 모델 학습 데이터셋 빌더
 └── README.md
 ```
 
@@ -104,6 +105,51 @@ python step3_final_inpainting.py /data/waymo/nre_format --use_ai
 
 **출력:**
 - `step3_final_inpainted/`: 최종 인페인팅 결과
+
+### 5. Training Dataset Builder (선택)
+
+인페인팅 결과를 활용하여 생성형 AI 모델 학습용 데이터셋을 생성합니다.
+
+```bash
+# 모든 데이터셋 생성 (LoRA + ControlNet)
+python training_dataset_builder.py /path/to/data --mode all
+
+# LoRA 데이터셋만
+python training_dataset_builder.py /path/to/data --mode lora
+
+# ControlNet Canny 데이터셋만
+python training_dataset_builder.py /path/to/data --mode controlnet_canny
+
+# ControlNet Depth 데이터셋만
+python training_dataset_builder.py /path/to/data --mode controlnet_depth
+```
+
+**옵션:**
+- `--output_dir`: 출력 디렉토리 (기본값: data_root/gen_ai_train)
+- `--dynamic_threshold`: 동적 객체 비율 임계값 (0-1, 기본값: 0.05)
+- `--max_samples`: 데이터셋당 최대 샘플 수
+- `--lora_trigger`: LoRA 트리거 워드 (기본값: "WaymoStyle road")
+- `--controlnet_prompt`: ControlNet 프롬프트
+- `--use_original`: Step 3 결과 대신 원본 이미지 사용
+- `--canny_low/high`: Canny edge detection 임계값
+
+**예시:**
+```bash
+python training_dataset_builder.py /data/waymo/nre_format \
+    --mode all \
+    --max_samples 1000 \
+    --lora_trigger "WaymoStyle autonomous driving scene" \
+    --dynamic_threshold 0.03
+```
+
+**출력:**
+- `gen_ai_train/lora_dataset/`: LoRA 학습 데이터
+  - `*.jpg`: 깨끗한 배경 이미지
+  - `metadata.jsonl`: 이미지-텍스트 쌍
+- `gen_ai_train/controlnet_dataset/`: ControlNet 학습 데이터
+  - `train/`: Target 이미지
+  - `conditioning_images/`: Condition 이미지 (Canny/Depth)
+  - `metadata.jsonl`: 이미지-condition-텍스트 트리플
 
 ## 🧠 알고리즘 설명
 
@@ -238,6 +284,40 @@ data_root/
     └── ...
 ```
 
+### 출력: Training Datasets
+
+```
+gen_ai_train/
+├── lora_dataset/
+│   ├── 000000.jpg                 # 깨끗한 배경 이미지
+│   ├── 000001.jpg
+│   ├── ...
+│   └── metadata.jsonl             # HuggingFace format
+│
+└── controlnet_dataset/
+    ├── train/
+    │   ├── 000000.jpg             # Target 이미지
+    │   ├── 000001.jpg
+    │   └── ...
+    ├── conditioning_images/
+    │   ├── 000000_cond.png        # Canny edge or Depth
+    │   ├── 000001_cond.png
+    │   └── ...
+    └── metadata.jsonl             # HuggingFace format
+```
+
+**metadata.jsonl 포맷:**
+
+LoRA:
+```json
+{"file_name": "000000.jpg", "text": "WaymoStyle road", "original_file": "seq0_000001_FRONT.jpg"}
+```
+
+ControlNet:
+```json
+{"text": "high quality road scene", "image": "train/000000.jpg", "conditioning_image": "conditioning_images/000000_cond.png", "original_file": "seq0_000001_FRONT.jpg"}
+```
+
 ## 🔧 의존성
 
 ```bash
@@ -288,6 +368,45 @@ pip install diffusers transformers accelerate
 python step3_final_inpainting.py /data/waymo/nre_format --use_ai
 ```
 
+### 학습 데이터셋으로 모델 학습
+
+생성된 데이터셋으로 HuggingFace Diffusers 학습 스크립트 사용:
+
+**LoRA 학습:**
+```bash
+# HuggingFace diffusers 설치
+pip install diffusers transformers accelerate
+
+# LoRA 학습
+python train_text_to_image_lora.py \
+    --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
+    --train_data_dir="gen_ai_train/lora_dataset" \
+    --caption_column="text" \
+    --resolution=512 \
+    --train_batch_size=4 \
+    --num_train_epochs=100 \
+    --learning_rate=1e-4 \
+    --lr_scheduler="constant" \
+    --lr_warmup_steps=0 \
+    --output_dir="./output/waymo_lora"
+```
+
+**ControlNet 학습:**
+```bash
+# ControlNet 학습
+python train_controlnet.py \
+    --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
+    --train_data_dir="gen_ai_train/controlnet_dataset" \
+    --conditioning_image_column="conditioning_image" \
+    --image_column="image" \
+    --caption_column="text" \
+    --resolution=512 \
+    --train_batch_size=4 \
+    --num_train_epochs=100 \
+    --learning_rate=1e-5 \
+    --output_dir="./output/waymo_controlnet"
+```
+
 ### 메모리 최적화
 
 대용량 시퀀스 처리 시 메모리 부족이 발생하면:
@@ -305,7 +424,7 @@ python step1_temporal_accumulation.py /data/waymo/nre_format \
 
 ## 🚀 전체 파이프라인
 
-완전한 인페인팅 파이프라인:
+완전한 인페인팅 + 학습 데이터셋 생성 파이프라인:
 
 ```bash
 # 0. Preprocessing
@@ -321,10 +440,14 @@ python step2_geometric_guide.py /path/to/output
 
 # 3. 최종 인페인팅
 python step3_final_inpainting.py /path/to/output --use_ai
+
+# 4. 학습 데이터셋 생성 (선택)
+python training_dataset_builder.py /path/to/output --mode all
 ```
 
 **결과:**
 - `step3_final_inpainted/`: 동적 객체가 제거되고 정적 배경으로 채워진 완성 이미지
+- `gen_ai_train/`: 생성형 AI 모델 학습용 데이터셋 (LoRA + ControlNet)
 
 ## 📝 참고사항
 
