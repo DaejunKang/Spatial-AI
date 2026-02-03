@@ -3,14 +3,15 @@ import argparse
 from glob import glob
 from tqdm import tqdm
 from .segmentation import SemanticSegmentor
-from .inpainting import Inpainter
 import cv2
 
+# Note: Inpainting functionality has been moved to ../Inpainting/step1_temporal_accumulation.py
+# For temporal accumulation-based inpainting, run that script separately after preprocessing
+
 def main():
-    parser = argparse.ArgumentParser(description="Run Preprocessing Pipeline (Segmentation + Inpainting)")
+    parser = argparse.ArgumentParser(description="Run Preprocessing Pipeline (Segmentation Only)")
     parser.add_argument('input_dir', type=str, help="Path to Waymo extracted segment directory (containing images/)")
     parser.add_argument('--use_segformer', action='store_true', help="Use SegFormer for mask generation (instead of existing masks)")
-    parser.add_argument('--inpainting', action='store_true', help="Perform Generative Inpainting")
     parser.add_argument('--device', type=str, default='cuda', help="Device to run models (cuda/cpu)")
     
     args = parser.parse_args()
@@ -18,18 +19,11 @@ def main():
     input_dir = args.input_dir
     images_root = os.path.join(input_dir, 'images')
     masks_root = os.path.join(input_dir, 'masks')
-    output_images_root = os.path.join(input_dir, 'images_inpainted')
     
     # 1. Initialize Models
     segmentor = None
     if args.use_segformer:
         segmentor = SemanticSegmentor(device=args.device)
-        
-    inpainter = None
-    if args.inpainting:
-        inpainter = Inpainter(use_generative=True, device=args.device)
-        if not os.path.exists(output_images_root):
-            os.makedirs(output_images_root)
 
     # 2. Iterate Cameras
     cameras = ['FRONT', 'FRONT_LEFT', 'FRONT_RIGHT', 'SIDE_LEFT', 'SIDE_RIGHT']
@@ -37,16 +31,12 @@ def main():
     for cam in cameras:
         cam_img_dir = os.path.join(images_root, cam)
         cam_mask_dir = os.path.join(masks_root, cam)
-        cam_out_dir = os.path.join(output_images_root, cam)
         
         if not os.path.exists(cam_img_dir):
             continue
             
         if args.use_segformer and not os.path.exists(cam_mask_dir):
             os.makedirs(cam_mask_dir)
-            
-        if args.inpainting and not os.path.exists(cam_out_dir):
-            os.makedirs(cam_out_dir)
             
         print(f"Processing Camera: {cam}")
         image_files = sorted(glob(os.path.join(cam_img_dir, '*.png')))
@@ -55,7 +45,7 @@ def main():
             basename = os.path.basename(img_path)
             mask_path = os.path.join(cam_mask_dir, basename)
             
-            # --- Step 1: Segmentation ---
+            # --- Segmentation ---
             if args.use_segformer:
                 # Generate new mask using SegFormer
                 mask = segmentor.process_image(img_path)
@@ -65,12 +55,9 @@ def main():
                 print(f"Warning: Mask not found for {basename} and --use_segformer not set. Skipping.")
                 continue
                 
-            # --- Step 2: Inpainting ---
-            if args.inpainting:
-                out_path = os.path.join(cam_out_dir, basename)
-                inpainter.process_frame(img_path, mask_path, out_path)
-                
     print("Preprocessing Complete.")
+    print("\nFor inpainting, run the temporal accumulation script:")
+    print(f"  python ../Inpainting/step1_temporal_accumulation.py {input_dir}")
 
 if __name__ == "__main__":
     main()
