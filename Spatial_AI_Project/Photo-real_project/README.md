@@ -1,37 +1,52 @@
-# Photo-real Project: Waymo Open Dataset Processing Pipeline
+# Photo-real Project: Waymo Open Dataset Processing & Inpainting Pipeline
 
-Waymo Open Dataset을 다운로드하고, 파싱하며, 다양한 3D 재구성 파이프라인(COLMAP, NRE, 3DGS 등)을 위한 전처리를 수행하는 통합 툴킷입니다.
+Waymo Open Dataset을 다운로드, 파싱, 전처리하고, 동적 객체 제거를 위한 고급 인페인팅 파이프라인을 제공하는 통합 툴킷입니다.
+
+**주요 기능:**
+- 📥 Waymo Open Dataset 자동 다운로드
+- 📊 TFRecord 파싱 및 이미지/메타데이터 추출
+- 🔄 다양한 포맷 변환 (COLMAP, NRE, 3DGS)
+- 🎨 **3단계 인페인팅 파이프라인** (시계열 누적 → 기하학적 가이드 → AI 생성)
+- 🤖 생성형 AI 모델 학습 데이터셋 빌더
+- 🏗️ 3D 재구성 및 USD 변환
+
+---
 
 ## 📁 프로젝트 구조
 
 ```
 Photo-real_project/
-├── download/                    # 데이터 다운로드
-│   ├── __init__.py
-│   └── download_waymo.py       # Waymo 데이터 다운로드 스크립트
+├── download/                           # 데이터 다운로드
+│   └── download_waymo.py              # Waymo 데이터 다운로드 스크립트
 │
-├── parsing/                     # 데이터 파싱/추출
-│   ├── __init__.py
-│   ├── extract_waymo_data.py           # 이미지/마스크 추출 + JSON 메타데이터
-│   ├── extract_waymo_data_minimal.py   # 경량 버전 (TF 의존성 최소화)
-│   ├── waymo_utils.py                  # 공통 유틸리티 모듈
-│   └── test_minimal_converter.py       # 변환 테스트 스크립트
+├── parsing/                            # 데이터 파싱/추출
+│   ├── extract_waymo_data.py          # 이미지/마스크 추출 + JSON 메타데이터
+│   ├── extract_waymo_data_minimal.py  # 경량 버전 (TF 의존성 최소화)
+│   ├── waymo_utils.py                 # 공통 유틸리티 모듈
+│   └── test_minimal_converter.py      # 변환 테스트 스크립트
 │
-├── preprocessing/               # 데이터 전처리 및 변환
-│   ├── __init__.py
-│   ├── waymo2colmap.py         # COLMAP 포맷 변환기
-│   ├── waymo2nre.py            # NRE 포맷 변환기
-│   ├── create_nre_pairs.py     # NRE 학습/검증 데이터셋 생성 (NEW!)
-│   ├── inpainting.py           # Stable Diffusion 기반 인페인팅
-│   ├── segmentation.py         # SegFormer 기반 동적 객체 세그멘테이션
-│   └── run_preprocessing.py    # 전처리 파이프라인 실행
+├── preprocessing/                      # 데이터 전처리 및 변환
+│   ├── waymo2colmap.py                # COLMAP 포맷 변환기
+│   ├── waymo2nre.py                   # NRE 포맷 변환기 (권장)
+│   ├── create_nre_pairs.py            # NRE 학습/검증 데이터셋 생성
+│   ├── segmentation.py                # SegFormer 기반 동적 객체 세그멘테이션
+│   └── run_preprocessing.py           # 전처리 파이프라인 실행
 │
-├── dataset.py                   # 데이터셋 관리 모듈
-├── reconstruction.py            # 3D 재구성 (3DGS -> USD 변환)
-├── README.md                    # 이 문서
-├── README_WAYMO_CONVERSION.md  # 상세 변환 가이드
-└── README_MINIMAL.md           # Minimal 버전 가이드
+├── Inpainting/                         # 🆕 고급 인페인팅 파이프라인
+│   ├── step1_temporal_accumulation.py # 시계열 정적 포인트 클라우드 누적
+│   ├── step2_geometric_guide.py       # RANSAC 기반 기하학적 가이드 생성
+│   ├── step3_final_inpainting.py      # Multi-view consistent AI 인페인팅
+│   ├── training_dataset_builder.py    # LoRA/ControlNet 학습 데이터셋 빌더
+│   └── README.md                      # 상세 인페인팅 가이드
+│
+├── dataset.py                          # 데이터셋 관리 모듈
+├── reconstruction.py                   # 3D 재구성 (3DGS → USD 변환)
+├── README.md                           # 📖 이 문서
+├── README_WAYMO_CONVERSION.md         # 상세 변환 가이드
+└── README_MINIMAL.md                  # Minimal 버전 가이드
 ```
+
+---
 
 ## 🚀 빠른 시작 가이드
 
@@ -39,7 +54,7 @@ Photo-real_project/
 
 #### 필수 요구사항
 - Python 3.7+ (권장: 3.9 또는 3.10)
-- CUDA 지원 GPU (전처리/학습용)
+- CUDA 지원 GPU (인페인팅/학습용, 선택)
 - Waymo Open Dataset 계정 (다운로드용)
 
 #### 기본 패키지 설치
@@ -55,11 +70,31 @@ pip install numpy opencv-python tqdm
 # Waymo Open Dataset 설치
 pip install waymo-open-dataset-tf-2-11-0
 
-# (선택) 전처리용 패키지
+# 인페인팅 파이프라인용 패키지
+pip install open3d scikit-learn
+
+# (선택) 생성형 AI 모델
 pip install torch torchvision transformers diffusers accelerate
 
-# (선택) 3DGS 재구성용 패키지
+# (선택) 3DGS 재구성
 pip install diff-gaussian-rasterization simple-knn
+```
+
+---
+
+## 📖 전체 워크플로우
+
+```mermaid
+graph LR
+    A[Waymo Raw Data] --> B[Download]
+    B --> C[Parsing]
+    C --> D[Preprocessing]
+    D --> E[Inpainting Step 1]
+    E --> F[Inpainting Step 2]
+    F --> G[Inpainting Step 3]
+    G --> H[Clean Background Images]
+    H --> I[Training Dataset]
+    I --> J[Train AI Models]
 ```
 
 ---
@@ -85,21 +120,15 @@ python download/download_waymo.py ./data/waymo/raw --split training
 └── segment-xxxxxx.tfrecord
 ```
 
+**상세 가이드:** [README_WAYMO_CONVERSION.md](README_WAYMO_CONVERSION.md)
+
 ---
 
 ## 📊 Step 2: 데이터 파싱
 
 TFRecord 파일에서 이미지, 카메라 파라미터, 동적 객체 정보를 추출합니다.
 
-### Option A: 표준 버전 (TensorFlow 사용)
-
-```bash
-python parsing/extract_waymo_data.py \
-    ./data/waymo/raw \
-    ./data/waymo/extracted
-```
-
-### Option B: 경량 버전 (TensorFlow 최소 의존성)
+### Option A: Minimal 버전 (권장, TensorFlow 의존성 최소화)
 
 ```bash
 python parsing/extract_waymo_data_minimal.py \
@@ -107,60 +136,34 @@ python parsing/extract_waymo_data_minimal.py \
     ./data/waymo/extracted
 ```
 
-**출력 구조:**
-```
-./data/waymo/extracted/segment_xxxx/
-├── images/          # 5개 카메라 이미지 (FRONT, SIDE_LEFT, SIDE_RIGHT, FRONT_LEFT, FRONT_RIGHT)
-│   ├── FRONT/
-│   │   ├── 000000.jpg
-│   │   └── ...
-│   └── ...
-├── masks/           # 동적 객체 마스크 (3D 박스 투영 기반)
-│   ├── FRONT/
-│   │   ├── 000000.png
-│   │   └── ...
-│   └── ...
-├── poses/
-│   └── vehicle_poses.json    # 차량 포즈 (timestamp별)
-└── calibration/
-    └── intrinsics_extrinsics.json  # 카메라 캘리브레이션
-```
-
----
-
-## 🔄 Step 3: 포맷 변환 (용도별 선택)
-
-### 3-1. COLMAP 포맷 변환 (전통적인 SfM/MVS 파이프라인용)
+### Option B: 표준 버전 (TensorFlow 필요)
 
 ```bash
-python preprocessing/waymo2colmap.py \
-    ./data/waymo/extracted/segment_xxxx \
-    ./data/waymo/colmap_format
+python parsing/extract_waymo_data.py \
+    ./data/waymo/raw \
+    ./data/waymo/extracted
 ```
 
 **출력:**
 ```
-./data/waymo/colmap_format/
-├── cameras.txt      # COLMAP 카메라 모델 (FULL_OPENCV)
-├── images.txt       # 이미지별 포즈
-└── points3D.txt     # (빈 파일, COLMAP 실행 후 생성)
+./data/waymo/extracted/
+├── images/FRONT/*.png          # 카메라별 이미지
+├── masks/FRONT/*.png           # 동적 객체 마스크
+├── poses/vehicle_poses.json   # Vehicle pose
+└── calibration/intrinsics_extrinsics.json  # 카메라 calibration
 ```
 
-**사용 예시:**
-```bash
-# COLMAP으로 재구성 실행
-colmap feature_extractor --database_path ./colmap.db --image_path ./images
-colmap exhaustive_matcher --database_path ./colmap.db
-colmap mapper --database_path ./colmap.db --image_path ./images --output_path ./sparse
-```
+**상세 가이드:** [README_MINIMAL.md](README_MINIMAL.md)
 
 ---
 
-### 3-2. NRE 포맷 변환 (Neural Rendering Engine / 3DGS용) ⭐ 권장
+## 🔄 Step 3: 데이터 전처리 및 변환
 
-Waymo 데이터를 NRE(Neural Reconstruction Engine) 및 3D Gaussian Splatting 학습에 최적화된 포맷으로 변환합니다.
+다양한 3D 재구성 파이프라인을 위한 포맷 변환을 수행합니다.
 
-#### Step 3-2-1: TFRecord → NRE 포맷 변환
+### 3.1 NRE (Neural Rendering Engine) 포맷 변환 (권장)
+
+3D Gaussian Splatting 및 Neural Rendering에 최적화된 포맷입니다.
 
 ```bash
 python preprocessing/waymo2nre.py \
@@ -169,334 +172,454 @@ python preprocessing/waymo2nre.py \
     --prefix seq0_
 ```
 
-**출력 구조:**
+**출력:**
 ```
 ./data/waymo/nre_format/
-├── images/                     # 추출된 이미지 (JPEG)
-│   ├── seq0_000000_FRONT.jpg
-│   ├── seq0_000000_SIDE_LEFT.jpg
-│   ├── seq0_000000_FRONT_LEFT.jpg
-│   ├── seq0_000000_FRONT_RIGHT.jpg
-│   ├── seq0_000000_SIDE_RIGHT.jpg
+├── images/                    # JPEG 이미지
+│   ├── seq0_000001_FRONT.jpg
 │   └── ...
-├── poses/                      # 프레임별 지오메트리 정보 (JSON)
-│   ├── seq0_000000.json
+├── poses/                     # 프레임별 지오메트리 정보
 │   ├── seq0_000001.json
 │   └── ...
-└── objects/                    # 동적 객체 정보 (JSON)
-    ├── seq0_000000.json
+└── objects/                   # 프레임별 동적 객체 정보
+    ├── seq0_000001.json
     └── ...
 ```
 
-**poses/*.json 구조:**
+**Pose JSON 구조:**
 ```json
 {
-    "frame_idx": 0,
+    "frame_idx": 1,
     "timestamp": 1234567890.123456,
     "ego_velocity": {
-        "linear": [5.2, 0.1, -0.05],
-        "angular": [0.001, -0.002, 0.05]
+        "linear": [1.5, 0.0, 0.0],
+        "angular": [0.0, 0.0, 0.05]
     },
     "cameras": {
         "FRONT": {
-            "img_path": "images/seq0_000000_FRONT.jpg",
+            "img_path": "images/seq0_000001_FRONT.jpg",
             "width": 1920,
             "height": 1280,
             "intrinsics": [fx, fy, cx, cy, k1, k2, p1, p2, k3],
-            "pose": [/* 4x4 변환 행렬 (flattened) */],
-            "rolling_shutter": {
-                "duration": 0.033,
-                "trigger_time": 1234567890.0
-            }
-        },
-        // ... FRONT_LEFT, FRONT_RIGHT, SIDE_LEFT, SIDE_RIGHT
+            "pose": [...]  // 4x4 matrix (flatten)
+        }
     }
 }
 ```
 
-#### Step 3-2-2: Train/Validation 데이터셋 생성 🆕
+### 3.2 NRE 학습/검증 데이터셋 생성
 
-NRE/3DGS 학습을 위해 개별 프레임 JSON을 통합하고 Train/Val로 분할합니다.
+3DGS 학습을 위한 train/val 분할 데이터셋을 생성합니다.
 
 ```bash
-python preprocessing/create_nre_pairs.py
+python preprocessing/create_nre_pairs.py \
+    ./data/waymo/nre_format \
+    --output_dir ./data/waymo/nre_format \
+    --val_interval 10
 ```
 
-또는 Python API:
-
-```python
-from preprocessing.create_nre_pairs import NREPairGenerator
-
-generator = NREPairGenerator(
-    data_root='./data/waymo/nre_format',
-    output_dir='./data/waymo/nre_format',
-    val_interval=8  # 8프레임마다 1개씩 검증셋으로 사용 (약 12.5%)
-)
-generator.generate()
-```
-
-**출력 파일:**
+**출력:**
 ```
 ./data/waymo/nre_format/
-├── train_pairs.json    # 학습용 데이터셋
-└── val_pairs.json      # 검증용 데이터셋
+├── train.json                 # 학습 데이터 (90%)
+└── val.json                   # 검증 데이터 (10%)
 ```
 
-**train_pairs.json / val_pairs.json 구조:**
-```json
-{
-    "meta": {
-        "total_frames": 450,
-        "coordinate_system": "Right-Down-Front (Waymo Native)",
-        "world_origin": "Aligned to Frame 0 Vehicle Pose"
-    },
-    "frames": [
-        {
-            "file_path": "images/seq0_000000_FRONT.jpg",
-            "timestamp": 1234567890.123456,
-            "camera_id": "FRONT",
-            "transform_matrix": [0.99, 0.01, ...],  // 4x4 flatten (16개 값)
-            "intrinsics": [2000.5, 2000.5, 960.0, 640.0, 0.01, -0.02, 0.001, -0.001, 0.0],
-            "width": 1920,
-            "height": 1280,
-            "velocity": {
-                "v": [10.5, 0.1, 0.0],
-                "w": [0.0, 0.0, 0.02]
-            },
-            "rolling_shutter": {
-                "duration": 0.025,
-                "trigger_time": 1234567890.0
-            }
-        },
-        // ... (모든 카메라, 모든 프레임 나열)
-    ]
-}
+### 3.3 COLMAP 포맷 변환
+
+COLMAP SfM 파이프라인과 호환되는 포맷으로 변환합니다.
+
+```bash
+python preprocessing/waymo2colmap.py \
+    ./data/waymo/extracted \
+    ./data/waymo/colmap_format
 ```
 
-#### 3DGS 학습 Config 연동 예시
-
-```python
-# configs/datasets/custom_waymo-3d.py
-
-data = dict(
-    train=dict(
-        type='NREWaymoDataset',
-        ann_file='data/waymo/nre_format/train_pairs.json',
-        img_prefix='data/waymo/nre_format/',
-        pipeline=train_pipeline
-    ),
-    val=dict(
-        type='NREWaymoDataset',
-        ann_file='data/waymo/nre_format/val_pairs.json',
-        img_prefix='data/waymo/nre_format/',
-        pipeline=test_pipeline
-    )
-)
+**출력:**
+```
+./data/waymo/colmap_format/
+├── cameras.txt                # 카메라 내부 파라미터
+├── images.txt                 # 이미지 포즈
+└── points3D.txt              # 빈 파일 (SfM 전용)
 ```
 
----
+### 3.4 동적 객체 세그멘테이션 (선택)
 
-## 🎨 Step 4: 고급 전처리 (선택 사항)
-
-동적 객체 영역을 더욱 정교하게 마스킹하고 배경을 복원합니다.
-
-### 4-1. SegFormer 기반 의미론적 세그멘테이션
-
-3D 박스 투영 대신 픽셀 단위 세그멘테이션을 사용하여 더 정확한 마스크 생성:
+SegFormer를 사용하여 동적 객체 마스크를 생성합니다.
 
 ```bash
 python preprocessing/run_preprocessing.py \
-    ./data/waymo/extracted/segment_xxxx \
+    ./data/waymo/nre_format \
     --use_segformer \
     --device cuda
 ```
 
-### 4-2. Stable Diffusion 인페인팅
+---
 
-마스킹된 동적 객체 영역을 자연스러운 배경으로 복원:
+## 🎨 Step 4: 고급 인페인팅 파이프라인
+
+동적 객체를 제거하고 정적 배경으로 채우는 3단계 인페인팅 파이프라인입니다.
+
+### 4.1 Step 1: 시계열 누적 (Temporal Accumulation)
+
+여러 프레임의 정적 영역을 3D 포인트 클라우드로 누적하여 다시 투영합니다.
 
 ```bash
-python preprocessing/run_preprocessing.py \
-    ./data/waymo/extracted/segment_xxxx \
-    --inpainting \
-    --device cuda
+cd Inpainting
+
+python step1_temporal_accumulation.py \
+    ../data/waymo/nre_format \
+    --voxel_size 0.05 \
+    --sample_interval 5
 ```
+
+**알고리즘:**
+1. Forward Pass: 정적 영역의 3D 포인트를 전역 좌표계로 누적
+2. Voxel downsampling으로 중복 제거
+3. Backward Pass: 전역 포인트를 각 프레임에 재투영
+4. Z-buffering으로 가시성 처리
 
 **출력:**
 ```
-./data/waymo/extracted/segment_xxxx/
-└── images_inpainted/   # 인페인팅된 이미지
-    ├── FRONT/
+./data/waymo/nre_format/
+└── step1_warped/              # 시계열 누적 결과
+    ├── seq0_000001_FRONT.png
     └── ...
 ```
 
----
+### 4.2 Step 2: 기하학적 가이드 생성 (Geometric Guide)
 
-## 🏗️ Step 5: 3D 재구성 (3DGS + USD Export)
-
-3D Gaussian Splatting으로 장면을 재구성하고 NVIDIA Omniverse용 USD로 내보냅니다.
+RANSAC 기반 평면 피팅으로 남은 구멍의 depth를 추정합니다.
 
 ```bash
-python reconstruction.py \
-    ./data/waymo/extracted/segment_xxxx \
-    ./output/reconstruction \
-    --use_inpainted
+python step2_geometric_guide.py \
+    ../data/waymo/nre_format \
+    --ground_ratio 0.6
 ```
 
-**옵션:**
-- `--use_inpainted`: 인페인팅된 이미지 사용 (더 깨끗한 배경)
-- `--iterations 30000`: 학습 반복 횟수
+**알고리즘:**
+1. Step 1 결과에서 구멍 감지 (검은색 픽셀)
+2. 이미지 하단 영역에서 바닥 평면 샘플링
+3. RANSAC으로 평면 방정식 피팅: Z = aX + bY + c
+4. 구멍 영역의 depth 예측
 
 **출력:**
 ```
-./output/reconstruction/
-├── point_cloud/            # 3DGS 체크포인트
-└── reconstruction.usd      # Omniverse용 USD 파일
+./data/waymo/nre_format/
+├── step2_depth_guide/         # 기하학적으로 채워진 depth
+│   ├── seq0_000001_FRONT.png
+│   └── ...
+└── step2_hole_masks/          # 구멍 영역 마스크
+    ├── seq0_000001_FRONT.png
+    └── ...
 ```
 
----
+### 4.3 Step 3: 최종 인페인팅 (Final Inpainting)
 
-## 🎮 NVIDIA Omniverse 연동
-
-1. **NVIDIA Omniverse USD Composer** 실행
-2. **File → Open** → `reconstruction.usd` 선택
-3. 3D Gaussian Point Cloud가 시각화됩니다
-
-> **참고:** 기본 USD Points는 구/디스크로 렌더링됩니다. 완전한 Gaussian Splat 렌더링을 위해서는 커스텀 Omniverse Extension이 필요할 수 있습니다.
-
----
-
-## 🔧 핵심 모듈 설명
-
-### 📦 `parsing/waymo_utils.py` - 공통 유틸리티
-
-재사용 가능한 헬퍼 함수들:
-
-- `MinimalTFRecordReader`: TensorFlow 없이 TFRecord 파일 읽기
-- `decode_image_opencv`: OpenCV 기반 이미지 디코딩
-- `project_3d_box_to_2d`: 3D 바운딩 박스를 2D 이미지로 투영
-- `get_calibration_dict`: 카메라 Calibration 정보 추출
-- `quaternion_to_rotation_matrix` / `rotation_matrix_to_quaternion`: 회전 변환
-
-### ⚙️ `preprocessing/create_nre_pairs.py` - 데이터셋 생성기 🆕
-
-**핵심 기능:**
-1. ✅ Waymo2NRE로 생성된 개별 Frame JSON (`poses/*.json`) 읽기
-2. ✅ 시계열 순서를 유지하며 Train/Val 분할 (기본: 8프레임마다 검증용)
-3. ✅ 5개 카메라를 개별 학습 샘플로 Flatten
-4. ✅ Rolling Shutter, Ego Velocity 메타데이터 포함
-5. ✅ 3DGS/NRE 학습 Config와 직접 연동 가능한 JSON 생성
-
-**설정 파라미터:**
-- `data_root`: NRE 포맷 데이터 루트 디렉토리
-- `output_dir`: 출력 JSON 파일 저장 경로
-- `val_interval`: 검증셋 샘플링 간격 (기본값: 8)
-
----
-
-## 📊 데이터 플로우 전체 요약
-
-```
-1. Download
-   └─> ./data/waymo/raw/*.tfrecord
-
-2. Parsing (Extract)
-   └─> ./data/waymo/extracted/segment_xxxx/
-       ├── images/
-       ├── masks/
-       ├── poses/
-       └── calibration/
-
-3. Format Conversion
-   ├─> COLMAP Format (waymo2colmap.py)
-   │   └─> ./data/waymo/colmap_format/
-   │
-   └─> NRE Format (waymo2nre.py)
-       └─> ./data/waymo/nre_format/
-           ├── images/
-           ├── poses/
-           └── objects/
-
-4. Dataset Split (create_nre_pairs.py) 🆕
-   └─> ./data/waymo/nre_format/
-       ├── train_pairs.json
-       └── val_pairs.json
-
-5. Training (External 3DGS/NRE Framework)
-   └─> Load train_pairs.json, val_pairs.json
-
-6. Reconstruction (reconstruction.py)
-   └─> ./output/reconstruction.usd
-```
-
----
-
-## 🧪 테스트 및 검증
-
-### Minimal Converter 테스트
+Step 1과 Step 2의 결과를 결합하여 생성형 AI 기반 최종 인페인팅을 수행합니다.
 
 ```bash
-python parsing/test_minimal_converter.py
+# OpenCV 기반 (빠르고 가벼움)
+python step3_final_inpainting.py ../data/waymo/nre_format
+
+# Stable Diffusion 기반 (더 자연스러운 결과)
+python step3_final_inpainting.py ../data/waymo/nre_format --use_ai
 ```
 
-### NRE 데이터셋 검증
+**알고리즘:**
+1. 원본 이미지 + Step 1 warped 이미지 융합
+2. Step 2 구멍 마스크로 인페인팅 영역 결정
+3. Stable Diffusion으로 생성 (또는 OpenCV inpainting)
+4. 텍스처 노이즈 추가로 자연스러운 결과
+
+**출력:**
+```
+./data/waymo/nre_format/
+└── step3_final_inpainted/     # 최종 완성 이미지
+    ├── seq0_000001_FRONT.png
+    └── ...
+```
+
+**상세 가이드:** [Inpainting/README.md](Inpainting/README.md)
+
+---
+
+## 🤖 Step 5: 생성형 AI 학습 데이터셋 생성 (선택)
+
+인페인팅 결과를 활용하여 LoRA 및 ControlNet 학습용 데이터셋을 생성합니다.
+
+```bash
+cd Inpainting
+
+# 모든 데이터셋 생성
+python training_dataset_builder.py \
+    ../data/waymo/nre_format \
+    --mode all \
+    --max_samples 1000
+
+# LoRA 데이터셋만
+python training_dataset_builder.py \
+    ../data/waymo/nre_format \
+    --mode lora \
+    --lora_trigger "WaymoStyle autonomous driving scene"
+
+# ControlNet Canny 데이터셋만
+python training_dataset_builder.py \
+    ../data/waymo/nre_format \
+    --mode controlnet_canny \
+    --canny_low 100 \
+    --canny_high 200
+
+# ControlNet Depth 데이터셋만
+python training_dataset_builder.py \
+    ../data/waymo/nre_format \
+    --mode controlnet_depth
+```
+
+**출력:**
+```
+./data/waymo/nre_format/gen_ai_train/
+├── lora_dataset/
+│   ├── 000000.jpg             # 깨끗한 배경 이미지
+│   ├── 000001.jpg
+│   └── metadata.jsonl         # HuggingFace format
+│
+└── controlnet_dataset/
+    ├── train/
+    │   ├── 000000.jpg         # Target 이미지
+    │   └── ...
+    ├── conditioning_images/
+    │   ├── 000000_cond.png    # Canny edge or Depth
+    │   └── ...
+    └── metadata.jsonl         # HuggingFace format
+```
+
+**metadata.jsonl 예시:**
+
+LoRA:
+```json
+{"file_name": "000000.jpg", "text": "WaymoStyle road", "original_file": "seq0_000001_FRONT.jpg"}
+```
+
+ControlNet:
+```json
+{"text": "high quality road scene", "image": "train/000000.jpg", "conditioning_image": "conditioning_images/000000_cond.png", "original_file": "seq0_000001_FRONT.jpg"}
+```
+
+### 생성형 AI 모델 학습
+
+HuggingFace Diffusers 학습 스크립트와 호환됩니다.
+
+**LoRA 학습:**
+```bash
+python train_text_to_image_lora.py \
+    --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
+    --train_data_dir="gen_ai_train/lora_dataset" \
+    --caption_column="text" \
+    --resolution=512 \
+    --train_batch_size=4 \
+    --num_train_epochs=100 \
+    --learning_rate=1e-4 \
+    --output_dir="./output/waymo_lora"
+```
+
+**ControlNet 학습:**
+```bash
+python train_controlnet.py \
+    --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
+    --train_data_dir="gen_ai_train/controlnet_dataset" \
+    --conditioning_image_column="conditioning_image" \
+    --image_column="image" \
+    --caption_column="text" \
+    --resolution=512 \
+    --train_batch_size=4 \
+    --num_train_epochs=100 \
+    --learning_rate=1e-5 \
+    --output_dir="./output/waymo_controlnet"
+```
+
+---
+
+## 🏗️ Step 6: 3D 재구성 (선택)
+
+3D Gaussian Splatting으로 재구성하고 USD 포맷으로 변환합니다.
+
+```bash
+# 3DGS 학습 (별도 저장소 필요)
+# https://github.com/graphdeco-inria/gaussian-splatting
+
+# 재구성 결과를 USD로 변환
+python reconstruction.py \
+    ./output/3dgs/point_cloud.ply \
+    ./output/scene.usd
+```
+
+---
+
+## 📊 포맷 비교
+
+| 기능 | NRE | COLMAP | Extract |
+|------|-----|--------|---------|
+| TensorFlow 불필요 | ✅ | ✅ | ❌ |
+| 동적 객체 라벨 | ✅ | ❌ | ❌ |
+| Rolling Shutter | ✅ | ❌ | ❌ |
+| 속도 정보 | ✅ | ❌ | ❌ |
+| 마스크 생성 | ❌ | ❌ | ✅ |
+| SfM 호환 | ❌ | ✅ | ❌ |
+| 3DGS 호환 | ✅ | ✅ | ✅ |
+
+**권장 포맷:** `waymo2nre.py` (NRE)
+
+---
+
+## 🛠️ 고급 설정
+
+### Depth 정보가 없는 경우
+
+Inpainting 파이프라인에서 depth 맵이 없으면 pseudo depth를 자동 생성합니다.
+더 나은 결과를 위해 monocular depth estimation을 사용할 수 있습니다:
 
 ```python
-import json
+# TODO: Monocular depth estimation 통합
+from depth_anything import DepthEstimator
+depth_estimator = DepthEstimator()
+depth = depth_estimator.predict(image)
+```
 
-# Train 데이터셋 확인
-with open('./data/waymo/nre_format/train_pairs.json', 'r') as f:
-    train_data = json.load(f)
-    print(f"Total training samples: {train_data['meta']['total_frames']}")
-    print(f"First sample: {train_data['frames'][0]['file_path']}")
+### Stable Diffusion Inpainting 통합
 
-# Validation 데이터셋 확인
-with open('./data/waymo/nre_format/val_pairs.json', 'r') as f:
-    val_data = json.load(f)
-    print(f"Total validation samples: {val_data['meta']['total_frames']}")
+`Inpainting/step3_final_inpainting.py`에서 생성형 AI를 사용하려면:
+
+```python
+# _initialize_generative_model() 메소드 수정
+from diffusers import StableDiffusionInpaintPipeline
+import torch
+
+model_id = "stabilityai/stable-diffusion-2-inpainting"
+self.pipe = StableDiffusionInpaintPipeline.from_pretrained(
+    model_id,
+    torch_dtype=torch.float16
+)
+self.pipe = self.pipe.to("cuda")
+```
+
+실행:
+```bash
+pip install diffusers transformers accelerate
+python step3_final_inpainting.py /data --use_ai
+```
+
+### 메모리 최적화
+
+대용량 시퀀스 처리 시:
+
+1. **Step 1**: `--sample_interval` 증가, `--voxel_size` 증가
+2. **Step 2**: `--ground_ratio` 조정
+3. **Dataset Builder**: `--max_samples` 제한
+
+```bash
+# 예시: 메모리 절약 모드
+python step1_temporal_accumulation.py /data \
+    --sample_interval 10 \
+    --voxel_size 0.1
+
+python training_dataset_builder.py /data \
+    --mode all \
+    --max_samples 500
 ```
 
 ---
 
-## 📝 주요 변경 이력
+## 🐛 문제 해결
 
-### v2.0 (2026-02-02)
-- 🎯 **폴더 구조 개편**: 기능별로 `download/`, `parsing/`, `preprocessing/`로 분류
-- 🆕 **create_nre_pairs.py 추가**: NRE/3DGS 학습용 Train/Val 데이터셋 자동 생성
-- ⚡ **Import 경로 최적화**: 모듈화 및 상대 경로 사용
-- 📦 **`__init__.py` 추가**: 각 폴더를 Python 패키지로 구성
-- 📚 **README 통합 업데이트**: 전체 워크플로우 반영
+### TensorFlow 관련 오류
 
-### v1.0 (이전 버전)
-- Waymo 데이터 다운로드/추출/변환 기본 기능
-- COLMAP 및 NRE 포맷 변환
-- SegFormer + Stable Diffusion 전처리
+```bash
+# TensorFlow 2.11.0 설치 (Python 3.7-3.10)
+pip install tensorflow==2.11.0
+
+# 또는 Minimal Mode 사용
+python parsing/extract_waymo_data_minimal.py ...
+```
+
+### Waymo Dataset 패키지 오류
+
+```bash
+# 호환되는 버전 설치
+pip uninstall waymo-open-dataset-tf-2-11-0
+pip install waymo-open-dataset-tf-2-11-0==1.5.2
+```
+
+### "No points accumulated" 경고 (Inpainting Step 1)
+
+**원인:**
+- Depth 파일이 없거나 경로가 잘못됨
+- Mask가 모두 0 (동적)으로 되어 있음
+- Pose 파일 형식이 다름
+
+**해결:**
+1. Depth 파일 경로 확인: `data_root/depths/`
+2. Mask 확인: 255 값이 있는지 확인
+3. Pose JSON 구조 확인
+
+### "Insufficient valid depth points" 경고 (Inpainting Step 2)
+
+**해결:**
+1. `--ground_ratio` 값을 조정 (예: 0.5로 낮춤)
+2. Step 1의 voxel_size를 줄여 더 조밀한 포인트 클라우드 생성
+3. `--no_lidar` 옵션으로 pseudo depth 사용
+
+### Open3D 오류
+
+```bash
+# Open3D 설치 또는 업그레이드
+pip install --upgrade open3d
+
+# CUDA out of memory 시
+export OPEN3D_CPU_RENDERING=1
+```
+
+### 메모리 부족
+
+- 한 번에 하나의 세그먼트만 처리
+- 이미지 품질 낮추기 (JPEG quality 조정)
+- `--sample_interval` 증가
 
 ---
 
-## 🤝 기여 및 문의
+## 📚 상세 문서
 
-**Repository:** [github.com/DaejunKang/Spatial-AI](https://github.com/DaejunKang/Spatial-AI)
-
-**관련 문서:**
-- [README_WAYMO_CONVERSION.md](./README_WAYMO_CONVERSION.md) - 상세 변환 가이드
-- [README_MINIMAL.md](./README_MINIMAL.md) - Minimal 버전 가이드
+- **[README_WAYMO_CONVERSION.md](README_WAYMO_CONVERSION.md)**: 데이터 변환 상세 가이드
+- **[README_MINIMAL.md](README_MINIMAL.md)**: Minimal 버전 가이드
+- **[Inpainting/README.md](Inpainting/README.md)**: 인페인팅 파이프라인 상세 가이드
 
 ---
 
-## 📄 라이선스
+## 🔗 참고 자료
 
-이 프로젝트는 Waymo Open Dataset의 라이선스 조항을 따릅니다.
-Waymo Open Dataset License Agreement를 준수해야 합니다.
-
----
-
-## ⚠️ 알려진 제한사항
-
-1. **Rolling Shutter 보정**: 현재 메타데이터만 제공, 실제 보정은 학습 프레임워크에서 구현 필요
-2. **동적 객체 마스킹**: 3D 박스 기반 마스크는 오클루전 처리 불완전
-3. **대용량 처리**: 전체 Waymo 데이터셋 처리 시 충분한 디스크 공간(~2TB) 필요
+- [Waymo Open Dataset](https://waymo.com/open/)
+- [COLMAP](https://colmap.github.io/)
+- [3D Gaussian Splatting](https://github.com/graphdeco-inria/gaussian-splatting)
+- [HuggingFace Diffusers](https://github.com/huggingface/diffusers)
+- [OpenCV Documentation](https://docs.opencv.org/)
 
 ---
 
-**Happy Reconstructing! 🎉**
+## 📝 라이센스
+
+이 코드는 Waymo Open Dataset License를 따릅니다.
+원본 데이터 사용 시 [Waymo Terms of Use](https://waymo.com/open/terms/)를 준수해야 합니다.
+
+---
+
+## 🙏 기여
+
+이슈 및 Pull Request를 환영합니다!
+
+저장소: [https://github.com/DaejunKang/Spatial-AI](https://github.com/DaejunKang/Spatial-AI)
+
+---
+
+## 📧 문의
+
+프로젝트 관련 문의: GitHub Issues를 통해 연락 주세요.
