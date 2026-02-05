@@ -1,63 +1,157 @@
+"""
+Preprocessing Pipeline Runner
+
+전체 Preprocessing 단계를 순차 실행:
+1. LiDAR Point Cloud Projection (선택적)
+2. Dynamic Object Masking
+3. Semantic Segmentation (선택적)
+
+Usage:
+    python run_preprocessing.py /path/to/data --lidar --dynamic_mask --semantic
+"""
+
 import os
 import argparse
-from glob import glob
-from tqdm import tqdm
-from .segmentation import SemanticSegmentor
-import cv2
+import sys
 
-# Note: Inpainting functionality has been moved to ../Inpainting/step1_temporal_accumulation.py
-# For temporal accumulation-based inpainting, run that script separately after preprocessing
 
 def main():
-    parser = argparse.ArgumentParser(description="Run Preprocessing Pipeline (Segmentation Only)")
-    parser.add_argument('input_dir', type=str, help="Path to Waymo extracted segment directory (containing images/)")
-    parser.add_argument('--use_segformer', action='store_true', help="Use SegFormer for mask generation (instead of existing masks)")
-    parser.add_argument('--device', type=str, default='cuda', help="Device to run models (cuda/cpu)")
+    parser = argparse.ArgumentParser(
+        description="Run Preprocessing Pipeline for Inpainting"
+    )
+    parser.add_argument(
+        'data_root',
+        type=str,
+        help='Path to NRE format data directory'
+    )
+    
+    # Stage Selection
+    parser.add_argument(
+        '--lidar',
+        action='store_true',
+        help='Run LiDAR point cloud projection to generate depth maps'
+    )
+    parser.add_argument(
+        '--dynamic_mask',
+        action='store_true',
+        help='Run dynamic object masking (3D bounding box projection)'
+    )
+    parser.add_argument(
+        '--semantic',
+        action='store_true',
+        help='Use semantic segmentation in dynamic masking'
+    )
+    parser.add_argument(
+        '--all',
+        action='store_true',
+        help='Run all preprocessing stages'
+    )
+    
+    # Parameters
+    parser.add_argument(
+        '--interpolation',
+        type=str,
+        default='nearest',
+        choices=['none', 'nearest', 'linear', 'cubic'],
+        help='Depth map interpolation method (default: nearest)'
+    )
+    parser.add_argument(
+        '--dilation',
+        type=int,
+        default=5,
+        help='Mask dilation kernel size (default: 5)'
+    )
+    parser.add_argument(
+        '--device',
+        type=str,
+        default='cuda',
+        help='Device for semantic segmentation (cuda/cpu)'
+    )
     
     args = parser.parse_args()
     
-    input_dir = args.input_dir
-    images_root = os.path.join(input_dir, 'images')
-    masks_root = os.path.join(input_dir, 'masks')
+    # Validate data directory
+    if not os.path.exists(args.data_root):
+        print(f"Error: Data directory not found: {args.data_root}")
+        sys.exit(1)
     
-    # 1. Initialize Models
-    segmentor = None
-    if args.use_segformer:
-        segmentor = SemanticSegmentor(device=args.device)
-
-    # 2. Iterate Cameras
-    cameras = ['FRONT', 'FRONT_LEFT', 'FRONT_RIGHT', 'SIDE_LEFT', 'SIDE_RIGHT']
+    print("="*70)
+    print(">>> Preprocessing Pipeline Started")
+    print("="*70)
+    print(f"Data root: {args.data_root}")
+    print(f"Stages to run:")
     
-    for cam in cameras:
-        cam_img_dir = os.path.join(images_root, cam)
-        cam_mask_dir = os.path.join(masks_root, cam)
+    # Determine which stages to run
+    run_lidar = args.all or args.lidar
+    run_dynamic_mask = args.all or args.dynamic_mask
+    use_semantic = args.semantic
+    
+    print(f"  - LiDAR Projection: {'Yes' if run_lidar else 'No'}")
+    print(f"  - Dynamic Masking: {'Yes' if run_dynamic_mask else 'No'}")
+    print(f"  - Semantic Segmentation: {'Yes' if use_semantic else 'No'}")
+    print("="*70)
+    
+    # Stage 1: LiDAR Point Cloud Projection
+    if run_lidar:
+        print("\n[Stage 1/2] LiDAR Point Cloud Projection")
+        print("-"*70)
         
-        if not os.path.exists(cam_img_dir):
-            continue
+        try:
+            from .lidar_projection import LiDARProjector
             
-        if args.use_segformer and not os.path.exists(cam_mask_dir):
-            os.makedirs(cam_mask_dir)
+            projector = LiDARProjector(
+                data_root=args.data_root,
+                interpolation_method=args.interpolation
+            )
+            projector.run()
             
-        print(f"Processing Camera: {cam}")
-        image_files = sorted(glob(os.path.join(cam_img_dir, '*.png')))
+            print("✓ LiDAR projection completed successfully")
         
-        for img_path in tqdm(image_files):
-            basename = os.path.basename(img_path)
-            mask_path = os.path.join(cam_mask_dir, basename)
+        except Exception as e:
+            print(f"✗ LiDAR projection failed: {e}")
+            print("  Continuing with remaining stages...")
+    
+    # Stage 2: Dynamic Object Masking
+    if run_dynamic_mask:
+        print("\n[Stage 2/2] Dynamic Object Masking")
+        print("-"*70)
+        
+        try:
+            from .dynamic_masking import DynamicObjectMasker
             
-            # --- Segmentation ---
-            if args.use_segformer:
-                # Generate new mask using SegFormer
-                mask = segmentor.process_image(img_path)
-                cv2.imwrite(mask_path, mask)
-            elif not os.path.exists(mask_path):
-                # If not using SegFormer and mask doesn't exist (e.g. from 3D projection)
-                print(f"Warning: Mask not found for {basename} and --use_segformer not set. Skipping.")
-                continue
-                
-    print("Preprocessing Complete.")
-    print("\nFor inpainting, run the temporal accumulation script:")
-    print(f"  python ../Inpainting/step1_temporal_accumulation.py {input_dir}")
+            masker = DynamicObjectMasker(
+                data_root=args.data_root,
+                use_semantic_seg=use_semantic,
+                dilation_kernel=args.dilation
+            )
+            masker.run()
+            
+            print("✓ Dynamic masking completed successfully")
+        
+        except Exception as e:
+            print(f"✗ Dynamic masking failed: {e}")
+    
+    # Summary
+    print("\n" + "="*70)
+    print(">>> Preprocessing Pipeline Complete!")
+    print("="*70)
+    print("\nGenerated outputs:")
+    
+    if run_lidar:
+        print(f"  - Depth maps: {args.data_root}/depth_maps/")
+        print(f"  - Point masks: {args.data_root}/point_masks/")
+    
+    if run_dynamic_mask:
+        print(f"  - Dynamic object masks: {args.data_root}/masks/")
+    
+    print("\nNext steps:")
+    print("  1. Run Inpainting Step 1 (Temporal Accumulation):")
+    print(f"     python Inpainting/step1_temporal_accumulation.py --data_root {args.data_root}")
+    print("  2. Run Inpainting Step 2 (Geometric Guide):")
+    print(f"     python Inpainting/step2_geometric_guide.py --data_root {args.data_root}")
+    print("  3. Run Inpainting Step 3 (Final Inpainting):")
+    print(f"     python Inpainting/step3_final_inpainting.py --data_root {args.data_root}")
+    print("="*70)
 
 if __name__ == "__main__":
     main()
