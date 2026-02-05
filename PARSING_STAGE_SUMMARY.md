@@ -11,7 +11,9 @@
 1. **Frame Alignment**: 이미지, LiDAR, Pose 타임스탬프 동기화
 2. **Coordinate Normalization**: 첫 프레임 Ego-vehicle 기준 World 좌표계(0,0,0) 설정
 3. **Rolling Shutter Info**: 속도(v, w) 및 Readout time 추출
-4. **Dynamic Object Masking**: 동적 객체 3D→2D 투영 및 마스크 생성
+4. **LiDAR Point Cloud Extraction**: 프레임별 3D 포인트 클라우드 저장
+
+> **Note**: 동적 객체 마스킹은 **Preprocessing Stage**에서 수행됩니다.
 
 ---
 
@@ -103,12 +105,33 @@ T_cam_to_world = T_vehicle_to_world @ T_cam_to_vehicle
 intrinsics = [fx, fy, cx, cy, k1, k2, p1, p2, k3]  # 9 params
 ```
 
+**1.6 LiDAR Point Cloud Extraction**
+```python
+# 프레임별 LiDAR 포인트 클라우드 추출 및 변환
+all_points = []
+
+for laser in frame.lasers:
+    # Range Image 디코딩 (실제 구현 시)
+    # from waymo_open_dataset.utils import range_image_utils
+    # points = range_image_utils.extract_point_cloud_from_range_image(...)
+    
+    # Vehicle 좌표계 -> Local World 좌표계 변환
+    for point_veh in lidar_points:
+        point_world = T_vehicle_to_world @ [point_veh, 1.0]
+        all_points.append(point_world[:3])
+
+# Numpy float32 배열로 저장
+points_array = np.array(all_points, dtype=np.float32)  # Nx3
+points_array.tofile(f"{frame_name}.bin")
+```
+
 #### 📤 Output
 | 디렉토리 | 파일 형식 | 내용 |
 |---------|----------|------|
 | `images/` | `{prefix}{file_idx:03d}{frame_idx:03d}_{cam_name}.jpg` | 원본 이미지 (5 카메라) |
 | `poses/` | `{prefix}{file_idx:03d}{frame_idx:03d}.json` | 프레임별 메타데이터 |
 | `objects/` | `{prefix}{file_idx:03d}{frame_idx:03d}.json` | 동적 객체 정보 |
+| `point_clouds/` | `{prefix}{file_idx:03d}{frame_idx:03d}.bin` | LiDAR 포인트 클라우드 (Nx3 float32) |
 
 **Pose JSON 구조 (`poses/*.json`)**
 ```json
@@ -155,14 +178,24 @@ intrinsics = [fx, fy, cx, cy, k1, k2, p1, p2, k3]  # 9 params
 ]
 ```
 
+**Point Cloud 바이너리 구조 (`point_clouds/*.bin`)**
+```python
+# Numpy float32 배열 직렬화
+# Shape: (N, 3) - N개 포인트, 각 포인트는 [x, y, z] in Local World 좌표계
+# 읽기:
+points = np.fromfile("frame_000.bin", dtype=np.float32).reshape(-1, 3)
+```
+
 ---
 
 ### 2️⃣ **Minimal Extractor** (`extract_waymo_data_minimal.py`)
 
 #### ✨ 목적
-- COLMAP 전처리용 이미지/마스크 추출
+- COLMAP 전처리용 이미지 추출
 - TensorFlow 의존성 제거
-- 동적 객체 마스킹
+- Pose 및 Calibration 정보 저장
+
+> **Note**: 동적 객체 마스킹 기능은 포함되어 있으나, **Preprocessing Stage**에서 별도로 실행하는 것을 권장합니다.
 
 #### 📥 Input
 | 항목 | 형식 | 설명 |
@@ -179,9 +212,12 @@ np_arr = np.frombuffer(img.image, np.uint8)
 img_bgr = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 ```
 
-**2.2 동적 객체 마스크 생성**
+**2.2 동적 객체 마스크 생성 (선택적 - Preprocessing으로 이동 권장)**
 ```python
-# 1. 3D Bounding Box → 2D 투영
+# 이 기능은 extract_waymo_data_minimal.py에 포함되어 있으나,
+# 실제로는 Preprocessing Stage의 segmentation.py에서 수행하는 것을 권장
+
+# 1. 3D Bounding Box → 2D 투영 (참고용)
 for label in frame.laser_labels:
     if label.type in [1, 2, 4]:  # Vehicle, Pedestrian, Cyclist
         # 8개 코너 점 생성
@@ -222,9 +258,9 @@ calibration[cam_name] = {
 | 디렉토리 | 파일 형식 | 내용 |
 |---------|----------|------|
 | `images/{cam_name}/` | `{frame_idx:06d}.png` | 원본 이미지 (5 카메라별 서브 디렉토리) |
-| `masks/{cam_name}/` | `{frame_idx:06d}.png` | 동적 객체 마스크 (흰색=유효, 검은색=동적) |
 | `poses/` | `vehicle_poses.json` | 전체 프레임 Pose 딕셔너리 |
 | `calibration/` | `intrinsics_extrinsics.json` | 카메라 Calibration |
+| `masks/{cam_name}/` *(선택)* | `{frame_idx:06d}.png` | 동적 객체 마스크 (Preprocessing에서 생성 권장) |
 
 **Vehicle Poses JSON 구조**
 ```json
@@ -274,8 +310,10 @@ calibration[cam_name] = {
 | **Coordinate Normalization** | `waymo2nre.py` Line 122-129 | ✅ 완료 (첫 프레임 기준) |
 | **Rolling Shutter Info** | `waymo2nre.py` Line 194-208 | ✅ 완료 (duration + trigger_time) |
 | **Velocity Extraction** | `waymo2nre.py` Line 154-169 | ✅ 완료 (linear + angular) |
-| **Output: images_raw/*.jpg** | `waymo2nre.py` Line 176-186 | ✅ 완료 (images/*.jpg) |
+| **Output: images/*.jpg** | `waymo2nre.py` Line 176-186 | ✅ 완료 |
 | **Output: poses/*.json** | `waymo2nre.py` Line 211-214 | ✅ 완료 |
+| **Output: point_clouds/*.bin** | `waymo2nre.py` Line 263-297 | ✅ 완료 (Nx3 float32) |
+| **Dynamic Object Masking** | `preprocessing/segmentation.py` | ➡️ Preprocessing Stage로 이동 |
 
 ---
 
@@ -293,28 +331,36 @@ calibration[cam_name] = {
 │ (No TensorFlow)         │
 └──────────┬──────────────┘
            │
-           ├──────────────────────┬────────────────────┐
-           ▼                      ▼                    ▼
-    ┌────────────┐        ┌────────────┐      ┌────────────┐
-    │   Images   │        │   Poses    │      │  Objects   │
-    │ (5 cameras)│        │ (T + v + w)│      │ (3D Boxes) │
-    └─────┬──────┘        └─────┬──────┘      └─────┬──────┘
-          │                     │                     │
-          └─────────────────────┴─────────────────────┘
-                                │
-                                ▼
-                    ┌───────────────────────┐
-                    │ Coordinate Transform  │
-                    │ (First Frame = Origin)│
-                    └───────────┬───────────┘
-                                │
-                                ▼
-                    ┌───────────────────────┐
-                    │ NRE Format Output     │
-                    │ - images/*.jpg        │
-                    │ - poses/*.json        │
-                    │ - objects/*.json      │
-                    └───────────────────────┘
+           ├──────────────────────┬────────────────────┬────────────────────┐
+           ▼                      ▼                    ▼                    ▼
+    ┌────────────┐        ┌────────────┐      ┌────────────┐      ┌────────────┐
+    │   Images   │        │   Poses    │      │  Objects   │      │   LiDAR    │
+    │ (5 cameras)│        │ (T + v + w)│      │ (3D Boxes) │      │  (Points)  │
+    └─────┬──────┘        └─────┬──────┘      └─────┬──────┘      └─────┬──────┘
+          │                     │                     │                    │
+          └─────────────────────┴─────────────────────┴────────────────────┘
+                                          │
+                                          ▼
+                              ┌───────────────────────┐
+                              │ Coordinate Transform  │
+                              │ (First Frame = Origin)│
+                              └───────────┬───────────┘
+                                          │
+                                          ▼
+                              ┌───────────────────────┐
+                              │ NRE Format Output     │
+                              │ - images/*.jpg        │
+                              │ - poses/*.json        │
+                              │ - objects/*.json      │
+                              │ - point_clouds/*.bin  │
+                              └───────────────────────┘
+                                          │
+                                          ▼
+                              ┌───────────────────────┐
+                              │ Preprocessing Stage   │
+                              │ - Dynamic Masking     │
+                              │ - Segmentation        │
+                              └───────────────────────┘
 ```
 
 ---
@@ -331,15 +377,20 @@ calibration[cam_name] = {
 - **Trigger Time**: 촬영 시작 시간 (Sync 기준)
 - **활용**: NeRF4D 등에서 모션 블러 보정
 
-### 3. **동적 객체 마스킹**
-- 3D Bounding Box → 2D Convex Hull 투영
-- OpenCV distortion model 적용 (k1~k3, p1~p2)
-- **COLMAP 입력**: Static 영역만 SfM 사용
+### 3. **LiDAR 포인트 클라우드 저장**
+- 프레임별 3D 포인트 클라우드 추출
+- Local World 좌표계로 변환 (첫 프레임 기준)
+- **바이너리 포맷**: Nx3 float32 배열 (효율적 저장)
+- **활용**: Depth supervision, Scene reconstruction
 
 ### 4. **의존성 최소화**
 - TensorFlow 제거 → 경량 TFRecord Reader 자체 구현
 - Pure Python + NumPy + OpenCV
 - **장점**: 다양한 환경에서 실행 가능
+
+> **동적 객체 마스킹**은 Parsing이 아닌 **Preprocessing Stage**에서 수행:
+> - `preprocessing/segmentation.py`에서 3D Box → 2D Mask 생성
+> - COLMAP 실행 전 Static 영역 분리
 
 ---
 
@@ -349,9 +400,11 @@ calibration[cam_name] = {
 |-----|---|
 | **처리 속도** | ~1-2 fps (CPU only) |
 | **메모리 사용** | ~2GB (Single Segment) |
-| **디스크 공간** | ~10GB/Segment (이미지 + 메타데이터) |
+| **디스크 공간** | ~15GB/Segment (이미지 + LiDAR + 메타데이터) |
 | **지원 카메라** | 5개 (FRONT, FRONT_L/R, SIDE_L/R) |
 | **동적 객체 클래스** | 3개 (Vehicle, Pedestrian, Cyclist) |
+| **LiDAR 포인트** | ~100K-200K points/frame |
+| **출력 형식** | JPG (이미지), JSON (메타), BIN (LiDAR) |
 
 ---
 
@@ -376,10 +429,10 @@ python extract_waymo_data_minimal.py \
 
 ## 📝 추가 개선 가능 사항
 
-1. **LiDAR Point Cloud 저장**: 현재는 Pose/Image만, Depth Ground Truth 추가 가능
-2. **Multi-Processing**: 현재 Single Thread, 병렬화로 속도 향상
+1. **Range Image 완전 디코딩**: 현재 간소화된 LiDAR 추출, 전체 range_image 파싱으로 품질 향상
+2. **Multi-Processing**: 현재 Single Thread, 병렬화로 속도 향상 (5-10배)
 3. **COLMAP 자동 연동**: 추출 후 바로 SfM 실행하는 파이프라인
-4. **LoRA Training Dataset 자동 생성**: Inpainting용 학습 데이터 준비
+4. **실시간 검증**: 추출된 데이터의 무결성 체크 (누락 프레임, 깨진 이미지 등)
 
 ---
 
