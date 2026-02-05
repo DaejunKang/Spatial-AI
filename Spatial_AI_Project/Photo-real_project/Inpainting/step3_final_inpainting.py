@@ -1,13 +1,13 @@
 """
-Inpainting Step 3: Multi-view Consistent Final Inpainting
+Inpainting Step 3: Generative AI Final Inpainting
 
+Stable Diffusion + ControlNet + LoRA 기반의 High-Fidelity Inpainter
 Step 1(시계열 누적)과 Step 2(기하학적 가이드)를 결합하여
 생성형 AI 기반의 최종 인페인팅을 수행합니다.
 
 Input:
     - data_root/step1_warped/: Step 1 시계열 누적 결과
     - data_root/step2_depth_guide/: Step 2 depth guide
-    - data_root/step2_hole_masks/: Step 2 구멍 마스크
     - data_root/images/: 원본 이미지
     - data_root/masks/: 원본 동적 객체 마스크
 
@@ -17,407 +17,170 @@ Output:
 
 import os
 import cv2
+import torch
 import numpy as np
-from pathlib import Path
+import argparse
 from tqdm import tqdm
-import warnings
+from PIL import Image
+from diffusers import StableDiffusionControlNetInpaintPipeline, ControlNetModel, UniPCMultistepScheduler
 
+class GenerativeInpainter:
+    """
+    Stable Diffusion + ControlNet + LoRA 기반의 High-Fidelity Inpainter
+    """
+    def __init__(self, lora_path=None, device="cuda"):
+        print(f">>> Initializing Generative Inpainter on {device}...")
+        
+        # 1. Load ControlNet (Depth Model)
+        # Depth 정보를 가이드로 받아 구조를 유지하는 ControlNet v1.1 로드
+        controlnet = ControlNetModel.from_pretrained(
+            "lllyasviel/control_v11f1p_sd15_depth", 
+            torch_dtype=torch.float16
+        )
 
-class FinalInpainter:
-    """
-    Multi-view consistent 최종 인페인팅을 수행하는 클래스
-    
-    Step 1의 실제 시계열 데이터와 Step 2의 기하학적 가이드를 결합하여
-    남은 구멍을 생성형 AI로 채웁니다.
-    """
-    
-    def __init__(self, data_root, use_generative_ai=False, noise_level=5):
-        """
-        Args:
-            data_root: 데이터 루트 디렉토리
-            use_generative_ai: 생성형 AI 사용 여부 (False면 OpenCV inpainting)
-            noise_level: 텍스처 노이즈 레벨 (0-255)
-        """
-        self.data_root = Path(data_root)
-        self.use_generative_ai = use_generative_ai
-        self.noise_level = noise_level
-        
-        # 디렉토리 설정
-        self.step1_dir = self.data_root / 'step1_warped'
-        self.step2_depth_dir = self.data_root / 'step2_depth_guide'
-        self.step2_mask_dir = self.data_root / 'step2_hole_masks'
-        self.images_dir = self.data_root / 'images'
-        self.masks_dir = self.data_root / 'masks'
-        self.output_dir = self.data_root / 'step3_final_inpainted'
-        
-        # 출력 디렉토리 생성
-        self.output_dir.mkdir(parents=True, exist_ok=True)
-        
-        # Step 1, 2 결과 확인
-        if not self.step1_dir.exists():
-            raise FileNotFoundError(
-                f"Step 1 output not found: {self.step1_dir}\n"
-                f"Please run step1_temporal_accumulation.py first."
-            )
-        
-        if not self.step2_depth_dir.exists():
-            warnings.warn(
-                f"Step 2 depth guide not found: {self.step2_depth_dir}\n"
-                f"Will proceed without depth guidance."
-            )
-        
-        # 파일 목록
-        self.warped_files = sorted(list(self.step1_dir.glob('*.png')))
-        
-        if len(self.warped_files) == 0:
-            raise ValueError(f"No warped images found in {self.step1_dir}")
-        
-        # 생성형 AI 초기화 (옵션)
-        if self.use_generative_ai:
-            self._initialize_generative_model()
-        
-        print(f"[FinalInpainter] Initialized")
-        print(f"  Data root: {self.data_root}")
-        print(f"  Input images: {len(self.warped_files)}")
-        print(f"  Use generative AI: {self.use_generative_ai}")
-        print(f"  Noise level: {self.noise_level}")
-    
-    def _initialize_generative_model(self):
-        """
-        생성형 AI 모델 초기화 (Stable Diffusion Inpainting)
-        
-        실제 사용 시:
-        from diffusers import StableDiffusionInpaintPipeline
-        self.pipe = StableDiffusionInpaintPipeline.from_pretrained(...)
-        """
-        print("  [INFO] Generative AI mode enabled")
-        print("  [TODO] Implement Stable Diffusion pipeline loading")
-        
-        # Placeholder: 실제 구현 시 아래 코드 활성화
-        # try:
-        #     from diffusers import StableDiffusionInpaintPipeline
-        #     import torch
-        #     
-        #     model_id = "stabilityai/stable-diffusion-2-inpainting"
-        #     self.pipe = StableDiffusionInpaintPipeline.from_pretrained(
-        #         model_id,
-        #         torch_dtype=torch.float16
-        #     )
-        #     self.pipe = self.pipe.to("cuda")
-        #     print("  [INFO] Stable Diffusion model loaded successfully")
-        # except Exception as e:
-        #     warnings.warn(f"Failed to load generative model: {e}")
-        #     self.use_generative_ai = False
-    
-    def run(self):
-        """메인 파이프라인 실행"""
-        print("\n" + "="*70)
-        print(">>> [Step 3] Multi-view Consistent Final Inpainting Started")
-        print("="*70)
-        
-        success_count = 0
-        fail_count = 0
-        
-        for warped_file in tqdm(self.warped_files, desc="Inpainting frames"):
-            try:
-                self._process_frame(warped_file)
-                success_count += 1
-            except Exception as e:
-                print(f"\nWarning: Failed to process {warped_file.name}: {e}")
-                fail_count += 1
-                continue
-        
-        print("\n" + "="*70)
-        print(f">>> [Step 3] Complete!")
-        print(f"  Success: {success_count}/{len(self.warped_files)}")
-        print(f"  Failed: {fail_count}/{len(self.warped_files)}")
-        print(f"  Results saved to: {self.output_dir}")
-        print("="*70)
-    
-    def _process_frame(self, warped_file):
-        """
-        개별 프레임 처리
-        
-        Args:
-            warped_file: Step 1 warped 이미지 경로
-        """
-        # 1. Load all inputs
-        warped_img = cv2.imread(str(warped_file))
-        
-        if warped_img is None:
-            raise ValueError(f"Failed to load warped image: {warped_file}")
-        
-        # 원본 이미지 (여러 확장자 시도)
-        orig_img = None
-        for ext in ['.jpg', '.png', '.jpeg']:
-            orig_path = self.images_dir / warped_file.name.replace('.png', ext)
-            if orig_path.exists():
-                orig_img = cv2.imread(str(orig_path))
-                if orig_img is not None:
-                    break
-        
-        if orig_img is None:
-            # 원본이 없으면 warped를 원본으로 사용
-            orig_img = warped_img.copy()
-        
-        # Step 2 depth guide
-        depth_guide = None
-        depth_path = self.step2_depth_dir / warped_file.name
-        if depth_path.exists():
-            depth_guide = cv2.imread(str(depth_path), cv2.IMREAD_UNCHANGED)
-        
-        # Step 2 hole mask
-        hole_mask = None
-        mask_path = self.step2_mask_dir / warped_file.name
-        if mask_path.exists():
-            hole_mask = cv2.imread(str(mask_path), cv2.IMREAD_GRAYSCALE)
-        
-        # 2. 마스크 생성 및 병합
-        missing_mask = self._compute_missing_mask(warped_img, hole_mask)
-        
-        # 3. Base 이미지 생성 (원본 + Warped 융합)
-        base_image = self._create_base_image(orig_img, warped_img, missing_mask)
-        
-        # 4. 최종 인페인팅
-        final_result = self._run_inpainting(base_image, missing_mask, depth_guide)
-        
-        # 5. 저장
-        output_path = self.output_dir / warped_file.name
-        cv2.imwrite(str(output_path), final_result)
-    
-    def _compute_missing_mask(self, warped_img, hole_mask=None):
-        """
-        채워야 할 구멍 마스크 계산
-        
-        Args:
-            warped_img: Step 1 warped 이미지
-            hole_mask: Step 2 hole mask (선택)
-        
-        Returns:
-            missing_mask: 255=구멍, 0=유효
-        """
-        # Step 1에서 채워지지 않은 영역 (검은색 픽셀)
-        gray = cv2.cvtColor(warped_img, cv2.COLOR_BGR2GRAY)
-        warped_missing = (gray < 10).astype(np.uint8) * 255
-        
-        if hole_mask is not None:
-            # Step 2의 구멍 마스크와 병합
-            missing_mask = cv2.bitwise_or(warped_missing, hole_mask)
+        # 2. Load Base Model (Stable Diffusion v1.5)
+        # ControlNet v1.1과 호환성이 가장 좋은 SD 1.5 베이스 사용
+        self.pipe = StableDiffusionControlNetInpaintPipeline.from_pretrained(
+            "runwayml/stable-diffusion-v1-5",
+            controlnet=controlnet,
+            torch_dtype=torch.float16,
+            safety_checker=None  # 자율주행 데이터 처리 속도를 위해 비활성화
+        ).to(device)
+
+        # 3. Scheduler Optimization (속도 향상)
+        # 기본 스케줄러보다 2배 이상 빠른 UniPC 사용
+        self.pipe.scheduler = UniPCMultistepScheduler.from_config(self.pipe.scheduler.config)
+        self.pipe.enable_model_cpu_offload() # VRAM 절약 (필요시 활성화)
+
+        # 4. Load LoRA (Optional)
+        # 우리가 'training/'에서 학습시킨 Waymo 전용 LoRA 가중치가 있다면 로드
+        self.use_lora = False
+        if lora_path and os.path.exists(lora_path):
+            print(f">>> Loading LoRA weights from {lora_path}...")
+            self.pipe.load_lora_weights(lora_path)
+            self.trigger_word = "WaymoStyle road" # 학습 시 설정한 트리거 단어
+            self.use_lora = True
         else:
-            missing_mask = warped_missing
+            print(">>> No LoRA weights found. Using default style.")
+            self.trigger_word = "high quality realistic asphalt road"
+
+        self.device = device
+
+    def process(self, image, mask, depth_map):
+        """
+        Input:
+            image: (H, W, 3) numpy array [BGR] - 구멍난 이미지
+            mask: (H, W) numpy array [0 or 255] - 인페인팅 영역
+            depth_map: (H, W) numpy array [uint16 or float] - 기하학적 가이드
+        Output:
+            inpainted_image: (H, W, 3) numpy array [BGR]
+        """
+        # 1. Preprocessing (Numpy -> PIL)
+        h, w = image.shape[:2]
+        img_pil = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        mask_pil = Image.fromarray(mask)
         
-        # Morphological cleaning
-        kernel = np.ones((3, 3), np.uint8)
-        missing_mask = cv2.morphologyEx(missing_mask, cv2.MORPH_CLOSE, kernel)
+        # Depth Map Normalization for ControlNet
+        # ControlNet은 0~255 사이의 3채널 RGB 포맷 Depth 이미지를 기대함
+        if depth_map.dtype == np.uint16:
+            depth_norm = (depth_map / 65535.0 * 255).astype(np.uint8)
+        else:
+            depth_norm = depth_map.astype(np.uint8)
+            
+        depth_pil = Image.fromarray(np.stack([depth_norm]*3, axis=-1))
+
+        # 2. Prompt Engineering
+        # 자율주행 도로 환경에 특화된 프롬프트
+        positive_prompt = (
+            f"{self.trigger_word}, sharp focus, photorealistic, 8k uhd, "
+            f"detailed pavement texture, driving scene, clear lane markings"
+        )
+        negative_prompt = (
+            "blur, low quality, artifacts, watermark, text, "
+            "cars, pedestrians, objects, obstacles, distortions"
+        )
+
+        # 3. Inference
+        with torch.inference_mode():
+            result = self.pipe(
+                prompt=positive_prompt,
+                negative_prompt=negative_prompt,
+                image=img_pil,
+                mask_image=mask_pil,
+                control_image=depth_pil,
+                num_inference_steps=20, # 속도와 품질의 타협점 (UniPC 기준)
+                guidance_scale=7.5,
+                controlnet_conditioning_scale=0.8, # Depth 가이드를 얼마나 강하게 따를지 (0.0 ~ 1.0)
+                strength=1.0 # 1.0 = 마스크 영역을 완전히 새로 그림
+            ).images[0]
+
+        # 4. Post-processing (PIL -> Numpy BGR)
+        result_np = cv2.cvtColor(np.array(result), cv2.COLOR_RGB2BGR)
         
-        return missing_mask
+        # 원본 보존 (마스크 바깥 영역은 원본 그대로 유지)
+        # Diffusion 모델이 미세하게 원본 영역을 바꿀 수 있으므로 강제 합성
+        final_image = image.copy()
+        final_image[mask > 0] = result_np[mask > 0]
+        
+        return final_image
+
+def run_step3(data_root, lora_path=None):
+    print(">>> [Step 3] Final Inpainting with ControlNet & LoRA...")
     
-    def _create_base_image(self, orig_img, warped_img, missing_mask):
-        """
-        원본 이미지와 warped 이미지를 융합하여 base 이미지 생성
+    # 경로 설정
+    step1_dir = os.path.join(data_root, 'step1_warped') # Step 1 결과
+    step2_dir = os.path.join(data_root, 'step2_depth_guide') # Step 2 결과
+    orig_dir = os.path.join(data_root, 'images') # 원본 (색상 참조용)
+    mask_dir = os.path.join(data_root, 'masks') # 동적 객체 마스크
+    
+    out_dir = os.path.join(data_root, 'step3_final_inpainted')
+    os.makedirs(out_dir, exist_ok=True)
+    
+    files = sorted([f for f in os.listdir(step1_dir) if f.endswith('.jpg') or f.endswith('.png')])
+    
+    # 모델 초기화 (루프 밖에서 한 번만 수행)
+    inpainter = GenerativeInpainter(lora_path=lora_path)
+    
+    for f in tqdm(files):
+        # 1. Load Inputs
+        warped_img = cv2.imread(os.path.join(step1_dir, f))
+        depth_guide = cv2.imread(os.path.join(step2_dir, f.replace('.jpg', '.png')), -1)
+        orig_img = cv2.imread(os.path.join(orig_dir, f.replace('.png', '.jpg')))
+        orig_mask = cv2.imread(os.path.join(mask_dir, f.replace('.jpg', '.png')), 0)
         
-        Fusion Logic:
-        - Warped 이미지의 유효한 부분(시계열 누적 배경)이 우선순위가 높음
-        - 구멍난 부분은 원본 이미지로 채움
+        if warped_img is None or orig_mask is None or depth_guide is None:
+            # 하나라도 없으면 건너뜀 (혹은 에러 로그)
+            continue
+
+        # 2. Logic: Temporal Fusion으로도 못 채운 '진짜 구멍' 찾기
+        # warped_img가 검은색(0)인 영역이 Step 1 실패 영역
+        missing_mask = (np.sum(warped_img, axis=2) == 0).astype(np.uint8) * 255
         
-        Args:
-            orig_img: 원본 이미지
-            warped_img: Step 1 warped 이미지
-            missing_mask: 구멍 마스크
+        # 최종 마스크: (원래 동적 객체 자리) AND (Temporal Fusion 실패 자리)
+        # 즉, 배경을 어디선가 가져왔으면 굳이 AI로 그릴 필요 없음 -> 구멍만 AI가 그림
+        target_mask = cv2.bitwise_and(orig_mask, missing_mask)
         
-        Returns:
-            base_image: 융합된 base 이미지
-        """
-        # 크기 맞추기
-        if orig_img.shape != warped_img.shape:
-            orig_img = cv2.resize(orig_img, (warped_img.shape[1], warped_img.shape[0]))
-        
+        # 입력 이미지 준비: 원본 + Warped(복원된 배경) 합성
         base_image = orig_img.copy()
-        
-        # Warped 이미지의 유효한 영역 (검은색이 아닌 곳)
-        valid_warp_mask = (missing_mask == 0)
-        
-        # 유효한 warped 데이터로 덮어쓰기
-        base_image[valid_warp_mask] = warped_img[valid_warp_mask]
-        
-        return base_image
-    
-    def _run_inpainting(self, image, mask, depth_guide=None):
-        """
-        실제 인페인팅 수행
-        
-        Args:
-            image: Base 이미지
-            mask: 채워야 할 마스크 (255=구멍)
-            depth_guide: Depth guide (선택)
-        
-        Returns:
-            result: 인페인팅된 이미지
-        """
-        if self.use_generative_ai:
-            # Generative AI 인페인팅
-            result = self._generative_inpainting(image, mask, depth_guide)
+        valid_warp = (missing_mask == 0) # Warped 데이터가 존재하는 곳
+        # 주의: Warped 이미지가 원본보다 우선순위가 낮을 수 있음 (블러 발생 시).
+        # 하지만 여기선 "동적 객체가 있던 자리"에 한해서는 Warped를 씀
+        mask_bool = (orig_mask > 0)
+        base_image[mask_bool & valid_warp] = warped_img[mask_bool & valid_warp]
+
+        # 3. AI Inpainting 실행 (남은 구멍이 있을 때만)
+        if np.sum(target_mask) > 100: # 픽셀 100개 이상 구멍일 때만 수행
+            result = inpainter.process(base_image, target_mask, depth_guide)
         else:
-            # OpenCV 기반 인페인팅 (Fallback)
-            result = self._opencv_inpainting(image, mask)
-        
-        # 텍스처 노이즈 추가 (Sim-to-Real 갭 완화)
-        if self.noise_level > 0:
-            result = self._add_texture_noise(result, mask, self.noise_level)
-        
-        return result
-    
-    def _generative_inpainting(self, image, mask, depth_guide):
-        """
-        생성형 AI 기반 인페인팅 (Stable Diffusion)
-        
-        Args:
-            image: 입력 이미지
-            mask: 마스크
-            depth_guide: Depth conditioning
-        
-        Returns:
-            result: 생성된 이미지
-        """
-        # TODO: Stable Diffusion Inpainting 파이프라인 호출
-        # 
-        # from PIL import Image
-        # 
-        # image_pil = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-        # mask_pil = Image.fromarray(mask)
-        # 
-        # prompt = "realistic road surface, asphalt texture, outdoor scene"
-        # negative_prompt = "car, vehicle, person, blur, artifacts"
-        # 
-        # result_pil = self.pipe(
-        #     prompt=prompt,
-        #     negative_prompt=negative_prompt,
-        #     image=image_pil,
-        #     mask_image=mask_pil,
-        #     # control_image=depth_guide_pil,  # ControlNet depth conditioning
-        #     num_inference_steps=50,
-        #     guidance_scale=7.5
-        # ).images[0]
-        # 
-        # result = cv2.cvtColor(np.array(result_pil), cv2.COLOR_RGB2BGR)
-        # return result
-        
-        warnings.warn("Generative AI not implemented. Falling back to OpenCV inpainting.")
-        return self._opencv_inpainting(image, mask)
-    
-    def _opencv_inpainting(self, image, mask):
-        """
-        OpenCV 기반 인페인팅 (Telea 알고리즘)
-        
-        Args:
-            image: 입력 이미지
-            mask: 마스크
-        
-        Returns:
-            result: 인페인팅된 이미지
-        """
-        # Telea 알고리즘 사용 (더 매끄러운 결과)
-        result = cv2.inpaint(image, mask, inpaintRadius=5, flags=cv2.INPAINT_TELEA)
-        return result
-    
-    def _add_texture_noise(self, image, mask, noise_level):
-        """
-        마스크 영역에 텍스처 노이즈 추가
-        
-        너무 매끈한 인페인팅 결과를 자연스럽게 만들기 위함
-        
-        Args:
-            image: 인페인팅된 이미지
-            mask: 인페인팅된 영역 마스크
-            noise_level: 노이즈 강도 (0-255)
-        
-        Returns:
-            noisy_image: 노이즈가 추가된 이미지
-        """
-        # Gaussian noise 생성
-        noise = np.random.normal(0, noise_level, image.shape).astype(np.int16)
-        
-        # 마스크 영역에만 노이즈 추가
-        mask_3ch = (mask[:, :, np.newaxis] > 0).astype(np.float32)
-        
-        # 부드러운 블렌딩을 위해 마스크를 약간 blur
-        mask_3ch = cv2.GaussianBlur(mask_3ch, (5, 5), 0)
-        
-        # 노이즈 추가
-        noisy_image = image.astype(np.int16) + (noise * mask_3ch).astype(np.int16)
-        noisy_image = np.clip(noisy_image, 0, 255).astype(np.uint8)
-        
-        return noisy_image
+            result = base_image
 
-
-def run_generative_inpainting(image, mask, depth_guide=None):
-    """
-    생성형 인페인팅 함수 (독립 실행용)
-    
-    이 함수는 외부에서 직접 호출 가능하도록 만들어진 래퍼입니다.
-    실제 Stable Diffusion 파이프라인을 여기에 구현하세요.
-    
-    Args:
-        image: 구멍난 이미지 (numpy array, BGR)
-        mask: 채워야 할 영역 (numpy array, 255=구멍)
-        depth_guide: 기하학적 깊이 힌트 (numpy array, uint16)
-    
-    Returns:
-        result: 인페인팅된 이미지 (numpy array, BGR)
-    
-    Example:
-        >>> image = cv2.imread('input.jpg')
-        >>> mask = cv2.imread('mask.png', 0)
-        >>> depth = cv2.imread('depth.png', -1)
-        >>> result = run_generative_inpainting(image, mask, depth)
-        >>> cv2.imwrite('output.jpg', result)
-    """
-    # Placeholder: OpenCV inpainting
-    result = cv2.inpaint(image, mask, 5, cv2.INPAINT_TELEA)
-    
-    # 노이즈 추가 (선택)
-    noise = np.random.normal(0, 5, result.shape).astype(np.int16)
-    mask_3ch = (mask[:, :, np.newaxis] > 0).astype(np.float32)
-    result = result.astype(np.int16) + (noise * mask_3ch).astype(np.int16)
-    result = np.clip(result, 0, 255).astype(np.uint8)
-    
-    return result
-
-
-def main():
-    """CLI 진입점"""
-    import argparse
-    
-    parser = argparse.ArgumentParser(
-        description="Inpainting Step 3: Multi-view Consistent Final Inpainting"
-    )
-    parser.add_argument(
-        'data_root',
-        type=str,
-        help="Path to data directory (containing step1_warped/ and step2_depth_guide/)"
-    )
-    parser.add_argument(
-        '--use_ai',
-        action='store_true',
-        help="Use generative AI (Stable Diffusion) for inpainting"
-    )
-    parser.add_argument(
-        '--noise_level',
-        type=int,
-        default=5,
-        help="Texture noise level (0-255, default: 5)"
-    )
-    
-    args = parser.parse_args()
-    
-    # 실행
-    inpainter = FinalInpainter(
-        data_root=args.data_root,
-        use_generative_ai=args.use_ai,
-        noise_level=args.noise_level
-    )
-    inpainter.run()
-
+        # 4. 저장
+        cv2.imwrite(os.path.join(out_dir, f), result)
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--data_root', type=str, default='./data/waymo/nre_format')
+    parser.add_argument('--lora_path', type=str, default=None, help='Path to trained LoRA .safetensors')
+    args = parser.parse_args()
+    
+    run_step3(args.data_root, args.lora_path)
