@@ -7,10 +7,12 @@
 ## 📋 두 가지 Approach 개요
 
 ### Approach 1: COLMAP-based Scene Reconstruction
-**전략:** 3D 재구성 기반 공간적 일관성 우선
+**전략:** 3D 재구성 기반 공간적 일관성 우선  
+**학습 모델:** ❌ 없음 (전통적 컴퓨터 비전 기법)
 
 ### Approach 2: Sequential Multi-Stage Pipeline
-**전략:** 시계열 정보 활용 + AI 생성 기반 점진적 복원
+**전략:** 시계열 정보 활용 + AI 생성 기반 점진적 복원  
+**학습 모델:** ✅ Step 3에서 사용 (Stable Diffusion + ControlNet + LoRA)
 
 **공통 최종 Output:**
 ```
@@ -290,6 +292,8 @@ final_inpainted/
 ### **Step 1: Temporal Accumulation (시계열 누적)**
 (`step1_temporal_accumulation.py`)
 
+**학습 모델:** ❌ 없음 (기하학적 3D 투영 기반)
+
 #### 목적
 **여러 프레임의 정적 배경을 3D로 누적하여 동적 객체 뒤의 배경 복원**
 
@@ -387,6 +391,8 @@ step1_warped/
 
 ### **Step 2: Geometric Guide Generation (기하학적 가이드 생성)**
 (`step2_geometric_guide.py`)
+
+**학습 모델:** ❌ 없음 (RANSAC 평면 추정 기반)
 
 #### 목적
 **Step 1에서 못 채운 구멍에 대한 기하학적 힌트 제공 (Step 3 ControlNet 입력)**
@@ -513,6 +519,14 @@ step2_hole_masks/
 
 ### **Step 3: Final Inpainting (최종 AI 생성)**
 (`step3_final_inpainting.py`)
+
+**학습 모델:** ✅ 3가지 (사전학습 모델 + 선택적 Fine-tuning)
+
+| 모델 | 용도 | 학습 필요 | 크기 |
+|-----|------|----------|------|
+| **Stable Diffusion 1.5** | Base 생성 모델 | ❌ 사전학습 사용 | ~4GB |
+| **ControlNet (Depth)** | 기하학적 제약 | ❌ 사전학습 사용 | ~1.5GB |
+| **LoRA** | Waymo 도메인 특화 | ✅ 선택적 학습 | ~10MB |
 
 #### 목적
 **Stable Diffusion + ControlNet + LoRA로 고품질 최종 인페인팅**
@@ -810,6 +824,108 @@ final_inpainted/
 
 ---
 
+## 🔧 모델 설치 가이드
+
+### Approach 1: COLMAP 설치
+```bash
+# Ubuntu/Debian
+sudo apt-get install colmap
+
+# macOS
+brew install colmap
+
+# Windows
+# Download from: https://github.com/colmap/colmap/releases
+
+# Verify installation
+colmap --help
+```
+
+---
+
+### Approach 2: 모델 다운로드
+
+#### 방법 1: 자동 다운로드 (권장)
+```python
+# Python 스크립트로 한 번에 다운로드
+from diffusers import StableDiffusionControlNetInpaintPipeline, ControlNetModel
+import torch
+
+print("Downloading Stable Diffusion 1.5...")
+pipe = StableDiffusionControlNetInpaintPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5",
+    torch_dtype=torch.float16
+)
+
+print("Downloading ControlNet Depth...")
+controlnet = ControlNetModel.from_pretrained(
+    "lllyasviel/control_v11f1p_sd15_depth",
+    torch_dtype=torch.float16
+)
+
+print("Models downloaded successfully!")
+print(f"Location: ~/.cache/huggingface/")
+```
+
+#### 방법 2: CLI로 다운로드
+```bash
+# Hugging Face CLI 설치
+pip install huggingface-hub
+
+# 모델 다운로드
+huggingface-cli download runwayml/stable-diffusion-v1-5
+huggingface-cli download lllyasviel/control_v11f1p_sd15_depth
+```
+
+#### 방법 3: 첫 실행 시 자동 다운로드
+```bash
+# 처음 실행하면 자동으로 다운로드됨
+python Inpainting/approach2_sequential.py /path/to/data
+# -> 모델이 없으면 자동으로 다운로드 시작
+```
+
+---
+
+### LoRA 학습 (선택적)
+
+#### 학습 데이터 준비
+```bash
+# Waymo 도로 scene에서 학습 데이터 생성
+python Inpainting/training_dataset_builder.py \
+    --data_root /path/to/waymo_data \
+    --output_dir ./lora_training_data \
+    --num_samples 1000
+```
+
+#### LoRA 학습 스크립트 (예시)
+```bash
+# diffusers 학습 스크립트 사용
+# https://github.com/huggingface/diffusers/tree/main/examples/dreambooth
+
+accelerate launch train_dreambooth_lora.py \
+  --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
+  --instance_data_dir="./lora_training_data" \
+  --output_dir="./trained_lora" \
+  --instance_prompt="WaymoStyle road" \
+  --resolution=512 \
+  --train_batch_size=4 \
+  --gradient_accumulation_steps=1 \
+  --learning_rate=1e-4 \
+  --lr_scheduler="constant" \
+  --lr_warmup_steps=0 \
+  --max_train_steps=1000 \
+  --rank=16
+```
+
+#### 학습된 LoRA 사용
+```bash
+python Inpainting/approach2_sequential.py \
+    /path/to/data \
+    --lora_path ./trained_lora/pytorch_lora_weights.safetensors
+```
+
+---
+
 ## 🚀 실행 예시
 
 ### Approach 1: COLMAP-based
@@ -870,6 +986,211 @@ python Inpainting/step3_final_inpainting.py \
 
 ---
 
+## 🤖 학습 모델 종합 정리
+
+### Approach 1: COLMAP-based
+**학습 모델 사용:** ❌ 없음
+
+| Step | 기법 | 학습 필요 | 설명 |
+|------|------|----------|------|
+| Feature Extraction | SIFT | ❌ | Hand-crafted feature |
+| Feature Matching | Brute-force / KNN | ❌ | 전통적 matching |
+| SfM | Bundle Adjustment | ❌ | Optimization 기반 |
+| MVS | Patch Match Stereo | ❌ | Photo-consistency |
+| Hole Filling | Depth-based Inpaint | ❌ | OpenCV 알고리즘 |
+
+**장점:**
+- 모델 다운로드/학습 불필요
+- COLMAP만 설치하면 즉시 사용 가능
+- 재현성 100% 보장
+
+---
+
+### Approach 2: Sequential Pipeline
+**학습 모델 사용:** ✅ Step 3에서만
+
+#### Step 1: Temporal Accumulation
+**학습 모델:** ❌ 없음
+
+| 기법 | 설명 |
+|-----|------|
+| 3D Point Cloud Accumulation | 기하학적 투영 |
+| Voxel Downsampling | Grid 기반 샘플링 |
+| Back-projection | 카메라 모델 기반 투영 |
+
+---
+
+#### Step 2: Geometric Guide
+**학습 모델:** ❌ 없음
+
+| 기법 | 설명 |
+|-----|------|
+| RANSAC Plane Fitting | Robust 평면 추정 |
+| Depth Interpolation | 기하학적 보간 |
+
+---
+
+#### Step 3: Final Inpainting
+**학습 모델:** ✅ 3가지
+
+##### 1️⃣ Stable Diffusion 1.5
+```python
+Model: "runwayml/stable-diffusion-v1-5"
+Type: Text-to-Image Diffusion Model
+```
+
+**사양:**
+- **크기:** ~4GB (fp16)
+- **아키텍처:** U-Net + VAE + Text Encoder (CLIP)
+- **학습 데이터:** LAION-5B
+- **입력:** Text prompt + (선택) Image
+- **출력:** 512×512 이미지
+
+**사용 방식:**
+- ❌ 재학습 불필요
+- ✅ 사전학습 모델 다운로드만
+- 🔄 Inpainting 모드 지원
+
+**다운로드:**
+```python
+from diffusers import StableDiffusionControlNetInpaintPipeline
+
+pipe = StableDiffusionControlNetInpaintPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5",
+    torch_dtype=torch.float16
+)
+# 자동 다운로드: ~/.cache/huggingface/
+```
+
+---
+
+##### 2️⃣ ControlNet (Depth)
+```python
+Model: "lllyasviel/control_v11f1p_sd15_depth"
+Type: Depth-conditioned Control Network
+```
+
+**사양:**
+- **크기:** ~1.5GB (fp16)
+- **아키텍처:** U-Net encoder (SD와 공유 구조)
+- **학습 데이터:** Multi-domain depth maps
+- **입력:** Depth image (3채널 RGB 형식)
+- **출력:** SD latent space conditioning
+
+**사용 방식:**
+- ❌ 재학습 불필요
+- ✅ 사전학습 모델 사용
+- 🎛️ conditioning_scale 조절 가능 (0.0~1.0)
+
+**다운로드:**
+```python
+from diffusers import ControlNetModel
+
+controlnet = ControlNetModel.from_pretrained(
+    "lllyasviel/control_v11f1p_sd15_depth",
+    torch_dtype=torch.float16
+)
+```
+
+---
+
+##### 3️⃣ LoRA (Low-Rank Adaptation)
+```python
+Model: Custom trained on Waymo dataset
+Type: Fine-tuning adapter for domain adaptation
+```
+
+**사양:**
+- **크기:** ~10-50MB (.safetensors)
+- **아키텍처:** Low-rank matrices (rank=4~64)
+- **학습 데이터:** Waymo road scenes (사용자 생성)
+- **입력:** SD latent space
+- **출력:** Domain-adapted features
+
+**학습 필요:** ✅ **선택적**
+
+**학습 방법:**
+```bash
+# 학습 데이터셋 생성
+python training_dataset_builder.py \
+    --data_root /path/to/waymo \
+    --output_dir ./lora_training_data
+
+# LoRA 학습 (예시)
+python train_lora.py \
+    --base_model "runwayml/stable-diffusion-v1-5" \
+    --train_data ./lora_training_data \
+    --output_dir ./trained_lora \
+    --trigger_word "WaymoStyle road" \
+    --rank 16 \
+    --epochs 100
+```
+
+**학습 시간:**
+- ~2-4시간 (단일 GPU, 1000-2000 이미지)
+
+**사용:**
+```python
+pipe.load_lora_weights("./trained_lora/final.safetensors")
+prompt = "WaymoStyle road, photorealistic asphalt"
+```
+
+**LoRA 학습 없이 사용 가능?**
+- ✅ 가능 (기본 SD 1.5 사용)
+- ⚠️ 품질: Waymo 특화 없이 일반적인 도로 생성
+- 💡 권장: LoRA 학습 시 품질 향상 (~10-20% LPIPS 개선)
+
+---
+
+### 모델 의존성 요약
+
+| Approach | Step | 모델 | 학습 필요 | 크기 | 다운로드 시간 |
+|----------|------|------|----------|------|-------------|
+| **1. COLMAP** | 전체 | ❌ 없음 | - | - | - |
+| **2. Sequential** | Step 1 | ❌ 없음 | - | - | - |
+| **2. Sequential** | Step 2 | ❌ 없음 | - | - | - |
+| **2. Sequential** | Step 3 | Stable Diffusion 1.5 | ❌ | 4GB | ~5-10분 |
+| **2. Sequential** | Step 3 | ControlNet Depth | ❌ | 1.5GB | ~2-5분 |
+| **2. Sequential** | Step 3 | LoRA (선택) | ✅ | 10MB | 사용자 학습 |
+
+**총 모델 크기 (Approach 2):**
+- 필수: ~5.5GB (SD + ControlNet)
+- 선택: +10MB (LoRA)
+
+**초기 설치 시간:**
+- Approach 1: ~5분 (COLMAP 설치)
+- Approach 2: ~15-20분 (모델 다운로드)
+
+---
+
+### Preprocessing Stage 모델 (참고)
+
+Preprocessing의 Dynamic Masking에서 선택적으로 사용:
+
+#### SegFormer (Semantic Segmentation)
+```python
+Model: "nvidia/segformer-b0-finetuned-cityscapes-1024-1024"
+```
+
+**사양:**
+- **크기:** ~15MB (B0 variant)
+- **학습 데이터:** Cityscapes
+- **용도:** 동적 객체 감지 (보조)
+
+**사용:**
+```python
+from transformers import SegformerForSemanticSegmentation
+
+model = SegformerForSemanticSegmentation.from_pretrained(
+    "nvidia/segformer-b0-finetuned-cityscapes-1024-1024"
+)
+```
+
+**학습 필요:** ❌ (사전학습 모델 사용)  
+**사용 빈도:** 낮음 (3D Box 투영이 더 정확)
+
+---
+
 ## 📝 추가 개선 사항
 
 ### Approach 1
@@ -898,6 +1219,257 @@ python Inpainting/step3_final_inpainting.py \
 
 ---
 
+---
+
+## 🎓 학습 모델 요구사항
+
+### Approach 1: COLMAP-based
+
+**✅ 학습 모델 불필요**
+- 전통적 컴퓨터 비전 기법 (SIFT, Bundle Adjustment, MVS)
+- 사전 학습된 모델 없이 기하학적 계산만 사용
+
+---
+
+### Approach 2: Sequential Multi-Stage
+
+#### **Step 1: Temporal Accumulation**
+**✅ 학습 모델 불필요**
+- 3D 포인트 클라우드 누적 및 투영 (순수 기하학)
+
+#### **Step 2: Geometric Guide Generation**
+**✅ 학습 모델 불필요**
+- RANSAC 평면 추정 (전통적 방법)
+
+#### **Step 3: Final Inpainting**
+**⚠️ 사전 학습된 모델 필요 (자동 다운로드)**
+
+| 모델 | 용도 | 크기 | 다운로드 | 학습 필요 |
+|-----|------|------|----------|----------|
+| **Stable Diffusion 1.5** | Base 생성 모델 | ~4GB | ✅ 자동 | ❌ 불필요 |
+| **ControlNet (Depth)** | 깊이 가이드 | ~1.5GB | ✅ 자동 | ❌ 불필요 |
+| **LoRA (선택)** | Waymo 도메인 특화 | ~10-50MB | ❌ 수동 | ✅ **학습 필요** |
+
+---
+
+### 📦 모델 다운로드 및 설치
+
+#### 1. Stable Diffusion 1.5 + ControlNet (자동)
+```python
+# 최초 실행 시 자동 다운로드됨
+from diffusers import StableDiffusionControlNetInpaintPipeline, ControlNetModel
+
+# ControlNet (Depth)
+controlnet = ControlNetModel.from_pretrained(
+    "lllyasviel/control_v11f1p_sd15_depth",
+    torch_dtype=torch.float16
+)
+# → ~/.cache/huggingface/hub/ 에 자동 저장
+
+# Stable Diffusion 1.5
+pipe = StableDiffusionControlNetInpaintPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5",
+    controlnet=controlnet,
+    torch_dtype=torch.float16
+)
+# → ~/.cache/huggingface/hub/ 에 자동 저장
+```
+
+**수동 다운로드 (선택):**
+```bash
+# Hugging Face CLI 설치
+pip install huggingface-hub
+
+# 모델 다운로드
+huggingface-cli download runwayml/stable-diffusion-v1-5
+huggingface-cli download lllyasviel/control_v11f1p_sd15_depth
+```
+
+---
+
+#### 2. LoRA 학습 (선택적, Waymo 도메인 특화)
+
+**필요성:**
+- Stable Diffusion은 일반 도로 이미지로 학습됨
+- Waymo 데이터의 특성 (카메라 왜곡, 조명, 도로 타입)에 최적화 필요
+- LoRA로 적은 데이터로 빠르게 fine-tuning 가능
+
+**학습 데이터 생성:**
+```bash
+# Inpainting/training_dataset_builder.py 사용
+python Inpainting/training_dataset_builder.py \
+    /path/to/waymo_data \
+    --output_dir ./lora_training_data \
+    --num_samples 500
+```
+
+**Output:**
+```
+lora_training_data/
+├── images/           # 원본 도로 이미지
+├── masks/            # 인페인팅 마스크
+├── prompts.json      # 텍스트 프롬프트
+└── metadata.json     # 학습 메타데이터
+```
+
+**LoRA 학습 (diffusers 사용):**
+```bash
+# LoRA 학습 스크립트 설치
+git clone https://github.com/huggingface/diffusers
+cd diffusers/examples/text_to_image
+
+# 학습 실행
+accelerate launch train_text_to_image_lora.py \
+  --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
+  --train_data_dir="./lora_training_data" \
+  --resolution=512 \
+  --train_batch_size=4 \
+  --gradient_accumulation_steps=4 \
+  --max_train_steps=1000 \
+  --learning_rate=1e-04 \
+  --max_grad_norm=1 \
+  --lr_scheduler="cosine" \
+  --lr_warmup_steps=100 \
+  --output_dir="./waymo_lora_output" \
+  --validation_prompt="WaymoStyle road asphalt pavement" \
+  --validation_epochs=50
+```
+
+**학습 결과:**
+```
+waymo_lora_output/
+└── pytorch_lora_weights.safetensors  # 학습된 LoRA 가중치
+```
+
+**사용:**
+```bash
+python Inpainting/step3_final_inpainting.py \
+    --data_root /path/to/data \
+    --lora_path ./waymo_lora_output/pytorch_lora_weights.safetensors
+```
+
+---
+
+### 🔧 대안: LoRA 없이 사용
+
+**LoRA 학습 없이도 사용 가능:**
+```bash
+# 기본 Stable Diffusion만 사용
+python Inpainting/step3_final_inpainting.py \
+    --data_root /path/to/data
+# → 일반적인 도로 텍스처 생성 (품질은 약간 낮을 수 있음)
+```
+
+**품질 향상 팁 (LoRA 없이):**
+1. **Prompt Engineering:**
+   ```python
+   positive_prompt = "photorealistic asphalt road, high resolution, 8k, detailed texture, outdoor daylight"
+   ```
+
+2. **ControlNet Strength 조절:**
+   ```python
+   controlnet_conditioning_scale=0.9  # 0.8 → 0.9 (더 강한 가이드)
+   ```
+
+3. **Inference Steps 증가:**
+   ```python
+   num_inference_steps=30  # 20 → 30 (더 많은 denoising)
+   ```
+
+---
+
+### 📊 학습 시간 및 리소스
+
+| 항목 | LoRA 학습 | 설명 |
+|-----|-----------|------|
+| **학습 데이터** | 500-1000장 | Waymo에서 추출 |
+| **학습 시간** | ~2-4시간 | RTX 3090 기준 |
+| **VRAM 요구** | ~12GB | Batch size 4 |
+| **최종 모델 크기** | ~10-50MB | 원본 대비 1% |
+| **성능 향상** | ~10-20% | LPIPS 기준 |
+
+---
+
+### 🎯 모델 학습 우선순위
+
+#### 필수 (Approach 2 Step 3 사용 시)
+1. ✅ **Stable Diffusion 1.5** - 자동 다운로드
+2. ✅ **ControlNet (Depth)** - 자동 다운로드
+
+#### 선택 (품질 향상)
+3. ⚠️ **LoRA (Waymo 특화)** - 수동 학습 필요
+   - 학습하면: 더 나은 텍스처, 도메인 특화
+   - 안 하면: 기본 품질로도 사용 가능
+
+#### 추가 (Preprocessing)
+4. ⚠️ **SegFormer** - 자동 다운로드 (Semantic Segmentation 사용 시)
+   ```python
+   from transformers import SegformerForSemanticSegmentation
+   model = SegformerForSemanticSegmentation.from_pretrained(
+       "nvidia/segformer-b0-finetuned-cityscapes-1024-1024"
+   )
+   ```
+
+---
+
+### 💾 전체 디스크 공간 요구사항
+
+```
+모델 저장 위치: ~/.cache/huggingface/hub/
+
+필수 모델:
+- Stable Diffusion 1.5:        ~4.0 GB
+- ControlNet (Depth):           ~1.5 GB
+- Tokenizer & Scheduler:        ~0.5 GB
+----------------------------------------
+소계:                           ~6.0 GB
+
+선택 모델:
+- LoRA (학습 시):               ~0.05 GB
+- SegFormer (Preprocessing):    ~0.1 GB
+----------------------------------------
+총계:                           ~6.2 GB
+```
+
+---
+
+### 🚀 빠른 시작 (모델 준비)
+
+```bash
+# 1. 필수 패키지 설치
+pip install torch torchvision diffusers transformers accelerate safetensors
+
+# 2. 모델 사전 다운로드 (선택, 자동으로도 됨)
+python -c "
+from diffusers import StableDiffusionControlNetInpaintPipeline, ControlNetModel
+import torch
+
+print('Downloading ControlNet...')
+controlnet = ControlNetModel.from_pretrained(
+    'lllyasviel/control_v11f1p_sd15_depth',
+    torch_dtype=torch.float16
+)
+
+print('Downloading Stable Diffusion 1.5...')
+pipe = StableDiffusionControlNetInpaintPipeline.from_pretrained(
+    'runwayml/stable-diffusion-v1-5',
+    controlnet=controlnet,
+    torch_dtype=torch.float16
+)
+
+print('✓ All models downloaded successfully!')
+"
+
+# 3. (선택) LoRA 학습
+# → training_dataset_builder.py로 데이터 생성 후
+# → diffusers 예제로 학습
+
+# 4. Inpainting 실행
+python Inpainting/approach2_sequential.py /path/to/data
+```
+
+---
+
 **최종 확인일**: 2026-02-05  
 **작성자**: Cloud Agent  
-**버전**: 1.0
+**버전**: 1.1
