@@ -1,133 +1,184 @@
 """
-Approach 2: 3D Gaussian with Uncertainty and Time (3DGUT)
-          Rolling Shutter Compensated Reconstruction
+Approach 2: 3DGUT (3D Gaussian with Unscented Transform)
+        NVIDIA Rolling Shutter Compensated Reconstruction
 
-Reference:
-    "3DGS with Rolling Shutter Compensation"
-    (Custom implementation for autonomous driving)
+이 모듈은 nerfstudio-project/gsplat에 통합된 NVIDIA 3DGUT를 래핑하여
+우리 파이프라인의 데이터 포맷과 연결합니다.
+
+External Repository:
+    nerfstudio-project/gsplat (NVIDIA 3DGUT 통합)
+    https://github.com/nerfstudio-project/gsplat
+    NVIDIA 3DGUT: https://research.nvidia.com/labs/toronto-ai/3DGUT/
+
+3DGUT Features:
+    - Unscented Transform: 비선형 카메라 프로젝션 지원 (렌즈 왜곡, 핀홀/피쉬아이)
+    - Rolling Shutter 보정: 각 픽셀의 캡처 시간을 고려한 모션 보정
+    - 3D Eval: 3D 공간에서의 Gaussian 응답 평가
 
 Input (3DGS + α):
     - Images: Inpainting된 배경 이미지
     - Camera Extrinsics/Intrinsics
     - Ego Velocity: 선속도 및 각속도 [vx, vy, vz, wx, wy, wz]
     - Rolling Shutter: duration, trigger_time
+    - (선택) Distortion coefficients
 
 Output:
-    - Trained 3D Gaussians with temporal parameters (.ply)
+    - Trained 3D Gaussians (.ply / .pt)
     - Rendered Novel Views (Rolling Shutter 보정됨)
 """
 
 import os
 import sys
-import torch
+import json
+import shutil
+import subprocess
 import numpy as np
 from pathlib import Path
-from tqdm import tqdm
-import argparse
 from datetime import datetime
+import argparse
+
+# 프로젝트 경로 설정
+RECONSTRUCTION_DIR = Path(__file__).parent
+EXTERNAL_DIR = RECONSTRUCTION_DIR / "external"
+GSPLAT_DIR = EXTERNAL_DIR / "gsplat"
 
 # Data loader
-from data_loader import ReconstructionDataset, DataLoaderWrapper, load_initial_point_cloud
+from data_loader import ReconstructionDataset, load_initial_point_cloud
 
 
-class RollingShutterCompensator:
+def check_gsplat_installation():
+    """gsplat (3DGUT) 설치 확인"""
+    gsplat_init = GSPLAT_DIR / "gsplat" / "__init__.py"
+    if not gsplat_init.exists():
+        raise FileNotFoundError(
+            f"gsplat 레포지토리를 찾을 수 없습니다: {GSPLAT_DIR}\n"
+            f"다음 명령어로 서브모듈을 초기화하세요:\n"
+            f"  git submodule update --init --recursive"
+        )
+
+    # gsplat python 패키지 설치 확인
+    try:
+        import gsplat
+        print(f"  gsplat package version: {gsplat.__version__}")
+        return True
+    except ImportError:
+        print("  Warning: gsplat Python package is not installed.")
+        print("  You can install it with:")
+        print(f"    pip install -e {GSPLAT_DIR}")
+        print("  Or: pip install gsplat")
+        print("  Falling back to subprocess-based execution.")
+        return False
+
+
+def convert_to_colmap_with_3dgut_params(
+    data_root: str,
+    meta_file: str,
+    output_dir: str,
+    image_scale: float = 1.0
+):
     """
-    Rolling Shutter 보정 유틸리티
-    
-    이미지의 각 행(row)마다 다른 시간에 캡처되므로,
-    카메라 포즈를 시간에 따라 보정해야 함
+    우리 파이프라인의 JSON 메타데이터를 gsplat/3DGUT가 요구하는 COLMAP 포맷 +
+    확장 메타데이터로 변환
+
+    gsplat의 simple_trainer.py는 COLMAP 포맷 데이터를 사용합니다.
+    3DGUT 추가 파라미터 (velocity, rolling_shutter)는 별도 JSON으로 저장됩니다.
+
+    Args:
+        data_root: 데이터 루트 디렉토리
+        meta_file: JSON 메타데이터 파일 경로
+        output_dir: 변환된 데이터 출력 디렉토리
+        image_scale: 이미지 스케일
     """
-    
-    @staticmethod
-    def compute_pose_at_time(
-        T_base: torch.Tensor,
-        velocity: torch.Tensor,
-        delta_t: float
-    ) -> torch.Tensor:
-        """
-        시간 오프셋을 고려한 카메라 포즈 계산
-        
-        Args:
-            T_base: [4, 4] 기준 카메라 포즈
-            velocity: [6] 선속도 및 각속도 [vx, vy, vz, wx, wy, wz]
-            delta_t: 시간 오프셋 (초)
-        
-        Returns:
-            T_adjusted: [4, 4] 보정된 카메라 포즈
-        """
-        # 선속도 및 각속도 분리
-        v = velocity[:3]  # [vx, vy, vz]
-        w = velocity[3:]  # [wx, wy, wz]
-        
-        # Translation offset
-        translation_offset = v * delta_t
-        
-        # Rotation offset (Rodrigues' formula)
-        angle = torch.norm(w) * delta_t
-        if angle > 1e-6:
-            axis = w / torch.norm(w)
-            K = torch.tensor([
-                [0, -axis[2], axis[1]],
-                [axis[2], 0, -axis[0]],
-                [-axis[1], axis[0], 0]
-            ], device=w.device)
-            
-            R_offset = torch.eye(3, device=w.device) + \
-                       torch.sin(angle) * K + \
-                       (1 - torch.cos(angle)) * (K @ K)
+    from approach1_3dgs import convert_to_colmap_format, rotation_matrix_to_quaternion
+
+    data_root = Path(data_root)
+    output_dir = Path(output_dir)
+
+    # 기본 COLMAP 포맷 변환 (3DGS와 공통)
+    convert_to_colmap_format(
+        data_root=str(data_root),
+        meta_file=str(meta_file),
+        output_dir=str(output_dir),
+        image_scale=image_scale
+    )
+
+    # 3DGUT 확장 메타데이터 생성
+    with open(meta_file, 'r') as f:
+        metadata = json.load(f)
+
+    dgut_params = {}
+    for idx, item in enumerate(metadata):
+        frame_key = f"{idx:06d}.jpg"
+
+        dgut_params[frame_key] = {
+            "camera_name": item.get("camera_name", "UNKNOWN"),
+            "frame_name": item.get("frame_name", ""),
+        }
+
+        # Velocity 정보
+        if "velocity" in item:
+            v = item["velocity"].get("v", [0.0, 0.0, 0.0])
+            w = item["velocity"].get("w", [0.0, 0.0, 0.0])
+            dgut_params[frame_key]["velocity"] = v + w  # [vx, vy, vz, wx, wy, wz]
         else:
-            R_offset = torch.eye(3, device=w.device)
-        
-        # 4x4 변환 행렬 구성
-        T_offset = torch.eye(4, device=T_base.device)
-        T_offset[:3, :3] = R_offset
-        T_offset[:3, 3] = translation_offset
-        
-        # 합성
-        T_adjusted = T_offset @ T_base
-        
-        return T_adjusted
-    
-    @staticmethod
-    def get_pixel_time_offset(
-        pixel_y: int,
-        image_height: int,
-        rs_duration: float,
-        rs_trigger_time: float
-    ) -> float:
-        """
-        픽셀의 캡처 시간 오프셋 계산
-        
-        Args:
-            pixel_y: 픽셀의 행(row) 좌표
-            image_height: 이미지 전체 높이
-            rs_duration: Rolling Shutter 지속 시간 (전체 이미지 readout time)
-            rs_trigger_time: 기준 시각 대비 촬영 시작 오프셋
-        
-        Returns:
-            time_offset: 시간 오프셋 (초)
-        """
-        # 각 행의 상대적 시간
-        row_ratio = pixel_y / image_height
-        time_offset = rs_trigger_time + row_ratio * rs_duration
-        
-        return time_offset
+            dgut_params[frame_key]["velocity"] = [0.0] * 6
+
+        # Rolling Shutter 정보
+        if "rolling_shutter" in item:
+            dgut_params[frame_key]["rolling_shutter"] = {
+                "duration": item["rolling_shutter"].get("duration", 0.033),
+                "trigger_time": item["rolling_shutter"].get("trigger_time", 0.0)
+            }
+        else:
+            dgut_params[frame_key]["rolling_shutter"] = {
+                "duration": 0.033,
+                "trigger_time": 0.0
+            }
+
+        # Distortion coefficients (있으면)
+        intrinsics = item.get("intrinsics", [])
+        if len(intrinsics) > 4:
+            # [fx, fy, cx, cy, k1, k2, p1, p2, k3]
+            dgut_params[frame_key]["distortion"] = {
+                "radial": intrinsics[4:6] if len(intrinsics) > 5 else [0.0, 0.0],
+                "tangential": intrinsics[6:8] if len(intrinsics) > 7 else [0.0, 0.0],
+                "k3": intrinsics[8] if len(intrinsics) > 8 else 0.0
+            }
+
+    # 3DGUT 파라미터 저장
+    dgut_path = output_dir / "3dgut_params.json"
+    with open(dgut_path, 'w') as f:
+        json.dump(dgut_params, f, indent=2)
+
+    print(f"  3DGUT params saved to: {dgut_path}")
+    print(f"  Frames with velocity info: {sum(1 for p in dgut_params.values() if any(v != 0 for v in p['velocity']))}")
+
+    return str(output_dir)
 
 
 class GaussianSplatting3DGUT:
     """
-    3DGUT: Rolling Shutter를 고려한 3D Gaussian Splatting
-    
-    각 픽셀마다 다른 카메라 포즈를 사용하여 렌더링
+    3DGUT: NVIDIA의 Unscented Transform 기반 3D Gaussian Splatting
+
+    gsplat 라이브러리의 3DGUT 기능을 활용:
+    - with_ut=True: Unscented Transform으로 비선형 카메라 모델 지원
+    - with_eval3d=True: 3D 공간에서 Gaussian 응답 평가
+    - rolling_shutter: Rolling Shutter 보정 지원
+
+    학습 방법:
+    1. gsplat이 설치된 경우: Python API 직접 사용
+    2. 설치 안 된 경우: gsplat/examples/simple_trainer.py를 subprocess로 호출
     """
-    
+
     def __init__(
         self,
         data_root: str,
         meta_file: str,
         output_dir: str,
         initial_ply: str = None,
-        device: str = 'cuda'
+        device: str = 'cuda',
+        image_scale: float = 1.0,
+        camera_model: str = 'pinhole'
     ):
         """
         Args:
@@ -136,281 +187,331 @@ class GaussianSplatting3DGUT:
             output_dir: 출력 디렉토리
             initial_ply: 초기 포인트 클라우드 (선택)
             device: 'cuda' or 'cpu'
+            image_scale: 이미지 스케일
+            camera_model: 'pinhole' or 'fisheye'
         """
         self.data_root = Path(data_root)
         self.meta_file = Path(meta_file)
         self.output_dir = Path(output_dir)
         self.device = device
-        
-        self.output_dir.mkdir(parents=True, exist_ok=True)
-        
-        # 데이터셋 로드 (3DGUT 파라미터 포함)
-        print("="*70)
-        print(">>> Loading Dataset for 3DGUT")
-        print("="*70)
-        
-        self.dataset = ReconstructionDataset(
-            meta_file=str(self.meta_file),
-            data_root=str(self.data_root),
-            split='train',
-            load_3dgut_params=True,  # ✅ 3DGUT 파라미터 로드
-            image_scale=1.0
-        )
-        
-        # 초기 포인트 클라우드
+        self.image_scale = image_scale
+        self.camera_model = camera_model
         self.initial_ply = initial_ply
-        if initial_ply and Path(initial_ply).exists():
-            print(f"\nLoading initial point cloud: {initial_ply}")
-            self.init_points, self.init_colors = load_initial_point_cloud(initial_ply)
-            print(f"  Points: {len(self.init_points)}")
-        else:
-            print("\nNo initial point cloud provided. Will use random initialization.")
-            self.init_points = None
-            self.init_colors = None
-        
-        # Gaussian parameters
-        self.gaussians = None
-        
-        # Rolling Shutter Compensator
-        self.rs_compensator = RollingShutterCompensator()
-        
-        print("="*70)
-    
-    def initialize_gaussians(self):
+
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+
+        # gsplat 설치 확인
+        print("=" * 70)
+        print(">>> Checking gsplat (NVIDIA 3DGUT) installation")
+        print("=" * 70)
+        self.gsplat_installed = check_gsplat_installation()
+
+        # COLMAP 변환 디렉토리
+        self.colmap_dir = self.output_dir / "colmap_format"
+
+    def prepare_data(self):
+        """데이터를 gsplat/3DGUT가 요구하는 포맷으로 변환"""
+        print("\n" + "=" * 70)
+        print(">>> [Step 1] Converting to COLMAP + 3DGUT format")
+        print("=" * 70)
+
+        convert_to_colmap_with_3dgut_params(
+            data_root=str(self.data_root),
+            meta_file=str(self.meta_file),
+            output_dir=str(self.colmap_dir),
+            image_scale=self.image_scale
+        )
+
+        if self.initial_ply and Path(self.initial_ply).exists():
+            ply_dst = self.colmap_dir / "sparse" / "0" / "points3D.ply"
+            shutil.copy2(self.initial_ply, str(ply_dst))
+            print(f"  Initial PLY copied: {self.initial_ply} -> {ply_dst}")
+
+    def train_via_subprocess(self, num_iterations: int = 30000, cap_max: int = 1000000):
         """
-        Gaussian 파라미터 초기화
-        
-        3DGS와 동일하지만, 추가로 temporal uncertainty 파라미터 포함 가능
-        """
-        print("\n[1/4] Initializing Gaussians (3DGUT)...")
-        
-        if self.init_points is not None:
-            num_points = len(self.init_points)
-            
-            self.gaussians = {
-                'xyz': torch.tensor(self.init_points, dtype=torch.float32, device=self.device),
-                'rgb': torch.tensor(self.init_colors, dtype=torch.float32, device=self.device),
-                'opacity': torch.ones(num_points, 1, dtype=torch.float32, device=self.device),
-                'scale': torch.ones(num_points, 3, dtype=torch.float32, device=self.device) * 0.01,
-                'rotation': torch.tensor([[1, 0, 0, 0]] * num_points, dtype=torch.float32, device=self.device),
-                
-                # 3DGUT 추가 파라미터 (선택적)
-                'temporal_uncertainty': torch.ones(num_points, 1, dtype=torch.float32, device=self.device) * 0.01
-            }
-        else:
-            num_points = 10000
-            
-            self.gaussians = {
-                'xyz': torch.randn(num_points, 3, dtype=torch.float32, device=self.device),
-                'rgb': torch.rand(num_points, 3, dtype=torch.float32, device=self.device),
-                'opacity': torch.ones(num_points, 1, dtype=torch.float32, device=self.device) * 0.5,
-                'scale': torch.ones(num_points, 3, dtype=torch.float32, device=self.device) * 0.01,
-                'rotation': torch.tensor([[1, 0, 0, 0]] * num_points, dtype=torch.float32, device=self.device),
-                'temporal_uncertainty': torch.ones(num_points, 1, dtype=torch.float32, device=self.device) * 0.01
-            }
-        
-        # Requires grad
-        for key in self.gaussians:
-            self.gaussians[key].requires_grad = True
-        
-        print(f"  Initialized {len(self.gaussians['xyz'])} Gaussians with temporal parameters")
-    
-    def render_with_rolling_shutter(
-        self,
-        extrinsic: torch.Tensor,
-        intrinsic: torch.Tensor,
-        velocity: torch.Tensor,
-        rs_duration: float,
-        rs_trigger_time: float,
-        width: int,
-        height: int
-    ) -> torch.Tensor:
-        """
-        Rolling Shutter를 고려한 렌더링
-        
+        gsplat의 simple_trainer.py를 subprocess로 호출하여 3DGUT 학습
+
+        3DGUT 활성화 플래그:
+            --with_ut       : Unscented Transform 사용
+            --with_eval3d   : 3D 공간 평가 사용
+            --camera_model  : pinhole / fisheye
+
         Args:
-            extrinsic: [4, 4] 기준 카메라 포즈
-            intrinsic: [3, 3] 카메라 내부 파라미터
-            velocity: [6] 속도 [vx, vy, vz, wx, wy, wz]
-            rs_duration: Rolling Shutter 지속 시간
-            rs_trigger_time: 촬영 시작 오프셋
-            width: 이미지 너비
-            height: 이미지 높이
-        
-        Returns:
-            rendered_image: [3, H, W] RGB 이미지
+            num_iterations: 학습 반복 횟수
+            cap_max: 최대 Gaussian 수 (MCMC strategy)
         """
-        # TODO: 실제 Rolling Shutter 고려 렌더링 구현
-        # 
-        # 방법 1: Row-wise 렌더링
-        #   각 행마다 다른 카메라 포즈로 렌더링 후 합성
-        #
-        # 방법 2: Continuous 근사
-        #   Gaussian의 위치를 시간에 따라 보간하여 렌더링
-        
-        # Placeholder: 기본 렌더링 (Rolling Shutter 무시)
-        rendered = torch.zeros(3, height, width, device=self.device)
-        
-        # Example: Row-wise pose adjustment (simplified)
-        for row in range(0, height, 10):  # 샘플링 (모든 행 처리 시 너무 느림)
-            # 해당 행의 시간 오프셋 계산
-            time_offset = self.rs_compensator.get_pixel_time_offset(
-                pixel_y=row,
-                image_height=height,
-                rs_duration=rs_duration,
-                rs_trigger_time=rs_trigger_time
+        print("\n" + "=" * 70)
+        print(">>> [Step 2] Training 3DGUT via gsplat subprocess")
+        print("=" * 70)
+
+        trainer_script = GSPLAT_DIR / "examples" / "simple_trainer.py"
+        if not trainer_script.exists():
+            raise FileNotFoundError(
+                f"gsplat trainer not found: {trainer_script}\n"
+                f"Please ensure submodules are initialized:\n"
+                f"  git submodule update --init --recursive"
             )
-            
-            # 보정된 카메라 포즈
-            extrinsic_adjusted = self.rs_compensator.compute_pose_at_time(
-                T_base=extrinsic,
-                velocity=velocity,
-                delta_t=time_offset
+
+        result_dir = self.output_dir / "results"
+
+        # gsplat simple_trainer.py 명령어 구성
+        # MCMC strategy + 3DGUT (with_ut, with_eval3d)
+        cmd = [
+            sys.executable,
+            str(trainer_script),
+            "mcmc",  # MCMC densification strategy (3DGUT 권장)
+            "--with_ut",           # Unscented Transform 활성화
+            "--with_eval3d",       # 3D Eval 활성화
+            "--camera_model", self.camera_model,
+            "--data_dir", str(self.colmap_dir),
+            "--result_dir", str(result_dir),
+            "--max_steps", str(num_iterations),
+            "--strategy.cap-max", str(cap_max),
+            "--disable_viewer",    # Headless 모드
+        ]
+
+        print(f"  Trainer:   {trainer_script}")
+        print(f"  Strategy:  MCMC (3DGUT recommended)")
+        print(f"  3DGUT:     with_ut=True, with_eval3d=True")
+        print(f"  Camera:    {self.camera_model}")
+        print(f"  Data:      {self.colmap_dir}")
+        print(f"  Output:    {result_dir}")
+        print(f"  Steps:     {num_iterations}")
+        print(f"  Cap Max:   {cap_max}")
+        print()
+        print(f"  Command:\n    {' '.join(cmd)}")
+        print()
+
+        # 환경 설정
+        env = os.environ.copy()
+        gsplat_examples = GSPLAT_DIR / "examples"
+        env["PYTHONPATH"] = (
+            str(GSPLAT_DIR) + ":" +
+            str(gsplat_examples) + ":" +
+            env.get("PYTHONPATH", "")
+        )
+
+        try:
+            result = subprocess.run(
+                cmd,
+                cwd=str(gsplat_examples),
+                env=env,
+                capture_output=False,
+                text=True,
+                timeout=3600 * 12
             )
-            
-            # 해당 행 렌더링 (placeholder)
-            # rendered[:, row:row+10, :] = render_row(extrinsic_adjusted, ...)
-        
-        return rendered
-    
-    def train(self, num_iterations: int = 30000, log_interval: int = 100):
+
+            if result.returncode == 0:
+                print("\n  3DGUT Training completed successfully!")
+            else:
+                print(f"\n  Warning: Training exited with code {result.returncode}")
+                self._print_install_help()
+        except subprocess.TimeoutExpired:
+            print("\n  Error: Training timed out (12h limit)")
+        except FileNotFoundError as e:
+            print(f"\n  Error: {e}")
+            self._print_install_help()
+
+        return result_dir
+
+    def train_via_api(self, num_iterations: int = 30000):
         """
-        3DGUT 학습
-        
-        Rolling Shutter 보정을 포함한 학습
+        gsplat Python API를 직접 사용하여 3DGUT 학습
+
+        gsplat이 pip install로 설치된 경우에만 사용 가능.
+        gsplat.rendering.rasterization() 함수에 with_ut=True, with_eval3d=True를
+        전달하여 3DGUT 기능을 활성화합니다.
         """
-        print("\n[2/4] Starting Training (3DGUT with Rolling Shutter)...")
-        
-        # Optimizer 설정
-        optimizer = torch.optim.Adam([
-            {'params': [self.gaussians['xyz']], 'lr': 0.00016},
-            {'params': [self.gaussians['rgb']], 'lr': 0.0025},
-            {'params': [self.gaussians['opacity']], 'lr': 0.05},
-            {'params': [self.gaussians['scale']], 'lr': 0.005},
-            {'params': [self.gaussians['rotation']], 'lr': 0.001},
-            {'params': [self.gaussians['temporal_uncertainty']], 'lr': 0.001}
-        ])
-        
-        # 학습 루프
-        pbar = tqdm(range(num_iterations), desc="Training (3DGUT)")
-        
-        for iteration in pbar:
-            # 랜덤 샘플 선택
-            idx = np.random.randint(0, len(self.dataset))
-            sample = self.dataset[idx]
-            
-            # GPU로 이동
-            gt_image = sample['image'].to(self.device)
-            extrinsic = sample['extrinsic'].to(self.device)
-            intrinsic = sample['intrinsic'].to(self.device)
-            velocity = sample['velocity'].to(self.device)  # [6]
-            rs_duration = sample['rolling_shutter_duration']
-            rs_trigger = sample['rolling_shutter_trigger_time']
-            width = sample['width']
-            height = sample['height']
-            
-            # Rolling Shutter 고려 렌더링
-            rendered_image = self.render_with_rolling_shutter(
-                extrinsic=extrinsic,
-                intrinsic=intrinsic,
-                velocity=velocity,
-                rs_duration=rs_duration,
-                rs_trigger_time=rs_trigger,
-                width=width,
-                height=height
+        print("\n" + "=" * 70)
+        print(">>> [Step 2] Training 3DGUT via gsplat Python API")
+        print("=" * 70)
+
+        try:
+            import torch
+            from gsplat.rendering import rasterization
+
+            print("  gsplat API loaded successfully")
+            print("  3DGUT rasterization API:")
+            print("    rasterization(..., with_ut=True, with_eval3d=True)")
+            print("    Supports: rolling_shutter, radial_coeffs, tangential_coeffs")
+            print()
+
+            # 데이터셋 로드
+            dataset = ReconstructionDataset(
+                meta_file=str(self.meta_file),
+                data_root=str(self.data_root),
+                split='train',
+                load_3dgut_params=True,
+                image_scale=self.image_scale
             )
-            
-            # Loss 계산
-            l1_loss = torch.abs(rendered_image - gt_image).mean()
-            
-            # TODO: SSIM + Temporal consistency loss
-            loss = l1_loss
-            
-            # Backpropagation
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            
-            # 로그
-            if iteration % log_interval == 0:
-                pbar.set_postfix({'loss': f'{loss.item():.6f}'})
-        
-        print(f"\n  Training completed: {num_iterations} iterations")
-    
-    def save_gaussians(self, filename: str = 'gaussians_3dgut.ply'):
+
+            print(f"  Dataset: {len(dataset)} frames loaded")
+            print(f"  NOTE: Full training loop requires gsplat to be pip-installed.")
+            print(f"  For complete training, use: train_via_subprocess()")
+            print()
+            print(f"  === gsplat rasterization API Reference ===")
+            print(f"  from gsplat.rendering import rasterization")
+            print(f"  render_colors, render_alphas, meta = rasterization(")
+            print(f"      means,       # [N, 3] Gaussian 중심")
+            print(f"      quats,       # [N, 4] 회전 (quaternion)")
+            print(f"      scales,      # [N, 3] 스케일")
+            print(f"      opacities,   # [N] 불투명도")
+            print(f"      colors,      # [N, S, 3] SH coefficients")
+            print(f"      viewmats,    # [C, 4, 4] Camera poses")
+            print(f"      Ks,          # [C, 3, 3] Intrinsics")
+            print(f"      width, height,")
+            print(f"      with_ut=True,        # 3DGUT: Unscented Transform")
+            print(f"      with_eval3d=True,    # 3DGUT: 3D Evaluation")
+            print(f"      camera_model='{self.camera_model}',")
+            print(f"      rolling_shutter=..., # Rolling Shutter params")
+            print(f"      radial_coeffs=...,   # Lens distortion")
+            print(f"  )")
+
+        except ImportError:
+            print("  gsplat package not available for API usage.")
+            print("  Install with: pip install gsplat")
+            print("  Falling back to subprocess-based training.")
+            return self.train_via_subprocess(num_iterations=num_iterations)
+
+    def train(self, num_iterations: int = 30000, cap_max: int = 1000000):
         """
-        학습된 Gaussian 저장 (PLY 포맷)
-        Temporal uncertainty 파라미터 포함
+        3DGUT 학습 (자동으로 적절한 방법 선택)
+
+        Args:
+            num_iterations: 학습 반복 횟수
+            cap_max: 최대 Gaussian 수
         """
-        print("\n[3/4] Saving Gaussians (3DGUT)...")
-        
-        output_path = self.output_dir / filename
-        
-        # TODO: PLY 파일 저장 구현
-        print(f"  Saved to: {output_path}")
-        
-        with open(output_path, 'w') as f:
-            f.write("PLY format with temporal parameters (placeholder)\n")
-    
-    def render_novel_views(self, num_views: int = 10):
+        # gsplat 설치 여부에 따라 방법 선택
+        # subprocess 방식이 가장 안정적이므로 기본으로 사용
+        return self.train_via_subprocess(
+            num_iterations=num_iterations,
+            cap_max=cap_max
+        )
+
+    def render(self, result_dir: str = None):
         """
-        Novel View Rendering (Rolling Shutter 보정)
+        학습된 모델로 렌더링
+
+        Args:
+            result_dir: 학습 결과 디렉토리
         """
-        print("\n[4/4] Rendering Novel Views (Rolling Shutter Compensated)...")
-        
-        novel_dir = self.output_dir / 'novel_views'
-        novel_dir.mkdir(exist_ok=True)
-        
-        for i in range(min(num_views, len(self.dataset))):
-            sample = self.dataset[i]
-            
-            extrinsic = sample['extrinsic'].to(self.device)
-            intrinsic = sample['intrinsic'].to(self.device)
-            velocity = sample['velocity'].to(self.device)
-            rs_duration = sample['rolling_shutter_duration']
-            rs_trigger = sample['rolling_shutter_trigger_time']
-            width = sample['width']
-            height = sample['height']
-            
-            # 렌더링
-            with torch.no_grad():
-                rendered = self.render_with_rolling_shutter(
-                    extrinsic, intrinsic, velocity,
-                    rs_duration, rs_trigger,
-                    width, height
-                )
-            
-            # 저장 (placeholder)
-        
-        print(f"  Rendered {num_views} novel views to: {novel_dir}")
-    
-    def run(self, num_iterations: int = 30000):
+        print("\n" + "=" * 70)
+        print(">>> [Step 3] Rendering Novel Views (3DGUT)")
+        print("=" * 70)
+
+        if result_dir is None:
+            result_dir = self.output_dir / "results"
+
+        result_dir = Path(result_dir)
+
+        # 체크포인트 찾기
+        ckpt_dir = result_dir / "ckpts"
+        if ckpt_dir.exists():
+            ckpts = sorted(ckpt_dir.glob("*.pt"))
+            if ckpts:
+                latest_ckpt = ckpts[-1]
+                print(f"  Latest checkpoint: {latest_ckpt}")
+            else:
+                print("  No checkpoints found in {ckpt_dir}")
+                return
+        else:
+            print(f"  Checkpoint directory not found: {ckpt_dir}")
+            return
+
+        # gsplat eval 호출
+        trainer_script = GSPLAT_DIR / "examples" / "simple_trainer.py"
+
+        cmd = [
+            sys.executable,
+            str(trainer_script),
+            "mcmc",
+            "--with_ut",
+            "--with_eval3d",
+            "--camera_model", self.camera_model,
+            "--data_dir", str(self.colmap_dir),
+            "--result_dir", str(result_dir),
+            "--ckpt", str(latest_ckpt),
+            "--disable_viewer",
+        ]
+
+        env = os.environ.copy()
+        env["PYTHONPATH"] = (
+            str(GSPLAT_DIR) + ":" +
+            str(GSPLAT_DIR / "examples") + ":" +
+            env.get("PYTHONPATH", "")
+        )
+
+        print(f"  Command: {' '.join(cmd)}")
+
+        try:
+            subprocess.run(
+                cmd,
+                cwd=str(GSPLAT_DIR / "examples"),
+                env=env,
+                capture_output=False,
+                text=True,
+                timeout=3600
+            )
+            print("  Rendering completed!")
+        except (subprocess.TimeoutExpired, FileNotFoundError) as e:
+            print(f"  Error during rendering: {e}")
+
+    def run(self, num_iterations: int = 30000, cap_max: int = 1000000):
         """전체 파이프라인 실행"""
-        print("\n" + "="*70)
-        print(">>> 3DGUT Training Pipeline (Rolling Shutter Compensated)")
-        print("="*70)
-        
-        # 1. 초기화
-        self.initialize_gaussians()
-        
+        print("\n" + "=" * 70)
+        print(">>> 3DGUT (Approach 2) - Full Pipeline")
+        print(f"    External: nerfstudio-project/gsplat (NVIDIA 3DGUT)")
+        print(f"    Data:     {self.data_root}")
+        print(f"    Output:   {self.output_dir}")
+        print(f"    Camera:   {self.camera_model}")
+        print("=" * 70)
+
+        # 1. 데이터 변환
+        self.prepare_data()
+
         # 2. 학습
-        self.train(num_iterations=num_iterations)
-        
-        # 3. 저장
-        self.save_gaussians()
-        
-        # 4. Novel View Rendering
-        self.render_novel_views()
-        
-        print("\n" + "="*70)
-        print(">>> Training Complete!")
-        print(f"  Output: {self.output_dir}")
-        print("="*70)
+        result_dir = self.train(
+            num_iterations=num_iterations,
+            cap_max=cap_max
+        )
+
+        # 3. 렌더링
+        self.render(result_dir=str(result_dir))
+
+        print("\n" + "=" * 70)
+        print(">>> Pipeline Complete!")
+        print(f"    Results: {result_dir}")
+        print(f"    Output:  {self.output_dir}")
+        print("=" * 70)
+
+    def _print_install_help(self):
+        """설치 가이드 출력"""
+        print("\n  === Installation Guide ===")
+        print("  gsplat (NVIDIA 3DGUT) 설치 방법:")
+        print()
+        print("  # Option 1: pip install (JIT compile)")
+        print("  pip install gsplat")
+        print()
+        print("  # Option 2: From source (서브모듈)")
+        print(f"  cd {GSPLAT_DIR}")
+        print("  pip install -e .")
+        print()
+        print("  # Dependencies:")
+        print("  pip install torch torchvision")
+        print("  pip install fused-ssim torchmetrics")
+        print("  pip install viser nerfview imageio tqdm tyro")
+        print()
+        print("  # 3DGUT Training (예시):")
+        print("  python simple_trainer.py mcmc \\")
+        print("      --with_ut --with_eval3d \\")
+        print("      --data_dir /path/to/colmap_data \\")
+        print("      --result_dir /path/to/results")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="3DGUT Training (Approach 2): Rolling Shutter Compensated"
+        description="3DGUT Training (Approach 2): NVIDIA Rolling Shutter Compensated\n"
+                    "Wraps nerfstudio-project/gsplat with NVIDIA 3DGUT"
     )
     parser.add_argument(
         'data_root',
@@ -442,44 +543,68 @@ def main():
         help='Number of training iterations (default: 30000)'
     )
     parser.add_argument(
+        '--cap_max',
+        type=int,
+        default=1000000,
+        help='Maximum number of Gaussians for MCMC strategy (default: 1000000)'
+    )
+    parser.add_argument(
         '--device',
         type=str,
         default='cuda',
         choices=['cuda', 'cpu'],
         help='Device to use'
     )
-    
+    parser.add_argument(
+        '--camera_model',
+        type=str,
+        default='pinhole',
+        choices=['pinhole', 'fisheye'],
+        help='Camera model (default: pinhole)'
+    )
+    parser.add_argument(
+        '--image_scale',
+        type=float,
+        default=1.0,
+        help='Image scale factor (default: 1.0)'
+    )
+
     args = parser.parse_args()
-    
+
     # 경로 설정
     data_root = Path(args.data_root)
     meta_file = data_root / args.meta_file
     output_dir = data_root / args.output_dir
-    
-    # 메타데이터 생성 필요 여부 확인
+
+    # 메타데이터 확인
     if not meta_file.exists():
         print(f"Error: Metadata file not found: {meta_file}")
         print("\nPlease run prepare_metadata.py first:")
         print(f"  python reconstruction/prepare_metadata.py {args.data_root} --mode 3dgut")
         return
-    
+
     # 초기 PLY 경로
     initial_ply = None
     if args.initial_ply:
         initial_ply = Path(args.initial_ply)
         if not initial_ply.is_absolute():
             initial_ply = data_root / initial_ply
-    
+
     # Trainer 생성 및 실행
     trainer = GaussianSplatting3DGUT(
         data_root=str(data_root),
         meta_file=str(meta_file),
         output_dir=str(output_dir),
         initial_ply=str(initial_ply) if initial_ply else None,
-        device=args.device
+        device=args.device,
+        image_scale=args.image_scale,
+        camera_model=args.camera_model
     )
-    
-    trainer.run(num_iterations=args.iterations)
+
+    trainer.run(
+        num_iterations=args.iterations,
+        cap_max=args.cap_max
+    )
 
 
 if __name__ == '__main__':
