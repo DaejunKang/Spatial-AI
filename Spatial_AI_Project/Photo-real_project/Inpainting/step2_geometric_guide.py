@@ -260,22 +260,43 @@ class GeometricGuideGenerator:
         """
         RANSAC 실패 시 사용할 간단한 depth inpainting
         
+        Note: cv2.inpaint는 8-bit 이미지만 지원하므로,
+              depth map을 8-bit로 변환 후 inpaint하고 다시 스케일링합니다.
+        
         Args:
-            depth_map: 원본 depth map
-            hole_mask: 구멍 마스크
+            depth_map: 원본 depth map (float32)
+            hole_mask: 구멍 마스크 (uint8, 255=구멍)
         
         Returns:
-            filled_depth: 채워진 depth map
+            filled_depth: 채워진 depth map (float32)
         """
-        # OpenCV의 inpaint 사용 (주변 값의 보간)
-        depth_uint16 = np.clip(depth_map, 0, 65535).astype(np.uint16)
-        filled_depth = cv2.inpaint(
-            depth_uint16,
+        # cv2.inpaint는 uint8 또는 float32 3채널만 지원
+        # depth를 0-255 범위의 uint8로 정규화하여 inpainting 수행
+        depth_min = np.min(depth_map[depth_map > 0]) if np.any(depth_map > 0) else 0
+        depth_max = np.max(depth_map) if np.max(depth_map) > 0 else 1.0
+        depth_range = depth_max - depth_min if depth_max > depth_min else 1.0
+        
+        # 정규화 (0-255)
+        depth_normalized = np.clip(
+            (depth_map - depth_min) / depth_range * 255, 0, 255
+        ).astype(np.uint8)
+        
+        # cv2.inpaint (8-bit)
+        filled_normalized = cv2.inpaint(
+            depth_normalized,
             hole_mask,
-            inpaintRadius=3,
+            inpaintRadius=5,
             flags=cv2.INPAINT_TELEA
         )
-        return filled_depth.astype(np.float32)
+        
+        # 원래 스케일로 복원
+        filled_depth = filled_normalized.astype(np.float32) / 255.0 * depth_range + depth_min
+        
+        # 원래 유효했던 영역은 원본 값 유지
+        valid_mask = (hole_mask == 0) & (depth_map > 0)
+        filled_depth[valid_mask] = depth_map[valid_mask]
+        
+        return filled_depth
 
 
 def main():
@@ -286,8 +307,9 @@ def main():
         description="Inpainting Step 2: Geometric Guide Generation"
     )
     parser.add_argument(
-        'data_root',
+        '--data_root',
         type=str,
+        required=True,
         help="Path to data directory (containing step1_warped/)"
     )
     parser.add_argument(

@@ -271,7 +271,9 @@ class COLMAPInpainter:
             result = self._inpaint_with_depth(img, mask, depth_map)
         else:
             # Depth 없으면 기본 인페인팅
-            result = cv2.inpaint(img, 255 - mask, 5, cv2.INPAINT_TELEA)
+            # mask: 255=정적, 0=동적 → cv2.inpaint는 255=인페인트 영역
+            hole_mask = (mask == 0).astype(np.uint8) * 255
+            result = cv2.inpaint(img, hole_mask, 5, cv2.INPAINT_TELEA)
         
         # 저장
         cv2.imwrite(str(self.output_dir / img_file.name), result)
@@ -284,35 +286,67 @@ class COLMAPInpainter:
             with open(depth_file, 'rb') as f:
                 width = np.fromfile(f, dtype=np.int32, count=1)[0]
                 height = np.fromfile(f, dtype=np.int32, count=1)[0]
+                channels = np.fromfile(f, dtype=np.int32, count=1)[0]
                 depth_map = np.fromfile(f, dtype=np.float32, count=width*height)
                 depth_map = depth_map.reshape((height, width))
             
             return depth_map
-        except:
+        except (IOError, ValueError, IndexError) as e:
+            print(f"  Warning: Failed to read depth: {depth_file} ({e})")
             return None
     
     def _inpaint_with_depth(self, image, mask, depth_map):
         """
         Depth 정보를 활용한 인페인팅
         
+        Depth 기반 우선순위: 구멍 영역의 경계에서 가까운 depth(배경)부터
+        점진적으로 채워나가는 방식. 구멍 마스크를 depth 값에 따라
+        여러 레이어로 분할하여 순차적으로 inpainting합니다.
+        
         Args:
             image: 원본 이미지
             mask: 동적 객체 마스크 (255=정적, 0=동적)
-            depth_map: COLMAP depth map
+            depth_map: COLMAP depth map (float32)
         
         Returns:
             inpainted_image: 인페인팅된 이미지
         """
-        # 구멍 영역 (동적 객체)
-        hole_mask = (mask == 0).astype(np.uint8)
+        # 구멍 영역 (동적 객체) - cv2.inpaint는 255=인페인트 영역
+        hole_mask = (mask == 0).astype(np.uint8) * 255
         
-        # Depth 기반 우선순위 인페인팅
-        # 가까운 배경부터 채워나감
-        if depth_map is not None and depth_map.shape == hole_mask.shape:
-            # Depth 기반 정렬
-            result = cv2.inpaint(image, hole_mask, 5, cv2.INPAINT_TELEA)
+        if depth_map is not None and depth_map.shape[:2] == image.shape[:2]:
+            # Depth 기반 계층적 인페인팅:
+            # 가까운 depth(배경)부터 채워나감으로써 원근 일관성 향상
+            result = image.copy()
+            remaining_mask = hole_mask.copy()
+            
+            # Depth 값 범위를 N개 레이어로 분할
+            valid_depth = depth_map[hole_mask > 0]
+            if len(valid_depth) > 0 and valid_depth.max() > 0:
+                n_layers = 4
+                depth_min = valid_depth[valid_depth > 0].min() if np.any(valid_depth > 0) else 0
+                depth_max = valid_depth.max()
+                thresholds = np.linspace(depth_min, depth_max, n_layers + 1)
+                
+                for i in range(n_layers):
+                    # 현재 depth 범위에 해당하는 구멍만 inpainting
+                    layer_mask = (
+                        (remaining_mask > 0) &
+                        (depth_map >= thresholds[i]) &
+                        (depth_map < thresholds[i + 1])
+                    ).astype(np.uint8) * 255
+                    
+                    if np.sum(layer_mask) > 0:
+                        result = cv2.inpaint(result, layer_mask, 5, cv2.INPAINT_TELEA)
+                        remaining_mask[layer_mask > 0] = 0
+                
+                # 남은 영역 처리
+                if np.sum(remaining_mask) > 0:
+                    result = cv2.inpaint(result, remaining_mask, 5, cv2.INPAINT_TELEA)
+            else:
+                result = cv2.inpaint(image, hole_mask, 5, cv2.INPAINT_TELEA)
         else:
-            # 기본 인페인팅
+            # Depth 없으면 기본 인페인팅
             result = cv2.inpaint(image, hole_mask, 5, cv2.INPAINT_TELEA)
         
         return result

@@ -66,30 +66,53 @@ class GenerativeInpainter:
 
         self.device = device
 
-    def process(self, image, mask, depth_map):
+    def process(self, image, mask, depth_map, sd_resolution=512):
         """
         Input:
             image: (H, W, 3) numpy array [BGR] - 구멍난 이미지
             mask: (H, W) numpy array [0 or 255] - 인페인팅 영역
             depth_map: (H, W) numpy array [uint16 or float] - 기하학적 가이드
+            sd_resolution: Stable Diffusion 입력 해상도 (기본 512, 768도 가능)
         Output:
             inpainted_image: (H, W, 3) numpy array [BGR]
         """
         # 1. Preprocessing (Numpy -> PIL)
-        h, w = image.shape[:2]
+        h_orig, w_orig = image.shape[:2]
         img_pil = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
         mask_pil = Image.fromarray(mask)
         
         # Depth Map Normalization for ControlNet
         # ControlNet은 0~255 사이의 3채널 RGB 포맷 Depth 이미지를 기대함
         if depth_map.dtype == np.uint16:
-            depth_norm = (depth_map / 65535.0 * 255).astype(np.uint8)
+            depth_norm = (depth_map.astype(np.float32) / 65535.0 * 255).astype(np.uint8)
+        elif depth_map.dtype == np.float32 or depth_map.dtype == np.float64:
+            d_min = depth_map[depth_map > 0].min() if np.any(depth_map > 0) else 0
+            d_max = depth_map.max() if depth_map.max() > 0 else 1.0
+            d_range = d_max - d_min if d_max > d_min else 1.0
+            depth_norm = np.clip((depth_map - d_min) / d_range * 255, 0, 255).astype(np.uint8)
         else:
             depth_norm = depth_map.astype(np.uint8)
             
         depth_pil = Image.fromarray(np.stack([depth_norm]*3, axis=-1))
 
-        # 2. Prompt Engineering
+        # 2. 리사이즈: Stable Diffusion은 고정 해상도 입력 필요
+        # SD 1.5는 512x512, 768x768 등 64의 배수 해상도 지원
+        # 원본이 크면 다운스케일 후 인페인팅하고 원본 크기로 복원
+        sd_w = (w_orig // 64) * 64 if w_orig <= sd_resolution * 2 else sd_resolution
+        sd_h = (h_orig // 64) * 64 if h_orig <= sd_resolution * 2 else sd_resolution
+        
+        # 최소 64x64, 최대 1024x1024 제한
+        sd_w = max(64, min(sd_w, 1024))
+        sd_h = max(64, min(sd_h, 1024))
+        
+        needs_resize = (sd_w != w_orig) or (sd_h != h_orig)
+        
+        if needs_resize:
+            img_pil = img_pil.resize((sd_w, sd_h), Image.LANCZOS)
+            mask_pil = mask_pil.resize((sd_w, sd_h), Image.NEAREST)
+            depth_pil = depth_pil.resize((sd_w, sd_h), Image.LANCZOS)
+
+        # 3. Prompt Engineering
         # 자율주행 도로 환경에 특화된 프롬프트
         positive_prompt = (
             f"{self.trigger_word}, sharp focus, photorealistic, 8k uhd, "
@@ -100,7 +123,7 @@ class GenerativeInpainter:
             "cars, pedestrians, objects, obstacles, distortions"
         )
 
-        # 3. Inference
+        # 4. Inference
         with torch.inference_mode():
             result = self.pipe(
                 prompt=positive_prompt,
@@ -108,13 +131,18 @@ class GenerativeInpainter:
                 image=img_pil,
                 mask_image=mask_pil,
                 control_image=depth_pil,
-                num_inference_steps=20, # 속도와 품질의 타협점 (UniPC 기준)
+                width=sd_w,
+                height=sd_h,
+                num_inference_steps=20,  # 속도와 품질의 타협점 (UniPC 기준)
                 guidance_scale=7.5,
-                controlnet_conditioning_scale=0.8, # Depth 가이드를 얼마나 강하게 따를지 (0.0 ~ 1.0)
-                strength=1.0 # 1.0 = 마스크 영역을 완전히 새로 그림
+                controlnet_conditioning_scale=0.8,  # Depth 가이드 강도 (0.0~1.0)
+                strength=1.0  # 1.0 = 마스크 영역을 완전히 새로 그림
             ).images[0]
 
-        # 4. Post-processing (PIL -> Numpy BGR)
+        # 5. Post-processing: 원본 해상도로 복원
+        if needs_resize:
+            result = result.resize((w_orig, h_orig), Image.LANCZOS)
+        
         result_np = cv2.cvtColor(np.array(result), cv2.COLOR_RGB2BGR)
         
         # 원본 보존 (마스크 바깥 영역은 원본 그대로 유지)

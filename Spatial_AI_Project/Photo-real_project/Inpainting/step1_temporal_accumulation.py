@@ -266,7 +266,6 @@ class TemporalStaticAccumulator:
             
             # 캔버스 생성 (빈 공간은 검은색)
             warped_img = np.zeros((height, width, 3), dtype=np.uint8)
-            z_buffer = np.full((height, width), np.inf, dtype=np.float32)
             
             # 픽셀 좌표 계산
             u = np.round(pts_2d[:, 0]).astype(int)
@@ -280,12 +279,15 @@ class TemporalStaticAccumulator:
             z_valid = z_values[valid_uv]
             clrs_valid_filtered = clrs_valid[valid_uv]
             
-            # Z-buffering: 가까운 점만 그리기
-            for i in range(len(u_valid)):
-                uu, vv, zz = u_valid[i], v_valid[i], z_valid[i]
-                if zz < z_buffer[vv, uu]:
-                    z_buffer[vv, uu] = zz
-                    warped_img[vv, uu] = (clrs_valid_filtered[i] * 255).astype(np.uint8)
+            # Z-buffering: 가까운 점만 그리기 (벡터화)
+            # depth 기준 내림차순 정렬 → 먼 점부터 그리면 가까운 점이 자동으로 덮어씀
+            sort_idx = np.argsort(-z_valid)  # 먼 점부터
+            u_sorted = u_valid[sort_idx]
+            v_sorted = v_valid[sort_idx]
+            clrs_sorted = clrs_valid_filtered[sort_idx]
+            
+            # 배열 인덱싱으로 한 번에 그리기 (painter's algorithm)
+            warped_img[v_sorted, u_sorted] = (clrs_sorted * 255).astype(np.uint8)
             
             # Hole filling: 작은 구멍을 inpainting으로 채움
             warped_gray = cv2.cvtColor(warped_img, cv2.COLOR_BGR2GRAY)
@@ -360,8 +362,9 @@ def main():
         description="Inpainting Step 1: Temporal Accumulation"
     )
     parser.add_argument(
-        'data_root',
+        '--data_root',
         type=str,
+        required=True,
         help="Path to preprocessing output directory (containing images/, masks/, poses/)"
     )
     parser.add_argument(

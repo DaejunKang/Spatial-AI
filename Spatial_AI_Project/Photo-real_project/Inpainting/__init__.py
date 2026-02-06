@@ -30,10 +30,15 @@ except ImportError:
     GeometricGuideGenerator = None
 
 try:
-    from .step3_final_inpainting import FinalInpainter, run_generative_inpainting
+    from .step3_final_inpainting import GenerativeInpainter, run_step3
+    # Backward-compatible aliases
+    FinalInpainter = GenerativeInpainter
+    run_generative_inpainting = run_step3
 except ImportError:
+    GenerativeInpainter = None
     FinalInpainter = None
     run_generative_inpainting = None
+    run_step3 = None
 
 try:
     from .training_dataset_builder import TrainingDatasetBuilder
@@ -43,7 +48,9 @@ except ImportError:
 __all__ = [
     "TemporalStaticAccumulator",
     "GeometricGuideGenerator",
-    "FinalInpainter",
-    "run_generative_inpainting",
+    "GenerativeInpainter",
+    "FinalInpainter",  # backward-compatible alias
+    "run_step3",
+    "run_generative_inpainting",  # backward-compatible alias
     "TrainingDatasetBuilder",
 ]

@@ -30,7 +30,6 @@ Output:
 import os
 import sys
 import argparse
-import subprocess
 from pathlib import Path
 
 
@@ -120,33 +119,31 @@ class SequentialInpainter:
         Step 1: Temporal Accumulation 실행
         
         시계열 정보를 활용한 배경 누적 및 투영
+        직접 import하여 호출 (subprocess 대비 에러 전파 개선)
         """
-        cmd = [
-            sys.executable,  # Python interpreter
-            str(self.step1_script),
-            '--data_root', str(self.data_root),
-            '--voxel_size', str(self.voxel_size),
-            '--sample_interval', str(self.sample_interval),
-        ]
+        try:
+            from step1_temporal_accumulation import TemporalStaticAccumulator
+        except ImportError:
+            # 패키지 경로 문제 시 상대 import 시도
+            from .step1_temporal_accumulation import TemporalStaticAccumulator
         
         try:
-            result = subprocess.run(
-                cmd, 
-                check=True, 
-                capture_output=True, 
-                text=True
+            accumulator = TemporalStaticAccumulator(
+                data_root=str(self.data_root),
+                voxel_size=self.voxel_size,
+                sample_interval=self.sample_interval
             )
-            print("✓ Step 1 completed successfully")
+            accumulator.run()
+            
+            print("Step 1 completed successfully")
             
             # 출력 확인
             if self.step1_dir.exists():
                 output_count = len(list(self.step1_dir.glob('*.png')))
                 print(f"  Generated {output_count} warped images")
             
-        except subprocess.CalledProcessError as e:
-            print(f"✗ Step 1 failed: {e}")
-            print(f"  stdout: {e.stdout}")
-            print(f"  stderr: {e.stderr}")
+        except Exception as e:
+            print(f"Step 1 failed: {e}")
             raise
     
     def _run_step2(self):
@@ -154,35 +151,30 @@ class SequentialInpainter:
         Step 2: Geometric Guide Generation 실행
         
         LiDAR depth 또는 평면 추정으로 기하학적 가이드 생성
+        직접 import하여 호출 (subprocess 대비 에러 전파 개선)
         """
-        cmd = [
-            sys.executable,
-            str(self.step2_script),
-            '--data_root', str(self.data_root),
-            '--ground_ratio', str(self.ground_ratio),
-        ]
-        
-        if not self.use_lidar:
-            cmd.append('--no_lidar')
+        try:
+            from step2_geometric_guide import GeometricGuideGenerator
+        except ImportError:
+            from .step2_geometric_guide import GeometricGuideGenerator
         
         try:
-            result = subprocess.run(
-                cmd,
-                check=True,
-                capture_output=True,
-                text=True
+            generator = GeometricGuideGenerator(
+                data_root=str(self.data_root),
+                use_lidar_depth=self.use_lidar,
+                ground_region_ratio=self.ground_ratio
             )
-            print("✓ Step 2 completed successfully")
+            generator.run()
+            
+            print("Step 2 completed successfully")
             
             # 출력 확인
             if self.step2_dir.exists():
                 output_count = len(list(self.step2_dir.glob('*.png')))
                 print(f"  Generated {output_count} depth guides")
             
-        except subprocess.CalledProcessError as e:
-            print(f"✗ Step 2 failed: {e}")
-            print(f"  stdout: {e.stdout}")
-            print(f"  stderr: {e.stderr}")
+        except Exception as e:
+            print(f"Step 2 failed: {e}")
             raise
     
     def _run_step3(self):
@@ -190,34 +182,29 @@ class SequentialInpainter:
         Step 3: Final Inpainting 실행
         
         Stable Diffusion + ControlNet 기반 최종 생성
+        직접 import하여 호출 (subprocess 대비 에러 전파 개선)
         """
-        cmd = [
-            sys.executable,
-            str(self.step3_script),
-            '--data_root', str(self.data_root),
-        ]
-        
-        if self.lora_path:
-            cmd.extend(['--lora_path', str(self.lora_path)])
+        try:
+            from step3_final_inpainting import run_step3
+        except ImportError:
+            from .step3_final_inpainting import run_step3
         
         try:
-            result = subprocess.run(
-                cmd,
-                check=True,
-                capture_output=True,
-                text=True
+            run_step3(
+                data_root=str(self.data_root),
+                lora_path=str(self.lora_path) if self.lora_path else None
             )
-            print("✓ Step 3 completed successfully")
+            
+            print("Step 3 completed successfully")
             
             # 출력 확인
             if self.step3_dir.exists():
                 output_count = len(list(self.step3_dir.glob('*.jpg')))
+                output_count += len(list(self.step3_dir.glob('*.png')))
                 print(f"  Generated {output_count} final images")
             
-        except subprocess.CalledProcessError as e:
-            print(f"✗ Step 3 failed: {e}")
-            print(f"  stdout: {e.stdout}")
-            print(f"  stderr: {e.stderr}")
+        except Exception as e:
+            print(f"Step 3 failed: {e}")
             raise
     
     def _finalize_output(self):
