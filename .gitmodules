@@ -1,0 +1,6 @@
+[submodule "Spatial_AI_Project/Photo-real_project/reconstruction/external/gaussian-splatting"]
+	path = Spatial_AI_Project/Photo-real_project/reconstruction/external/gaussian-splatting
+	url = https://github.com/graphdeco-inria/gaussian-splatting.git
+[submodule "Spatial_AI_Project/Photo-real_project/reconstruction/external/gsplat"]
+	path = Spatial_AI_Project/Photo-real_project/reconstruction/external/gsplat
+	url = https://github.com/nerfstudio-project/gsplat.git
