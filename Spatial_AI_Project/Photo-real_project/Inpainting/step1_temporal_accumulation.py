@@ -111,6 +111,11 @@ class TemporalStaticAccumulator:
         )
         print(f"  After outlier removal: {len(self.global_pcd.points):,}")
         
+        # [추가] 3DGS 학습 초기화용 PLY 파일 저장
+        save_path = self.output_dir / 'accumulated_static.ply'
+        o3d.io.write_point_cloud(str(save_path), self.global_pcd)
+        print(f"  Saved global point cloud to: {save_path}")
+        
     def _backward_reprojection(self):
         """
         Backward Pass: 전역 포인트 클라우드를 각 프레임에 다시 투영하여
