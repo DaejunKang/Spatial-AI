@@ -1470,6 +1470,173 @@ python Inpainting/approach2_sequential.py /path/to/data
 
 ---
 
-**최종 확인일**: 2026-02-05  
+## 🎨 Style LoRA Training Pipeline
+
+### 개요
+
+**Waymo/KITTI 데이터셋의 이미지를 사용하여 Stable Diffusion v1.5의 스타일(도로 질감, 색감)을 학습시키는 파이프라인입니다.**
+
+학습된 LoRA 가중치(`.safetensors`)는 Step 3 Inpainting에서 도메인 특화 생성 품질을 향상시킵니다.
+
+### 파이프라인 구조
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│  Style LoRA Training Pipeline                                  │
+│                                                                │
+│  1. 데이터셋 준비                                              │
+│     training_dataset_builder.py                                │
+│     → 깨끗한 프레임 필터링, metadata.jsonl 생성                │
+│                                                                │
+│  2. LoRA 학습                                                  │
+│     train_style_lora.py                                        │
+│     → SD v1.5 U-Net Attention에 LoRA 적용                     │
+│     → pytorch_lora_weights.safetensors 출력                    │
+│                                                                │
+│  3. 추론 & 테스트                                              │
+│     lora_inference.py                                          │
+│     → Text-to-Image, Inpainting, 품질 평가                    │
+│                                                                │
+│  4. Step 3 연동                                                │
+│     step3_final_inpainting.py --lora_path ...                  │
+│     → 학습된 LoRA로 전체 데이터셋 인페인팅                     │
+│                                                                │
+│  UI: lora_ui.py (Gradio 웹 인터페이스)                         │
+│     → 위 전체 파이프라인을 UI에서 실행 가능                     │
+└────────────────────────────────────────────────────────────────┘
+```
+
+### 파일 구조
+
+| 파일 | 설명 |
+|------|------|
+| `train_style_lora.py` | LoRA 학습 스크립트 (StyleLoRADataset + StyleLoRATrainer) |
+| `lora_inference.py` | 추론 & 품질 평가 (LoRAInference + LoRAQualityEvaluator) |
+| `lora_ui.py` | Gradio 기반 통합 UI (데이터 준비~학습~추론~평가~Step3 연동) |
+| `training_dataset_builder.py` | 학습 데이터셋 빌더 (기존) |
+
+### 빠른 시작
+
+#### CLI 사용
+
+```bash
+# 1. LoRA 학습
+python Inpainting/train_style_lora.py \
+    --data_root /path/to/waymo_nre_format \
+    --output_dir ./lora_output \
+    --trigger_word "WaymoStyle road" \
+    --resolution 512 \
+    --max_train_steps 1000 \
+    --lora_rank 16
+
+# 2. 추론 테스트
+python Inpainting/lora_inference.py generate \
+    --lora_path ./lora_output/pytorch_lora_weights.safetensors \
+    --prompt "WaymoStyle road, photorealistic asphalt, 8k" \
+    --num_images 4
+
+# 3. LoRA 전/후 비교
+python Inpainting/lora_inference.py compare \
+    --lora_path ./lora_output/pytorch_lora_weights.safetensors \
+    --output_dir ./comparison
+
+# 4. Step 3에 LoRA 적용
+python Inpainting/step3_final_inpainting.py \
+    --data_root /path/to/data \
+    --lora_path ./lora_output/pytorch_lora_weights.safetensors
+```
+
+#### UI 사용 (Gradio)
+
+```bash
+# UI 서버 실행
+python Inpainting/lora_ui.py --port 7860
+
+# 공유 링크 생성
+python Inpainting/lora_ui.py --share
+```
+
+UI는 5개 탭으로 구성:
+1. **데이터셋 준비**: 디렉토리 스캔, 이미지 프리뷰, 필터링
+2. **LoRA 학습**: 하이퍼파라미터 설정 및 학습 실행
+3. **추론 & 테스트**: Text-to-Image, Inpainting
+4. **품질 평가**: PSNR, SSIM, 선명도, LoRA 전/후 비교
+5. **Step 3 연동**: 학습된 LoRA로 전체 인페인팅 실행
+
+#### Python API 사용
+
+```python
+# Quick-start 함수
+from Inpainting.train_style_lora import train_style_lora
+
+result = train_style_lora(
+    data_root="/path/to/waymo_nre_format",
+    output_dir="./lora_output",
+    trigger_word="WaymoStyle road",
+    max_train_steps=1000,
+    lora_rank=16,
+)
+
+# 추론
+from Inpainting.lora_inference import LoRAInference
+
+infer = LoRAInference(lora_path="./lora_output")
+images = infer.generate(
+    "WaymoStyle road, photorealistic asphalt, sharp focus",
+    num_images=4,
+)
+
+# 품질 평가
+from Inpainting.lora_inference import LoRAQualityEvaluator
+
+evaluator = LoRAQualityEvaluator()
+metrics = evaluator.evaluate_generated_only(images[0])
+print(metrics)  # {'sharpness': 150.2, 'brightness_mean': 128.5, ...}
+```
+
+### 학습 설정 가이드
+
+| 파라미터 | 기본값 | 권장 범위 | 설명 |
+|----------|--------|-----------|------|
+| `lora_rank` | 16 | 4-64 | 높을수록 표현력↑, 메모리↑ |
+| `learning_rate` | 1e-4 | 5e-5 ~ 2e-4 | 너무 높으면 과적합 |
+| `max_train_steps` | 1000 | 500-2000 | 이미지 수에 비례 |
+| `train_batch_size` | 1 | 1-4 | VRAM에 따라 조절 |
+| `resolution` | 512 | 512-768 | SD v1.5 기본 512 |
+| `noise_offset` | 0.0 | 0.0-0.1 | 색 대비 향상 |
+| `snr_gamma` | None | 5.0 | Min-SNR weighting |
+
+### 필요 패키지
+
+```bash
+# LoRA 학습 필수
+pip install torch torchvision diffusers transformers accelerate peft safetensors
+
+# UI 실행
+pip install gradio
+
+# 품질 평가
+pip install opencv-python numpy pillow
+```
+
+### 학습 출력물
+
+```
+lora_output/
+├── pytorch_lora_weights.safetensors  # 최종 LoRA 가중치 (~10-50MB)
+├── training_config.json              # 학습 설정 기록
+├── training_log.json                 # 학습 로그 (loss history 등)
+├── checkpoints/                      # 중간 체크포인트
+│   ├── step_000250/
+│   ├── step_000500/
+│   └── ...
+└── samples/                          # 학습 중 생성된 검증 샘플
+    ├── step_000250.png
+    └── ...
+```
+
+---
+
+**최종 확인일**: 2026-02-09  
 **작성자**: Cloud Agent  
-**버전**: 1.1
+**버전**: 2.0

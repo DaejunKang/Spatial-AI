@@ -450,24 +450,27 @@ controlnet = ControlNetModel.from_pretrained(
 ### LoRA 학습 (선택적)
 
 ```bash
-# 학습 데이터 생성
-python Inpainting/training_dataset_builder.py \
-    --data_root /path/to/waymo \
-    --output_dir ./lora_training_data \
-    --num_samples 1000
+# 방법 1: 통합 학습 스크립트 (권장)
+python Inpainting/train_style_lora.py \
+    --data_root /path/to/waymo_nre_format \
+    --output_dir ./lora_output \
+    --trigger_word "WaymoStyle road" \
+    --max_train_steps 1000 \
+    --lora_rank 16
 
-# LoRA 학습 (~2-4시간)
-accelerate launch train_dreambooth_lora.py \
-    --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
-    --instance_data_dir="./lora_training_data" \
-    --output_dir="./trained_lora" \
-    --instance_prompt="WaymoStyle road" \
-    --max_train_steps=1000
+# 방법 2: Gradio UI 사용
+python Inpainting/lora_ui.py --port 7860
+# → 브라우저에서 http://localhost:7860 접속
 
 # 학습된 LoRA 사용
 python Inpainting/approach2_sequential.py \
     /path/to/data \
-    --lora_path ./trained_lora/pytorch_lora_weights.safetensors
+    --lora_path ./lora_output/pytorch_lora_weights.safetensors
+
+# LoRA 전/후 비교
+python Inpainting/lora_inference.py compare \
+    --lora_path ./lora_output/pytorch_lora_weights.safetensors \
+    --output_dir ./comparison
 ```
 
 ---
@@ -498,6 +501,9 @@ Photo-real_project/
 │   ├── step2_geometric_guide.py        # 기하학적 가이드
 │   ├── step3_final_inpainting.py       # AI 최종 생성
 │   ├── training_dataset_builder.py     # LoRA 학습 데이터
+│   ├── train_style_lora.py       # Style LoRA 학습 파이프라인
+│   ├── lora_inference.py         # LoRA 추론 & 품질 평가
+│   ├── lora_ui.py                # Gradio 기반 통합 UI
 │   └── README.md                 # 상세 가이드 (모델 정보 포함)
 │
 ├── download/
@@ -567,5 +573,5 @@ parsing/waymo2nre.py → preprocessing/run_preprocessing.py → Inpainting/appro
 
 ---
 
-**최종 업데이트:** 2026-02-05  
-**버전:** 2.0
+**최종 업데이트:** 2026-02-09  
+**버전:** 2.1
