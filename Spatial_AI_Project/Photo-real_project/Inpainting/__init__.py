@@ -6,10 +6,11 @@ Multi-stage inpainting pipeline:
 2. Geometric Guide: RANSAC 기반 기하학적 depth 추정
 3. Final Inpainting: Multi-view consistent 생성형 인페인팅
 
-Style LoRA Training Pipeline:
-- train_style_lora: Waymo/KITTI 데이터셋으로 SD v1.5 스타일 LoRA 학습
-- lora_inference: 학습된 LoRA로 이미지 생성 & 품질 평가
-- lora_ui: Gradio 기반 통합 사용자 인터페이스
+Style LoRA Training Pipeline (lora/ 하위 패키지):
+- lora.train_style_lora: Waymo/KITTI 데이터셋으로 SD v1.5 스타일 LoRA 학습
+- lora.lora_inference: 학습된 LoRA로 이미지 생성 & 품질 평가
+- lora.training_dataset_builder: 학습 데이터셋 빌더
+- lora.lora_ui: Gradio 기반 통합 사용자 인터페이스
 
 Usage:
     from Photo-real_project.Inpainting import (
@@ -22,13 +23,16 @@ Usage:
         train_style_lora,
         LoRAInference,
         LoRAQualityEvaluator,
+        TrainingDatasetBuilder,
     )
 """
 
-__version__ = "2.0.0"
+__version__ = "2.1.0"
 __author__ = "Photo-real_project Team"
 
-# Import main classes
+# ---------------------------------------------------------------------------
+# Inpainting Pipeline (현재 디렉토리)
+# ---------------------------------------------------------------------------
 try:
     from .step1_temporal_accumulation import TemporalStaticAccumulator
 except ImportError:
@@ -50,14 +54,16 @@ except ImportError:
     run_generative_inpainting = None
     run_step3 = None
 
+# ---------------------------------------------------------------------------
+# Style LoRA Training Pipeline (lora/ 하위 패키지)
+# ---------------------------------------------------------------------------
 try:
-    from .training_dataset_builder import TrainingDatasetBuilder
+    from .lora.training_dataset_builder import TrainingDatasetBuilder
 except ImportError:
     TrainingDatasetBuilder = None
 
-# Style LoRA Training Pipeline
 try:
-    from .train_style_lora import (
+    from .lora.train_style_lora import (
         StyleLoRADataset,
         StyleLoRATrainer,
         train_style_lora,
@@ -68,7 +74,7 @@ except ImportError:
     train_style_lora = None
 
 try:
-    from .lora_inference import LoRAInference, LoRAQualityEvaluator
+    from .lora.lora_inference import LoRAInference, LoRAQualityEvaluator
 except ImportError:
     LoRAInference = None
     LoRAQualityEvaluator = None
@@ -81,8 +87,8 @@ __all__ = [
     "FinalInpainter",  # backward-compatible alias
     "run_step3",
     "run_generative_inpainting",  # backward-compatible alias
+    # Style LoRA Training Pipeline (lora/)
     "TrainingDatasetBuilder",
-    # Style LoRA Training Pipeline
     "StyleLoRADataset",
     "StyleLoRATrainer",
     "train_style_lora",

@@ -451,7 +451,7 @@ controlnet = ControlNetModel.from_pretrained(
 
 ```bash
 # 방법 1: 통합 학습 스크립트 (권장)
-python Inpainting/train_style_lora.py \
+python Inpainting/lora/train_style_lora.py \
     --data_root /path/to/waymo_nre_format \
     --output_dir ./lora_output \
     --trigger_word "WaymoStyle road" \
@@ -459,7 +459,7 @@ python Inpainting/train_style_lora.py \
     --lora_rank 16
 
 # 방법 2: Gradio UI 사용
-python Inpainting/lora_ui.py --port 7860
+python Inpainting/lora/lora_ui.py --port 7860
 # → 브라우저에서 http://localhost:7860 접속
 
 # 학습된 LoRA 사용
@@ -468,7 +468,7 @@ python Inpainting/approach2_sequential.py \
     --lora_path ./lora_output/pytorch_lora_weights.safetensors
 
 # LoRA 전/후 비교
-python Inpainting/lora_inference.py compare \
+python Inpainting/lora/lora_inference.py compare \
     --lora_path ./lora_output/pytorch_lora_weights.safetensors \
     --output_dir ./comparison
 ```
@@ -500,10 +500,12 @@ Photo-real_project/
 │   ├── step1_temporal_accumulation.py  # 시계열 누적
 │   ├── step2_geometric_guide.py        # 기하학적 가이드
 │   ├── step3_final_inpainting.py       # AI 최종 생성
-│   ├── training_dataset_builder.py     # LoRA 학습 데이터
-│   ├── train_style_lora.py       # Style LoRA 학습 파이프라인
-│   ├── lora_inference.py         # LoRA 추론 & 품질 평가
-│   ├── lora_ui.py                # Gradio 기반 통합 UI
+│   ├── lora/                     # Style LoRA Training Pipeline
+│   │   ├── __init__.py           # 패키지 초기화
+│   │   ├── train_style_lora.py   # LoRA 학습 스크립트
+│   │   ├── lora_inference.py     # 추론 & 품질 평가
+│   │   ├── lora_ui.py            # Gradio 기반 통합 UI
+│   │   └── training_dataset_builder.py  # 학습 데이터셋 빌더
 │   └── README.md                 # 상세 가이드 (모델 정보 포함)
 │
 ├── download/

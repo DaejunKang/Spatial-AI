@@ -9,6 +9,8 @@ Gradio 기반 사용자 인터페이스로 다음 기능을 제공합니다:
 
 Usage:
     python lora_ui.py [--port 7860] [--share]
+
+위치: Inpainting/lora/lora_ui.py
 """
 
 import os
@@ -23,6 +25,14 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 import cv2
 from PIL import Image
+
+# CLI 직접 실행 시 상위 경로를 sys.path에 추가하여 sibling import 지원
+_THIS_DIR = Path(__file__).resolve().parent          # Inpainting/lora/
+_INPAINTING_DIR = _THIS_DIR.parent                    # Inpainting/
+if str(_THIS_DIR) not in sys.path:
+    sys.path.insert(0, str(_THIS_DIR))
+if str(_INPAINTING_DIR) not in sys.path:
+    sys.path.insert(0, str(_INPAINTING_DIR))
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -211,7 +221,7 @@ def create_dataset_tab():
             if not data_root.strip():
                 return "데이터 루트 경로를 입력하세요."
             try:
-                from training_dataset_builder import TrainingDatasetBuilder
+                from training_dataset_builder import TrainingDatasetBuilder  # lora/ 내부
 
                 max_s = int(max_samples) if max_samples and int(max_samples) > 0 else None
                 output_dir = str(Path(data_root) / "lora_train_data")
@@ -453,7 +463,7 @@ def create_training_tab(data_root_input, trigger_word_input):
             _training_state["log"] = ""
 
             try:
-                from train_style_lora import StyleLoRADataset, StyleLoRATrainer
+                from train_style_lora import StyleLoRADataset, StyleLoRATrainer  # lora/ 내부
 
                 max_s = int(max_img) if max_img and int(max_img) > 0 else None
 
@@ -1004,7 +1014,7 @@ def create_pipeline_tab():
             if not data_root.strip():
                 return "데이터 루트 경로를 입력하세요."
             try:
-                from step3_final_inpainting import run_step3
+                from step3_final_inpainting import run_step3  # Inpainting/ (상위 폴더)
 
                 lp = lora_path.strip() if lora_path.strip() else None
 

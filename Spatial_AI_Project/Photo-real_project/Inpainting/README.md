@@ -891,7 +891,7 @@ python Inpainting/approach2_sequential.py /path/to/data
 #### 학습 데이터 준비
 ```bash
 # Waymo 도로 scene에서 학습 데이터 생성
-python Inpainting/training_dataset_builder.py \
+python Inpainting/lora/training_dataset_builder.py \
     --data_root /path/to/waymo_data \
     --output_dir ./lora_training_data \
     --num_samples 1000
@@ -1112,7 +1112,7 @@ Type: Fine-tuning adapter for domain adaptation
 **학습 방법:**
 ```bash
 # 학습 데이터셋 생성
-python training_dataset_builder.py \
+python lora/training_dataset_builder.py \
     --data_root /path/to/waymo \
     --output_dir ./lora_training_data
 
@@ -1296,8 +1296,8 @@ huggingface-cli download lllyasviel/control_v11f1p_sd15_depth
 
 **학습 데이터 생성:**
 ```bash
-# Inpainting/training_dataset_builder.py 사용
-python Inpainting/training_dataset_builder.py \
+# Inpainting/lora/training_dataset_builder.py 사용
+python Inpainting/lora/training_dataset_builder.py \
     /path/to/waymo_data \
     --output_dir ./lora_training_data \
     --num_samples 500
@@ -1482,38 +1482,47 @@ python Inpainting/approach2_sequential.py /path/to/data
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
-│  Style LoRA Training Pipeline                                  │
+│  Style LoRA Training Pipeline  (Inpainting/lora/)              │
 │                                                                │
 │  1. 데이터셋 준비                                              │
-│     training_dataset_builder.py                                │
+│     lora/training_dataset_builder.py                           │
 │     → 깨끗한 프레임 필터링, metadata.jsonl 생성                │
 │                                                                │
 │  2. LoRA 학습                                                  │
-│     train_style_lora.py                                        │
+│     lora/train_style_lora.py                                   │
 │     → SD v1.5 U-Net Attention에 LoRA 적용                     │
 │     → pytorch_lora_weights.safetensors 출력                    │
 │                                                                │
 │  3. 추론 & 테스트                                              │
-│     lora_inference.py                                          │
+│     lora/lora_inference.py                                     │
 │     → Text-to-Image, Inpainting, 품질 평가                    │
 │                                                                │
 │  4. Step 3 연동                                                │
 │     step3_final_inpainting.py --lora_path ...                  │
 │     → 학습된 LoRA로 전체 데이터셋 인페인팅                     │
 │                                                                │
-│  UI: lora_ui.py (Gradio 웹 인터페이스)                         │
+│  UI: lora/lora_ui.py (Gradio 웹 인터페이스)                    │
 │     → 위 전체 파이프라인을 UI에서 실행 가능                     │
 └────────────────────────────────────────────────────────────────┘
 ```
 
 ### 파일 구조
 
+```
+Inpainting/lora/
+├── __init__.py                  # 패키지 초기화 & export
+├── train_style_lora.py          # LoRA 학습 (StyleLoRADataset + StyleLoRATrainer)
+├── lora_inference.py            # 추론 & 품질 평가 (LoRAInference + LoRAQualityEvaluator)
+├── lora_ui.py                   # Gradio 기반 통합 UI (5개 탭)
+└── training_dataset_builder.py  # 학습 데이터셋 빌더
+```
+
 | 파일 | 설명 |
 |------|------|
-| `train_style_lora.py` | LoRA 학습 스크립트 (StyleLoRADataset + StyleLoRATrainer) |
-| `lora_inference.py` | 추론 & 품질 평가 (LoRAInference + LoRAQualityEvaluator) |
-| `lora_ui.py` | Gradio 기반 통합 UI (데이터 준비~학습~추론~평가~Step3 연동) |
-| `training_dataset_builder.py` | 학습 데이터셋 빌더 (기존) |
+| `lora/train_style_lora.py` | LoRA 학습 스크립트 (StyleLoRADataset + StyleLoRATrainer) |
+| `lora/lora_inference.py` | 추론 & 품질 평가 (LoRAInference + LoRAQualityEvaluator) |
+| `lora/lora_ui.py` | Gradio 기반 통합 UI (데이터 준비~학습~추론~평가~Step3 연동) |
+| `lora/training_dataset_builder.py` | 학습 데이터셋 빌더 |
 
 ### 빠른 시작
 
@@ -1521,7 +1530,7 @@ python Inpainting/approach2_sequential.py /path/to/data
 
 ```bash
 # 1. LoRA 학습
-python Inpainting/train_style_lora.py \
+python Inpainting/lora/train_style_lora.py \
     --data_root /path/to/waymo_nre_format \
     --output_dir ./lora_output \
     --trigger_word "WaymoStyle road" \
@@ -1530,13 +1539,13 @@ python Inpainting/train_style_lora.py \
     --lora_rank 16
 
 # 2. 추론 테스트
-python Inpainting/lora_inference.py generate \
+python Inpainting/lora/lora_inference.py generate \
     --lora_path ./lora_output/pytorch_lora_weights.safetensors \
     --prompt "WaymoStyle road, photorealistic asphalt, 8k" \
     --num_images 4
 
 # 3. LoRA 전/후 비교
-python Inpainting/lora_inference.py compare \
+python Inpainting/lora/lora_inference.py compare \
     --lora_path ./lora_output/pytorch_lora_weights.safetensors \
     --output_dir ./comparison
 
@@ -1550,10 +1559,10 @@ python Inpainting/step3_final_inpainting.py \
 
 ```bash
 # UI 서버 실행
-python Inpainting/lora_ui.py --port 7860
+python Inpainting/lora/lora_ui.py --port 7860
 
 # 공유 링크 생성
-python Inpainting/lora_ui.py --share
+python Inpainting/lora/lora_ui.py --share
 ```
 
 UI는 5개 탭으로 구성:
@@ -1567,7 +1576,7 @@ UI는 5개 탭으로 구성:
 
 ```python
 # Quick-start 함수
-from Inpainting.train_style_lora import train_style_lora
+from Inpainting.lora import train_style_lora
 
 result = train_style_lora(
     data_root="/path/to/waymo_nre_format",
@@ -1578,7 +1587,7 @@ result = train_style_lora(
 )
 
 # 추론
-from Inpainting.lora_inference import LoRAInference
+from Inpainting.lora import LoRAInference
 
 infer = LoRAInference(lora_path="./lora_output")
 images = infer.generate(
@@ -1587,7 +1596,7 @@ images = infer.generate(
 )
 
 # 품질 평가
-from Inpainting.lora_inference import LoRAQualityEvaluator
+from Inpainting.lora import LoRAQualityEvaluator
 
 evaluator = LoRAQualityEvaluator()
 metrics = evaluator.evaluate_generated_only(images[0])
