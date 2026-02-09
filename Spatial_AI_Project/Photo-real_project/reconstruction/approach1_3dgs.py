@@ -73,9 +73,7 @@ except ImportError:
 # Local Modules
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from data_loader import ReconstructionDataset, load_initial_point_cloud
-
-# ── Shared Loss Functions (approach2_3dgut.py와 동일) ────────────────────
-from approach2_3dgut import l1_loss, ssim, get_projection_matrix
+from losses import l1_loss, ssim, get_projection_matrix
 
 
 class GaussianSplattingTrainer:
