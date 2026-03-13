@@ -73,7 +73,7 @@ class DynamicObjectMasker:
     def _initialize_semantic_model(self):
         """Semantic Segmentation 모델 초기화"""
         try:
-            from .segmentation import SemanticSegmentor
+            from segmentation import SemanticSegmentor
             print("  Loading Semantic Segmentation model...")
             self.semantic_model = SemanticSegmentor()
             print("  Semantic model loaded successfully")
@@ -140,12 +140,14 @@ class DynamicObjectMasker:
     def _generate_camera_mask(self, objects, cam_data, cam_name, frame_name):
         """
         특정 카메라에 대한 동적 객체 마스크 생성
-        
+
         Args:
             objects: 동적 객체 리스트 (3D bounding boxes)
             cam_data: 카메라 메타데이터
             cam_name: 카메라 이름
-            frame_name: 프레임 이름
+            frame_name: 프레임 이름 (예: seq0_000000)
+
+        Output 경로: masks/{frame_name}_{cam_name}.png (플랫 구조)
         """
         # 1. 카메라 파라미터 추출
         width = cam_data['width']
@@ -291,13 +293,8 @@ class DynamicObjectMasker:
             return None
     
     def _save_mask(self, mask, cam_name, frame_name):
-        """마스크 저장"""
-        # 카메라별 디렉토리 생성
-        mask_cam_dir = self.masks_dir / cam_name
-        mask_cam_dir.mkdir(parents=True, exist_ok=True)
-        
-        # 저장
-        mask_path = mask_cam_dir / f"{frame_name}.png"
+        """마스크 저장 (플랫 구조: masks/{frame_name}_{cam_name}.png)"""
+        mask_path = self.masks_dir / f"{frame_name}_{cam_name}.png"
         cv2.imwrite(str(mask_path), mask)
 
 

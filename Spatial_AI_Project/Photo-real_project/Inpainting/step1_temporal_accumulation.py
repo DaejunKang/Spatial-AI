@@ -45,7 +45,7 @@ class TemporalStaticAccumulator:
         self.images_dir = self.data_root / 'images'
         self.masks_dir = self.data_root / 'masks'
         self.poses_dir = self.data_root / 'poses'
-        self.depths_dir = self.data_root / 'depths'
+        self.depths_dir = self.data_root / 'depth_maps'
         self.output_dir = self.data_root / 'step1_warped'
         
         # 출력 디렉토리 생성

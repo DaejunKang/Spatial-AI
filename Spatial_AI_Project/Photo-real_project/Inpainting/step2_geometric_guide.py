@@ -139,7 +139,7 @@ class GeometricGuideGenerator:
         
         # 디렉토리 설정
         self.step1_dir = self.data_root / 'step1_warped'
-        self.depths_dir = self.data_root / 'depths'
+        self.depths_dir = self.data_root / 'depth_maps'
         self.output_depth_dir = self.data_root / 'step2_depth_guide'
         self.output_mask_dir = self.data_root / 'step2_hole_masks'
         

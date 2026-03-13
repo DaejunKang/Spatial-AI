@@ -32,16 +32,21 @@ import sys
 import argparse
 from pathlib import Path
 
+# Inpainting 디렉토리를 sys.path에 추가하여 step 모듈 import 가능하게 함
+_SCRIPT_DIR = Path(__file__).resolve().parent
+if str(_SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPT_DIR))
+
 
 class SequentialInpainter:
     """
     순차적 3단계 인페인팅 파이프라인
-    
+
     기존 step1, step2, step3를 순차적으로 실행하는 Wrapper
     """
-    
-    def __init__(self, data_root, 
-                 voxel_size=0.05, 
+
+    def __init__(self, data_root,
+                 voxel_size=0.05,
                  sample_interval=5,
                  use_lidar=True,
                  ground_ratio=0.6,
@@ -61,12 +66,6 @@ class SequentialInpainter:
         self.use_lidar = use_lidar
         self.ground_ratio = ground_ratio
         self.lora_path = lora_path
-        
-        # 스크립트 경로
-        script_dir = Path(__file__).parent
-        self.step1_script = script_dir / 'step1_temporal_accumulation.py'
-        self.step2_script = script_dir / 'step2_geometric_guide.py'
-        self.step3_script = script_dir / 'step3_final_inpainting.py'
         
         # 중간 출력 디렉토리
         self.step1_dir = self.data_root / 'step1_warped'
@@ -117,15 +116,11 @@ class SequentialInpainter:
     def _run_step1(self):
         """
         Step 1: Temporal Accumulation 실행
-        
+
         시계열 정보를 활용한 배경 누적 및 투영
         직접 import하여 호출 (subprocess 대비 에러 전파 개선)
         """
-        try:
-            from step1_temporal_accumulation import TemporalStaticAccumulator
-        except ImportError:
-            # 패키지 경로 문제 시 상대 import 시도
-            from .step1_temporal_accumulation import TemporalStaticAccumulator
+        from step1_temporal_accumulation import TemporalStaticAccumulator
         
         try:
             accumulator = TemporalStaticAccumulator(
@@ -149,14 +144,11 @@ class SequentialInpainter:
     def _run_step2(self):
         """
         Step 2: Geometric Guide Generation 실행
-        
+
         LiDAR depth 또는 평면 추정으로 기하학적 가이드 생성
         직접 import하여 호출 (subprocess 대비 에러 전파 개선)
         """
-        try:
-            from step2_geometric_guide import GeometricGuideGenerator
-        except ImportError:
-            from .step2_geometric_guide import GeometricGuideGenerator
+        from step2_geometric_guide import GeometricGuideGenerator
         
         try:
             generator = GeometricGuideGenerator(
@@ -180,14 +172,11 @@ class SequentialInpainter:
     def _run_step3(self):
         """
         Step 3: Final Inpainting 실행
-        
+
         Stable Diffusion + ControlNet 기반 최종 생성
         직접 import하여 호출 (subprocess 대비 에러 전파 개선)
         """
-        try:
-            from step3_final_inpainting import run_step3
-        except ImportError:
-            from .step3_final_inpainting import run_step3
+        from step3_final_inpainting import run_step3
         
         try:
             run_step3(
@@ -218,15 +207,18 @@ class SequentialInpainter:
         
         self.output_dir.mkdir(parents=True, exist_ok=True)
         
-        # Step 3 결과를 final_inpainted/로 복사
+        # Step 3 결과를 final_inpainted/로 복사 (jpg, png 모두)
         if self.step3_dir.exists():
-            output_files = list(self.step3_dir.glob('*.jpg'))
-            
+            output_files = (
+                list(self.step3_dir.glob('*.jpg')) +
+                list(self.step3_dir.glob('*.png'))
+            )
+
             for src_file in output_files:
                 dst_file = self.output_dir / src_file.name
                 shutil.copy2(src_file, dst_file)
-            
-            print(f"✓ Copied {len(output_files)} images to {self.output_dir}")
+
+            print(f"Copied {len(output_files)} images to {self.output_dir}")
         else:
             print("✗ Step 3 output not found. Cannot finalize.")
             raise FileNotFoundError(f"Step 3 output directory not found: {self.step3_dir}")

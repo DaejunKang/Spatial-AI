@@ -158,29 +158,30 @@ class LiDARProjector:
             return
         
         # 4. 3D -> 2D 투영 (with distortion)
-        projected_points = self._project_with_distortion(
-            points_cam_valid, 
-            intrinsics, 
-            width, 
+        projected_points, proj_valid_mask = self._project_with_distortion(
+            points_cam_valid,
+            intrinsics,
+            width,
             height
         )
-        
+
         if projected_points is None or len(projected_points) == 0:
             self._save_empty_outputs(cam_name, frame_name, width, height)
             return
-        
-        # 5. 깊이 맵 생성
+
+        # 5. 깊이 맵 생성 (투영 유효 마스크로 depth도 동일하게 필터링)
+        valid_depths = points_cam_valid[proj_valid_mask, 2]
         depth_map = self._create_depth_map(
-            projected_points, 
-            points_cam_valid[:, 2],  # Z values (depth)
-            width, 
+            projected_points,
+            valid_depths,
+            width,
             height
         )
-        
+
         # 6. 포인트 마스크 생성 (LiDAR 포인트가 투영된 픽셀)
         point_mask = self._create_point_mask(
-            projected_points, 
-            width, 
+            projected_points,
+            width,
             height
         )
         
@@ -190,50 +191,50 @@ class LiDARProjector:
     def _project_with_distortion(self, points_cam, intrinsics, width, height):
         """
         카메라 왜곡을 포함한 3D-2D 투영
-        
+
         Args:
             points_cam: Nx3 카메라 좌표계 포인트
             intrinsics: [fx, fy, cx, cy, k1, k2, p1, p2, k3]
             width: 이미지 너비
             height: 이미지 높이
-        
+
         Returns:
-            projected_points: Mx2 투영된 2D 포인트 (이미지 내부만)
-            valid_indices: 유효한 포인트 인덱스
+            (projected_points, valid_mask): Mx2 투영된 2D 포인트, bool mask (N,)
+            또는 (None, None) 실패 시
         """
         fx, fy, cx, cy = intrinsics[:4]
         k1, k2, p1, p2, k3 = intrinsics[4:9]
-        
+
         # OpenCV projectPoints 사용
-        camera_matrix = np.array([[fx, 0, cx], 
-                                   [0, fy, cy], 
+        camera_matrix = np.array([[fx, 0, cx],
+                                   [0, fy, cy],
                                    [0, 0, 1]])
         dist_coeffs = np.array([k1, k2, p1, p2, k3])
-        
+
         # Identity rotation/translation (이미 카메라 좌표계)
         rvec = np.zeros(3)
         tvec = np.zeros(3)
-        
+
         try:
             projected_2d, _ = cv2.projectPoints(
-                points_cam, 
-                rvec, 
-                tvec, 
-                camera_matrix, 
+                points_cam,
+                rvec,
+                tvec,
+                camera_matrix,
                 dist_coeffs
             )
             projected_2d = projected_2d.squeeze()  # Nx2
-            
+
             # 이미지 경계 내부 포인트만 선택
             valid_x = (projected_2d[:, 0] >= 0) & (projected_2d[:, 0] < width)
             valid_y = (projected_2d[:, 1] >= 0) & (projected_2d[:, 1] < height)
             valid_mask = valid_x & valid_y
-            
-            return projected_2d[valid_mask].astype(np.int32)
-        
+
+            return projected_2d[valid_mask].astype(np.int32), valid_mask
+
         except Exception as e:
             print(f"Projection failed: {e}")
-            return None
+            return None, None
     
     def _create_depth_map(self, projected_points, depths, width, height):
         """
@@ -329,26 +330,18 @@ class LiDARProjector:
         return point_mask
     
     def _save_outputs(self, depth_map, point_mask, cam_name, frame_name):
-        """출력 파일 저장"""
-        # 카메라별 디렉토리 생성
-        depth_cam_dir = self.depth_maps_dir / cam_name
-        mask_cam_dir = self.point_masks_dir / cam_name
-        
-        depth_cam_dir.mkdir(parents=True, exist_ok=True)
-        mask_cam_dir.mkdir(parents=True, exist_ok=True)
-        
-        # 저장
-        depth_path = depth_cam_dir / f"{frame_name}.png"
-        mask_path = mask_cam_dir / f"{frame_name}.png"
-        
+        """출력 파일 저장 (플랫 구조: {frame_name}_{cam_name}.png)"""
+        depth_path = self.depth_maps_dir / f"{frame_name}_{cam_name}.png"
+        mask_path = self.point_masks_dir / f"{frame_name}_{cam_name}.png"
+
         cv2.imwrite(str(depth_path), depth_map)
         cv2.imwrite(str(mask_path), point_mask)
-    
+
     def _save_empty_outputs(self, cam_name, frame_name, width, height):
         """빈 출력 저장 (투영 실패 시)"""
         empty_depth = np.zeros((height, width), dtype=np.uint16)
         empty_mask = np.zeros((height, width), dtype=np.uint8)
-        
+
         self._save_outputs(empty_depth, empty_mask, cam_name, frame_name)
 
 

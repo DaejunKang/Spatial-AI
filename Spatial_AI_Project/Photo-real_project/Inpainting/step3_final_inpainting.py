@@ -165,19 +165,38 @@ def run_step3(data_root, lora_path=None):
     os.makedirs(out_dir, exist_ok=True)
     
     files = sorted([f for f in os.listdir(step1_dir) if f.endswith('.jpg') or f.endswith('.png')])
-    
+
     # 모델 초기화 (루프 밖에서 한 번만 수행)
     inpainter = GenerativeInpainter(lora_path=lora_path)
-    
+
     for f in tqdm(files):
+        # 파일명에서 확장자 분리 후 일관된 경로 생성
+        stem = os.path.splitext(f)[0]
+
         # 1. Load Inputs
         warped_img = cv2.imread(os.path.join(step1_dir, f))
-        depth_guide = cv2.imread(os.path.join(step2_dir, f.replace('.jpg', '.png')), -1)
-        orig_img = cv2.imread(os.path.join(orig_dir, f.replace('.png', '.jpg')))
-        orig_mask = cv2.imread(os.path.join(mask_dir, f.replace('.jpg', '.png')), 0)
-        
+
+        # Step 2 depth guide (png 우선, jpg fallback)
+        depth_path = os.path.join(step2_dir, f"{stem}.png")
+        if not os.path.exists(depth_path):
+            depth_path = os.path.join(step2_dir, f"{stem}.jpg")
+        depth_guide = cv2.imread(depth_path, -1)
+
+        # 원본 이미지 (jpg 우선, png fallback)
+        orig_path = os.path.join(orig_dir, f"{stem}.jpg")
+        if not os.path.exists(orig_path):
+            orig_path = os.path.join(orig_dir, f"{stem}.png")
+        orig_img = cv2.imread(orig_path)
+
+        # 마스크 (플랫 구조: masks/{stem}.png)
+        mask_path = os.path.join(mask_dir, f"{stem}.png")
+        orig_mask = cv2.imread(mask_path, 0)
+
         if warped_img is None or orig_mask is None or depth_guide is None:
-            # 하나라도 없으면 건너뜀 (혹은 에러 로그)
+            # 하나라도 없으면 건너뜀
+            print(f"  Skipping {f}: missing inputs "
+                  f"(warped={warped_img is not None}, mask={orig_mask is not None}, "
+                  f"depth={depth_guide is not None})")
             continue
 
         # 2. Logic: Temporal Fusion으로도 못 채운 '진짜 구멍' 찾기

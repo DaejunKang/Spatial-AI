@@ -177,22 +177,18 @@ nre_format/
 ├── [Stage 1 outputs...]
 │
 ├── depth_maps/
-│   ├── FRONT/
-│   │   └── {frame}.png  # uint16, mm 단위
-│   ├── FRONT_LEFT/
-│   └── ...
+│   └── {frame}_{cam_name}.png  # uint16, mm 단위
 │       # LiDAR 투영 깊이 맵 (Inpainting Step 2 & 3에서 사용)
+│       # 예: seq0_000000_FRONT.png
 │
 ├── point_masks/
-│   └── {cam_name}/{frame}.png  # uint8, LiDAR 포인트 시각화
+│   └── {frame}_{cam_name}.png  # uint8, LiDAR 포인트 시각화
 │
 └── masks/
-    ├── FRONT/
-    │   └── {frame}.png  # uint8
-    │       # 0 = 동적 객체 (Inpainting 대상)
-    │       # 255 = 정적 배경 (유효 영역)
-    ├── FRONT_LEFT/
-    └── ...
+    └── {frame}_{cam_name}.png  # uint8
+        # 0 = 동적 객체 (Inpainting 대상)
+        # 255 = 정적 배경 (유효 영역)
+        # 예: seq0_000000_FRONT.png
 ```
 
 **실행:**

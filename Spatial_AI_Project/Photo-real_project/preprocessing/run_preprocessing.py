@@ -8,11 +8,18 @@ Preprocessing Pipeline Runner
 
 Usage:
     python run_preprocessing.py /path/to/data --lidar --dynamic_mask --semantic
+    python run_preprocessing.py /path/to/data --all
 """
 
 import os
-import argparse
 import sys
+import argparse
+from pathlib import Path
+
+# 현재 디렉토리를 sys.path에 추가하여 형제 모듈 import 가능하게 함
+_SCRIPT_DIR = str(Path(__file__).resolve().parent)
+if _SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, _SCRIPT_DIR)
 
 
 def main():
@@ -95,41 +102,41 @@ def main():
     if run_lidar:
         print("\n[Stage 1/2] LiDAR Point Cloud Projection")
         print("-"*70)
-        
+
         try:
-            from .lidar_projection import LiDARProjector
-            
+            from lidar_projection import LiDARProjector
+
             projector = LiDARProjector(
                 data_root=args.data_root,
                 interpolation_method=args.interpolation
             )
             projector.run()
-            
-            print("✓ LiDAR projection completed successfully")
-        
+
+            print("LiDAR projection completed successfully")
+
         except Exception as e:
-            print(f"✗ LiDAR projection failed: {e}")
+            print(f"LiDAR projection failed: {e}")
             print("  Continuing with remaining stages...")
-    
+
     # Stage 2: Dynamic Object Masking
     if run_dynamic_mask:
         print("\n[Stage 2/2] Dynamic Object Masking")
         print("-"*70)
-        
+
         try:
-            from .dynamic_masking import DynamicObjectMasker
-            
+            from dynamic_masking import DynamicObjectMasker
+
             masker = DynamicObjectMasker(
                 data_root=args.data_root,
                 use_semantic_seg=use_semantic,
                 dilation_kernel=args.dilation
             )
             masker.run()
-            
-            print("✓ Dynamic masking completed successfully")
-        
+
+            print("Dynamic masking completed successfully")
+
         except Exception as e:
-            print(f"✗ Dynamic masking failed: {e}")
+            print(f"Dynamic masking failed: {e}")
     
     # Summary
     print("\n" + "="*70)
