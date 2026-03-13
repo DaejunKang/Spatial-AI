@@ -34,6 +34,7 @@ Output:
 """
 
 import os
+import json
 import cv2
 import numpy as np
 from pathlib import Path
@@ -142,10 +143,12 @@ class GeometricGuideGenerator:
         self.depths_dir = self.data_root / 'depth_maps'
         self.output_depth_dir = self.data_root / 'step2_depth_guide'
         self.output_mask_dir = self.data_root / 'step2_hole_masks'
-        
+        self.output_meta_dir = self.data_root / 'step2_meta'
+
         # 출력 디렉토리 생성
         self.output_depth_dir.mkdir(parents=True, exist_ok=True)
         self.output_mask_dir.mkdir(parents=True, exist_ok=True)
+        self.output_meta_dir.mkdir(parents=True, exist_ok=True)
         
         # Step 1 출력 확인
         if not self.step1_dir.exists():
@@ -228,10 +231,10 @@ class GeometricGuideGenerator:
     def _process_frame(self, warped_file):
         """
         개별 프레임 처리 - 사용 가능한 데이터에 따라 최적 방법 선택
-        
+
         Args:
             warped_file: Step 1 출력 이미지 경로
-        
+
         Returns:
             method: 사용된 방법 이름 (통계용)
         """
@@ -239,30 +242,41 @@ class GeometricGuideGenerator:
         warped_img = cv2.imread(str(warped_file))
         if warped_img is None:
             raise ValueError(f"Failed to load image: {warped_file}")
-        
+
         # 구멍 영역 감지 (검은색 픽셀 = 여전히 구멍)
         hole_mask = self._detect_holes(warped_img)
-        
+
         # Sparse LiDAR Depth 로드 시도
         depth_file = self.depths_dir / warped_file.name
         sparse_lidar = None
-        
+
         if self.use_lidar_depth and depth_file.exists():
             raw = cv2.imread(str(depth_file), cv2.IMREAD_UNCHANGED)
             if raw is not None:
                 sparse_lidar = raw.astype(np.float32)
-        
+
+        # 메타데이터 초기화
+        step2_meta = {
+            'method': 'inpaint',
+            'lidar_anchor_count': 0,
+            'ransac_inlier_ratio': 0.0,
+            'scale': 0.0,
+            'shift': 0.0,
+            'hole_pixel_count': int(np.sum(hole_mask > 0))
+        }
+
         # ---- Routing: 최적 방법 선택 ----
         method = "inpaint"  # 기본값 (최후 수단)
-        
+
         if self.depth_estimator is not None:
             # Depth Anything 사용 가능
             if sparse_lidar is not None:
                 # [최선] Mono + LiDAR Alignment
-                completed_depth = self._fill_depth_with_monocular_guide(
+                completed_depth, align_stats = self._fill_depth_with_monocular_guide(
                     warped_img, sparse_lidar, hole_mask
                 )
                 method = "mono_lidar"
+                step2_meta.update(align_stats)
             else:
                 # [차선] Mono Only (스케일 보정 없이 상대적 depth)
                 completed_depth = self._fill_depth_mono_only(
@@ -280,14 +294,21 @@ class GeometricGuideGenerator:
                 pseudo = self._generate_pseudo_depth(warped_img.shape[:2])
                 completed_depth = self._simple_depth_inpaint(pseudo, hole_mask)
                 method = "inpaint"
-        
+
+        step2_meta['method'] = method
+
         # 저장
+        stem = warped_file.stem
         output_depth_path = self.output_depth_dir / warped_file.name
         output_mask_path = self.output_mask_dir / warped_file.name
-        
+        output_meta_path = self.output_meta_dir / f"{stem}.json"
+
         cv2.imwrite(str(output_depth_path), completed_depth.astype(np.uint16))
         cv2.imwrite(str(output_mask_path), hole_mask)
-        
+
+        with open(output_meta_path, 'w') as mf:
+            json.dump(step2_meta, mf, indent=2)
+
         return method
     
     # =========================================================================
@@ -332,21 +353,25 @@ class GeometricGuideGenerator:
         
         Returns:
             final_depth: (H, W) float32, Dense Metric Depth (mm)
+            align_stats: dict, 정합 통계 (scale, shift, inlier_ratio 등)
         """
         h, w = rgb_image.shape[:2]
-        
+        align_stats = {
+            'lidar_anchor_count': 0,
+            'ransac_inlier_ratio': 0.0,
+            'scale': 0.0,
+            'shift': 0.0
+        }
+
         # ------------------------------------------------------------------
         # Stage 1: Monocular Depth Estimation (형상 추론)
         # ------------------------------------------------------------------
-        # Depth Anything은 이미지 전체의 "상대적" 깊이를 추론합니다.
-        # 출력은 값이 클수록 "멀다"는 의미일 수도, "가깝다"는 의미일 수도 있음.
-        # → 뒤에서 Linear Regression이 부호(Scale)를 자동 보정합니다.
         mono_depth = self._estimate_monocular_depth(rgb_image)
-        
+
         if mono_depth is None:
             # 추론 실패 시 RANSAC fallback
             warnings.warn("Monocular depth estimation failed. Falling back to RANSAC.")
-            return self._fill_ground_plane(sparse_depth, hole_mask)
+            return self._fill_ground_plane(sparse_depth, hole_mask), align_stats
         
         # 크기 맞추기 (모델 출력이 원본과 다를 수 있음)
         if mono_depth.shape[:2] != (h, w):
@@ -362,14 +387,15 @@ class GeometricGuideGenerator:
         # 변환 공식 (Scale, Shift)을 추정하는 데 사용됩니다.
         valid_mask = (sparse_depth > 0) & (hole_mask == 0)
         valid_count = np.sum(valid_mask)
-        
+        align_stats['lidar_anchor_count'] = int(valid_count)
+
         if valid_count < self.mono_alignment_min_points:
             # 정합할 LiDAR 포인트가 부족하면 Mono-only 모드
             warnings.warn(
                 f"LiDAR points for alignment too sparse ({valid_count} < "
                 f"{self.mono_alignment_min_points}). Using mono-only depth."
             )
-            return self._finalize_mono_only(mono_depth, sparse_depth, hole_mask)
+            return self._finalize_mono_only(mono_depth, sparse_depth, hole_mask), align_stats
         
         # ------------------------------------------------------------------
         # Stage 3: Scale & Shift Regression (Mono → Metric 변환)
@@ -398,13 +424,18 @@ class GeometricGuideGenerator:
             
             scale = regressor.estimator_.coef_[0]
             shift = regressor.estimator_.intercept_
-            
+
             # 정합 품질 확인
             inlier_ratio = np.sum(regressor.inlier_mask_) / len(regressor.inlier_mask_)
-            
+
+            # 통계 기록
+            align_stats['scale'] = float(scale)
+            align_stats['shift'] = float(shift)
+            align_stats['ransac_inlier_ratio'] = float(inlier_ratio)
+
         except Exception as e:
             warnings.warn(f"Scale/Shift regression failed: {e}. Using mono-only.")
-            return self._finalize_mono_only(mono_depth, sparse_depth, hole_mask)
+            return self._finalize_mono_only(mono_depth, sparse_depth, hole_mask), align_stats
         
         # ------------------------------------------------------------------
         # Stage 4: 전체 맵 보정 (Calibration)
@@ -434,8 +465,8 @@ class GeometricGuideGenerator:
         final_depth = self._smooth_depth_boundary(
             final_depth, fill_mask, kernel_size=5
         )
-        
-        return final_depth
+
+        return final_depth, align_stats
     
     # =========================================================================
     #  Monocular Depth Only (LiDAR 없을 때)

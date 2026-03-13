@@ -29,7 +29,7 @@ def prepare_3dgs_metadata(
 ):
     """
     3DGS용 메타데이터 생성 (Static Scene)
-    
+
     Args:
         data_root: NRE 포맷 데이터 루트
         output_file: 출력 JSON 파일 경로
@@ -37,21 +37,29 @@ def prepare_3dgs_metadata(
         camera_filter: 사용할 카메라 리스트 (None = 전체)
     """
     data_root = Path(data_root)
-    
-    # 디렉토리 확인
-    final_inpainted_dir = data_root / 'final_inpainted'
+
+    # 디렉토리 확인 (final_output/rgb/ 우선, final_inpainted/ fallback)
+    final_rgb_dir = data_root / 'final_output' / 'rgb'
+    final_depth_dir = data_root / 'final_output' / 'depth'
+    final_conf_dir = data_root / 'final_output' / 'confidence'
+
+    if final_rgb_dir.exists():
+        image_source_dir = final_rgb_dir
+    else:
+        image_source_dir = data_root / 'final_inpainted'
+
     poses_dir = data_root / 'poses'
-    
-    if not final_inpainted_dir.exists():
-        raise FileNotFoundError(f"final_inpainted not found: {final_inpainted_dir}")
-    
+
+    if not image_source_dir.exists():
+        raise FileNotFoundError(f"Image source not found: {image_source_dir}")
+
     if not poses_dir.exists():
         raise FileNotFoundError(f"poses not found: {poses_dir}")
-    
+
     # 이미지 파일 수집
-    image_files = sorted(list(final_inpainted_dir.glob('*.jpg')))
+    image_files = sorted(list(image_source_dir.glob('*.jpg')))
     if len(image_files) == 0:
-        image_files = sorted(list(final_inpainted_dir.glob('*.png')))
+        image_files = sorted(list(image_source_dir.glob('*.png')))
     
     print(f"Found {len(image_files)} inpainted images")
     
@@ -102,7 +110,16 @@ def prepare_3dgs_metadata(
             "camera_name": camera_name,
             "frame_name": base_name
         }
-        
+
+        # Depth/Confidence 경로 추가 (존재하면)
+        depth_file = final_depth_dir / f"{frame_name}.png"
+        if depth_file.exists():
+            item["depth_path"] = str(depth_file.relative_to(data_root))
+
+        conf_file = final_conf_dir / f"{frame_name}.png"
+        if conf_file.exists():
+            item["confidence_path"] = str(conf_file.relative_to(data_root))
+
         metadata.append(item)
     
     print(f"Generated {len(metadata)} metadata items")
@@ -144,25 +161,33 @@ def prepare_3dgut_metadata(
 ):
     """
     3DGUT용 메타데이터 생성 (Rolling Shutter Compensated)
-    
+
     3DGS 메타데이터 + velocity + rolling_shutter 정보 추가
     """
     data_root = Path(data_root)
-    
-    # 디렉토리 확인
-    final_inpainted_dir = data_root / 'final_inpainted'
+
+    # 디렉토리 확인 (final_output/rgb/ 우선, final_inpainted/ fallback)
+    final_rgb_dir = data_root / 'final_output' / 'rgb'
+    final_depth_dir = data_root / 'final_output' / 'depth'
+    final_conf_dir = data_root / 'final_output' / 'confidence'
+
+    if final_rgb_dir.exists():
+        image_source_dir = final_rgb_dir
+    else:
+        image_source_dir = data_root / 'final_inpainted'
+
     poses_dir = data_root / 'poses'
-    
-    if not final_inpainted_dir.exists():
-        raise FileNotFoundError(f"final_inpainted not found: {final_inpainted_dir}")
-    
+
+    if not image_source_dir.exists():
+        raise FileNotFoundError(f"Image source not found: {image_source_dir}")
+
     if not poses_dir.exists():
         raise FileNotFoundError(f"poses not found: {poses_dir}")
-    
+
     # 이미지 파일 수집
-    image_files = sorted(list(final_inpainted_dir.glob('*.jpg')))
+    image_files = sorted(list(image_source_dir.glob('*.jpg')))
     if len(image_files) == 0:
-        image_files = sorted(list(final_inpainted_dir.glob('*.png')))
+        image_files = sorted(list(image_source_dir.glob('*.png')))
     
     print(f"Found {len(image_files)} inpainted images")
     
@@ -231,7 +256,7 @@ def prepare_3dgut_metadata(
             "height": cam_data['height'],
             "camera_name": camera_name,
             "frame_name": base_name,
-            
+
             # 3DGUT 전용 필드
             "velocity": {
                 "v": ego_velocity['linear'],    # [vx, vy, vz]
@@ -242,7 +267,16 @@ def prepare_3dgut_metadata(
                 "trigger_time": rolling_shutter.get('trigger_time', 0.0)
             }
         }
-        
+
+        # Depth/Confidence 경로 추가 (존재하면)
+        depth_file = final_depth_dir / f"{frame_name}.png"
+        if depth_file.exists():
+            item["depth_path"] = str(depth_file.relative_to(data_root))
+
+        conf_file = final_conf_dir / f"{frame_name}.png"
+        if conf_file.exists():
+            item["confidence_path"] = str(conf_file.relative_to(data_root))
+
         metadata.append(item)
     
     print(f"Generated {len(metadata)} metadata items (3DGUT)")

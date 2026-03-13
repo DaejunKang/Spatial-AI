@@ -24,7 +24,12 @@ Input:
     - depth_maps/: (선택) LiDAR depth
 
 Output:
-    - final_inpainted/: 동적 객체가 제거된 최종 이미지
+    - final_output/rgb/: 동적 객체가 제거된 최종 이미지
+    - final_output/depth/: Composited dense depth maps (uint16, mm)
+    - final_output/confidence/: Confidence maps (uint8, 0~255)
+    - final_output/method_log/: 프레임별 추정 방법 기록 (JSON)
+    - final_output/point_cloud/: 정적 포인트 클라우드 (PLY)
+    - final_inpainted/: 하위 호환 (rgb/ 복사)
 """
 
 import os
@@ -71,8 +76,19 @@ class SequentialInpainter:
         self.step1_dir = self.data_root / 'step1_warped'
         self.step2_dir = self.data_root / 'step2_depth_guide'
         self.step3_dir = self.data_root / 'step3_final_inpainted'
-        
-        # 최종 출력 디렉토리 (Approach 1과 동일)
+        self.step3_depth_dir = self.data_root / 'step3_depth'
+        self.step3_conf_dir = self.data_root / 'step3_confidence'
+        self.step3_method_dir = self.data_root / 'step3_method_log'
+
+        # 최종 출력 디렉토리 (구조화)
+        self.final_output_dir = self.data_root / 'final_output'
+        self.final_rgb_dir = self.final_output_dir / 'rgb'
+        self.final_depth_dir = self.final_output_dir / 'depth'
+        self.final_conf_dir = self.final_output_dir / 'confidence'
+        self.final_method_dir = self.final_output_dir / 'method_log'
+        self.final_pc_dir = self.final_output_dir / 'point_cloud'
+
+        # 하위 호환 디렉토리
         self.output_dir = self.data_root / 'final_inpainted'
         
         print(f"[SequentialInpainter] Initialized")
@@ -198,30 +214,69 @@ class SequentialInpainter:
     
     def _finalize_output(self):
         """
-        최종 출력 디렉토리로 복사
-        
-        Approach 1과 동일한 경로에 결과 저장
-        (final_inpainted/)
+        최종 출력 디렉토리(final_output/)로 조립.
+
+        final_output/
+          ├── rgb/          ← step3_final_inpainted/
+          ├── depth/        ← step3_depth/
+          ├── confidence/   ← step3_confidence/
+          ├── method_log/   ← step3_method_log/
+          └── point_cloud/  ← step1_warped/accumulated_static.ply
+
+        하위 호환: final_inpainted/ = rgb 복사
         """
         import shutil
-        
+
+        # final_output/ 서브 디렉토리 생성
+        for d in [self.final_rgb_dir, self.final_depth_dir,
+                  self.final_conf_dir, self.final_method_dir, self.final_pc_dir]:
+            d.mkdir(parents=True, exist_ok=True)
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        
-        # Step 3 결과를 final_inpainted/로 복사 (jpg, png 모두)
-        if self.step3_dir.exists():
-            output_files = (
-                list(self.step3_dir.glob('*.jpg')) +
-                list(self.step3_dir.glob('*.png'))
-            )
 
-            for src_file in output_files:
-                dst_file = self.output_dir / src_file.name
-                shutil.copy2(src_file, dst_file)
-
-            print(f"Copied {len(output_files)} images to {self.output_dir}")
-        else:
-            print("✗ Step 3 output not found. Cannot finalize.")
+        if not self.step3_dir.exists():
             raise FileNotFoundError(f"Step 3 output directory not found: {self.step3_dir}")
+
+        # RGB 복사
+        rgb_files = list(self.step3_dir.glob('*.jpg')) + list(self.step3_dir.glob('*.png'))
+        for src in rgb_files:
+            shutil.copy2(src, self.final_rgb_dir / src.name)
+            shutil.copy2(src, self.output_dir / src.name)  # 하위 호환
+        print(f"  RGB: {len(rgb_files)} files → {self.final_rgb_dir}")
+
+        # Depth 복사
+        depth_count = 0
+        if self.step3_depth_dir.exists():
+            for src in self.step3_depth_dir.glob('*.png'):
+                shutil.copy2(src, self.final_depth_dir / src.name)
+                depth_count += 1
+        print(f"  Depth: {depth_count} files → {self.final_depth_dir}")
+
+        # Confidence 복사
+        conf_count = 0
+        if self.step3_conf_dir.exists():
+            for src in self.step3_conf_dir.glob('*.png'):
+                shutil.copy2(src, self.final_conf_dir / src.name)
+                conf_count += 1
+        print(f"  Confidence: {conf_count} files → {self.final_conf_dir}")
+
+        # Method Log 복사
+        log_count = 0
+        if self.step3_method_dir.exists():
+            for src in self.step3_method_dir.glob('*.json'):
+                shutil.copy2(src, self.final_method_dir / src.name)
+                log_count += 1
+        print(f"  Method Log: {log_count} files → {self.final_method_dir}")
+
+        # Point Cloud 복사
+        ply_src = self.step1_dir / 'accumulated_static.ply'
+        if ply_src.exists():
+            shutil.copy2(ply_src, self.final_pc_dir / 'accumulated_static.ply')
+            print(f"  Point Cloud: {ply_src.name} → {self.final_pc_dir}")
+        else:
+            print(f"  Point Cloud: not found ({ply_src})")
+
+        print(f"\n  Final output: {self.final_output_dir}")
+        print(f"  Legacy compat: {self.output_dir} ({len(rgb_files)} files)")
 
 
 def main():

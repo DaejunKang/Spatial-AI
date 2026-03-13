@@ -6,6 +6,7 @@ Common Data Loader for 3D Reconstruction
 
 import os
 import json
+import cv2
 import numpy as np
 from pathlib import Path
 from PIL import Image
@@ -28,11 +29,12 @@ class ReconstructionDataset:
     """
     
     def __init__(
-        self, 
+        self,
         meta_file: str,
         data_root: str = None,
         split: str = 'train',
         load_3dgut_params: bool = False,
+        load_depth: bool = False,
         image_scale: float = 1.0
     ):
         """
@@ -41,12 +43,14 @@ class ReconstructionDataset:
             data_root: 데이터 루트 디렉토리 (meta_file에서 상대 경로 사용 시)
             split: 'train' or 'val' or 'test'
             load_3dgut_params: 3DGUT 파라미터 로드 여부
+            load_depth: depth/confidence 맵 로드 여부
             image_scale: 이미지 스케일 조정 (1.0 = 원본)
         """
         self.meta_file = Path(meta_file)
         self.data_root = Path(data_root) if data_root else self.meta_file.parent.parent
         self.split = split
         self.load_3dgut_params = load_3dgut_params
+        self.load_depth = load_depth
         self.image_scale = image_scale
         
         # 메타데이터 로드
@@ -60,6 +64,7 @@ class ReconstructionDataset:
         print(f"  Data root: {self.data_root}")
         print(f"  Split: {self.split}")
         print(f"  Load 3DGUT params: {self.load_3dgut_params}")
+        print(f"  Load depth/confidence: {self.load_depth}")
     
     def _validate_metadata(self):
         """메타데이터 검증"""
@@ -155,7 +160,33 @@ class ReconstructionDataset:
             'idx': idx
         }
         
-        # 5. 3DGUT 파라미터 (선택적)
+        # 5. Depth / Confidence 로드 (선택적)
+        if self.load_depth and 'depth_path' in item:
+            depth_path = self.data_root / item['depth_path']
+            if depth_path.exists():
+                depth_mm = cv2.imread(str(depth_path), cv2.IMREAD_UNCHANGED)  # uint16
+                if depth_mm is not None:
+                    depth_m = depth_mm.astype(np.float32) / 1000.0  # mm → meters
+                    # 스케일 조정 시 depth map도 리사이즈
+                    if self.image_scale != 1.0:
+                        new_h = int(depth_m.shape[0] * self.image_scale)
+                        new_w = int(depth_m.shape[1] * self.image_scale)
+                        depth_m = cv2.resize(depth_m, (new_w, new_h), interpolation=cv2.INTER_NEAREST)
+                    result['depth'] = torch.from_numpy(depth_m).float()  # [H, W]
+
+        if self.load_depth and 'confidence_path' in item:
+            conf_path = self.data_root / item['confidence_path']
+            if conf_path.exists():
+                conf_raw = cv2.imread(str(conf_path), cv2.IMREAD_UNCHANGED)  # uint8
+                if conf_raw is not None:
+                    conf_norm = conf_raw.astype(np.float32) / 255.0  # 0~1
+                    if self.image_scale != 1.0:
+                        new_h = int(conf_norm.shape[0] * self.image_scale)
+                        new_w = int(conf_norm.shape[1] * self.image_scale)
+                        conf_norm = cv2.resize(conf_norm, (new_w, new_h), interpolation=cv2.INTER_NEAREST)
+                    result['confidence'] = torch.from_numpy(conf_norm).float()  # [H, W]
+
+        # 6. 3DGUT 파라미터 (선택적)
         if self.load_3dgut_params:
             # Velocity [vx, vy, vz, wx, wy, wz]
             v = item['velocity']['v']  # [vx, vy, vz]
@@ -242,6 +273,12 @@ class DataLoaderWrapper:
         collated['height'] = [item['height'] for item in batch]
         collated['idx'] = [item['idx'] for item in batch]
         
+        # Depth / Confidence
+        if 'depth' in batch[0]:
+            collated['depth'] = torch.stack([item['depth'] for item in batch])
+        if 'confidence' in batch[0]:
+            collated['confidence'] = torch.stack([item['confidence'] for item in batch])
+
         # 3DGUT params
         if 'velocity' in batch[0]:
             collated['velocity'] = torch.stack([item['velocity'] for item in batch])

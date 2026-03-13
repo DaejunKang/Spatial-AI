@@ -74,6 +74,43 @@ def ssim(
         return ssim_map.mean(1).mean(1).mean(1)
 
 
+def depth_loss(
+    rendered_depth: torch.Tensor,
+    gt_depth: torch.Tensor,
+    confidence: torch.Tensor,
+    threshold: float = 0.63,
+) -> torch.Tensor:
+    """
+    Confidence-weighted depth supervision loss.
+
+    confidence >= threshold 인 픽셀만 supervision 적용.
+    threshold 기본값 0.63 = 160/255 (Mono+LiDAR 정합 이상만).
+
+    Args:
+        rendered_depth: [1, H, W] or [H, W] rasterizer 출력 depth (meters)
+        gt_depth: [H, W] composited GT depth (meters)
+        confidence: [H, W] normalized 0~1
+        threshold: confidence 최소 기준
+
+    Returns:
+        weighted depth L1 loss (scalar)
+    """
+    # 차원 정리
+    if rendered_depth.dim() == 3:
+        rendered_depth = rendered_depth.squeeze(0)  # [H, W]
+
+    # 유효 픽셀: depth > 0 이고 confidence >= threshold
+    valid = (gt_depth > 0) & (confidence >= threshold)
+
+    if valid.sum() == 0:
+        return torch.tensor(0.0, device=rendered_depth.device)
+
+    depth_error = torch.abs(rendered_depth[valid] - gt_depth[valid])
+    weights = confidence[valid]
+
+    return (depth_error * weights).sum() / weights.sum()
+
+
 def get_projection_matrix(
     znear: float,
     zfar: float,

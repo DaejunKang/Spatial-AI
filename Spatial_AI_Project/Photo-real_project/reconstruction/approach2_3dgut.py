@@ -83,7 +83,7 @@ except ImportError:
 # Local Modules
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from data_loader import ReconstructionDataset, load_initial_point_cloud
-from losses import l1_loss, ssim, get_projection_matrix
+from losses import l1_loss, ssim, depth_loss, get_projection_matrix
 
 
 # ============================================================================
@@ -191,6 +191,9 @@ class GaussianSplatting3DGUT:
         meta_file: str,
         output_dir: str,
         initial_ply: str = None,
+        use_depth: bool = False,
+        alpha_depth: float = 0.1,
+        depth_confidence_threshold: float = 0.63,
         device: str = "cuda",
     ):
         """
@@ -199,12 +202,18 @@ class GaussianSplatting3DGUT:
             meta_file: JSON 메타데이터 파일 (3DGUT 형식)
             output_dir: 출력 디렉토리
             initial_ply: 초기 포인트 클라우드 (선택)
+            use_depth: depth supervision 활성화 여부
+            alpha_depth: depth loss 가중치
+            depth_confidence_threshold: confidence 최소 기준
             device: 'cuda' or 'cpu'
         """
         self.data_root = Path(data_root)
         self.meta_file = Path(meta_file)
         self.output_dir = Path(output_dir)
         self.device = torch.device(device)
+        self.use_depth = use_depth
+        self.alpha_depth = alpha_depth
+        self.depth_confidence_threshold = depth_confidence_threshold
 
         self.output_dir.mkdir(parents=True, exist_ok=True)
         (self.output_dir / "novel_views").mkdir(exist_ok=True)
@@ -236,10 +245,21 @@ class GaussianSplatting3DGUT:
             data_root=str(self.data_root),
             split="train",
             load_3dgut_params=True,
+            load_depth=self.use_depth,
             image_scale=1.0,
         )
 
-        # ── Initial Point Cloud ───────────────────────────────────────────
+        # ── Initial Point Cloud (자동 탐색) ──────────────────────────────
+        if not initial_ply:
+            ply_candidates = [
+                self.data_root / 'final_output' / 'point_cloud' / 'accumulated_static.ply',
+                self.data_root / 'step1_warped' / 'accumulated_static.ply',
+            ]
+            for candidate in ply_candidates:
+                if candidate.exists():
+                    initial_ply = str(candidate)
+                    break
+
         if initial_ply and Path(initial_ply).exists():
             print(f"\n>>> Loading initial point cloud: {initial_ply}")
             self.init_points, self.init_colors = load_initial_point_cloud(initial_ply)
@@ -254,6 +274,8 @@ class GaussianSplatting3DGUT:
         self.rs_compensator = RollingShutterCompensator()
         self.bg_color = torch.tensor([0, 0, 0], dtype=torch.float32, device=self.device)
 
+        if self.use_depth:
+            print(f"  Depth supervision: ON (alpha={self.alpha_depth}, threshold={self.depth_confidence_threshold})")
         print("=" * 70)
 
     # ------------------------------------------------------------------
@@ -410,6 +432,45 @@ class GaussianSplatting3DGUT:
         (단순 projection + splatting 시뮬레이션)
         """
         return torch.zeros(3, height, width, device=self.device)
+
+    # ------------------------------------------------------------------
+    # 4-2b. Rendered Depth Approximation
+    # ------------------------------------------------------------------
+    def _compute_rendered_depth(self, extrinsic, intrinsic, width, height):
+        """
+        Gaussian 중심 좌표의 카메라 z축 투영으로 depth map을 근사 생성.
+
+        Returns:
+            depth_map: [H, W] float tensor (meters)
+        """
+        means3D = self.gaussians["xyz"]
+        opacity = torch.sigmoid(self.gaussians["opacity"]).squeeze(-1)
+
+        R = extrinsic[:3, :3]
+        t = extrinsic[:3, 3]
+        pts_cam = (R @ means3D.T).T + t
+        z_cam = pts_cam[:, 2]
+
+        fx, fy = intrinsic[0, 0], intrinsic[1, 1]
+        cx, cy = intrinsic[0, 2], intrinsic[1, 2]
+
+        u = (pts_cam[:, 0] * fx / z_cam + cx).long()
+        v = (pts_cam[:, 1] * fy / z_cam + cy).long()
+
+        valid = (z_cam > 0.01) & (u >= 0) & (u < width) & (v >= 0) & (v < height)
+
+        depth_map = torch.zeros(height, width, device=self.device)
+        weight_map = torch.zeros(height, width, device=self.device)
+
+        if valid.sum() > 0:
+            u_v, v_v = u[valid], v[valid]
+            z_v, o_v = z_cam[valid], opacity[valid]
+            depth_map.index_put_((v_v, u_v), z_v * o_v, accumulate=True)
+            weight_map.index_put_((v_v, u_v), o_v, accumulate=True)
+            nonzero = weight_map > 0
+            depth_map[nonzero] = depth_map[nonzero] / weight_map[nonzero]
+
+        return depth_map
 
     # ------------------------------------------------------------------
     # 4-3. Unified Rendering (GS / RS 자동 분기)
@@ -571,16 +632,29 @@ class GaussianSplatting3DGUT:
 
             # 4. Loss 계산
             Ll1 = l1_loss(rendered_image, gt_image)
-            loss_ssim = 1.0 - ssim(rendered_image, gt_image)
-            loss_color = (1.0 - lambda_dssim) * Ll1 + lambda_dssim * loss_ssim
+            loss_ssim_val = 1.0 - ssim(rendered_image, gt_image)
+            loss_color = (1.0 - lambda_dssim) * Ll1 + lambda_dssim * loss_ssim_val
 
             # Temporal Uncertainty Regularization
-            # uncertainty가 큰 점은 temporal 정보에 민감 → 정규화로 안정화
             loss_reg = lambda_reg * torch.sigmoid(
                 self.gaussians["temporal_uncertainty"]
             ).mean()
 
             total_loss = loss_color + loss_reg
+
+            # Depth supervision (선택적)
+            loss_depth_val = torch.tensor(0.0, device=self.device)
+            if self.use_depth and 'depth' in sample and 'confidence' in sample:
+                gt_depth = sample['depth'].to(self.device)
+                confidence = sample['confidence'].to(self.device)
+                rendered_depth = self._compute_rendered_depth(
+                    extrinsic, intrinsic, width, height
+                )
+                loss_depth_val = depth_loss(
+                    rendered_depth, gt_depth, confidence,
+                    threshold=self.depth_confidence_threshold
+                )
+                total_loss = total_loss + self.alpha_depth * loss_depth_val
 
             # 5. Backprop
             optimizer.zero_grad()
@@ -592,14 +666,15 @@ class GaussianSplatting3DGUT:
             loss_history.append(loss_val)
 
             if iteration % log_interval == 0:
-                pbar.set_postfix(
-                    {
-                        "Loss": f"{loss_val:.4f}",
-                        "L1": f"{Ll1.item():.4f}",
-                        "SSIM": f"{loss_ssim.item():.4f}",
-                        "Pts": len(self.gaussians["xyz"]),
-                    }
-                )
+                postfix = {
+                    "Loss": f"{loss_val:.4f}",
+                    "L1": f"{Ll1.item():.4f}",
+                    "SSIM": f"{loss_ssim_val.item():.4f}",
+                    "Pts": len(self.gaussians["xyz"]),
+                }
+                if self.use_depth:
+                    postfix["Depth"] = f"{loss_depth_val.item():.4f}"
+                pbar.set_postfix(postfix)
 
             # 7. 중간 체크포인트
             if save_interval > 0 and (iteration + 1) % save_interval == 0:
@@ -889,6 +964,20 @@ def main():
         help="Checkpoint save interval (0=disabled, default: 5000)",
     )
 
+    # Depth Supervision
+    parser.add_argument(
+        "--use_depth", action="store_true",
+        help="Enable depth supervision from composited depth maps"
+    )
+    parser.add_argument(
+        "--alpha_depth", type=float, default=0.1,
+        help="Depth loss weight (default: 0.1)"
+    )
+    parser.add_argument(
+        "--depth_confidence_threshold", type=float, default=0.63,
+        help="Min confidence for depth supervision (default: 0.63 = 160/255)"
+    )
+
     # Pipeline Control Flag
     parser.add_argument(
         "--raw_input",
@@ -939,6 +1028,9 @@ def main():
         meta_file=str(meta_file),
         output_dir=str(output_dir),
         initial_ply=initial_ply,
+        use_depth=args.use_depth,
+        alpha_depth=args.alpha_depth,
+        depth_confidence_threshold=args.depth_confidence_threshold,
         device=args.device,
     )
 

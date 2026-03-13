@@ -13,9 +13,12 @@ Input:
 
 Output:
     - data_root/step3_final_inpainted/: 최종 인페인팅 결과
+    - data_root/step3_depth/: Composited dense depth maps (uint16, mm)
+    - data_root/step3_confidence/: Confidence maps (uint8, 0~255)
 """
 
 import os
+import json
 import cv2
 import torch
 import numpy as np
@@ -152,18 +155,114 @@ class GenerativeInpainter:
         
         return final_image
 
+def compose_depth(lidar_depth, step1_zbuffer, step2_guide, step1_meta, step2_meta):
+    """
+    여러 출처의 depth를 우선순위에 따라 합성.
+    Pseudo depth(10m) 기반 Z-buffer는 자동 제외.
+
+    Args:
+        lidar_depth: (H, W) uint16, LiDAR sparse depth (mm). None이면 스킵.
+        step1_zbuffer: (H, W) uint16, Step 1 Z-buffer depth (mm). None이면 스킵.
+        step2_guide: (H, W) uint16 or float32, Step 2 dense depth guide.
+        step1_meta: dict, Step 1 메타 (depth_source 포함)
+        step2_meta: dict, Step 2 메타 (method 포함)
+
+    Returns:
+        depth_final: (H, W) uint16, composited depth (mm)
+    """
+    h, w = step2_guide.shape[:2]
+    depth_final = np.zeros((h, w), dtype=np.float32)
+
+    # 1순위: LiDAR sparse depth
+    if lidar_depth is not None:
+        lidar_valid = lidar_depth > 0
+        depth_final[lidar_valid] = lidar_depth[lidar_valid].astype(np.float32)
+
+    # 2순위: Step 1 Z-buffer (LiDAR 기반만, pseudo depth 제외)
+    if step1_zbuffer is not None and step1_meta.get('depth_source') == 'lidar':
+        zbuf_valid = (step1_zbuffer > 0) & (depth_final == 0)
+        depth_final[zbuf_valid] = step1_zbuffer[zbuf_valid].astype(np.float32)
+
+    # 3순위: Step 2 depth guide (나머지)
+    remaining = depth_final == 0
+    if np.any(remaining):
+        depth_final[remaining] = step2_guide[remaining].astype(np.float32)
+
+    return depth_final.clip(0, 65535).astype(np.uint16)
+
+
+def create_confidence_map(orig_mask, step1_filled_mask, step1_meta, step2_meta, ai_inpainted_mask=None):
+    """
+    복원 출처별 신뢰도 맵 생성 (8단계 세분화).
+
+    Args:
+        orig_mask: (H, W) uint8, 원본 마스크 (0=동적, 255=정적)
+        step1_filled_mask: (H, W) bool, Step 1이 채운 영역
+        step1_meta: dict, depth_source 포함
+        step2_meta: dict, method 포함
+        ai_inpainted_mask: (H, W) bool, Step 3 AI가 생성한 영역. None이면 스킵.
+
+    Returns:
+        confidence: (H, W) uint8
+    """
+    h, w = orig_mask.shape[:2]
+    confidence = np.full((h, w), 255, dtype=np.uint8)  # 기본: 원본 배경
+
+    dynamic_mask = (orig_mask < 200)  # 동적 객체 영역
+
+    # Step 1 복원 영역
+    if step1_filled_mask is not None:
+        step1_region = dynamic_mask & step1_filled_mask
+        if step1_meta.get('depth_source') == 'lidar':
+            confidence[step1_region] = 224  # LiDAR 기반 Z-buffer
+        else:
+            confidence[step1_region] = 192  # Pseudo depth 기반 (depth 무의미)
+
+    # Step 2/3 복원 영역 — 사용된 방법에 따라 차등
+    step1_filled = step1_filled_mask if step1_filled_mask is not None else np.zeros((h, w), dtype=bool)
+    step23_region = dynamic_mask & (~step1_filled)
+
+    method = step2_meta.get('method', 'inpaint')
+    if method == 'mono_lidar':
+        confidence[step23_region] = 160
+    elif method == 'mono_only':
+        confidence[step23_region] = 128
+    elif method == 'ransac':
+        confidence[step23_region] = 96
+    else:  # 'inpaint' or fallback
+        confidence[step23_region] = 0
+
+    # AI 생성 영역은 더 낮은 confidence로 override
+    if ai_inpainted_mask is not None:
+        ai_region = dynamic_mask & ai_inpainted_mask
+        # AI 생성 영역은 Step 2 방법보다 낮은 64로 설정
+        confidence[ai_region] = np.minimum(confidence[ai_region], 64)
+
+    return confidence
+
+
 def run_step3(data_root, lora_path=None):
     print(">>> [Step 3] Final Inpainting with ControlNet & LoRA...")
-    
+
     # 경로 설정
-    step1_dir = os.path.join(data_root, 'step1_warped') # Step 1 결과
-    step2_dir = os.path.join(data_root, 'step2_depth_guide') # Step 2 결과
-    orig_dir = os.path.join(data_root, 'images') # 원본 (색상 참조용)
-    mask_dir = os.path.join(data_root, 'masks') # 동적 객체 마스크
-    
+    step1_dir = os.path.join(data_root, 'step1_warped')       # Step 1 결과 (RGB)
+    step1_depth_dir = os.path.join(data_root, 'step1_depth')  # Step 1 Z-buffer depth
+    step1_meta_dir = os.path.join(data_root, 'step1_meta')    # Step 1 메타
+    step2_dir = os.path.join(data_root, 'step2_depth_guide')  # Step 2 결과
+    step2_meta_dir = os.path.join(data_root, 'step2_meta')    # Step 2 메타
+    lidar_dir = os.path.join(data_root, 'depth_maps')         # 원본 LiDAR
+    orig_dir = os.path.join(data_root, 'images')              # 원본 이미지
+    mask_dir = os.path.join(data_root, 'masks')               # 동적 객체 마스크
+
     out_dir = os.path.join(data_root, 'step3_final_inpainted')
+    out_depth_dir = os.path.join(data_root, 'step3_depth')
+    out_conf_dir = os.path.join(data_root, 'step3_confidence')
+    out_method_dir = os.path.join(data_root, 'step3_method_log')
     os.makedirs(out_dir, exist_ok=True)
-    
+    os.makedirs(out_depth_dir, exist_ok=True)
+    os.makedirs(out_conf_dir, exist_ok=True)
+    os.makedirs(out_method_dir, exist_ok=True)
+
     files = sorted([f for f in os.listdir(step1_dir) if f.endswith('.jpg') or f.endswith('.png')])
 
     # 모델 초기화 (루프 밖에서 한 번만 수행)
@@ -193,36 +292,102 @@ def run_step3(data_root, lora_path=None):
         orig_mask = cv2.imread(mask_path, 0)
 
         if warped_img is None or orig_mask is None or depth_guide is None:
-            # 하나라도 없으면 건너뜀
             print(f"  Skipping {f}: missing inputs "
                   f"(warped={warped_img is not None}, mask={orig_mask is not None}, "
                   f"depth={depth_guide is not None})")
             continue
 
+        # Step 1 Z-buffer depth 로드 (존재하면)
+        step1_zbuffer = None
+        s1_depth_path = os.path.join(step1_depth_dir, f"{stem}.png")
+        if os.path.exists(s1_depth_path):
+            step1_zbuffer = cv2.imread(s1_depth_path, cv2.IMREAD_UNCHANGED)
+
+        # LiDAR sparse depth 로드 (존재하면)
+        lidar_depth = None
+        lidar_path = os.path.join(lidar_dir, f"{stem}.png")
+        if os.path.exists(lidar_path):
+            lidar_depth = cv2.imread(lidar_path, cv2.IMREAD_UNCHANGED)
+
+        # Step 1/2 메타 로드
+        step1_meta = {'depth_source': 'pseudo', 'filled_ratio': 0.0}
+        s1_meta_path = os.path.join(step1_meta_dir, f"{stem}.json")
+        if os.path.exists(s1_meta_path):
+            with open(s1_meta_path, 'r') as mf:
+                step1_meta = json.load(mf)
+
+        step2_meta = {'method': 'inpaint'}
+        s2_meta_path = os.path.join(step2_meta_dir, f"{stem}.json")
+        if os.path.exists(s2_meta_path):
+            with open(s2_meta_path, 'r') as mf:
+                step2_meta = json.load(mf)
+
         # 2. Logic: Temporal Fusion으로도 못 채운 '진짜 구멍' 찾기
-        # warped_img가 검은색(0)인 영역이 Step 1 실패 영역
         missing_mask = (np.sum(warped_img, axis=2) == 0).astype(np.uint8) * 255
-        
+
         # 최종 마스크: (원래 동적 객체 자리) AND (Temporal Fusion 실패 자리)
-        # 즉, 배경을 어디선가 가져왔으면 굳이 AI로 그릴 필요 없음 -> 구멍만 AI가 그림
         target_mask = cv2.bitwise_and(orig_mask, missing_mask)
-        
+
         # 입력 이미지 준비: 원본 + Warped(복원된 배경) 합성
         base_image = orig_img.copy()
-        valid_warp = (missing_mask == 0) # Warped 데이터가 존재하는 곳
-        # 주의: Warped 이미지가 원본보다 우선순위가 낮을 수 있음 (블러 발생 시).
-        # 하지만 여기선 "동적 객체가 있던 자리"에 한해서는 Warped를 씀
+        valid_warp = (missing_mask == 0)
         mask_bool = (orig_mask > 0)
         base_image[mask_bool & valid_warp] = warped_img[mask_bool & valid_warp]
 
+        # Step 1이 채운 영역 마스크
+        step1_filled_mask = mask_bool & valid_warp
+
         # 3. AI Inpainting 실행 (남은 구멍이 있을 때만)
-        if np.sum(target_mask) > 100: # 픽셀 100개 이상 구멍일 때만 수행
+        ai_inpainted = False
+        if np.sum(target_mask) > 100:
             result = inpainter.process(base_image, target_mask, depth_guide)
+            ai_inpainted = True
         else:
             result = base_image
 
-        # 4. 저장
+        # AI가 실제로 생성한 영역 마스크
+        ai_inpainted_mask = (target_mask > 0) if ai_inpainted else None
+
+        # 4. Composited Depth Map 생성
+        composited_depth = compose_depth(
+            lidar_depth, step1_zbuffer, depth_guide,
+            step1_meta, step2_meta
+        )
+
+        # 5. Confidence Map 생성
+        confidence = create_confidence_map(
+            orig_mask, step1_filled_mask,
+            step1_meta, step2_meta,
+            ai_inpainted_mask=ai_inpainted_mask
+        )
+
+        # 6. Method Log 생성
+        dynamic_area = max(int(np.sum(mask_bool)), 1)
+        method_log = {
+            'frame': stem,
+            'step1': {
+                'depth_source': step1_meta.get('depth_source', 'unknown'),
+                'filled_ratio': step1_meta.get('filled_ratio', 0.0),
+            },
+            'step2': {
+                'method': step2_meta.get('method', 'unknown'),
+                'lidar_anchor_count': step2_meta.get('lidar_anchor_count', 0),
+                'ransac_inlier_ratio': step2_meta.get('ransac_inlier_ratio', 0.0),
+                'scale': step2_meta.get('scale', 0.0),
+                'shift': step2_meta.get('shift', 0.0),
+            },
+            'step3': {
+                'ai_inpainted': ai_inpainted,
+                'ai_filled_ratio': float(np.sum(target_mask > 0)) / dynamic_area if ai_inpainted else 0.0,
+            }
+        }
+
+        # 7. 저장
         cv2.imwrite(os.path.join(out_dir, f), result)
+        cv2.imwrite(os.path.join(out_depth_dir, f"{stem}.png"), composited_depth)
+        cv2.imwrite(os.path.join(out_conf_dir, f"{stem}.png"), confidence)
+        with open(os.path.join(out_method_dir, f"{stem}.json"), 'w') as mf:
+            json.dump(method_log, mf, indent=2)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

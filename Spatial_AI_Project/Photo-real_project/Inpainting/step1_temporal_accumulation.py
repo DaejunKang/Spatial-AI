@@ -12,6 +12,8 @@ Input:
 
 Output:
     - data_root/step1_warped/: 시계열 누적으로 구멍이 메워진 이미지
+    - data_root/step1_depth/: Z-buffer depth maps (uint16, mm 단위)
+    - data_root/step1_meta/: 프레임별 메타데이터 (depth source, filled ratio)
 """
 
 import os
@@ -47,9 +49,13 @@ class TemporalStaticAccumulator:
         self.poses_dir = self.data_root / 'poses'
         self.depths_dir = self.data_root / 'depth_maps'
         self.output_dir = self.data_root / 'step1_warped'
-        
+        self.depth_output_dir = self.data_root / 'step1_depth'
+        self.meta_output_dir = self.data_root / 'step1_meta'
+
         # 출력 디렉토리 생성
         self.output_dir.mkdir(parents=True, exist_ok=True)
+        self.depth_output_dir.mkdir(parents=True, exist_ok=True)
+        self.meta_output_dir.mkdir(parents=True, exist_ok=True)
         
         # Pose 파일 목록 로드
         if not self.poses_dir.exists():
@@ -284,10 +290,16 @@ class TemporalStaticAccumulator:
             sort_idx = np.argsort(-z_valid)  # 먼 점부터
             u_sorted = u_valid[sort_idx]
             v_sorted = v_valid[sort_idx]
+            z_sorted = z_valid[sort_idx]
             clrs_sorted = clrs_valid_filtered[sort_idx]
-            
+
             # 배열 인덱싱으로 한 번에 그리기 (painter's algorithm)
             warped_img[v_sorted, u_sorted] = (clrs_sorted * 255).astype(np.uint8)
+
+            # Z-buffer depth map 생성 (m → mm, uint16)
+            zbuffer_depth = np.zeros((height, width), dtype=np.float32)
+            zbuffer_depth[v_sorted, u_sorted] = z_sorted  # painter's algorithm과 동일 순서
+            zbuffer_depth_mm = (zbuffer_depth * 1000).clip(0, 65535).astype(np.uint16)
             
             # Hole filling: 작은 구멍을 inpainting으로 채움
             warped_gray = cv2.cvtColor(warped_img, cv2.COLOR_BGR2GRAY)
@@ -310,9 +322,33 @@ class TemporalStaticAccumulator:
                 warped_img * (1 - static_mask_norm)
             ).astype(np.uint8)
             
-            # 저장: Step 1 결과물
+            # 저장: Step 1 결과물 (RGB)
             output_path = self.output_dir / f"{frame_id}_{cam_name}.png"
             cv2.imwrite(str(output_path), result_img)
+
+            # 저장: Z-buffer depth map
+            depth_output_path = self.depth_output_dir / f"{frame_id}_{cam_name}.png"
+            cv2.imwrite(str(depth_output_path), zbuffer_depth_mm)
+
+            # Pseudo depth 감지: depth_maps/가 없어 10m 균일값을 사용했는지 기록
+            depth_file = self.depths_dir / f"{frame_id}_{cam_name}.png"
+            has_real_depth = depth_file.exists()
+
+            # 동적 영역에서 Step 1이 채운 비율 계산
+            dynamic_mask = (mask < 200)
+            dynamic_area = np.sum(dynamic_mask)
+            step1_filled = dynamic_mask & (np.sum(warped_img, axis=2) > 0)
+            filled_ratio = float(np.sum(step1_filled)) / max(dynamic_area, 1)
+
+            # Meta 저장
+            step1_meta = {
+                'depth_source': 'lidar' if has_real_depth else 'pseudo',
+                'filled_ratio': round(filled_ratio, 4),
+                'zbuffer_valid_pixels': int(np.sum(zbuffer_depth_mm > 0))
+            }
+            meta_path = self.meta_output_dir / f"{frame_id}_{cam_name}.json"
+            with open(meta_path, 'w') as mf:
+                json.dump(step1_meta, mf, indent=2)
     
     def _backproject(self, depth, color, intrinsics, mask):
         """
