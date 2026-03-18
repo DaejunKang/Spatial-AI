@@ -1,7 +1,7 @@
 # Spatial-AI Photo-real Pipeline: Full Workflow Architecture
 
-> **Version:** 1.0
-> **Date:** 2026-03-13
+> **Version:** 2.0
+> **Date:** 2026-03-18
 > **Purpose:** claude.ai 연구 분석용 전체 파이프라인 아키텍처 문서
 
 ---
@@ -196,9 +196,9 @@ step1_warped/accumulated_static.ply  # 누적 포인트 클라우드
 
 **출력:**
 ```
-step2_depth_guide/    # uint16 기하 깊이 가이드
-step2_hole_masks/     # uint8 최종 hole 마스크
-step2_meta/           # RANSAC stats: scale, shift, inlier_ratio
+step2_depth_guide/{frame}_{cam}.png    # uint16 기하 깊이 가이드
+step2_hole_masks/{frame}_{cam}.png     # uint8 최종 hole 마스크
+step2_meta/{frame}_{cam}.json          # RANSAC stats: scale, shift, inlier_ratio
 ```
 
 **핵심:** 4가지 내부 방법 로깅 (LiDAR, Mono+LiDAR, Mono only, RANSAC plane)
@@ -211,10 +211,10 @@ step2_meta/           # RANSAC stats: scale, shift, inlier_ratio
 
 **출력:**
 ```
-step3_final_inpainted/  # AI 인페인팅 결과 RGB
-step3_depth/            # composited depth (uint16 mm)
-step3_confidence/       # 8-level confidence (uint8)
-step3_method_log/       # per-pixel restoration method log (JSON)
+step3_final_inpainted/{frame}_{cam}.jpg   # AI 인페인팅 결과 RGB
+step3_depth/{frame}_{cam}.png             # composited depth (uint16 mm)
+step3_confidence/{frame}_{cam}.png        # 8-level confidence (uint8)
+step3_method_log/{frame}_{cam}.json       # per-pixel restoration method log (JSON)
 ```
 
 ### 4.4 Depth Composition (Priority-based)
@@ -223,6 +223,7 @@ step3_method_log/       # per-pixel restoration method log (JSON)
 Priority 1: LiDAR depth (원본 센서 데이터)
 Priority 2: Step 1 Z-buffer (LiDAR 기반 재투영만, pseudo depth 제외)
 Priority 3: Step 2 guide (Monocular + RANSAC)
+         → step2_hole_masks 참조하여 guide 무효 영역은 depth 0 유지
 ```
 
 **Pseudo Depth 제외 이유:**
@@ -231,16 +232,17 @@ Priority 3: Step 2 guide (Monocular + RANSAC)
 
 ### 4.5 Confidence Map (8-Level)
 
-| 값 | 의미 | 신뢰도 |
-|----|------|--------|
-| 255 | 원본 배경 (마스크 외부) | 최고 |
-| 224 | LiDAR Z-buffer 재투영 depth | 매우 높음 |
-| 192 | Pseudo depth (사용하지 않음) | - |
-| 160 | Mono depth + LiDAR 정합 | 높음 |
-| 128 | Mono depth only | 중간 |
-| 96 | RANSAC 평면 추정 | 낮음 |
-| 64 | AI 생성 영역 (depth 없음) | 최저 |
-| 0 | 실패/미처리 | - |
+| 값 | 의미 | depth 신뢰도 | depth loss |
+|----|------|-------------|------------|
+| **255** | 원본 배경 + LiDAR sparse | cm급 | O |
+| **224** | Step 1 Z-buffer (LiDAR 기반) | cm급 | O |
+| **160** | Mono depth + LiDAR 정합 | ~10cm | O |
+| — | **threshold = 160 경계** | | |
+| **128** | Mono depth only (스케일 없음) | 상대적 | X |
+| **96** | RANSAC 평면 추정 | 조건부 | 조건부 |
+| **64** | AI 생성 (ControlNet) | 참고용 | X |
+| **32** | Pseudo depth (10m 기반 Z-buffer) | **무의미** | **X** |
+| **0** | 실패 / 미복원 | 없음 | X |
 
 ### 4.6 Final Output 구조
 
@@ -333,6 +335,13 @@ rendered_depth = Σ(alpha_i * T_i * z_i) / Σ(alpha_i * T_i)
 - LiDAR Z-buffer (224/255=0.88), Mono+LiDAR (160/255=0.63) 포함
 - Mono only (128/255=0.50), RANSAC (96/255=0.38) 제외
 - AI 생성 영역 (64/255=0.25) 제외
+- Pseudo depth (32/255=0.13) 제외 — threshold 대비 128 마진
+
+**depth_loss shape 정규화:**
+- Native rasterizer `[1, H, W]` → squeeze → `[H, W]`
+- Fallback splatting `[H, W]` → 변환 없음
+- Batched `[B, 1, H, W]` → double squeeze → `[H, W]`
+- 정규화 후 gt_depth와 shape 일치를 assertion으로 검증
 
 ---
 
@@ -390,6 +399,17 @@ Stage 3 → Stage 4:
 - `final_inpainted/` 디렉토리 유지 → 기존 스크립트 호환
 - **결론:** 점진적 마이그레이션 지원
 
+### 7.6 왜 Pseudo Depth Confidence를 32로 설정하는가?
+- v2.0에서 192로 설정했으나, depth loss threshold(160) 이상이어서 supervision 누출 가능
+- Depth composition에서 제외 + gt_depth > 0 조건이 이중 방어선 역할을 했으나, 두 방어선 모두 코드 수정에 취약
+- **결론:** confidence 자체가 의미론적으로 올바른 값을 가지도록 32로 하향. threshold 대비 128 마진으로 향후 threshold 조정에도 안전
+
+### 7.7 왜 미복원 픽셀 방어가 필요한가?
+- Confidence 초기값 255 (원본 배경)에서 시작하여 복원된 영역만 덮어쓰는 구조
+- 마스크 내부에서 Step 1/2/3 모두 실패한 픽셀은 255가 잔류
+- 이는 "동적 객체 영역인데 최고 신뢰도"라는 논리적 모순
+- **결론:** 최종 단계에서 `dynamic_region & (confidence == 255)` 검출 후 0으로 강제 설정
+
 ---
 
 ## 8. Performance Summary
@@ -419,13 +439,13 @@ nre_format/                        # NRE 표준 포맷 루트
 ├── step1_warped/                  # [Stage 3.1] 시간 누적 RGB + PLY
 ├── step1_depth/                   # [Stage 3.1] Z-buffer depth
 ├── step1_meta/                    # [Stage 3.1] depth source 메타
-├── step2_depth_guide/             # [Stage 3.2] 기하 깊이 가이드
-├── step2_hole_masks/              # [Stage 3.2] 최종 hole 마스크
-├── step2_meta/                    # [Stage 3.2] RANSAC 통계
-├── step3_final_inpainted/         # [Stage 3.3] AI 인페인팅 RGB
-├── step3_depth/                   # [Stage 3.3] composited depth
-├── step3_confidence/              # [Stage 3.3] confidence map
-├── step3_method_log/              # [Stage 3.3] method log
+├── step2_depth_guide/             # [Stage 3.2] {frame}_{cam}.png 기하 깊이 가이드
+├── step2_hole_masks/              # [Stage 3.2] {frame}_{cam}.png 최종 hole 마스크
+├── step2_meta/                    # [Stage 3.2] {frame}_{cam}.json RANSAC 통계
+├── step3_final_inpainted/         # [Stage 3.3] {frame}_{cam}.jpg AI 인페인팅 RGB
+├── step3_depth/                   # [Stage 3.3] {frame}_{cam}.png composited depth
+├── step3_confidence/              # [Stage 3.3] {frame}_{cam}.png confidence map
+├── step3_method_log/              # [Stage 3.3] {frame}_{cam}.json method log
 │
 ├── final_output/                  # [Stage 3 최종] 통합 출력
 │   ├── rgb/

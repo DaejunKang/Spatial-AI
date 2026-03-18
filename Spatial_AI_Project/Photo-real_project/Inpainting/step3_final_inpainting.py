@@ -155,7 +155,8 @@ class GenerativeInpainter:
         
         return final_image
 
-def compose_depth(lidar_depth, step1_zbuffer, step2_guide, step1_meta, step2_meta):
+def compose_depth(lidar_depth, step1_zbuffer, step2_guide, step1_meta, step2_meta,
+                   step2_hole_masks=None):
     """
     여러 출처의 depth를 우선순위에 따라 합성.
     Pseudo depth(10m) 기반 Z-buffer는 자동 제외.
@@ -166,6 +167,7 @@ def compose_depth(lidar_depth, step1_zbuffer, step2_guide, step1_meta, step2_met
         step2_guide: (H, W) uint16 or float32, Step 2 dense depth guide.
         step1_meta: dict, Step 1 메타 (depth_source 포함)
         step2_meta: dict, Step 2 메타 (method 포함)
+        step2_hole_masks: (H, W) uint8, Step 2 hole masks. guide 무효 영역 표시.
 
     Returns:
         depth_final: (H, W) uint16, composited depth (mm)
@@ -183,10 +185,16 @@ def compose_depth(lidar_depth, step1_zbuffer, step2_guide, step1_meta, step2_met
         zbuf_valid = (step1_zbuffer > 0) & (depth_final == 0)
         depth_final[zbuf_valid] = step1_zbuffer[zbuf_valid].astype(np.float32)
 
-    # 3순위: Step 2 depth guide (나머지)
+    # 3순위: Step 2 depth guide (hole_masks로 유효성 판단)
     remaining = depth_final == 0
-    if np.any(remaining):
-        depth_final[remaining] = step2_guide[remaining].astype(np.float32)
+    method = step2_meta.get('method', 'inpaint')
+    if method in ('mono_lidar', 'mono_only', 'ransac') and np.any(remaining):
+        if step2_hole_masks is not None:
+            # hole이 아닌 영역만 guide 적용
+            guide_valid = remaining & (step2_hole_masks == 0)
+        else:
+            guide_valid = remaining
+        depth_final[guide_valid] = step2_guide[guide_valid].astype(np.float32)
 
     return depth_final.clip(0, 65535).astype(np.uint16)
 
@@ -216,7 +224,7 @@ def create_confidence_map(orig_mask, step1_filled_mask, step1_meta, step2_meta, 
         if step1_meta.get('depth_source') == 'lidar':
             confidence[step1_region] = 224  # LiDAR 기반 Z-buffer
         else:
-            confidence[step1_region] = 192  # Pseudo depth 기반 (depth 무의미)
+            confidence[step1_region] = 32  # Pseudo depth 기반 (depth 무의미, threshold 160 미만)
 
     # Step 2/3 복원 영역 — 사용된 방법에 따라 차등
     step1_filled = step1_filled_mask if step1_filled_mask is not None else np.zeros((h, w), dtype=bool)
@@ -238,6 +246,15 @@ def create_confidence_map(orig_mask, step1_filled_mask, step1_meta, step2_meta, 
         # AI 생성 영역은 Step 2 방법보다 낮은 64로 설정
         confidence[ai_region] = np.minimum(confidence[ai_region], 64)
 
+    # FIX-3: 미복원 픽셀 방어
+    # 마스크 내부인데 어느 단계에서도 복원되지 않은 픽셀 → confidence 0
+    # (confidence 255가 동적 영역에 잔류하면 "최고 신뢰도" 모순 발생)
+    unrestored = dynamic_mask & (confidence == 255)
+    if np.any(unrestored):
+        confidence[unrestored] = 0
+        print(f"  [confidence] Warning: {np.sum(unrestored)} unrestored pixels "
+              f"in dynamic mask forced to confidence 0")
+
     return confidence
 
 
@@ -249,6 +266,7 @@ def run_step3(data_root, lora_path=None):
     step1_depth_dir = os.path.join(data_root, 'step1_depth')  # Step 1 Z-buffer depth
     step1_meta_dir = os.path.join(data_root, 'step1_meta')    # Step 1 메타
     step2_dir = os.path.join(data_root, 'step2_depth_guide')  # Step 2 결과
+    step2_hole_dir = os.path.join(data_root, 'step2_hole_masks')  # Step 2 hole masks
     step2_meta_dir = os.path.join(data_root, 'step2_meta')    # Step 2 메타
     lidar_dir = os.path.join(data_root, 'depth_maps')         # 원본 LiDAR
     orig_dir = os.path.join(data_root, 'images')              # 원본 이미지
@@ -322,6 +340,12 @@ def run_step3(data_root, lora_path=None):
             with open(s2_meta_path, 'r') as mf:
                 step2_meta = json.load(mf)
 
+        # Step 2 hole masks 로드 (존재하면)
+        step2_hole_masks = None
+        s2_hole_path = os.path.join(step2_hole_dir, f"{stem}.png")
+        if os.path.exists(s2_hole_path):
+            step2_hole_masks = cv2.imread(s2_hole_path, cv2.IMREAD_UNCHANGED)
+
         # 2. Logic: Temporal Fusion으로도 못 채운 '진짜 구멍' 찾기
         missing_mask = (np.sum(warped_img, axis=2) == 0).astype(np.uint8) * 255
 
@@ -351,7 +375,8 @@ def run_step3(data_root, lora_path=None):
         # 4. Composited Depth Map 생성
         composited_depth = compose_depth(
             lidar_depth, step1_zbuffer, depth_guide,
-            step1_meta, step2_meta
+            step1_meta, step2_meta,
+            step2_hole_masks=step2_hole_masks
         )
 
         # 5. Confidence Map 생성

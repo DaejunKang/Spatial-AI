@@ -95,9 +95,16 @@ def depth_loss(
     Returns:
         weighted depth L1 loss (scalar)
     """
-    # 차원 정리
-    if rendered_depth.dim() == 3:
-        rendered_depth = rendered_depth.squeeze(0)  # [H, W]
+    # FIX-5: Shape 정규화 — rasterizer 구현에 따라 출력 shape이 다름
+    if rendered_depth.dim() == 4:
+        rendered_depth = rendered_depth.squeeze(0).squeeze(0)  # [B, 1, H, W] → [H, W]
+    elif rendered_depth.dim() == 3:
+        rendered_depth = rendered_depth.squeeze(0)              # [1, H, W] → [H, W]
+    # dim() == 2: 이미 [H, W], 변환 불필요
+
+    assert rendered_depth.shape == gt_depth.shape, (
+        f"Shape mismatch: rendered_depth {rendered_depth.shape} vs gt_depth {gt_depth.shape}"
+    )
 
     # 유효 픽셀: depth > 0 이고 confidence >= threshold
     valid = (gt_depth > 0) & (confidence >= threshold)
