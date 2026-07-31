@@ -4,6 +4,14 @@
 
 ---
 
+## [2026-07-31] new_tag.json(v0.4 폐쇄어휘) 정적환경+long-tail 흡수
+> **Task**: episode(Track2) + common
+- 배경: 정적환경 태깅을 성급히 제거했다가(같은 날) 되돌림 — 최종 목적이 **search 기반 학습데이터 큐레이션**이라 정적환경 태그가 필요. `legacy/new_tag.json`(condition 25 + event 25, GT rule·cell_role·3값판정·backoff 갖춘 성숙 어휘)을 확인.
+- 결정(옵션2): **new_tag 정본 채택 대신 taxonomy.py 구조 유지하며 흡수**. 검출기 배선 보존, GT rule 세부 미채택.
+- 변경(`common/taxonomy.py`): 새 축 **정적환경**(조명 night/twilight/day·기상 rain/snow/fog/clear·노면 wet/dry·glare·crosswalk_present·traffic_light_present·sharp_curve·undivided_road·congestion·free_flow·crowd) + long-tail 이벤트(vehicle_cross_path·wrong_way·stationary_vehicle·large_vehicle·emergency_vehicle·animal·road_obstacle·jaywalking·road_worker·vulnerable_ped) + ego 급기동(hard_brake/steer/overtake). 신규 21 + 조명/기상/노면 9 승격. KEYS 41→66.
+- `STATUS` dict 추가: 흡수 태그별 visionary 실행상태(runnable 11 / vlm_only 13 / sparse 4 / gold 2). ODD(조명/기상/노면 dim)는 검색 정본을 정적환경 축에 넘기고 per-clip 단일값 표현으로만 잔존(중복 주석).
+- 영향: gold 도구 칩 35→65개(정적환경 축 노출), 활성 import 9/9 OK, KEY 유일성 OK. 미구현 후속 = 신규 태그 검출기(obj3d/egomotion) + 정적환경 VLM 판정 + new_tag 3값판정/FDR 프레임 도입 여부.
+
 ## [2026-07-31] 드리프트 4건 코드 정합화 (설계 불변식 반영)
 > **Task**: multi (Track1+Track2)
 - 변경:

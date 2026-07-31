@@ -1,0 +1,3603 @@
+{
+    "_meta": {
+      "version": "0.4",
+      "date": "2026-07-28",
+      "tag_count": 50,
+      "vocabulary": "closed",
+      "unit": "clip",
+      "clip_seconds": 20,
+      "judgment_values": [
+        "present",
+        "absent",
+        "undecidable"
+      ],
+      "docs": "TAGS_provenance_v0.4.json (뷰어·근거MD 생성 입력) / TAGS_근거_v0.4.md (사람용)",
+      "schema_note": "gt_rule 이 ③ GT 스크립트의 단일 입력. definition 은 프롬프트 렌더링용이며 파싱 대상이 아님.",
+      "source_values": [
+        "ann",
+        "api",
+        "calc",
+        "can",
+        "corruption",
+        "derived",
+        "desc",
+        "external",
+        "image",
+        "map",
+        "pose"
+      ],
+      "status_values": [
+        "confirmed",
+        "pending_approval",
+        "review_pending",
+        "gold_required",
+        "dataset_absent",
+        "dataset_sparse"
+      ],
+      "runnable_now": 42,
+      "field_definitions_add": {
+        "cell_role": "조건 셀 정의 역할. primary = Figure 1 주 패널(anchored 조명·기상, clip_homogeneous) | gated = predicted 조건 태그 — 셀로 쓰되 저신뢰 클립을 g_unknown 으로 격리(C2 해법 2단) | secondary = anchored 조건이나 2차 분석용(공간·교통 축) | none = 셀로 쓰지 않음(이벤트, 변별력 0, 파생 중복).",
+        "visual_decidable": "카메라 프레임만으로 판정 가능한가. yes = 영상 단독 판정 | needs_metadata = 추가 소스 필요(metadata_required 에 명시). 선정 규칙 ③(클립 수준 시각 판정 가능)을 필드로 만든 것. needs_metadata 태그는 사람 판정(gold set) 시 해당 메타데이터를 함께 제시해야 하며, 그렇지 않으면 판정자와 VLM 의 정보 격차가 오류로 오인된다.",
+        "labeling_precedent_count": "이 태그와 같은 형태로 라벨을 붙인 공개 데이터셋 수(간접·부재 제외). 표준에 개념이 있는 것과 그 형태로 라벨링되는 것은 다른 문제이며, 후자가 태그 설계의 1차 근거다. 상세 선례는 TAGS_provenance 의 labeling_precedent."
+      },
+      "file_layout": "**단일 파일.** ③ GT 스크립트와 프롬프트 렌더러는 `tags[]` 만 읽는다(+`geometry`, `backoff_hierarchy`, `vocabulary_policy`). 산문 근거는 `docs`, 확장 후보는 `candidates` 에 격리. TAGS_provenance / TAGS_candidates / TAGS_근거.md 를 모두 흡수했다(2026-07-28).",
+      "consumers": {
+        "③ GT 스크립트": "tags[].gt_rule (+ geometry, tags[].derived_from, tags[].exclusive_with)",
+        "프롬프트 렌더러": "tags[].id / name_ko / name_en / type / definition",
+        "셀·back-off 로직": "tags[].cell_role / hierarchy_parent / temporal_predicate, backoff_hierarchy",
+        "분석·보고": "tags[].verifiability / evidence_grade / labeling_precedent_count / visual_decidable",
+        "뷰어 생성기": "전체 (docs·candidates 포함)"
+      },
+      "vocabulary_policy": {
+        "closed_declaration": "본 태그 어휘는 v1 범위에서 폐쇄(closed-set)로 선언한다. 신규 태그 추가는 어휘 개정(v0.x+1) + 해당 태그 calibration 재구축(n×단가 온보딩 비용)을 수반한다.",
+        "versioning_policy": "MAJOR.MINOR 2자리. v0.x = 동결 전 초안(변경 시 0.x+1, 문서성 변경은 changelog만). v1.0 = 동결 — 조건: 임계값 확정 + 센터장 승인 + 소규모 테스트(④)에서 GT 도출 확인. E1 이후 모든 실험 결과는 동결 version에 묶임. 1.0 이후: 판정·GT 산출을 바꿀 수 있는 변경(태그 추가/삭제, 정의·임계값, back-off 트리) = MAJOR up + calibration 재구축, 무해 변경(주석·오타·URL) = MINOR up. 프롬프트 렌더링 재현성은 version이 아니라 결과 파일의 prompt_hash가 책임진다.",
+        "selection_rule": "태그는 임의 선정이 아니라 다음 교집합으로 도출한다: ① 확립된 분류체계(ISO 34503 ODD taxonomy, NHTSA pre-crash typology, Impromptu-VLA 비정형 4범주, CODA corner case, DriveBench corruption, BDD100K 라벨 체계)에 대응 요소가 존재 ② 대상 데이터셋에서 VLM과 독립인 GT 도출 가능 ③ 클립 수준 시각 판정 가능. ①의 직접 대응이 없는 소수 태그(ego_stop, ego_u_turn, ego_overtake, congestion)는 앵커 가능성 + 운영 필요(교차 분석·데이터셋 라벨링 관행)를 명시 근거로 포함하며 provenance에 '간접'으로 정직하게 표기한다.",
+        "unit_note": "클립(~20초, 멀티뷰 + ego-motion). 모든 태그는 클립 수준 이진 판정(참/거짓)이며, 시간 구간 [t_s,t_e]는 출력하되 v1 보증 범위 밖.",
+        "_note": "v1.0 동결 조건과 선정 규칙은 검증실험프로토콜·확장 후보 승격 판정이 참조하므로 코드 영역에 둔다."
+      },
+      "judgment_values_note": "present / absent / undecidable. 보증은 **수용된 present** 의 FDR — absent 는 무보증(FNR 무통제), undecidable 은 자동 기권으로 기권율에 합산한다. 초기안의 '애매하면 false' 규칙은 폐지했다: 확인된 부재와 관측 불가를 한 값으로 접으면 부재-확인 태그(clear_weather·dry_road·nominal_driving)의 오류 구조가 왜곡되고 FNR 이 커진다. 외부 근거 — BDD100K 의 `undefined`, nuScenes description 의 미기재, Stutz et al. arXiv:2307.09302(모호한 정답 하에서의 conformal prediction) 가 동일한 3값 분리를 취한다."
+    },
+    "geometry": {
+      "ego_path_polygon": {
+        "forward_m": 40,
+        "width": "vehicle_width + 0.5 m 양측",
+        "extrapolation": "constant_velocity_yawrate"
+      },
+      "lead_vehicle": {
+        "same_lane": true,
+        "min_longitudinal": true,
+        "max_lateral_offset_m": 1.5
+      },
+      "distance_reference": "ego_rear_axle_center"
+    },
+    "backoff_hierarchy": {
+      "adverse_weather": [
+        "cond.rain",
+        "cond.snow",
+        "cond.fog"
+      ],
+      "low_light": [
+        "cond.night",
+        "cond.twilight"
+      ],
+      "degraded_road_surface": [
+        "cond.wet_road"
+      ],
+      "complex_static_scene": [
+        "cond.tunnel",
+        "cond.intersection",
+        "cond.crosswalk_present",
+        "cond.traffic_light_present",
+        "cond.parking_area",
+        "cond.construction_zone"
+      ],
+      "vru_interaction": [
+        "cond.crowd",
+        "evt.ped_crossing",
+        "evt.jaywalking",
+        "evt.road_worker",
+        "evt.cyclist_interaction",
+        "evt.vulnerable_pedestrian"
+      ],
+      "critical_maneuver": [
+        "evt.ego_hard_brake",
+        "evt.ego_hard_steer",
+        "evt.cut_in",
+        "evt.lead_brake",
+        "evt.cut_out",
+        "evt.vehicle_cross_path",
+        "evt.wrong_way_vehicle"
+      ]
+    },
+    "tags": [
+      {
+        "id": "cond.night",
+        "name_ko": "야간",
+        "name_en": "night",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "S",
+        "temporal_predicate": "clip_homogeneous",
+        "hierarchy_parent": "low_light",
+        "definition": "태양 고도 -6° 미만(클립 전 구간). 터널·지하·실내는 앵커 예외.",
+        "gt_rule": {
+          "source": [
+            "calc"
+          ],
+          "metric": "sun_elevation_deg",
+          "op": "in_range",
+          "threshold": [
+            null,
+            -6.0
+          ],
+          "unit": "deg",
+          "params": {
+            "eval_times_s": [
+              0,
+              10,
+              20
+            ],
+            "require_all_equal": true,
+            "else": "undecidable",
+            "input": "scene timestamp + log location -> ephemeris",
+            "exception": "터널·지하 구간 앵커 예외 목록"
+          },
+          "status": "confirmed"
+        },
+        "exclusive_with": [
+          "cond.twilight",
+          "cond.day"
+        ],
+        "cell_role": "primary",
+        "labeling_precedent_count": 13,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "타임스탬프+위경도"
+      },
+      {
+        "id": "cond.twilight",
+        "name_ko": "박명(여명/황혼)",
+        "name_en": "twilight",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "S",
+        "temporal_predicate": "clip_homogeneous",
+        "hierarchy_parent": "low_light",
+        "definition": "태양 고도 -6° 이상 +6° 미만(클립 전 구간).",
+        "gt_rule": {
+          "source": [
+            "calc"
+          ],
+          "metric": "sun_elevation_deg",
+          "op": "in_range",
+          "threshold": [
+            -6.0,
+            6.0
+          ],
+          "unit": "deg",
+          "params": {
+            "eval_times_s": [
+              0,
+              10,
+              20
+            ],
+            "require_all_equal": true,
+            "else": "undecidable",
+            "input": "scene timestamp + log location -> ephemeris",
+            "exception": "터널·지하 구간 앵커 예외 목록"
+          },
+          "status": "confirmed"
+        },
+        "exclusive_with": [
+          "cond.night",
+          "cond.day"
+        ],
+        "cell_role": "primary",
+        "labeling_precedent_count": 8,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "타임스탬프+위경도"
+      },
+      {
+        "id": "cond.day",
+        "name_ko": "주간",
+        "name_en": "day",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "S",
+        "temporal_predicate": "clip_homogeneous",
+        "hierarchy_parent": null,
+        "definition": "태양 고도 +6° 이상(클립 전 구간).",
+        "gt_rule": {
+          "source": [
+            "calc"
+          ],
+          "metric": "sun_elevation_deg",
+          "op": "in_range",
+          "threshold": [
+            6.0,
+            null
+          ],
+          "unit": "deg",
+          "params": {
+            "eval_times_s": [
+              0,
+              10,
+              20
+            ],
+            "require_all_equal": true,
+            "else": "undecidable",
+            "input": "scene timestamp + log location -> ephemeris",
+            "exception": "터널·지하 구간 앵커 예외 목록"
+          },
+          "status": "confirmed"
+        },
+        "exclusive_with": [
+          "cond.night",
+          "cond.twilight"
+        ],
+        "cell_role": "primary",
+        "labeling_precedent_count": 8,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "타임스탬프+위경도"
+      },
+      {
+        "id": "cond.rain",
+        "name_ko": "강우",
+        "name_en": "rain",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1*",
+        "evidence_grade": "S",
+        "temporal_predicate": "clip_homogeneous",
+        "hierarchy_parent": "adverse_weather",
+        "definition": "클립 시간대에 해당 위치에서 강수(비) 진행 중. 강도 미구분.",
+        "gt_rule": {
+          "source": [
+            "api",
+            "desc"
+          ],
+          "metric": "precipitation_rain",
+          "op": "exists",
+          "params": {
+            "nuscenes": "scene.description 에 rain 포함",
+            "deploy": "기상 API ∧ 와이퍼 CAN 교차",
+            "intensity_split": false
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "primary",
+        "labeling_precedent_count": 14,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "cond.snow",
+        "name_ko": "강설",
+        "name_en": "snow",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V0",
+        "evidence_grade": "S",
+        "temporal_predicate": "clip_homogeneous",
+        "hierarchy_parent": "adverse_weather",
+        "definition": "클립 시간대에 해당 위치에서 강설(눈 내림) 진행 중. 노면 적설과 독립(기상 축) — 맑은 날 노면 적설은 거짓.",
+        "gt_rule": {
+          "source": [
+            "external"
+          ],
+          "metric": "snowfall",
+          "op": "exists",
+          "params": {
+            "nuscenes": "부재",
+            "fallback": "DriveBench snow corruption(강설 시각 효과). Waymo weather 라벨은 Sunny/Rain 2값뿐이라 눈 GT로 사용 불가 — 실데이터 필요 시 CADC·K-Radar",
+            "axis_note": "노면 적설(snowy_road)은 노면 축 — 확장 카드(겨울 데이터셋 편입 시 icy_road와 함께)",
+            "zod_path": "ZOD scraped_weather:snow + Road Surface snow_coverage(binary) — 보완 데이터셋 1순위 격상(2026-07-30)"
+          },
+          "status": "dataset_absent"
+        },
+        "cell_role": "primary",
+        "labeling_precedent_count": 12,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "cond.fog",
+        "name_ko": "안개",
+        "name_en": "fog",
+        "type": "condition",
+        "anchor_class": "predicted",
+        "verifiability": "V0",
+        "evidence_grade": "S",
+        "temporal_predicate": "clip_homogeneous",
+        "hierarchy_parent": "adverse_weather",
+        "definition": "안개·연무로 수평 가시거리 1 km 미만.",
+        "gt_rule": {
+          "source": [
+            "corruption"
+          ],
+          "metric": "horizontal_visibility_m",
+          "op": "<",
+          "threshold": 1000,
+          "unit": "m",
+          "params": {
+            "concept": "WMO fog = 가시거리 1 km 미만",
+            "experiment": "DriveBench fog corruption 주입",
+            "beta_extinction_min": 0.005,
+            "beta_unit": "m^-1",
+            "beta_to_visibility_m": 600,
+            "severity_map": {
+              "present": ">=3/5",
+              "absent": "0",
+              "gold_set": "1-2"
+            },
+            "cell_note": "predicted 조건 태그 — 셀 배정에 쓰되 저신뢰 클립은 g_unknown 으로 격리(C2 순환 해법 2단). g_unknown 도 자체 FDR 절차를 갖는다",
+            "zod_path": "실데이터 경로: ZOD scraped_weather:fog (corruption 주입과 병행)"
+          },
+          "status": "confirmed"
+        },
+        "verifiability_note": "V0이지만 실험에서는 corruption 주입 강도로 GT가 구성적으로 알려진다. nuScenes 네이티브 클립에는 부재.",
+        "cell_role": "gated",
+        "labeling_precedent_count": 13,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "cond.clear_weather",
+        "name_ko": "맑음(무강수·무안개)",
+        "name_en": "clear_weather",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "L",
+        "temporal_predicate": "derived",
+        "hierarchy_parent": null,
+        "definition": "rain·snow·fog가 모두 absent로 확인된 상태. 구름량 무관.",
+        "gt_rule": {
+          "source": [
+            "derived"
+          ],
+          "metric": "all_absent_confirmed",
+          "op": "==",
+          "threshold": true,
+          "params": {
+            "all_absent": [
+              "cond.rain",
+              "cond.snow",
+              "cond.fog"
+            ],
+            "any_undecidable": "undecidable",
+            "cell_note": "파생 태그 — 구성 축(rain/snow/fog)이 셀을 담당하므로 중복. 보증 대상·큐레이션 질의용"
+          },
+          "status": "confirmed"
+        },
+        "derived_from": {
+          "all_absent": [
+            "cond.rain",
+            "cond.snow",
+            "cond.fog"
+          ]
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 10,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "cond.wet_road",
+        "name_ko": "노면 젖음",
+        "name_en": "wet_road",
+        "type": "condition",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "S",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "degraded_road_surface",
+        "definition": "주행 차로 노면에 정반사 하이라이트 또는 젖은 색조가 연속 3프레임 이상.",
+        "gt_rule": {
+          "source": [
+            "desc",
+            "image"
+          ],
+          "metric": "specular_highlight_or_wet_tone",
+          "op": "exists",
+          "params": {
+            "min_consecutive_frames": 3,
+            "weak_label": "desc rain scene ∪ 직후 scene",
+            "gold_required": true,
+            "cell_note": "predicted 조건 태그 — 셀 배정에 쓰되 저신뢰 클립은 g_unknown 으로 격리(C2 순환 해법 2단). g_unknown 도 자체 FDR 절차를 갖는다"
+          },
+          "status": "confirmed"
+        },
+        "exclusive_with": [
+          "cond.dry_road"
+        ],
+        "cell_role": "gated",
+        "labeling_precedent_count": 6,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "cond.glare",
+        "name_ko": "역광/눈부심",
+        "name_en": "glare",
+        "type": "condition",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "태양 직사·강한 반사광으로 전방 카메라에 노출 포화·플레어 발생.",
+        "gt_rule": {
+          "source": [
+            "calc",
+            "image"
+          ],
+          "metric": "sun_glare_composite",
+          "op": "all_of",
+          "params": {
+            "sun_elevation_deg_range": [
+              0.5,
+              10.0
+            ],
+            "sun_azimuth_minus_heading_deg_max": 45,
+            "saturated_pixel_value_min": 250,
+            "saturated_pixel_ratio_min": 0.03,
+            "logic": "AND",
+            "cell_note": "predicted 조건 태그 — 셀 배정에 쓰되 저신뢰 클립은 g_unknown 으로 격리(C2 순환 해법 2단). g_unknown 도 자체 FDR 절차를 갖는다"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "gated",
+        "labeling_precedent_count": 5,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "cond.tunnel",
+        "name_ko": "터널/지하차도",
+        "name_en": "tunnel",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1*",
+        "evidence_grade": "S",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "complex_static_scene",
+        "definition": "클립 중 3초 이상 터널·지하차도 내부 주행. 보이기만 하고 진입하지 않으면 거짓.",
+        "gt_rule": {
+          "source": [
+            "map",
+            "pose"
+          ],
+          "metric": "inside_tunnel",
+          "op": "exists",
+          "min_duration_s": 3.0,
+          "params": {
+            "rule": "경로상 실제 진입만 — 보이기만 하면 거짓"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "secondary",
+        "labeling_precedent_count": 6,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "map/pose"
+      },
+      {
+        "id": "cond.intersection",
+        "name_ko": "교차로 통과",
+        "name_en": "intersection",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "S",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "complex_static_scene",
+        "definition": "ego가 신호·비신호 교차로 영역을 통과.",
+        "gt_rule": {
+          "source": [
+            "map",
+            "pose"
+          ],
+          "metric": "in_intersection_polygon",
+          "op": "exists",
+          "params": {
+            "layer": "road_segment.is_intersection"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "secondary",
+        "labeling_precedent_count": 6,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "map/pose"
+      },
+      {
+        "id": "cond.crosswalk_present",
+        "name_ko": "횡단보도 존재",
+        "name_en": "crosswalk_present",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "S",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "complex_static_scene",
+        "definition": "ego 진행 경로상에 횡단보도 존재. 보행자 유무 무관.",
+        "gt_rule": {
+          "source": [
+            "map",
+            "pose"
+          ],
+          "metric": "crosswalk_on_path",
+          "op": "exists",
+          "params": {
+            "layer": "ped_crossing",
+            "independent_of": "evt.ped_crossing"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "secondary",
+        "labeling_precedent_count": 3,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "map/pose"
+      },
+      {
+        "id": "cond.traffic_light_present",
+        "name_ko": "신호등 존재",
+        "name_en": "traffic_light_present",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "complex_static_scene",
+        "definition": "ego 진행 경로상에 차량용 신호등 존재. 신호 상태는 범위 외.",
+        "gt_rule": {
+          "source": [
+            "map",
+            "pose"
+          ],
+          "metric": "traffic_light_on_path",
+          "op": "exists",
+          "params": {
+            "layer": "traffic_light",
+            "state_out_of_scope": true
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "secondary",
+        "labeling_precedent_count": 2,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "map/pose"
+      },
+      {
+        "id": "cond.parking_area",
+        "name_ko": "주차장/주차구역",
+        "name_en": "parking_area",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1*",
+        "evidence_grade": "S",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "complex_static_scene",
+        "definition": "주차장 또는 노상 주차 구역 내부 주행.",
+        "gt_rule": {
+          "source": [
+            "map",
+            "pose"
+          ],
+          "metric": "in_parking_area",
+          "op": "exists",
+          "params": {
+            "layer": "parking",
+            "occupied_surface_rule": true,
+            "cross_check": "desc parking lot",
+            "axis": "scenery.zone 단일 축 — 저속 주행·인접 조건 제거(2026-07-28)",
+            "rationale": "오류 편중 요인은 비정형 도로경계·밀집 주차 배치이지 속도가 아니다. '인접'은 판정 불가라 삭제하고 map 폴리곤 내부로 한정"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "secondary",
+        "labeling_precedent_count": 6,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "map/pose"
+      },
+      {
+        "id": "cond.construction_zone",
+        "name_ko": "공사 구간",
+        "name_en": "construction_zone",
+        "type": "condition",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "S",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "complex_static_scene",
+        "definition": "공사 표지·콘·바리케이드·중장비가 주행 경로에 영향을 줄 배치로 존재.",
+        "gt_rule": {
+          "source": [
+            "ann",
+            "desc"
+          ],
+          "metric": "construction_evidence",
+          "op": "exists",
+          "params": {
+            "desc": "construction",
+            "ann": [
+              "movable_object.trafficcone",
+              "movable_object.barrier",
+              "vehicle.construction"
+            ],
+            "path_relevance": true,
+            "axis": "scenery.furniture/zone 단일 축 — 작업자 제거(2026-07-28)",
+            "rationale": "작업자는 evt.road_worker 가 담당. 두 태그가 겹치면 조건 셀이 독립이 아니게 되어 집계 명제가 성립하지 않는다. '작업자 있는 공사구간'은 construction_zone ∧ road_worker 조합으로 더 정밀하게 표현된다",
+            "cell_note": "predicted 조건 태그 — 셀 배정에 쓰되 저신뢰 클립은 g_unknown 으로 격리(C2 순환 해법 2단). g_unknown 도 자체 FDR 절차를 갖는다"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "gated",
+        "labeling_precedent_count": 7,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "cond.crowd",
+        "name_ko": "보행자 밀집(군중)",
+        "name_en": "crowd",
+        "type": "condition",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "P",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "vru_interaction",
+        "definition": "ego 전방·측방 30 m 내 보행자 8인 이상 동시 존재.",
+        "gt_rule": {
+          "source": [
+            "ann"
+          ],
+          "metric": "pedestrian_count_within_radius",
+          "op": ">=",
+          "threshold": 8,
+          "params": {
+            "radius_m": 30,
+            "sector": "전방/측방",
+            "cell_note": "predicted 조건 태그 — 셀 배정에 쓰되 저신뢰 클립은 g_unknown 으로 격리(C2 순환 해법 2단). g_unknown 도 자체 FDR 절차를 갖는다"
+          },
+          "status": "confirmed",
+          "unit": "persons"
+        },
+        "cell_role": "gated",
+        "labeling_precedent_count": 1,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "cond.congestion",
+        "name_ko": "정체/서행",
+        "name_en": "congestion",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1*",
+        "evidence_grade": "L",
+        "temporal_predicate": "clip_aggregate",
+        "hierarchy_parent": null,
+        "definition": "클립 평균 속도 10 km/h 미만이며 정지-출발 2회 이상. 신호 대기 단독 제외.",
+        "gt_rule": {
+          "source": [
+            "can",
+            "map"
+          ],
+          "metric": "mean_speed_kmh",
+          "op": "<",
+          "threshold": 10.0,
+          "unit": "km/h",
+          "params": {
+            "stop_go_cycles_min": 2,
+            "exclude": "교차로 신호 대기 단독"
+          },
+          "status": "confirmed"
+        },
+        "exclusive_with": [
+          "cond.free_flow"
+        ],
+        "cell_role": "secondary",
+        "labeling_precedent_count": 6,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "제한속도(상대 판정 시)"
+      },
+      {
+        "id": "cond.high_speed_road",
+        "name_ko": "고속도로/자동차전용도로",
+        "name_en": "high_speed_road",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1*",
+        "evidence_grade": "S",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "고속도로·자동차전용도로 주행(접근통제, 중앙분리, 신호 교차로 부재).",
+        "gt_rule": {
+          "source": [
+            "map",
+            "pose"
+          ],
+          "metric": "road_class",
+          "op": "in",
+          "threshold": [
+            "motorway",
+            "expressway"
+          ],
+          "unit": null,
+          "params": {
+            "occupied_surface_rule": true,
+            "axis": "scenery.road — '제한속도 70km/h 이상'은 영상 판정 불가(속도표지 없으면 알 수 없음)라 관측 가능한 도로 구조로 재기술(7/28). BDD100K/TruckScenes/K-Radar/HSD 의 highway 라벨과 정렬",
+            "rationale": "provenance(ISO34503 drivable_area.type.motorways, BDD100K scene:highway)가 둘 다 도로 유형이고 id 도 _road. 도로 유형 축을 urban/residential/rural/highway 로 완결하는 자리. 속도 축은 congestion·free_flow 담당이며 절대 50km/h 는 free_flow(30km/h)의 부분집합이라 중복",
+            "nuscenes_limit": "평균 주행 16 km/h(15h·242km), 도심 위주라 고속도로 사실상 부재. map 에 road class·speed limit 속성 없음 → 셀 제외 후보",
+            "zod_path": "ZOD road_type:highway — 보완 경로"
+          },
+          "status": "dataset_sparse"
+        },
+        "cell_role": "secondary",
+        "labeling_precedent_count": 13,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "제한속도"
+      },
+      {
+        "id": "cond.dry_road",
+        "name_ko": "노면 건조",
+        "name_en": "dry_road",
+        "type": "condition",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "L",
+        "temporal_predicate": "derived",
+        "hierarchy_parent": null,
+        "definition": "노면에 수막·적설·결빙이 모두 부재.",
+        "gt_rule": {
+          "source": [
+            "derived"
+          ],
+          "metric": "all_absent_confirmed",
+          "op": "==",
+          "threshold": true,
+          "params": {
+            "all_absent": [
+              "cond.wet_road",
+              "cond.snow"
+            ],
+            "axis_caveat": "snow(강설) 부재 ≠ 적설 부재 — 잔설 케이스는 이 파생식이 못 잡음. nuScenes엔 눈 자체가 부재라 실험상 무해, 겨울 데이터셋 확장 시 snowy_road 편입 후 파생식에 추가",
+            "cell_note": "predicted 조건 태그 — 셀 배정에 쓰되 저신뢰 클립은 g_unknown 으로 격리(C2 순환 해법 2단). g_unknown 도 자체 FDR 절차를 갖는다. 단 파생 태그라 구성 축(wet_road)과 중복 — 2차",
+            "icy_note": "결빙 부재 조항 삭제(2026-07-30) — 대응 태그 부재로 계산 불가였음. nuScenes에 결빙 부재라 실험 무해. 겨울 데이터셋 확장 시 icy_road(후보 1순위) 편입 후 파생식에 복원"
+          },
+          "status": "confirmed"
+        },
+        "exclusive_with": [
+          "cond.wet_road"
+        ],
+        "derived_from": {
+          "all_absent": [
+            "cond.wet_road",
+            "cond.snow"
+          ],
+          "caveat": "적설(노면 축) 미포함 — snowy_road 확장 카드 참조"
+        },
+        "cell_role": "gated",
+        "labeling_precedent_count": 4,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "cond.urban_road",
+        "name_ko": "도심 일반 도로",
+        "name_en": "urban_road",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1*",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "도심 일반 도로 주행(건물 밀집, 다차로, 신호 교차로 다수). ego 점유 노면 기준.",
+        "gt_rule": {
+          "source": [
+            "map",
+            "pose"
+          ],
+          "metric": "road_class",
+          "op": "in",
+          "threshold": [
+            "arterial",
+            "collector"
+          ],
+          "params": {
+            "tie_break": [
+              "건물 밀도",
+              "차로 폭",
+              "교통량"
+            ],
+            "occupied_surface_rule": true,
+            "nuscenes_bias": "거의 전부 참",
+            "cell_note": "nuScenes 에서 거의 전부 참 — 셀 변별력 0. 큐레이션 질의·타 데이터셋 확장용으로만 유지",
+            "axis": "scenery.road — '간선·집산로'(기능분류)는 영상 판정 불가라 관측 가능한 장면 유형으로 재기술(7/28). BDD100K scene:city street 과 정렬"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 13,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "도로 기능등급"
+      },
+      {
+        "id": "cond.residential_area",
+        "name_ko": "주거지역 이면도로",
+        "name_en": "residential_area",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V0",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "주거지역 생활도로·이면도로 주행(중앙선 부재 또는 차로 협소).",
+        "gt_rule": {
+          "source": [
+            "map",
+            "pose"
+          ],
+          "metric": "road_class",
+          "op": "==",
+          "threshold": "local_residential",
+          "params": {
+            "tie_break": [
+              "건물 밀도",
+              "차로 폭"
+            ],
+            "occupied_surface_rule": true,
+            "axis": "scenery.road 단일 축 — 저속 조건 제거, tie-break 에서 교통량도 제거(2026-07-28)",
+            "rationale": "오류 편중 요인은 좁은 도로 형태와 보행자 혼재이지 속도가 아니다. tie-break 의 '교통량'은 congestion 축이라 도로 유형 판정에서 제외"
+          },
+          "status": "gold_required"
+        },
+        "cell_role": "secondary",
+        "labeling_precedent_count": 7,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "도로 기능등급"
+      },
+      {
+        "id": "cond.rural_road",
+        "name_ko": "시골길/교외 도로",
+        "name_en": "rural_road",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V0",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "교외·시골 도로 주행(건물 밀도 낮음, 포장 2차로 수준, 신호 교차로 희소).",
+        "gt_rule": {
+          "source": [
+            "map",
+            "pose"
+          ],
+          "metric": "road_class",
+          "op": "==",
+          "threshold": "rural",
+          "params": {
+            "tie_break": [
+              "건물 밀도",
+              "차로 폭",
+              "교통량"
+            ],
+            "fallback": "Waymo 사용 불가 — Context.Stats 에 도로등급 필드 자체가 없음(location은 도시 코드 문자열). 보완은 K-Radar(urban/suburban/alleyway/highway 도로구조 라벨 제공)",
+            "zod_path": "ZOD road_type(5값) — 보완 데이터셋 1순위 격상(2026-07-30)"
+          },
+          "status": "dataset_absent"
+        },
+        "cell_role": "secondary",
+        "labeling_precedent_count": 10,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "행정구역"
+      },
+      {
+        "id": "cond.free_flow",
+        "name_ko": "원활 교통",
+        "name_en": "free_flow",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1*",
+        "evidence_grade": "P",
+        "temporal_predicate": "clip_aggregate",
+        "hierarchy_parent": null,
+        "definition": "정지-출발 반복이 없고 클립 평균 속도 30 km/h 이상.",
+        "gt_rule": {
+          "source": [
+            "can"
+          ],
+          "metric": "mean_speed_kmh",
+          "op": ">=",
+          "threshold": 30.0,
+          "params": {
+            "stop_go_cycles": 0,
+            "allow": "신호 대기 단독 정지",
+            "axis": "dynamic.ego 단일 축 — 제한속도 대비 상대속도(60%) 조건 제거(2026-07-28)",
+            "rationale": "congestion(절대 10 km/h 기반)의 대조쌍이므로 같은 척도여야 배타가 성립. nuScenes map 에 speed limit 속성이 없어 상대 기준은 계산 불가 위험",
+            "threshold_note": "30 km/h 는 [P] 운영값 — 기존 '제한속도 60%'도 근거 없는 값이었음"
+          },
+          "status": "confirmed",
+          "unit": "km/h"
+        },
+        "exclusive_with": [
+          "cond.congestion"
+        ],
+        "cell_role": "secondary",
+        "labeling_precedent_count": 0,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "제한속도(상대 판정 시)"
+      },
+      {
+        "id": "cond.sharp_curve",
+        "name_ko": "급곡선로",
+        "name_en": "sharp_curve",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "도로 선형 자체의 급곡선 구간 주행. 교차로 회전 기동 제외. 임계 곡률 미확정.",
+        "gt_rule": {
+          "source": [
+            "map",
+            "pose"
+          ],
+          "metric": "curve_radius_m",
+          "op": "<=",
+          "unit": "m",
+          "min_duration_s": 1.0,
+          "params": {
+            "exclude": "교차로 회전 기동",
+            "basis": "AASHTO 최소 곡선반경 R=V²/[127(e+f)] — 도심 대표 속도 50 km/h, e+f≈0.20 → R≈98 m. 'R≤100 m = 50 km/h로 안전 통과 불가 수준의 곡선'. 도로별 설계속도 데이터 불요(고정 기준)",
+            "emit_continuous": true,
+            "continuous_metric": "clip_min_curve_radius_m — ③은 연속값을 함께 출력, 임계는 후처리 적용(재실행 불요)",
+            "thr_validation": "발생률 + ±20% 민감도(80/120 m). 희소(<1%) 또는 불안정 시 steep_slope와 1:1 교환",
+            "decided": "2026-07-30 권고 승인 — 문제 발생 시 재검토"
+          },
+          "status": "confirmed",
+          "threshold": 100.0
+        },
+        "cell_role": "secondary",
+        "labeling_precedent_count": 4,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "pose 곡률"
+      },
+      {
+        "id": "cond.undivided_road",
+        "name_ko": "비분리 도로(중앙분리 없음)",
+        "name_en": "undivided_road",
+        "type": "condition",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "S",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "양방향 차로 사이 물리적 분리물 부재. 차선 표시는 분리물이 아님.",
+        "gt_rule": {
+          "source": [
+            "map",
+            "pose"
+          ],
+          "metric": "road_divider_absent",
+          "op": "exists",
+          "params": {
+            "layer": "road_divider 부재",
+            "occupied_surface_rule": true,
+            "note": "노면 차선 표시는 분리물이 아님 — 물리적 분리물(중앙분리대·가드레일) 기준",
+            "iso_literal": "transverse_plane_type = undivided"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "secondary",
+        "labeling_precedent_count": 0,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "map"
+      },
+      {
+        "id": "evt.ego_hard_brake",
+        "name_ko": "자차 급제동",
+        "name_en": "ego_hard_brake",
+        "type": "event",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "critical_maneuver",
+        "definition": "종감속도 3.0 m/s² 이상이 0.5초 이상 지속.",
+        "gt_rule": {
+          "source": [
+            "can"
+          ],
+          "metric": "longitudinal_deceleration",
+          "op": ">=",
+          "threshold": 3.0,
+          "unit": "m/s2",
+          "min_duration_s": 0.5,
+          "status": "confirmed",
+          "alt": {
+            "threshold": 6.38,
+            "unit": "m/s2",
+            "min_duration_s": 0.0,
+            "note": "SHRP2 일반 트리거 -0.65 g. config 전환용"
+          }
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 1,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "CAN"
+      },
+      {
+        "id": "evt.ego_hard_steer",
+        "name_ko": "자차 급조향",
+        "name_en": "ego_hard_steer",
+        "type": "event",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "critical_maneuver",
+        "definition": "요레이트 0.3 rad/s 이상 또는 횡가속 3.0 m/s² 이상이 0.3~2초 지속. 완만한 교차로 회전 제외.",
+        "gt_rule": {
+          "source": [
+            "can"
+          ],
+          "metric": "yaw_rate_or_lateral_accel",
+          "op": "any_of",
+          "params": {
+            "yaw_rate_rad_s_min": 0.3,
+            "lateral_accel_m_s2_min": 3.0,
+            "duration_range_s": [
+              0.3,
+              2.0
+            ],
+            "exclude": "정상 교차로 회전의 완만한 조향"
+          },
+          "status": "review_pending",
+          "alt": {
+            "method": "SHRP2 Table 2.1",
+            "lateral_accel_g_min": 0.75,
+            "lateral_min_duration_s": 0.2,
+            "yaw_rate_reversal_deg_s": 8,
+            "reversal_window_s": 0.75,
+            "min_speed_m_s": 13.4,
+            "note": "③에서 현행 정의의 발생률 측정 후 교체 판단(프로토콜 P7)"
+          }
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 2,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "CAN"
+      },
+      {
+        "id": "evt.ego_stop",
+        "name_ko": "자차 완전 정지",
+        "name_en": "ego_stop",
+        "type": "event",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "속도 0.1 m/s 미만이 2초 이상 지속.",
+        "gt_rule": {
+          "source": [
+            "can"
+          ],
+          "metric": "speed",
+          "op": "<",
+          "threshold": 0.1,
+          "unit": "m/s",
+          "min_duration_s": 2.0,
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 4,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "CAN"
+      },
+      {
+        "id": "evt.ego_follow",
+        "name_ko": "자차 선행차 추종",
+        "name_en": "ego_follow",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "10초 이상 동일 선행 차량을 동일 차로에서 안정 추종.",
+        "gt_rule": {
+          "source": [
+            "ann"
+          ],
+          "metric": "stable_lead_following",
+          "op": "exists",
+          "min_duration_s": 10.0,
+          "params": {
+            "same_lane": true,
+            "no_overtake_or_exit": true
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 2,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.ego_lane_change",
+        "name_ko": "자차 차로 변경",
+        "name_en": "ego_lane_change",
+        "type": "event",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "ego 중심점이 차선 경계를 통과하고 새 차로에서 1.0초 이상 유지. 교차로 내 제외.",
+        "gt_rule": {
+          "source": [
+            "map",
+            "pose"
+          ],
+          "metric": "lane_boundary_crossing",
+          "op": "exists",
+          "min_duration_s": 1.0,
+          "params": {
+            "hold_in_new_lane_s": 1.0,
+            "exclude": "교차로 내 경로 변경",
+            "cross_check": "desc lane change"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 4,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "pose+map"
+      },
+      {
+        "id": "evt.ego_left_turn",
+        "name_ko": "자차 좌회전",
+        "name_en": "ego_left_turn",
+        "type": "event",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "교차로·진입로에서 누적 헤딩 변화 +60° 이상(지리 좌표 기준).",
+        "gt_rule": {
+          "source": [
+            "pose"
+          ],
+          "metric": "cumulative_heading_change_deg",
+          "op": ">=",
+          "threshold": 60,
+          "unit": "deg",
+          "params": {
+            "direction": "좌",
+            "frame": "지리 좌표 기준(좌측통행 지역 주의)",
+            "context": "교차로/진입로"
+          },
+          "status": "confirmed"
+        },
+        "conditional_exclusion_of": "evt.ego_u_turn",
+        "cell_role": "none",
+        "labeling_precedent_count": 4,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "pose"
+      },
+      {
+        "id": "evt.ego_right_turn",
+        "name_ko": "자차 우회전",
+        "name_en": "ego_right_turn",
+        "type": "event",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "교차로·진입로에서 누적 헤딩 변화 -60° 이하(지리 좌표 기준).",
+        "gt_rule": {
+          "source": [
+            "pose"
+          ],
+          "metric": "cumulative_heading_change_deg",
+          "op": ">=",
+          "threshold": 60,
+          "unit": "deg",
+          "params": {
+            "direction": "우",
+            "frame": "지리 좌표 기준(좌측통행 지역 주의)",
+            "context": "교차로/진입로"
+          },
+          "status": "confirmed"
+        },
+        "conditional_exclusion_of": "evt.ego_u_turn",
+        "cell_role": "none",
+        "labeling_precedent_count": 4,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "pose"
+      },
+      {
+        "id": "evt.ego_u_turn",
+        "name_ko": "자차 유턴",
+        "name_en": "ego_u_turn",
+        "type": "event",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "누적 헤딩 변화 150° 이상의 단일 회전 기동.",
+        "gt_rule": {
+          "source": [
+            "pose"
+          ],
+          "metric": "cumulative_heading_change_deg",
+          "op": ">=",
+          "threshold": 150,
+          "unit": "deg",
+          "params": {
+            "direction": "유턴",
+            "frame": "지리 좌표 기준(좌측통행 지역 주의)",
+            "context": "단일 회전 기동"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 3,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "pose"
+      },
+      {
+        "id": "evt.ego_overtake",
+        "name_ko": "자차 추월",
+        "name_en": "ego_overtake",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "P",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "차로 변경으로 선행 차량을 지나쳐 상대 종거리 부호 역전 후 복귀 또는 3초 이상 전방 유지.",
+        "gt_rule": {
+          "source": [
+            "ann",
+            "pose"
+          ],
+          "metric": "overtake_sequence",
+          "op": "exists",
+          "params": {
+            "steps": [
+              "lane_change",
+              "relative_longitudinal_sign_reversal",
+              "return_or_hold_ahead_3s"
+            ],
+            "cross_check": "desc overtak*"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 1,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.cut_in",
+        "name_ko": "타차 끼어들기",
+        "name_en": "cut_in",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "P",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "critical_maneuver",
+        "definition": "타 차량이 ego 전방 20 m 이내로 차로 변경 진입하여 직전방 차량이 됨.",
+        "gt_rule": {
+          "source": [
+            "ann"
+          ],
+          "metric": "lane_transition_into_ego_lane",
+          "op": "exists",
+          "params": {
+            "max_forward_distance_m": 20,
+            "becomes_lead": true,
+            "cross_check": "desc cut in"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 1,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.lead_brake",
+        "name_ko": "선행차 급감속",
+        "name_en": "lead_brake",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "P",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "critical_maneuver",
+        "definition": "직전방 차량(동일 차로 30 m 이내)이 3.0 m/s² 이상 감속.",
+        "gt_rule": {
+          "source": [
+            "ann"
+          ],
+          "metric": "lead_vehicle_deceleration",
+          "op": ">=",
+          "threshold": 3.0,
+          "unit": "m/s2",
+          "params": {
+            "same_lane": true,
+            "max_distance_m": 30
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 0,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.cut_out",
+        "name_ko": "선행차 차로 이탈(컷아웃)",
+        "name_en": "cut_out",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "P",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "critical_maneuver",
+        "definition": "직전방 차량이 차선 경계를 통과해 이탈하고 직전방 지위 상실이 1.0초 이상 유지.",
+        "gt_rule": {
+          "source": [
+            "ann"
+          ],
+          "metric": "lead_lane_exit",
+          "op": "exists",
+          "min_duration_s": 1.0,
+          "params": {
+            "lane_boundary_crossing": true,
+            "lead_status_lost_hold_s": 1.0
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 0,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.vehicle_cross_path",
+        "name_ko": "차량 경로 횡단",
+        "name_en": "vehicle_cross_path",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "critical_maneuver",
+        "definition": "타 차량 트랙이 ego 진행 경로를 가로지르며 교차 시점 상대 헤딩 차 45°~135°.",
+        "gt_rule": {
+          "source": [
+            "ann",
+            "pose"
+          ],
+          "metric": "track_crosses_ego_path_polygon",
+          "op": "exists",
+          "params": {
+            "relative_heading_deg_range": [
+              45,
+              135
+            ],
+            "includes": "이륜 포함",
+            "excludes": "보행자·자전거 횡단"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 2,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.wrong_way_vehicle",
+        "name_ko": "역주행 차량",
+        "name_en": "wrong_way_vehicle",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V0",
+        "evidence_grade": "P",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "critical_maneuver",
+        "definition": "타 차량 헤딩과 점유 차로 방향의 차이 135° 이상이 1.0초 이상. 대향 차로 정상 주행 제외.",
+        "gt_rule": {
+          "source": [
+            "ann",
+            "map"
+          ],
+          "metric": "heading_vs_lane_direction_deg",
+          "op": ">=",
+          "threshold": 135,
+          "unit": "deg",
+          "min_duration_s": 1.0,
+          "params": {
+            "exclude": "대향 차로 정상 주행"
+          },
+          "status": "dataset_sparse"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 0,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.ped_crossing",
+        "name_ko": "보행자 횡단(횡단보도)",
+        "name_en": "ped_crossing",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "vru_interaction",
+        "definition": "보행자가 ego 진행 경로를 가로지르며, 통과 지점이 횡단보도 내부.",
+        "gt_rule": {
+          "source": [
+            "ann",
+            "map",
+            "pose"
+          ],
+          "metric": "pedestrian_crosses_ego_path_polygon",
+          "op": "exists",
+          "params": {
+            "crossing_point": "inside ped_crossing polygon",
+            "instance_exclusive_with": "evt.jaywalking"
+          },
+          "status": "confirmed"
+        },
+        "exclusive_with": [],
+        "conditional_exclusion_of": "evt.jaywalking",
+        "cell_role": "none",
+        "labeling_precedent_count": 3,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.jaywalking",
+        "name_ko": "보행자 무단횡단",
+        "name_en": "jaywalking",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "vru_interaction",
+        "definition": "보행자가 ego 진행 경로를 가로지르며, 통과 지점이 횡단보도 외부 차도.",
+        "gt_rule": {
+          "source": [
+            "ann",
+            "map",
+            "pose"
+          ],
+          "metric": "pedestrian_crosses_ego_path_polygon",
+          "op": "exists",
+          "params": {
+            "crossing_point": "outside ped_crossing polygon (차도 영역)",
+            "cross_check": "desc jaywalker",
+            "instance_exclusive_with": "evt.ped_crossing"
+          },
+          "status": "confirmed"
+        },
+        "exclusive_with": [],
+        "conditional_exclusion_of": "evt.ped_crossing",
+        "cell_role": "none",
+        "labeling_precedent_count": 2,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.road_worker",
+        "name_ko": "도로 작업자 출현",
+        "name_en": "road_worker",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V1",
+        "evidence_grade": "P",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "vru_interaction",
+        "definition": "도로 작업·통제 인원이 차도 또는 차도 인접에 출현.",
+        "gt_rule": {
+          "source": [
+            "ann"
+          ],
+          "metric": "worker_present",
+          "op": "exists",
+          "params": {
+            "classes": [
+              "human.pedestrian.construction_worker",
+              "human.pedestrian.police_officer"
+            ],
+            "also": "경찰·교통 지도 요원",
+            "independent_of": "cond.construction_zone — v0.4에서 정의 분리 완료(construction_zone 은 시설 축만)"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 0,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.cyclist_interaction",
+        "name_ko": "자전거/개인형이동수단 근접",
+        "name_en": "cyclist_interaction",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "L",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "vru_interaction",
+        "definition": "자전거·개인형이동수단(PM) 탑승자가 10 m 이내로 근접하거나 경로가 교차. 이륜차(모터사이클)는 차량 축으로 제외.",
+        "gt_rule": {
+          "source": [
+            "ann"
+          ],
+          "metric": "cyclist_distance_or_path_cross",
+          "op": "<=",
+          "threshold": 10,
+          "unit": "m",
+          "params": {
+            "classes": [
+              "vehicle.bicycle",
+              "human.pedestrian.personal_mobility"
+            ],
+            "excludes": "vehicle.motorcycle — 이륜차는 evt.vehicle_cross_path 및 일반 차량 축. nuScenes에서 PM은 human.pedestrian.personal_mobility(보행자 축)"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 3,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.vulnerable_pedestrian",
+        "name_ko": "취약 보행자 출현",
+        "name_en": "vulnerable_pedestrian",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V1",
+        "evidence_grade": "P",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": "vru_interaction",
+        "definition": "아동·휠체어·유모차 동반 등 이동 취약 보행자가 차도 또는 차도 인접에 출현.",
+        "gt_rule": {
+          "source": [
+            "ann"
+          ],
+          "metric": "vulnerable_vru_present",
+          "op": "exists",
+          "params": {
+            "classes": [
+              "human.pedestrian.child",
+              "human.pedestrian.wheelchair",
+              "human.pedestrian.stroller"
+            ]
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 1,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.emergency_vehicle",
+        "name_ko": "긴급차량 출현",
+        "name_en": "emergency_vehicle",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V0",
+        "evidence_grade": "P",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "경광등을 켠 긴급차량이 클립 시야 내 출현.",
+        "gt_rule": {
+          "source": [
+            "ann"
+          ],
+          "metric": "emergency_vehicle_with_lights",
+          "op": "exists",
+          "params": {
+            "classes": [
+              "vehicle.emergency.ambulance",
+              "vehicle.emergency.police"
+            ],
+            "blocker": "점등 상태 정보가 nuScenes ann에 없음",
+            "fallback": "Waymo 사용 불가 — 3D 박스 클래스가 VEHICLE/PEDESTRIAN/SIGN/CYCLIST 4종뿐이라 긴급차량 세부 클래스 부재. nuScenes ann 자체는 존재하나 극희소(<5k)"
+          },
+          "status": "gold_required"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 1,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.animal_on_road",
+        "name_ko": "동물 출현",
+        "name_en": "animal_on_road",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V0",
+        "evidence_grade": "P",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "동물이 차도 또는 차도 인접 5 m 이내에 출현.",
+        "gt_rule": {
+          "source": [
+            "ann"
+          ],
+          "metric": "animal_distance",
+          "op": "<=",
+          "threshold": 5,
+          "unit": "m",
+          "params": {
+            "classes": [
+              "animal"
+            ],
+            "fallback": "Waymo 사용 불가(animal 클래스 부재). 실데이터 보완은 CADC(Animal 26 박스, 역시 극희소)"
+          },
+          "status": "dataset_sparse"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 1,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.road_obstacle",
+        "name_ko": "차도 위 장애물",
+        "name_en": "road_obstacle",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "P",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "주행 차로 위에 정지한 최대 변 0.3 m 이상의 낙하물·잔해·장애물. 공중 부유물 제외.",
+        "gt_rule": {
+          "source": [
+            "ann"
+          ],
+          "metric": "stationary_obstacle_max_dim_m",
+          "op": ">=",
+          "threshold": 0.3,
+          "unit": "m",
+          "params": {
+            "classes": [
+              "movable_object.debris",
+              "movable_object.pushable_pullable"
+            ],
+            "on_drivable_lane": true,
+            "exclude_airborne": true,
+            "below_threshold": "undecidable",
+            "gold_required": true
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 1,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.stationary_vehicle_on_lane",
+        "name_ko": "주행차로 내 정차 차량",
+        "name_en": "stationary_vehicle_on_lane",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V2",
+        "evidence_grade": "P",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "속도 0.5 m/s 미만이 5초 이상이고 주행 차로 폭의 30% 이상을 점유한 차량.",
+        "gt_rule": {
+          "source": [
+            "ann",
+            "map"
+          ],
+          "metric": "stationary_lane_occupancy",
+          "op": "all_of",
+          "params": {
+            "speed_max_m_s": 0.5,
+            "min_duration_s": 5.0,
+            "lane_width_occupancy_min": 0.3,
+            "cross_check": "desc parked"
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 1,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.large_vehicle_proximity",
+        "name_ko": "대형차 근접",
+        "name_en": "large_vehicle_proximity",
+        "type": "event",
+        "anchor_class": "predicted",
+        "verifiability": "V1",
+        "evidence_grade": "P",
+        "temporal_predicate": "any_occurrence",
+        "hierarchy_parent": null,
+        "definition": "버스·트럭·트레일러가 인접 차로 또는 전방 20 m 이내에 존재.",
+        "gt_rule": {
+          "source": [
+            "ann"
+          ],
+          "metric": "large_vehicle_distance",
+          "op": "<=",
+          "threshold": 20,
+          "unit": "m",
+          "params": {
+            "classes": [
+              "vehicle.truck",
+              "vehicle.bus.bendy",
+              "vehicle.bus.rigid",
+              "vehicle.trailer"
+            ],
+            "or_adjacent_lane": true
+          },
+          "status": "confirmed"
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 1,
+        "visual_decidable": "yes"
+      },
+      {
+        "id": "evt.nominal_driving",
+        "name_ko": "무이벤트 정상 주행",
+        "name_en": "nominal_driving",
+        "type": "event",
+        "anchor_class": "anchored",
+        "verifiability": "V1",
+        "evidence_grade": "P",
+        "temporal_predicate": "derived",
+        "hierarchy_parent": null,
+        "definition": "급제동·급조향·차로변경·회전·유턴이 모두 부재하고 2초 이상 정지 없이 연속 주행.",
+        "gt_rule": {
+          "source": [
+            "derived"
+          ],
+          "metric": "all_absent_confirmed",
+          "op": "==",
+          "threshold": true,
+          "params": {
+            "all_absent": [
+              "evt.ego_hard_brake",
+              "evt.ego_hard_steer",
+              "evt.ego_lane_change",
+              "evt.ego_left_turn",
+              "evt.ego_right_turn",
+              "evt.ego_u_turn",
+              "evt.ego_stop"
+            ],
+            "any_undecidable": "undecidable"
+          },
+          "status": "confirmed"
+        },
+        "derived_from": {
+          "all_absent": [
+            "evt.ego_hard_brake",
+            "evt.ego_hard_steer",
+            "evt.ego_lane_change",
+            "evt.ego_left_turn",
+            "evt.ego_right_turn",
+            "evt.ego_u_turn",
+            "evt.ego_stop"
+          ]
+        },
+        "cell_role": "none",
+        "labeling_precedent_count": 0,
+        "visual_decidable": "needs_metadata",
+        "metadata_required": "CAN+pose"
+      }
+    ],
+    "docs": {
+      "_meta": {
+        "version": "0.4",
+        "date": "2026-07-28",
+        "purpose": "TAGS_v0.4.json(코드 입력)에서 분리한 근거 데이터. 뷰어와 TAGS_근거_v0.4.md 의 생성 입력이며 ③ GT 스크립트는 읽지 않는다.",
+        "sources": {
+          "ISO34503": "ISO 34503:2023 ODD taxonomy (scenery / environmental conditions / dynamic elements). 요소 목록은 ASAM OpenODD 1.0.0 Annex B의 기계가독 전재로 확인. Scope에 판정 절차(test procedures)는 범위 밖으로 명시 — 본 어휘는 축 구조만 준수하고 판정 규칙은 검증실험프로토콜이 정의한다.",
+          "PAS1883": "BSI PAS 1883 — ISO 34503의 기반 분류. traffic density/flow rate 등 dynamic 세부는 원문 유료로 2차 소스 확인",
+          "NHTSA2007": "NHTSA Pre-Crash Scenario Typology 2007 (DOT HS 810 767), 37개 시나리오 — #번호로 인용. 2019 갱신판(DOT HS 812 745)은 36개",
+          "IMPROMPTU": "Impromptu-VLA (arXiv 2505.23757) 비정형 4범주: cat.1 불명확 도로경계 / cat.2 임시 교통규칙 변경 / cat.3 비관습 동적 장애물 / cat.4 열악 도로·환경 조건",
+          "CODA": "CODA corner case dataset (arXiv 2203.07724) 7 super-category: pedestrian, cyclist, vehicle, animal, traffic facility, obstruction, misc + 도메인 태그(day/night, sunny/cloudy/rainy)",
+          "DRIVEBENCH": "DriveBench (ICCV 2025, arXiv 2501.04003) 15 corruptions 5그룹 — Weather(Bright/Dark/Snow/Fog/Rain), External, Sensor, Motion, Transmission",
+          "BDD100K": "BDD100K 공식 프레임 라벨 — weather 7종(rainy/snowy/clear/overcast/undefined/partly cloudy/foggy), timeofday 4종(daytime/night/dawn·dusk/undefined), scene 7종(tunnel/residential/parking lot/undefined/city street/gas stations/highway)",
+          "NUSC_DESC": "nuScenes scene description 라벨링 관행 (u-turn, overtake, lane change 등 키워드)",
+          "KATECH_VOCAB": "KATECH VLA 메타태깅 어휘 v0.7.1 + 세그먼트 스키마 v0.7.3 (ISO 34504·nuPlan·NHTSA·nuReasoning 정합) — 동적 세그먼트·객체 역할 단위 라벨 공간. TAGS는 이의 클립 수준 보증 가능 부분집합",
+          "SPEC_V20": "Dynamic Action Tagging spec v2.0 (KATECH TJ, 2026-07-23) — 육하원칙 스키마: environment(ENV_SCHEMA) + ego motion/maneuver + episode 어휘. TAGS와 동일 조직 큐레이션 파이프라인의 질의 실수요 근거",
+          "OPENLABEL": "ASAM OpenLABEL V1.0.0 — annotation 포맷 표준. event/action/context 3분류와 frame_intervals 를 규정하나, 라벨링 규칙과 품질 기준은 명시적으로 범위 밖.",
+          "USNO": "US Naval Observatory, Rise/Set/Twilight Definitions — civil twilight = 태양 중심이 지평 아래 6°.",
+          "WMO": "WMO International Cloud Atlas §3.2.1.1.1 — fog는 수평 가시거리 1 km 미만, mist는 그 이상. WMO-No.49 Annex I로 standard practice 지위.",
+          "SHRP2": "SHRP2 Naturalistic Driving Study 데이터베이스 기술보고서 Table 2.1 (VTTI) — 급제동·급조향 트리거 임계값과 지속·병합 조건.",
+          "FOGGY_CITYSCAPES": "Foggy Cityscapes — 소산계수 β 0.005/0.01/0.02 m⁻¹ ↔ 시정 약 600/300/150 m.",
+          "CDOT_ITE": "Ryan & Babler, Correlating Sun Glare and Traffic Accidents (ITE) — 태양 고도 0.5–10° 기반 역광 severity 체계.",
+          "VLM_COUNTING": "VLM/MLLM 계수 실패 문헌 — 객체 수 증가 시 정확도 급락(1–5 최고, 6–10 44.0%, 11–20 39.3%, 50+ 13.9%). diffuse attention 에 의한 체계적 과소 계수",
+          "CROWDHUMAN": "CrowdHuman — 평균 22.6인/이미지. 겹친 보행자 경계 식별 실패를 distinct failure mode 로 정의, MR⁻² 별도 지표",
+          "FHWA_MEDIAN": "FHWA Proven Safety Countermeasures — Median Barriers. 중앙분리대로 사망·상해 cross-median 충돌 최대 96% 감소(NCHRP Report 794 인용). 분리 도로 사망의 약 8%가 정면충돌",
+          "BDD100K_SCENE": "BDD100K frame attributes — scene: tunnel/residential/parking lot/city street/gas stations/highway/undefined, weather 7종, timeofday 4종",
+          "TRUCKSCENES": "MAN TruckScenes scene.description — 7축 34태그. weather7/area7(terminal,parking,highway,city,residential,rural,other)/daytime4/season4/lighting5(illuminated,twilight,dark,glare,other)/structure5/construction2",
+          "KRADAR_LABELS": "K-Radar description.txt = {road_type},{capture_time},{climate}. road_type 8종(urban/highway/countryside/alleyway/parkinglots/shoulder/mountain/university), climate 7종",
+          "HONDA_HSD": "Honda Scenes Dataset — Road place 12 / Road environment 4(rural,urban,highway,ramp) / Weather 4 / Road surface 2(dry,wet)",
+          "DSI_2025": "Driving Scene Identification(2025) — 7축 24클래스. Road Function(Local/Arterial/Interstate/Collector)을 제공하는 유일 사례이나 기존 데이터셋에 없어 YouTube 별도 수집",
+          "DVBENCH": "DVBench(2025) — SHRP2 기반, PEGASUS+NHTSA 근거. Geographic Zones MCQ 가 접근통제 등급과 토지이용 등급을 혼합",
+          "NUPLAN_TAGS": "nuPlan scenario_tag 73종 — 전부 ego 기동·운동학·상호작용. 도로/장면 유형 태그 0개",
+          "HDD": "Honda HDD 4-layer 30클래스 — Goal-oriented 11 / Stimulus-driven 2 / Cause 5 / Attention 12. 도로유형 라벨 없음",
+          "KITTI": "KITTI raw data — 시퀀스 단위 5 카테고리: Road / City / Residential / Campus / Person",
+          "IDD": "India Driving Dataset — pixel 4-level 34클래스. drivable / drivable fall-back / non-drivable fall-back 3분할로 '안전·불안전·주행불가 평면' 구분",
+          "IDD_AW": "IDD-AW(WACV 2024) — rain 1500 / fog 1500 / low light 1000 / snow 1000 + NIR 페어, 4-level 30클래스, Safe mIoU 지표",
+          "ZOD": "Zenseact Open Dataset — FrameMetaData 프레임 100k 전량: time_of_day(day/night/twilight) · road_type(city/arterial-urban/highway/arterial-rural/smaller-rural) · scraped_weather(clear/cloudy/rain/fog/snow) · solar_angle_elevation. 별도 Road Surface annotation: wetness·snow_coverage binary",
+          "CULANE": "CULane — 테스트 **분할** 9종: test0_normal / test1_crowd / test2_hlight / test3_shadow / test4_noline / test5_arrow / test6_curve / test7_cross / test8_night. 프레임 속성 아님",
+          "VIL100": "VIL-100(ICCV 2021) — 클립 디렉터리에 10 scenario 멀티라벨: normal/crowded/curved road/damaged road/shadows/road markings/dazzle light/haze/night/crossroad",
+          "ACDC_MUSES": "ACDC — fog/night/rain/snow 각 1000프레임(디렉터리 인코딩) + 불확실성 마스크. MUSES(ECCV 2024) — meta.json 에 weather(clear/rain/snow/fog) · time_of_day(day/night) **실제 enum 필드**",
+          "SODA10M": "SODA10M(Huawei) — image level: city · location(city street/highway/country road/residential) · period(daytime/night/dawn-dusk) · weather(clear/overcast/rainy/snowy)",
+          "OPENLANE": "OpenLane V1 — 세그먼트 단위 scene(residential/urban/suburbs/highway/parking lot) · weather(clear/partly cloud/overcast/rainy/foggy) · time(daytime/night/dawn/dusk). OpenLane-V2 에서는 이 3필드가 삭제됨",
+          "ROADWORK": "ROADWork(ICCV 2025) — frame level scene tag 5축: Weather 8값 · Alteration 5값 · Time 5값 · **Env.(Urban/Suburban/Highway/Rural/Unknown/Other — 기능분류 아님)** · active work zone",
+          "MM_AU": "MM-AU/LOTVS-DADA — clip level: weather(sunny/rainy/snowy/foggy) · light(day/night) · scenes(highway/tunnel/mountain/urban/rural) · **linear(arterials/curve/intersection/T-junction/ramp)**",
+          "JAAD": "JAAD — clip level XML video_attributes: time_of_day · weather(clear/cloudy/rain/snow) · location(street/plaza/indoor)",
+          "RSCD_ROADSAW": "RSCD(Tsinghua, 1M) — friction(dry/wet/water/fresh snow/melted snow/ice) × material(asphalt/concrete/dirt-mud/gravel) × unevenness. RoadSaW/RoadSC — surface × wetness 4단계, 적설 3단계",
+          "DDD20": "DDD20(DAVIS driving) — per-recording boolean **glare · curvy · dirt · graded** + clear/cloudy/raining, day/dawn-dusk/night, freeway/highway/street, traffic 0–5. 역광·급곡선 boolean 라벨의 유일한 실물 선례(비통제)",
+          "IRAP": "iRAP 도로안전 코딩 표준 — curvature · quality of curve · grade · delineation · intersection type(roundabout·railway crossing 포함) · school zone warning · street lighting. 표준 자체는 공개, iRAP-BH 데이터셋 배포는 미확인"
+        },
+        "urls": [
+          "https://cdn.standards.iteh.ai/samples/78952/5be917db3f7b4300a26fef14cd540f3c/ISO-34503-2023.pdf",
+          "https://publications.pages.asam.net/standards/ASAM_OpenODD/ASAM_OpenODD/latest/specification/11_annexes/11_e_iso34503_03_yaml.html",
+          "https://www.nhtsa.gov/DOT/NHTSA/NRD/Multimedia/PDFs/Crash%20Avoidance/2007/Pre-Crash_Scenario_Typology-Final_PDF_Version_5-2-07.pdf",
+          "https://rosap.ntl.bts.gov/view/dot/41932/dot_41932_DS1.pdf",
+          "https://arxiv.org/abs/2505.23757",
+          "https://arxiv.org/abs/2203.07724",
+          "https://drive-bench.github.io/",
+          "https://doc.bdd100k.com/format.html",
+          "https://www.asam.net/fileadmin/Standards/OpenLABEL/ASAM_OpenLABEL_BS_V1-0-0.html",
+          "https://publications.pages.asam.net/standards/ASAM_OpenODD/ASAM_OpenODD/latest/specification/11_annexes/11_e_iso34503_00.html",
+          "https://aa.usno.navy.mil/faq/RST_defs",
+          "https://cloudatlas.wmo.int/en/fog-compared-with-mist.html",
+          "https://vtechworks.lib.vt.edu/items/7949e150-1f1e-493b-bcdb-ba7c660fea34",
+          "https://people.ee.ethz.ch/~csakarid/SFSU_synthetic/",
+          "https://arxiv.org/abs/2307.09302",
+          "https://arxiv.org/html/2510.04401",
+          "https://arxiv.org/pdf/2508.06585",
+          "https://arxiv.org/abs/1909.06826",
+          "https://highways.dot.gov/safety/proven-safety-countermeasures/median-barriers",
+          "https://arxiv.org/html/2407.07462v2",
+          "https://github.com/kaist-avelab/K-Radar/blob/main/tools/tag_generator/tag_generation.py",
+          "https://usa.honda-ri.com/hsd",
+          "https://arxiv.org/abs/2506.17101",
+          "https://arxiv.org/html/2504.14526",
+          "https://github.com/motional/nuplan-devkit/blob/master/nuplan/planning/script/config/common/scenario_builder/scenario_mapping/nuplan_scenario_mapping.yaml",
+          "https://www.cvlibs.net/datasets/kitti/raw_data.php",
+          "https://arxiv.org/pdf/1811.10200",
+          "https://arxiv.org/abs/2311.14459",
+          "https://zod.zenseact.com/frames/",
+          "https://xingangpan.github.io/projects/CULane.html",
+          "https://acdc.vision.ee.ethz.ch/download",
+          "https://github.com/timbroed/MUSES",
+          "https://soda-2d.github.io/documentation.html",
+          "https://github.com/OpenDriveLab/OpenLane",
+          "https://arxiv.org/abs/2406.07661",
+          "https://github.com/jeffreychou777/LOTVS-MM-AU",
+          "https://github.com/ykotseruba/JAAD",
+          "https://thu-rsxd.com/rscd/",
+          "https://irap.org/library/"
+        ],
+        "oass_removal_note": "OASS(DOC-OASS-001)는 본 프로젝트에서 자체 작성한 사내 스키마이므로 외부 근거로 계상하지 않는다. 2026-07-28 provenance·threshold_basis·sources 에서 전면 제거.",
+        "labeling_precedent_survey": {
+          "질문": "표준 taxonomy 가 정의하는 도로 기능분류(arterial/collector/local)를 라벨로 제공하는 데이터셋이 있는가",
+          "답": "주요 데이터셋 중 없음. BDD100K·TruckScenes·K-Radar·Honda HSD·ONCE·nuPlan·Argoverse 2·Mapillary 전부 '카메라 프레임에서 단독 판정 가능한 장소/형상' 어휘를 쓴다. gas stations(BDD100K)·university(K-Radar)·terminal(TruckScenes)·ramp(HSD) 처럼 기능분류에 대응물이 없는 값도 있다.",
+          "유일 예외": "DSI(2025) Road Function = Local/Arterial/Interstate/Collector. 단 저자들이 '기존 데이터셋에 없어서' YouTube 에서 class-specific query 로 별도 수집했다고 명시하고, FHWA 3계층에 시각 구분 가능한 Interstate 를 4번째 클래스로 승격한 혼성 체계다 — '영상 판정 가능성' 제약이 taxonomy 를 왜곡시킨 직접 증거",
+          "보강 증거": "DVBench Geographic Zones MCQ 가 한 4지선다에 접근통제 등급(Interstate/Bypass/Divided Highway w/ & w/o signals)과 토지이용 등급(Business/Industrial, Moderate Residential)을 섞어 넣었다. AI Hub 71626 은 road_type 을 '차선 폭'으로 정의하고 '도심 3차로 이상'으로 라벨링한다",
+          "함정": "문서 산문 ≠ 라벨. HDD('urban, suburban and highway'), ONCE(Table 3 의 downtown/suburbs 통계), Mapillary(다양성 서술), K-Radar abstract(4종 요약) 모두 산문에만 있고 기계판독 라벨은 없거나 다르다. ONCE 는 논문이 도로유형 통계를 보고하지만 배포 JSON meta_info 에 필드가 없다",
+          "정정": "K-Radar 도로구조는 4종이 아니라 8종(urban/highway/countryside/alleyway/parkinglots/shoulder/mountain/university)이고 suburban 이 아니라 countryside. 날씨는 lightsnow/heavysnow(공백 없음)",
+          "우리 어휘와의 정합": "본 어휘의 도로·장소 6종(urban_road/residential_area/rural_road/high_speed_road/parking_area/tunnel)은 데이터셋 관행의 공통 분모와 거의 일치한다. 문제는 태그 목록이 아니라 정의문이 표준 어휘(간선·집산로, 제한속도)로 쓰여 있던 것 — 7/28 재기술"
+        },
+        "evidence_slots": {
+          "①_concept_basis": "개념 근거 — 표준·분류체계에 이 개념이 있는가 (ISO 34503 경로 + NHTSA/Impromptu/CODA 등)",
+          "②_labeling_precedent": "라벨링 선례 — 어떤 공개 데이터셋이 같은 형태로 라벨을 붙였는가. **태그 설계의 1차 근거**(표준에 개념이 있어도 영상 판정 불가한 형태면 태그로 쓸 수 없다)",
+          "③_threshold_basis": "임계값·판정 근거 — 수치와 판정 규칙의 출처만",
+          "④_grade_rationale": "등급 판정 — ①②③을 종합해 S/L/P 를 정한 이유 한 줄",
+          "⑤_change_log": "정정 이력 — 언제 무엇을 왜 바꿨는가",
+          "규칙": "슬롯 간 내용 중복 금지. ②에 나온 데이터셋명은 ①에서 제거한다."
+        },
+        "survey_coverage": {
+          "_note": "라벨 어휘 조사(2026-07-28)의 실제 범위. Impromptu-VLA 소스 8개 전수 대조 결과를 포함한다.",
+          "impromptu_vla_sources": {
+            "Mapillary": "조사 완료 — Vistas/MTSD 모두 image-level scene·road·weather 속성 **없음**(pixel class만)",
+            "ONCE": "조사 완료 — weather 3(sunny/cloudy/rainy) / period 4. 도로유형은 논문 Table 3 통계만이고 배포 JSON meta_info 에 필드 없음",
+            "NAVSIM": "조사 완료(2차) — nuPlan/OpenScene 재배포. 시나리오 필터는 **난이도 기준 리샘플링**이고 weather·time_of_day 라벨은 nuPlan 과 동일하게 없음",
+            "nuScenes": "조사 완료 — scene.description 자유텍스트, 통제 라벨 아님",
+            "Waymo": "조사 완료 — weather 2(Sunny/Rain) / time_of_day 3. 도로등급·동물·긴급차량 라벨 부재",
+            "Argoverse-V2": "조사 완료 — scene 속성 전무. map-level LaneType 만",
+            "KITTI": "**추가 조사(7/28)** — raw data 5 카테고리 **Road / City / Residential / Campus / Person**. 시퀀스 단위 장소 유형 라벨",
+            "IDD": "**추가 조사(7/28)** — image-level scene 라벨 없음. pixel 4-level 34클래스. 단 **drivable / drivable fall-back / non-drivable fall-back** 3분할이 중요(아래)"
+          },
+          "gap_closed": "1차 조사는 사내 데이터셋_전수비교 목록 기준이라 NAVSIM·KITTI·IDD 3개가 빠져 있었다. 7/28 추가 확인으로 8개 전수 대조 완료.",
+          "new_findings": [
+            "KITTI raw 카테고리(Road/City/Residential/Campus)가 '보면 아는 장소 유형' 패턴의 또 다른 선례 — Campus 는 K-Radar university 와 대응하고 Road(시외 도로)는 rural_road 선례가 된다",
+            "IDD 의 `drivable fall-back`/`non-drivable fall-back` 은 '안전/불안전/주행불가 평면'을 구분하는 라벨로 **Impromptu cat.1(불명확 도로 경계)의 직접 대응**이다. 본 어휘에 이 축이 없었다 → 후보 cond.unclear_road_boundary 신설",
+            "IDD-AW(WACV 2024): rain 1500 / fog 1500 / **low light 1000** / snow 1000 + NIR 페어. fog·snow 의 실데이터 보완 후보이며, low light 를 별도 조건으로 두는 것이 후보 night_unlit 의 선례",
+            "NAVSIM 의 '난이도 기준 시나리오 리샘플링'은 본 프로토콜의 층화 추출과 결이 같아 참조 가치 있음"
+          ],
+          "impromptu_category_coverage": {
+            "cat.1 불명확 도로경계": "**대응 태그 없음** → 후보 cond.unclear_road_boundary (7/28 신설)",
+            "cat.2 임시 교통규칙 변경": "cond.construction_zone + evt.road_worker",
+            "cat.3 비관습 동적 장애물": "evt.road_obstacle + animal_on_road + large_vehicle_proximity + vulnerable_pedestrian",
+            "cat.4 열악 도로·환경": "cond.rain/snow/fog/wet_road/glare/night"
+          },
+          "correction_2nd_survey": "1차 조사에서 '기능분류를 라벨로 제공하는 데이터셋은 DSI 뿐'이라고 결론했으나 **부분적으로 틀렸다**. **ZOD(Zenseact Open Dataset)** 의 `road_type` 이 `city` / **`arterial-urban`** / `highway` / **`arterial-rural`** / `smaller-rural` 로 **프레임 100k 전량에 실제 배포되는 메타데이터 필드**다. arterial/collector/local 3티어를 그대로 쓰지는 않고 '기능분류 × 도시·지방 2축 교차' 형태이므로, 인용 시 그렇게 특징짓는 것이 정확하다. 그럼에도 **핵심 논지는 유지된다** — 대다수 데이터셋은 여전히 관측 가능한 장소 유형을 쓰고, 3티어 기능분류를 온전히 제공하는 곳은 DSI 뿐이다.",
+          "zod_upgrade": "**ZOD 를 보완 데이터셋 후보 1순위로 격상 권고.** 프레임 100k 전량에 `time_of_day`(day/night/twilight) · `road_type`(5값) · `scraped_weather`(clear/cloudy/rain/fog/snow) · `solar_angle_elevation`(연속) 이 있고, 별도 Road Surface annotation 으로 `wetness`·`snow_coverage` binary 를 제공한다. 본 어휘의 조명·기상·도로유형·노면 축 GT 를 한 데이터셋에서 얻을 수 있어 nuScenes 의 빈 곳(snow·fog·rural·highway)을 정확히 메운다. 사내 데이터셋_전수비교에 ZOD 가 이미 있었으나 조건 메타데이터 품질을 놓쳤다. **즉시 할 일**: mini 다운로드로 `road_condition` 값 목록과 enum raw 문자열 확정(수분 소요).",
+          "additional_datasets_surveyed": {
+            "Tier A (실제 라벨 필드)": "ZOD · SODA10M · JAAD · MM-AU/LOTVS-DADA · RSCD · RoadSaW/RoadSC · StreetSurfaceVis · CODA · OpenLane V1 · ROADWork · MUSES · DoTA · Synscapes",
+            "Tier B (디렉터리·분할 인코딩)": "CULane · VIL-100 · ACDC · VPGNet · RADIATE · RobotCar Seasons · SYNTHIA · Virtual KITTI 2 · DAWN · Oxford RobotCar · 4Seasons · DDD20 · FM3m · METEOR",
+            "확인 후 기각": "A2D2 · ApolloScape · PandaSet · Cityscapes · DAIR-V2X/V2X-Seq · Rope3D · PIE · OPV2V · OpenLane-V2 · Talk2Car · Rank2Tell · TITAN · IDD-X · TuSimple · Argoverse 1",
+            "미확인 (우선순위 순)": "ZOD road_condition 값 · TUMTraf Intersection/V2X(ASAM OpenLABEL 정렬 선례 가능) · ROADWork JSON 키명 · DRAMA scene classifier 키명 · iRAP-BH 배포 여부"
+          }
+        },
+        "citation_pitfalls": [
+          "**OpenLane 의 `up_down_case`·`curve_case`·`extreme_weather_case`·`night_case`·`intersection_case`·`merge_split_case` 6개는 평가 분할이며 속성 필드가 아니다** — 문헌에서 매우 자주 오인용된다. OpenLane 의 실제 속성은 세그먼트 단위 `scene`/`weather`/`time` 3필드",
+          "**A2D2·ApolloScape·PandaSet·Cityscapes 의 weather 언급은 전부 논문 prose 이며 배포 필드가 아니다** — A2D2 프레임 JSON 키는 lidar_ids/cam_name/cam_tstamp 3개뿐, Cityscapes 는 gpsHeading 등 수치 6개뿐",
+          "**PIE 의 `road_type` 은 하드코딩된 더미**(`pie_data.py` 에서 항상 0, JAAD 호환용)",
+          "**Rope3D 의 day/night × sunny/rainy × crowded 는 논문 표 prose** 이며 배포는 KITTI식 label_2",
+          "**CULane 9종·VIL-100 10종은 프레임 속성이 아니라 테스트 분할/디렉터리명**이다. 선례로 인용할 때 '분할 수준'임을 명시할 것",
+          "**ROADWork 는 도로 기능분류를 제공하지 않는다** — DSI 논문의 주장은 `Env.`=Urban/Suburban/Highway/Rural 을 느슨하게 해석한 것. DSI 인용 시 이 점을 함께 적을 것"
+        ],
+        "changelog": [
+          {
+            "version": "0.1",
+            "date": "2026-07-23",
+            "change": "초안 31개(조건 14+이벤트 17) — anchored/predicted 구분, nuScenes GT 경로, back-off 트리, 선정 규칙 명문화 + 태그별 provenance(ISO 34503/NHTSA/Impromptu-VLA/CODA/DriveBench/BDD100K)"
+          },
+          {
+            "version": "0.2",
+            "date": "2026-07-24",
+            "change": "정상/일반 상태 축(베이스라인 어휘) 7종 추가: day, clear_weather, dry_road, urban_road, residential_area, free_flow, nominal_driving (31→38). 사유: FDR 보증은 수용된 긍정 판정에만 적용 — 악조건 태그의 기각은 정상 조건의 보증이 아님(FNR 무통제). 조명·기상·노면·도로유형·교통흐름·ego 기동 6축의 이상↔베이스라인 쌍 완성, 보증 태그만으로 균형 큐레이션 질의 가능"
+          },
+          {
+            "version": "0.3",
+            "date": "2026-07-24",
+            "change": "축 정합 8종 추가 (38→46) + 판정 체계 개선. (a) 사내 ODD 라벨링 스키마 검토 계기로 sharp_curve·undivided_road·road_worker 추가 + 판정 3값 규약(present/absent/undecidable→자동 기권) + clear_weather 파생 재정의(직교성) + 판정 tie-break 4건 이식. (b) VLA 메타태깅(vocab v0.7.1/schema v0.7.3/Output v08) 커버리지 정합: cut_out·vehicle_cross_path·large_vehicle_proximity·vulnerable_pedestrian·ego_follow — 전부 nuScenes ann 직접 GT. signal_state·door_open 등은 GT 예산 사유로 배제 명시(메타태깅_커버리지검토.md) (c) Dynamic Action Tagging spec v2.0(TJ) + 어노테이터 UI 환경 태그 정합: rural_road·crosswalk_present·traffic_light_present·wrong_way_vehicle 추가(46→50). cloudy(흐림) 세분·yield/about_to_cross(의도)·bridge/roundabout/merge_ramp/school_zone(GT 부재)은 배제 유지. 어휘 상한(50) 도달 — 이후 추가는 반드시 1:1 교환 **2026-07-28 정정**: 이 시점의 (a) 항목은 사내 문서를 근거로 표기했으나, 사내 문서는 외부 검증 가능한 근거가 아니므로 v0.4 에서 전부 공개 표준·데이터셋 선례로 재근거화하거나 [P] 로 강등했다. 위 서술은 변경 이력일 뿐 근거가 아니다."
+          },
+          {
+            "version": "0.4",
+            "date": "2026-07-28",
+            "change": "cond.snow 직교성 버그와 동일 부류 전수 감사. GT 클래스 문자열 6건(nuScenes devkit 대조), fallback 주장 3건(Waymo 스키마 대조), 파생식 1건, 배타 선언 1건 정정. 축 혼합 4건(high_speed_road·parking_area·residential_area·construction_zone)은 정의 의미가 바뀌므로 승인 대기. 축 혼합 4건을 '목적 기여' 기준으로 정리. 판정 3문항 — ①조건 셀로 쓰이는가(anchored ∧ 오류 편중 축 ∧ 타 셀과 독립) ②보증 대상인가(클립 수준 이진 판정 가능) ③큐레이션 질의용인가. 두 축 중 목적에 기여하는 쪽만 남긴다. high_speed_road 는 도로 축이 아니라 주행 축을 남겼다 — 오류를 유발하는 것은 제한속도라는 정적 사실이 아니라 실제 고속 주행에서 오는 모션블러·짧은 관측시간이기 때문. parking_area·residential_area 는 속도 조건 제거, construction_zone 은 작업자 제거(road_worker 와 셀 독립성 확보). 근거 등급 재산정 규칙. S = (표준이 값을 리터럴로 명시 ∨ 표준 임계값 존재) ∧ 라벨링 선례 ≥2 | L = 라벨링 선례 ≥2 또는 문헌 임계 근거 | P = 둘 다 약함. **단서: 표준의 대응값 자체가 도로 기능분류(arterial/collector/local/minor)인 경우 근거로 계상하지 않는다** — 그 값은 영상 단독 판정이 불가하므로, 관측 가능한 장면 유형으로 정의된 우리 태그의 근거가 될 수 없다. 이 경우 근거는 데이터셋 라벨링 선례뿐이다. 조사 결과 주요 데이터셋 중 기능분류를 라벨로 제공하는 곳은 없고(유일 예외 DSI 2025는 기존 데이터셋에 없어 별도 수집), 전부 관측 가능한 장소 유형을 쓴다. predicted 조건 6종을 일괄 none 으로 둔 것은 오류였다. _meta.notes 원 설계상 이들은 '조건 셀 배정에 쓰이는 predicted 조건 태그'이며 저신뢰 클립만 g_unknown 으로 격리된다(C2 순환 해법 2단). gated 값으로 복원. verifiability 정정(2026-07-28): cond.glare·evt.road_obstacle 은 규칙 도출이 실제로 가능하므로 V0→V2. cond.fog 는 V0 유지하되 실험에서는 corruption 주입으로 GT가 구성적으로 알려짐. 라벨링 선례를 태그 설계의 1차 근거로 전환하고 OASS 를 외부 근거에서 전면 제거. Impromptu-VLA 소스 8개 전수 대조로 NAVSIM·KITTI·IDD 추가 확인, 2차 조사로 ZOD·CULane·VIL-100·MUSES·SODA10M·OpenLane·ROADWork·MM-AU·JAAD·RSCD·DDD20 등 확보. 확장 후보 22종 신설. 파일을 JSON 1개로 통합(tags/docs/candidates)."
+          },
+          {
+            "version": "0.4",
+            "date": "2026-07-30",
+            "change": "미확정 일괄 확정(권고 승인): sharp_curve R≤100 m AASHTO 재근거화(P→L, pending_approval→confirmed, 연속 곡률 병행 출력 + thr 검증·교환 조건 명시) / dry_road 파생식 결빙 조항 삭제(icy_road 확장 카드로) / ZOD 보완 데이터셋 1순위 격상(snow·rural_road·high_speed_road·fog에 실데이터 경로 명시) / ego_hard_steer는 P7 게이트 대기 유지. confirmed 41→42로 프로토콜 P1 숫자 정합 해소"
+          }
+        ],
+        "grade_reporting_rule": {
+          "S": "국제 표준이 명시 규정 → 표준 조항과 값을 그대로 인용.",
+          "L": "공개 데이터셋·문헌 선례 → '선택된 문헌값 + 여러 선례 중 그 값을 고른 근거' 를 함께 적는다.",
+          "P": "외부 근거 없는 자체 규칙 → '운영 임계값 + 선택 근거 + 민감도 분석(±20%)' 3종을 모두 적는다. **표준값으로 인용하지 말 것.**",
+          "_note": "등급은 태그의 중요도가 아니라 임계값·판정 규칙의 출처 강도다. [P] 15건은 검증실험프로토콜에서 ±20% 민감도 분석 대상이다."
+        }
+      },
+      "tags": {
+        "cond.night": {
+          "threshold_basis": "태양 고도 **−6° 미만**. 판정은 t=0·10·20 s 세 시점을 계산해 셋 다 동일 구간일 때만 확정하고, 경계를 걸치면 `undecidable`(균질성 검사는 본 프로젝트 규칙). 터널·지하는 앵커 예외 목록.",
+          "iso34503": "environmental_conditions.illumination.natural_illuminance.night (≤1 lux)",
+          "anchor_sources": [
+            "타임스탬프+위경도 → 태양 고도 계산 (일몰 후 ~ 일출 전)",
+            "조도 센서(가용 시)"
+          ],
+          "gt_source_nuscenes": "calc(scene 타임스탬프 + log 위치 → ephemeris) + desc('night') 교차 확인",
+          "change_log": null,
+          "labeling_precedent": [
+            "BDD100K `timeofday:night`",
+            "TruckScenes `lighting:dark`",
+            "K-Radar `capture_time:night`",
+            "ONCE `period:night`",
+            "ZOD `time_of_day:night`",
+            "OpenLane `time:night`",
+            "SODA10M `period:night`",
+            "CODA `period:night`",
+            "ACDC `night` 1006프레임",
+            "MUSES `time_of_day:night`",
+            "CULane `test8_night`",
+            "VIL-100 `night`",
+            "JAAD `time_of_day:nighttime`"
+          ],
+          "concept_basis": [
+            "CODA period:night"
+          ],
+          "other_basis": [
+            "BDD100K timeofday:night",
+            "DRIVEBENCH Dark"
+          ],
+          "grade_rationale": "**[S]** USNO 가 civil twilight 를 태양 고도 −6° 로 정의(③) + 라벨링 선례 4건(②)"
+        },
+        "cond.twilight": {
+          "threshold_basis": "태양 고도 **−6° 이상 +6° 미만**. 균질성 검사 동일.",
+          "iso34503": "environmental_conditions.illumination.natural_illuminance.low_ambient (1–2000 lux)",
+          "anchor_sources": [
+            "타임스탬프+위경도 → 태양 고도 계산"
+          ],
+          "gt_source_nuscenes": "calc(ephemeris)",
+          "labeling_precedent": [
+            "BDD100K `timeofday:dawn/dusk`",
+            "TruckScenes `lighting:twilight`",
+            "DSI `Time of Day:Dawn/Dusk`",
+            "ZOD `time_of_day:twilight` (3.6%)",
+            "OpenLane `time:dawn/dusk`",
+            "SODA10M `period:dawn-dusk`",
+            "ROADWork `Time:Twilight`",
+            "RobotCar Seasons `dawn`/`dusk`"
+          ],
+          "change_log": null,
+          "concept_basis": null,
+          "other_basis": [
+            "BDD100K timeofday:dawn/dusk"
+          ],
+          "grade_rationale": "**[S]** USNO −6°~+6°(③) + 선례 3건(②)"
+        },
+        "cond.day": {
+          "threshold_basis": "태양 고도 **+6° 이상**. 균질성 검사 동일.",
+          "iso34503": "environmental_conditions.illumination.natural_illuminance.day (≥2000 lux)",
+          "anchor_sources": [
+            "타임스탬프+위경도 → 태양 고도 계산"
+          ],
+          "gt_source_nuscenes": "calc(ephemeris)",
+          "change_log": null,
+          "labeling_precedent": [
+            "BDD100K `timeofday:daytime`",
+            "K-Radar `capture_time:day`",
+            "ONCE `period:morning/noon/afternoon`",
+            "ZOD `time_of_day:day` (77.3%)",
+            "OpenLane `time:daytime`",
+            "SODA10M `period:daytime`",
+            "CODA `period:day`",
+            "MUSES `time_of_day:day`"
+          ],
+          "concept_basis": [
+            "CODA period:day"
+          ],
+          "other_basis": [
+            "BDD100K timeofday:daytime"
+          ],
+          "grade_rationale": "**[S]** USNO +6° 이상(③) + 선례 3건(②)"
+        },
+        "cond.rain": {
+          "threshold_basis": "[P] 강수 강도 미구분(v0.1 결정)",
+          "iso34503": "environmental_conditions.weather.rain.rainfall_intensity (light <2.5 / moderate 2.5–7.6 / heavy 7.6–50 / violent 50–100 / cloudburst >100 mm/h)",
+          "anchor_sources": [
+            "기상 API(시각+위치)",
+            "와이퍼 CAN 신호",
+            "조도"
+          ],
+          "gt_source_nuscenes": "desc('rain') — nuScenes 강우 scene은 description에 명시됨",
+          "change_log": null,
+          "labeling_precedent": [
+            "BDD100K `weather:rainy`",
+            "TruckScenes `weather:rain`",
+            "K-Radar `climate:rain`",
+            "ONCE `weather:rainy`",
+            "Honda HSD `Weather:rainy`",
+            "DSI `Weather:Raining`",
+            "ZOD `scraped_weather:rain` (15.7%)",
+            "OpenLane `weather:rainy`",
+            "SODA10M `weather:rainy`",
+            "CODA `weather:rainy`",
+            "ACDC `rain` 1000프레임",
+            "MUSES `weather:rain`",
+            "MM-AU `weather:rainy`",
+            "VPGNet `scene_2/3` (rain / heavy rain)"
+          ],
+          "concept_basis": [
+            "IMPROMPTU cat.4(heavy rain)",
+            "CODA weather:rainy"
+          ],
+          "other_basis": [
+            "BDD100K weather:rainy",
+            "DRIVEBENCH Rain"
+          ],
+          "grade_rationale": "**[S]** 표준이 값·임계를 명시(①)하고 라벨링 선례 6건(②)"
+        },
+        "cond.snow": {
+          "threshold_basis": "nuScenes 미수록. DriveBench snow corruption(강설 시각 효과)으로 대체. **Waymo weather 라벨은 Sunny/Rain 2값뿐이라 눈 GT 불가** — 실데이터는 CADC(drive 단위 snowfall 4단계 + 노면적설 이분) 또는 K-Radar(날씨 7종). [P] 실데이터 보완 후보에 **IDD-AW**(fog 1500 / snow 1000 프레임) 추가.",
+          "iso34503": "environmental_conditions.weather.snowfall (light ≥1km / moderate 0.5–1km / heavy ≤0.5km — 가시거리 기준)",
+          "anchor_sources": [
+            "기상 API(시각+위치)",
+            "외기온 CAN + 강수 교차"
+          ],
+          "gt_source_nuscenes": "nuScenes 부재 — Waymo Open 기상 메타데이터 / DriveBench corruption으로 대체",
+          "change_log": null,
+          "labeling_precedent": [
+            "BDD100K `weather:snowy`",
+            "TruckScenes `weather:snow`",
+            "K-Radar `climate:lightsnow/heavysnow`",
+            "DSI `Weather:Snowing`",
+            "CADC snowfall 4단계",
+            "ZOD `scraped_weather:snow` (2.0%)",
+            "SODA10M `weather:snowy`",
+            "ACDC `snow` 1000프레임",
+            "MUSES `weather:snow`",
+            "MM-AU `weather:snowy`",
+            "RADIATE `Snow (Suburban)`",
+            "DAWN `snow`"
+          ],
+          "concept_basis": [
+            "IMPROMPTU cat.4(snow·ice)"
+          ],
+          "other_basis": [
+            "BDD100K weather:snowy",
+            "DRIVEBENCH Snow"
+          ],
+          "grade_rationale": "**[S]** 표준이 값·임계를 명시(①)하고 라벨링 선례 5건(②)"
+        },
+        "cond.fog": {
+          "threshold_basis": "WMO International Cloud Atlas §3.2.1.1.1 (WMO-No.49 Annex I — standard practice 지위) / Foggy Cityscapes β=0.005·0.01·0.02 ↔ 시정 600·300·150 m 실데이터 보완 후보에 **IDD-AW**(fog 1500 / snow 1000 프레임) 추가.",
+          "iso34503": "environmental_conditions.particulates.type.non-precipitating_water_droplets (주석: mist/fog)",
+          "anchor_sources": [
+            "(약앵커) 기상 API 시정 정보 — 국지성 강해 단독 앵커 불충분"
+          ],
+          "gt_source_nuscenes": "nuScenes 부재 — DriveBench fog corruption 주입으로 실험",
+          "change_log": null,
+          "labeling_precedent": [
+            "BDD100K `weather:foggy`",
+            "TruckScenes `weather:fog`",
+            "K-Radar `climate:fog`",
+            "Honda HSD `Weather:foggy`",
+            "DSI `Weather:Foggy`",
+            "ZOD `scraped_weather:fog` (2.1%)",
+            "OpenLane `weather:foggy`",
+            "ACDC `fog` 1000프레임",
+            "MUSES `weather:fog`",
+            "MM-AU `weather:foggy`",
+            "RADIATE `Fog (Suburban)`",
+            "DAWN `fog`",
+            "VIL-100 `haze`"
+          ],
+          "concept_basis": [
+            "IMPROMPTU cat.4(fog)"
+          ],
+          "other_basis": [
+            "BDD100K weather:foggy",
+            "DRIVEBENCH Fog"
+          ],
+          "grade_rationale": "**[S]** WMO 가 fog 를 가시거리 1 km 미만으로 정의(③, WMO-No.49 Annex I 로 standard practice 지위) + 선례 5건(②)"
+        },
+        "cond.clear_weather": {
+          "threshold_basis": "[P] 직교성 원칙 — 부재-확인 조합",
+          "iso34503": "environmental_conditions.illumination.cloudiness.clear (≤1 Oktas) — 단 본 태그는 구름량 무관이므로 직접 대응 아님",
+          "anchor_sources": [
+            "기상 API(시각+위치)",
+            "와이퍼 CAN 미작동 교차"
+          ],
+          "gt_source_nuscenes": "desc('rain' 부재) + 기상 교차 — adverse_weather 태그 전부 거짓인 scene",
+          "change_log": null,
+          "labeling_precedent": [
+            "BDD100K `weather:clear`",
+            "TruckScenes `weather:clear`",
+            "K-Radar `climate:normal`",
+            "ONCE `weather:sunny`",
+            "DSI `Weather:Clear`",
+            "ZOD `scraped_weather:clear` (61.2%)",
+            "OpenLane `weather:clear`",
+            "SODA10M `weather:clear`",
+            "MUSES `weather:clear`",
+            "ROADWork `Weather:Sunny`"
+          ],
+          "concept_basis": [
+            "CODA weather:sunny/cloudy"
+          ],
+          "other_basis": [
+            "BDD100K weather:clear(+partly cloudy/overcast 세분 존재 — 본 어휘는 통합)"
+          ],
+          "grade_rationale": "**[L]** 라벨링 선례 5건(②)"
+        },
+        "cond.wet_road": {
+          "threshold_basis": "**[S] 표준이 범주를 명시** — ISO 34503 `scenery_elements.drivable_area.drivable_area_surface.drivable_area_included_surface_condition.wet`. 임계값이 없는 범주형이며 판정 규칙(map 레이어·점유 노면 기준)은 [P]. [P] 정량 기준 없음 — V2, gold set 필수",
+          "iso34503": "scenery_elements.drivable_area.drivable_area_surface.drivable_area_included_surface_condition.wet",
+          "anchor_sources": [
+            "(약앵커) 최근 강수 이력 — 배수·건조 편차로 단독 앵커 불충분"
+          ],
+          "gt_source_nuscenes": "desc('rain' 포함 scene ∪ 직후 scene) 약지도 + 소규모 수동 검증",
+          "labeling_precedent": [
+            "Honda HSD `Road surface:wet`",
+            "DSI `Weather-related Road Condition:Wet`",
+            "ZOD Road Surface `wetness` (binary)",
+            "RSCD `friction:wet`/`water`",
+            "RoadSaW `damp`/`wet`/`very wet`",
+            "ROADWork `Weather:Wet`"
+          ],
+          "change_log": null,
+          "concept_basis": [
+            "IMPROMPTU cat.4(노면 조건)"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[S]** 표준이 값·임계를 명시(①)하고 라벨링 선례 2건(②)"
+        },
+        "cond.glare": {
+          "threshold_basis": "기하 조건은 CDOT/ITE(Ryan & Babler) 태양 고도 0.5–10° severity 체계 **[L]**, 방위차 45°는 텔레매틱스 선례 **[L]**. 포화 픽셀 3%는 **[P]**",
+          "iso34503": "environmental_conditions.illumination.elevation_of_the_sun / position_of_the_sun (float angle) + artificial_illuminance.oncoming_vehicle_lights",
+          "anchor_sources": [
+            "(약앵커) 태양 방위각 vs 주행 방위각 계산 — 차폐물 때문에 단독 앵커 불충분"
+          ],
+          "gt_source_nuscenes": "calc(태양 방위각-주행 방향 정렬) 후보 추출 + 수동 검증",
+          "labeling_precedent": [
+            "TruckScenes `lighting:glare`",
+            "CULane `test2_hlight`",
+            "VIL-100 `dazzle light`",
+            "DDD20 boolean `glare`",
+            "Synscapes `sky_contrast`(연속)"
+          ],
+          "change_log": null,
+          "concept_basis": [
+            "IMPROMPTU cat.4(glare — 명시)"
+          ],
+          "other_basis": [
+            "DRIVEBENCH Brightness — 간접"
+          ],
+          "grade_rationale": "**[L]** CDOT/ITE 태양 고도 0.5–10° severity 체계(③) + TruckScenes `lighting:glare` 선례 1건(②). 포화 픽셀 3% 는 본 프로젝트 설정"
+        },
+        "cond.tunnel": {
+          "threshold_basis": "**3초 이상** 내부 주행(임계는 본 프로젝트 설정, 근거 없음). **판정 규칙**: 경로상 실제 진입만 — 보이기만 하면 거짓.",
+          "iso34503": "scenery_elements.special_structures.special_structures_type.tunnel (+ special_structures_usage.driving_under)",
+          "anchor_sources": [
+            "HD map + GPS/위치 (터널 구간 폴리곤)"
+          ],
+          "gt_source_nuscenes": "map + pose (nuScenes 터널 구간 희소 — 부재 시 셀 제외 명시)",
+          "labeling_precedent": [
+            "BDD100K `scene:tunnel`",
+            "TruckScenes `structure:tunnel`",
+            "Honda HSD `Road place:tunnel`",
+            "DSI `Grade-separated:Tunnels`",
+            "MM-AU `scenes:tunnel`",
+            "FM3m per-image binary `tunnel`"
+          ],
+          "change_log": null,
+          "concept_basis": null,
+          "other_basis": [
+            "BDD100K scene:tunnel"
+          ],
+          "grade_rationale": "**[S]** 표준이 값·임계를 명시(①)하고 라벨링 선례 4건(②)"
+        },
+        "cond.intersection": {
+          "threshold_basis": "**[S] 표준이 범주를 명시** — ISO 34503 `scenery_elements.junctions.intersection`. 임계값이 없는 범주형이며 판정 규칙(map 레이어·점유 노면 기준)은 [P]. [P]",
+          "iso34503": "scenery_elements.junctions.intersection (t-junction / y-junction / cross_road / staggered / grade_separated)",
+          "anchor_sources": [
+            "HD map 교차로 레이어 + ego pose"
+          ],
+          "gt_source_nuscenes": "map(road_segment is_intersection) + pose 교차",
+          "labeling_precedent": [
+            "Honda HSD `Road place:3-way/4-way/5-way intersection`",
+            "DSI `Intersection Type`",
+            "nuPlan `on_intersection`",
+            "MM-AU `linear:intersection`/`T-junction`",
+            "DRAMA scene `intersections`",
+            "FM3m `traffic`(간접)"
+          ],
+          "change_log": null,
+          "concept_basis": [
+            "NHTSA2007 #27–31(junction 시나리오군)"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[S]** 표준이 값·임계를 명시(①)하고 라벨링 선례 3건(②)"
+        },
+        "cond.crosswalk_present": {
+          "threshold_basis": "**[S] 표준이 범주를 명시** — ISO 34503 `scenery_elements.special_structures.special_structures_type.pedestrian_crossing`. 임계값이 없는 범주형이며 판정 규칙(map 레이어·점유 노면 기준)은 [P]. [P]",
+          "iso34503": "scenery_elements.special_structures.special_structures_type.pedestrian_crossing",
+          "anchor_sources": [
+            "HD map 횡단보도 폴리곤 + ego pose(경로상)"
+          ],
+          "gt_source_nuscenes": "map(ped_crossing 폴리곤) × pose — 직접",
+          "labeling_precedent": [
+            "Honda HSD `Road place:zebra crossing`",
+            "nuPlan `on_stopline_crosswalk`",
+            "VPGNet 노면표시 `crossWalk`"
+          ],
+          "change_log": null,
+          "concept_basis": [
+            "SPEC_V20 features.crosswalk"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[S]** 표준이 값·임계를 명시(①)하고 라벨링 선례 2건(②)"
+        },
+        "cond.traffic_light_present": {
+          "threshold_basis": "[P] 신호 상태는 v1 범위 외(GT 부재)",
+          "iso34503": "scenery_elements.drivable_area.drivable_area_signs.sign_types.regulatory_signs (주석: e.g. traffic lights) — 간접",
+          "anchor_sources": [
+            "HD map 신호등 레이어 + ego pose(경로상)"
+          ],
+          "gt_source_nuscenes": "map(traffic_light 레이어) × pose — 직접",
+          "change_log": null,
+          "labeling_precedent": [
+            "Honda HDD `Cause:traffic light`",
+            "nuPlan `on_traffic_light_intersection`"
+          ],
+          "concept_basis": [
+            "SPEC_V20 features.traffic_light"
+          ],
+          "other_basis": [
+            "BDD100K 검출 라벨 존재"
+          ],
+          "grade_rationale": "**[L]** 라벨링 선례 2건(②)"
+        },
+        "cond.parking_area": {
+          "threshold_basis": "범주형. **판정 규칙(본 프로젝트)**: map `parking` 폴리곤 **내부** 주행. 저속·인접 조건은 7/28 제거.",
+          "iso34503": "scenery_elements.zone.zone_type.fixed_zone.parking_lot + drivable_area.drivable_area_type.parking_space",
+          "anchor_sources": [
+            "HD map 주차 영역 폴리곤 + ego pose"
+          ],
+          "gt_source_nuscenes": "map(parking) + pose, desc('parking lot') 교차",
+          "labeling_precedent": [
+            "BDD100K `scene:parking lot`",
+            "TruckScenes `area:parking`",
+            "K-Radar `road_type:parkinglots`",
+            "nuPlan `on_carpark`",
+            "OpenLane `scene:parking lot`",
+            "4Seasons `parking_garage`"
+          ],
+          "change_log": [
+            "**축 정정(7/28)** — '저속 주행'·'인접' 조건 제거, map 폴리곤 내부로 한정. 오류 편중 요인은 비정형 도로경계·밀집 주차 배치(Impromptu cat.1)이지 속도가 아니며, '인접'은 판정 불가. [P]"
+          ],
+          "concept_basis": [
+            "NHTSA2007 #17(Vehicle(s) Parking – Same Direction)"
+          ],
+          "other_basis": [
+            "BDD100K scene:parking lot"
+          ],
+          "grade_rationale": "**[S]** 표준이 값·임계를 명시(①)하고 라벨링 선례 4건(②)"
+        },
+        "cond.construction_zone": {
+          "threshold_basis": "범주형. **판정 규칙(본 프로젝트)**: 표지·콘·바리케이드·중장비가 주행 경로에 영향을 줄 배치. 작업자는 `evt.road_worker` 담당(7/28 분리).",
+          "iso34503": "scenery_elements.zone.zone_type.dynamic_zone.mobile_work_zone + temporary_drivable_area_structures.road_work / construction_site_detour",
+          "anchor_sources": [
+            "(약앵커) 도로 공사 공지 API — 갱신 지연·미신고로 단독 앵커 불충분"
+          ],
+          "gt_source_nuscenes": "desc('construction') + ann(traffic_cone, construction_worker, construction vehicle)",
+          "labeling_precedent": [
+            "TruckScenes `construction:roadworks`",
+            "Honda HSD `Road place:construction zone`",
+            "DSI `Work Zone`",
+            "nuPlan `near_construction_zone_sign`",
+            "ROADWork `active work zone`(4,375 videos)",
+            "Oxford RobotCar `roadworks`",
+            "TruckScenes `construction:roadworks`(기확인)"
+          ],
+          "change_log": [
+            "**축 정정(7/28)** — 증거 목록에서 '작업자' 제거(시설 축만). 작업자를 두면 evt.road_worker 와 겹쳐 조건 셀이 독립이 아니게 되고 집계 명제가 성립하지 않는다. GT 클래스 문자열도 정정: traffic_cone→movable_object.trafficcone, construction_vehicle→vehicle.construction. [P]"
+          ],
+          "concept_basis": [
+            "IMPROMPTU cat.2(construction zones — 명시)",
+            "CODA traffic facility(cone·barrier 다수)"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[S]** 표준이 값·임계를 명시(①)하고 라벨링 선례 4건(②)"
+        },
+        "cond.crowd": {
+          "threshold_basis": " ⚠️ **어휘 주의**: 'crowded' 라는 영문 표기는 공개 데이터셋에서 **차량 혼잡**을 뜻하므로, 논문·프롬프트에서 반드시 `pedestrian crowd` 로 한정해 쓴다.",
+          "iso34503": "dynamic_elements.traffic_agents.agent_type.vulnerable_road_users — 군중을 단독 값으로 두지 않음(간접). 교통 밀도 축은 ISO 34503 taxonomy 에 부재",
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(pedestrian 박스 카운트, 거리 필터) — 어노테이션 기반 자동 산출",
+          "labeling_precedent": [
+            "nuPlan `near_multiple_pedestrians`"
+          ],
+          "change_log": [
+            "**근거 보강(7/28)** — 기존 [P] 무근거에서 문헌 근거로 교체. **(a) 오류 편중 [L]**: VLM 계수 성능이 객체 수에 따라 급락 — 1–5개(subitizing)에서 최고이나 최상위 모델도 약 40% 실패, 6–10개 44.0%, 11–20개 39.3%, 50개 초과 13.9%. 원인은 diffuse attention → feature conflation → **체계적 과소 계수**이며 사전학습이 sparse crowd 위주라서다. 즉 군집 판정은 태거가 구조적으로 취약한 축. **(b) 단순 보행자와의 구분 필요성 [L]**: CrowdHuman(평균 22.6인/이미지)이 겹친 보행자의 경계 식별 실패를 distinct failure mode 로 정의하고 MR⁻²(log-average miss rate)를 별도 지표로 쓴다. ped_crossing·jaywalking·vulnerable_pedestrian 은 **개별 인스턴스의 행동·속성** 판정이고 crowd 는 **개체 수** 판정이라 실패 축이 다르다. **(c) 임계 8인은 여전히 [P]**: Fruin LOS 는 척도가 달라 인용 불가(㎡당 인원, 4인/㎡가 이동 안전 한계 — 30m 반경 8인은 0.003인/㎡라 군중 아님). 목적에 맞는 기준은 '몇 명부터 군중인가'가 아니라 '몇 명부터 태거가 틀리는가'이며 꺾임점은 subitizing 경계(5–6). ③ 실측 분포 후 확정(P10)."
+          ],
+          "concept_basis": [
+            "PAS1883 dynamic.traffic_density — 2차 소스 확인(원문 유료, 간접)",
+            "IMPROMPTU cat.3(VRU in unexpected locations) — 간접",
+            "VLM 계수 실패 문헌 — subitizing 경계 초과 시 급락, 체계적 과소 계수 [L]",
+            "CrowdHuman — 군집 occlusion 을 별도 벤치마크·별도 지표(MR⁻²)로 확립 [L]"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[P]** 표준은 VRU 포괄 범주만 두고(①) 라벨링 선례는 nuPlan 하나(②). **2차 조사(7/28) 확인 — 보행자 밀집 전용 라벨을 가진 공개 데이터셋이 없다**: CULane `crowd`, VIL-100 `crowded`, METEOR `Density`, Rope3D `crowded`는 **전부 차량 혼잡**이다. 즉 이 축은 우리가 새로 만드는 셈이며, 오히려 논문에서 '기존 데이터셋은 차량 혼잡만 라벨링하고 보행자 밀집은 공백'이라는 주장이 가능하다. 감시 가치는 VLM 계수 실패 문헌으로 [L] 수준 확보(③)."
+        },
+        "cond.congestion": {
+          "threshold_basis": "⚠️ **분류체계 대응 없음(7/28 재확인)** — [P] 20초 척도 표준 부재",
+          "iso34503": "대응 없음 — ISO 34503 dynamic_elements 는 agent_type 과 presence_of_special_vehicles 만 두고 교통 밀도·흐름 축이 없다",
+          "anchor_sources": [
+            "ego 속도 CAN 프로파일 (도로 구간 제한속도 대비)"
+          ],
+          "gt_source_nuscenes": "can(속도 프로파일) + map(교차로 제외)",
+          "change_log": null,
+          "labeling_precedent": [
+            "Honda HDD `Cause:congestion`",
+            "nuPlan `stationary_in_traffic`",
+            "AI Hub `traffic_type:혼잡`",
+            "METEOR `Density:{Low,Medium,High}`",
+            "DDD20 `traffic 0–5`",
+            "Rope3D `crowded`(논문 표)"
+          ],
+          "concept_basis": [
+            "PAS1883 dynamic.traffic_density/flow_rate — 2차 소스 확인(ISO 34503 YAML에는 없음)",
+            "NHTSA2007 #24(Lead Vehicle Moving at Lower Constant Speed) — 간접"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[L]** 라벨링 선례 3건(②)"
+        },
+        "cond.high_speed_road": {
+          "threshold_basis": "범주형. **판정 규칙(본 프로젝트)**: 접근통제 + 중앙분리 + 신호 교차로 부재. 제한속도 조건은 영상 판정 불가라 7/28 제거.",
+          "iso34503": "scenery_elements.drivable_area.drivable_area_type.motorways_or_highways_or_interstates (+ drivable_area_lane_specification.speed_limit: integer velocity)",
+          "anchor_sources": [
+            "HD map 도로 등급 + ego 속도 CAN"
+          ],
+          "gt_source_nuscenes": "can + map (nuScenes는 도심 위주 — 표본 희소 시 셀 제외 명시)",
+          "labeling_precedent": [
+            "BDD100K `scene:highway`",
+            "TruckScenes `area:highway`",
+            "K-Radar `road_type:highway`",
+            "Honda HSD `Road environment:highway`",
+            "DVBench `Interstate/Bypass/Divided Highway`",
+            "ZOD `road_type:highway` (11.1%)",
+            "OpenLane `scene:highway`",
+            "SODA10M `location:highway`",
+            "ROADWork `Env.:Highway`",
+            "MM-AU `scenes:highway`",
+            "RADIATE `Overcast/Night (Motorway)`",
+            "FM3m binary `highway`",
+            "4Seasons `highway`"
+          ],
+          "change_log": [
+            "**정의 재기술(7/28)** — 기존 '제한속도 70 km/h 이상'는 '제한속도'는 속도표지가 프레임에 없으면 **영상 판정 불가**하고 nuScenes map 에 속성도 없다. 데이터셋 라벨링 관행에 맞춰 **관측 가능한 장면 유형**으로 다시 썼다.\n\n**[S] 표준이 범주를 명시** — ISO 34503 `scenery_elements.drivable_area.drivable_area_type.motorways_or_highways_or_interstates`. 임계값이 없는 범주형이며 판정 규칙(map 레이어·점유 노면 기준)은 [P].",
+            "**축 재정정(7/28)** — 같은 날 주행 축으로 바꿨다가 도로 유형 축으로 원복. provenance(ISO34503 drivable_area.type.motorways + lane.speed_limit, BDD100K scene:highway)가 둘 다 도로 유형이고 id 도 `_road`. 도로 유형 축을 urban/residential/rural/**highway** 로 완결하는 자리이며 속도 축은 congestion·free_flow 담당(절대 50 km/h 는 free_flow 30 km/h 의 부분집합이라 중복). **한계**: nuScenes 평균 주행 16 km/h, 도심 위주라 고속도로 사실상 부재하고 map 에 road class·speed limit 속성도 없음 → `dataset_sparse`, 셀 제외 후보. [P]"
+          ],
+          "concept_basis": null,
+          "other_basis": [
+            "BDD100K scene:highway"
+          ],
+          "grade_rationale": "**[S]** 표준이 값·임계를 명시(①)하고 라벨링 선례 5건(②)"
+        },
+        "cond.dry_road": {
+          "threshold_basis": "wet_road·snow 부재-확인 조합. **한계** — '결빙 부재' 조항에 대응하는 태그(icy_road)가 없고, 적설(노면 축)은 snow(기상 축) 분리 이후 미포함. 겨울 데이터셋 확장 시 snowy_road·icy_road 편입 필요. [P]",
+          "iso34503": "위 surface_condition 6값(icy/flooded/standing_water/snow_on_surface/wet/surface_contamination)의 부재로 정의 — 직접 값 없음",
+          "anchor_sources": [
+            "(약앵커) 무강수 이력 + 기온 — 배수·잔설 편차로 단독 앵커 불충분"
+          ],
+          "gt_source_nuscenes": "desc(강수 키워드 부재 scene) 약지도 + 소규모 수동 검증",
+          "labeling_precedent": [
+            "Honda HSD `Road surface:dry`",
+            "DSI `Weather-related Road Condition:Dry`",
+            "RSCD `friction:dry`",
+            "RoadSaW `dry`"
+          ],
+          "change_log": null,
+          "concept_basis": null,
+          "other_basis": [
+            "운영 선정: wet_road의 FNR 보완(기각 ≠ 건조 보증)"
+          ],
+          "grade_rationale": "ISO 34503 에 직접 값 없음(surface_condition 6값의 부재로만 정의). **Honda HSD `Road surface:dry` · DSI `Dry`** 선례로 [L]"
+        },
+        "cond.urban_road": {
+          "threshold_basis": "범주형. **판정 규칙(본 프로젝트)**: ego 가 점유한 노면 기준(화면에 보이는 도로가 아님). 표준에 ego lane 개념이 없어 이 규칙은 본 프로젝트 설정.",
+          "iso34503": "scenery_elements.drivable_area.drivable_area_type.radial_roads / distributor_roads",
+          "anchor_sources": [
+            "지도 도로 등급 + 위치 (도시부 일반도로, 제한속도 ~60km/h 이하)"
+          ],
+          "gt_source_nuscenes": "map(도로 등급) + log 위치 — nuScenes는 거의 전부 참(편중 명시)",
+          "labeling_precedent": [
+            "BDD100K `scene:city street`",
+            "TruckScenes `area:city`",
+            "K-Radar `road_type:urban`",
+            "Honda HSD `Road environment:urban`",
+            "DVBench `Geographic Zones:Urban`",
+            "KITTI raw `City`",
+            "ZOD `road_type:city` (50.1%)",
+            "OpenLane `scene:urban`",
+            "SODA10M `location:city street`",
+            "MM-AU `scenes:urban`",
+            "ROADWork `Env.:Urban`",
+            "JAAD `location:street`",
+            "4Seasons `city_loop`"
+          ],
+          "change_log": [
+            "**정의 재기술(7/28)** — 기존 '도시부 간선·집산로'는 '간선·집산로'는 도로 기능분류(arterial/collector)로 **영상만으로 판정 불가**하다. 도로 대장·GIS가 있어야 안다. 데이터셋 라벨링 관행에 맞춰 **관측 가능한 장면 유형**으로 다시 썼다.\n\n[P] 점유 노면 기준은 표준 아님 — ISO 34503 taxonomy에 ego/subject vehicle lane 어휘 0건"
+          ],
+          "concept_basis": null,
+          "other_basis": [
+            "BDD100K scene:city street"
+          ],
+          "grade_rationale": "ISO 34503 대응값 `radial_roads`/`distributor_roads` 는 **그 자체가 도로 기능분류**라 영상 판정 불가 — 우리 정의(관측 가능한 장면 유형)의 근거로 계상할 수 없다. 따라서 근거는 **데이터셋 라벨링 선례 5건**뿐 → [L]"
+        },
+        "cond.residential_area": {
+          "threshold_basis": "**[S] 표준이 범주를 명시** — ISO 34503 `scenery_elements.drivable_area.drivable_area_type.minor_or_local_roads`. 임계값이 없는 범주형이며 판정 규칙(map 레이어·점유 노면 기준)은 [P].",
+          "iso34503": "scenery_elements.drivable_area.drivable_area_type.minor_or_local_roads (주석: provide access to residential areas)",
+          "anchor_sources": [
+            "지도 용도지역/도로 폭 (정적 지도 데이터 — 갱신 주기 느려 ε 작음)"
+          ],
+          "gt_source_nuscenes": "map(도로 폭·등급) 제한적 — 수동 검증 병행, 희소 시 셀 제외 명시",
+          "labeling_precedent": [
+            "BDD100K `scene:residential`",
+            "TruckScenes `area:residential`",
+            "DVBench `Open/Moderate Residential`",
+            "KITTI raw `Residential`",
+            "OpenLane `scene:residential`",
+            "SODA10M `location:residential`",
+            "4Seasons `neighborhood`"
+          ],
+          "change_log": [
+            "**축 정정(7/28)** — '저속' 조건과 tie-break의 '교통량' 제거. 요인은 좁은 도로 형태와 보행자 혼재. 교통량은 congestion 축. [P]"
+          ],
+          "concept_basis": null,
+          "other_basis": [
+            "BDD100K scene:residential"
+          ],
+          "grade_rationale": "ISO 34503 대응값 `minor_or_local_roads` 는 도로 기능분류(주석: provide access to residential areas)라 영상 판정 불가 — 근거로 계상 불가. **데이터셋 선례 3건**으로 [L]"
+        },
+        "cond.rural_road": {
+          "threshold_basis": "범주형. **판정 규칙(본 프로젝트)**: 건물 밀도 낮음 + 포장 2차로 수준 + 신호 교차로 희소.",
+          "iso34503": "**대응 없음** — drivable_area_type 에 rural 값이 없다(minor_or_local_roads 는 주거지 접근로). BDD100K scene 7종에도 rural 부재",
+          "anchor_sources": [
+            "지도 도로 등급 + 위치 (비도시부)"
+          ],
+          "gt_source_nuscenes": "nuScenes 희소/부재(도심 위주) — Waymo 교외·AI Hub 보완, 셀 제외 가능성 명시",
+          "labeling_precedent": [
+            "TruckScenes `area:rural`",
+            "K-Radar `road_type:countryside`",
+            "Honda HSD `Road environment:rural`",
+            "KITTI raw `Road`(시외 도로)",
+            "ZOD `road_type:smaller-rural`(5.1%)/`arterial-rural`(9.9%)",
+            "OpenLane `scene:suburbs`",
+            "SODA10M `location:country road`",
+            "MM-AU `scenes:rural`",
+            "ROADWork `Env.:Rural`/`Suburban`",
+            "4Seasons `countryside`"
+          ],
+          "change_log": [
+            "**정의 재기술(7/28)** — 기존 '교외·시골(행정)'는 '교외·시골'을 행정구역으로 읽으면 판정 불가 — 건물 밀도·차로 수 같은 관측 가능 특징으로 재기술. 데이터셋 라벨링 관행에 맞춰 **관측 가능한 장면 유형**으로 다시 썼다.\n\n⚠️ **분류체계 대응 없음(7/28 재확인)** — ISO 34503 `drivable_area_type` 에 rural 값이 없다(`minor_or_local_roads` 는 주거지 접근로). BDD100K scene 7종에도 rural 이 없다. 사내 스키마를 근거에서 제외하면 분류체계 근거는 **사내 spec v2.0(road_type.rural) 하나만** 남고, 외부 근거로는 **K-Radar** 의 도로구조 라벨(urban/suburban/alleyway/highway)이 유일하다. **1:1 교환 후보.**",
+            "**'Waymo 교외 보완' 주장 철회(7/28)** — Waymo `Context.Stats` 에 도로등급 필드 자체가 없다(location 은 도시 코드 문자열). [P]"
+          ],
+          "concept_basis": [
+            "SPEC_V20 road_type.rural"
+          ],
+          "other_basis": [
+            "BDD100K scene에는 부재 — 간접"
+          ],
+          "grade_rationale": "**[L]** 라벨링 선례 3건(②)"
+        },
+        "cond.free_flow": {
+          "threshold_basis": "⚠️ **분류체계 대응 없음(7/28 재확인)** —",
+          "iso34503": "대응 없음 — 위와 동일",
+          "anchor_sources": [
+            "ego 속도 CAN 프로파일"
+          ],
+          "gt_source_nuscenes": "can(속도 프로파일) + map(교차로 구분)",
+          "change_log": [
+            "**축 정정(7/28)** — '제한속도의 60%'(상대) → '평균 30 km/h 이상'(절대). congestion 이 절대 10 km/h 기반이라 대조쌍도 같은 척도여야 배타가 성립하고, nuScenes map 에 speed limit 속성이 없어 상대 기준은 계산 불가. 30 km/h 는 [P]"
+          ],
+          "labeling_precedent": null,
+          "concept_basis": [
+            "PAS1883 dynamic.traffic_density/flow_rate — 2차 소스"
+          ],
+          "other_basis": [
+            "운영 선정: congestion의 FNR 보완"
+          ],
+          "grade_rationale": "**[P]** 표준 대응이 없거나 간접(①), 선례 0건, 임계값은 본 프로젝트 설정(③)"
+        },
+        "cond.sharp_curve": {
+          "threshold_basis": "인용 가능한 표준 임계값 부재 확정 — 센터장 승인 필요",
+          "iso34503": "scenery_elements.drivable_area.drivable_area_geometry.horizontal_plane.curves — **곡률 구간(bin) 정의 없음**(roundabout 만 직경 구간을 가짐)",
+          "anchor_sources": [
+            "ego pose 헤딩 곡률 (클립 단위라 단일 프레임 대비 판정 용이)"
+          ],
+          "gt_source_nuscenes": "pose(헤딩 곡률 프로파일) + map(교차로 제외)",
+          "candidates": [
+            {
+              "threshold": 100,
+              "note": "설계속도 약 34 km/h 상당. 도심 급곡선으로 그럴듯하나 근거 없음"
+            },
+            {
+              "threshold": 30,
+              "note": "채택 불가 — 설계속도 약 19 km/h로 교차로 회전 반경(5–15 m)에 근접. 교차로 제외 규칙과 결합 시 검출 0건"
+            },
+            {
+              "method": "AASHTO R_min = V²/[15(e+f)] 설계속도 함수",
+              "note": "nuScenes에 설계속도 없음 — 적용 불가"
+            },
+            {
+              "method": "MUTCD 권고속도 기준(30 mph 이하 = Turn)",
+              "note": "nuScenes에 권고속도 없음 — 적용 불가"
+            }
+          ],
+          "change_log": null,
+          "labeling_precedent": [
+            "CULane `test6_curve`",
+            "VIL-100 `curved road`",
+            "MM-AU `linear:curve`",
+            "DDD20 boolean `curvy`"
+          ],
+          "concept_basis": null,
+          "other_basis": null,
+          "grade_rationale": "**[L]** ISO 34503 `horizontal_plane.curves` 는 있으나 **곡률 구간(bin) 정의가 없다**(①). 다만 **라벨링 선례 4건**(②: CULane `curve`, VIL-100 `curved road`, MM-AU `linear:curve`, DDD20 boolean `curvy`)으로 '급곡선'을 클립 수준 이진 라벨로 다루는 것이 실무 관행임이 확인됐다. **임계 곡률만 여전히 미확정**(③, 승인 대기)."
+        },
+        "cond.undivided_road": {
+          "threshold_basis": "범주형이라 수치 임계가 없다. **판정 규칙(본 프로젝트)**: map `road_divider` 레이어 부재로 판정하며, **노면 차선 표시는 분리물이 아니다** — 물리적 분리물(중앙분리대·가드레일) 기준. **감시 가치의 정량 근거**: FHWA Proven Safety Countermeasures — 중앙분리대 설치로 사망·상해 cross-median 충돌 **최대 96% 감소**(NCHRP Report 794 인용), 분리 도로 사망의 약 8%가 정면충돌.",
+          "iso34503": "scenery_elements.drivable_area.drivable_area_geometry.transverse_plane.transverse_plane_type.**undivided** — 표준의 리터럴 enum 값",
+          "anchor_sources": [
+            "지도 분리대 레이어 (nuScenes map: road_divider 부재)"
+          ],
+          "gt_source_nuscenes": "map(road_divider 레이어 부재 구간 × ego pose)",
+          "change_log": null,
+          "labeling_precedent": null,
+          "concept_basis": [
+            "FHWA Proven Safety Countermeasures: Median Barriers — cross-median 충돌 최대 96% 감소(NCHRP 794) [L]",
+            "NHTSA 2007 #20–21 Opposite Direction — 정면충돌 시나리오군 [L]"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[S]** ISO 34503 이 `undivided` 를 **리터럴 enum 값**으로 명시(①). 라벨링 선례는 없으나 FHWA 가 중앙분리대의 안전 효과를 정량화(③, cross-median 충돌 최대 96% 감소)하여 감시 가치가 확립됨"
+        },
+        "evt.ego_hard_brake": {
+          "threshold_basis": "3.0 m/s² = 0.306 g — SHRP2 NDS Table 2.1 freeway trigger(-0.3 g)와 일치 [L]. SHRP2 지속조건은 at least one timestamp 로 더 느슨하며 0.5 s는 본 프로토콜 선택 [P]",
+          "iso34503": null,
+          "anchor_sources": [
+            "IMU/CAN 종가속도"
+          ],
+          "gt_source_nuscenes": "can(IMU 가속도) 임계 초과 탐지",
+          "change_log": null,
+          "labeling_precedent": [
+            "SHRP2 NDS trigger spec"
+          ],
+          "concept_basis": [
+            "NHTSA2007 #32–33(Evasive Action) — 간접(급제동 독립 시나리오 없음)"
+          ],
+          "other_basis": [
+            "운영 선정: CAN 앵커 가능한 안전 관련 기동 + 업계 이벤트 마이닝 관행"
+          ],
+          "grade_rationale": "**[L]** SHRP2 NDS Table 2.1 freeway trigger −0.3 g 와 수치 일치(③). 지속조건 0.5 s 는 본 프로젝트 선택"
+        },
+        "evt.ego_hard_steer": {
+          "threshold_basis": "현행 횡가속 3.0 m/s²(0.306 g)는 SHRP2(0.75 g)의 41% 수준 — 정상 교차로 회전 과다 검출 우려. SHRP2는 요레이트를 절대값이 아닌 반전 패턴으로 판정",
+          "iso34503": null,
+          "anchor_sources": [
+            "CAN 조향각/요레이트"
+          ],
+          "gt_source_nuscenes": "can(요레이트/횡가속) 임계 초과 탐지",
+          "change_log": null,
+          "labeling_precedent": [
+            "SHRP2 NDS trigger spec",
+            "nuPlan `high_lateral_acceleration`"
+          ],
+          "concept_basis": [
+            "NHTSA2007 #32–33(Evasive Action) — 간접"
+          ],
+          "other_basis": [
+            "운영 선정: CAN 앵커 가능한 안전 관련 기동"
+          ],
+          "grade_rationale": "**[L]** SHRP2 NDS Table 2.1 참조(③) — 단 현행 임계가 SHRP2 의 41% 수준이라 재검토 대기"
+        },
+        "evt.ego_stop": {
+          "threshold_basis": "[P]",
+          "iso34503": null,
+          "anchor_sources": [
+            "휠 스피드 CAN"
+          ],
+          "gt_source_nuscenes": "can(속도)",
+          "change_log": null,
+          "labeling_precedent": [
+            "Honda HDD `stop`",
+            "nuPlan `stationary`",
+            "STSBench `ego:stop`",
+            "TAD `stopped`"
+          ],
+          "concept_basis": null,
+          "other_basis": [
+            "표준 직접 대응 없음 — 운영 선정: congestion·intersection과의 교차 분석용 보조 태그, CAN 앵커 비용 0"
+          ],
+          "grade_rationale": "**[L]** 라벨링 선례 4건(②)"
+        },
+        "evt.ego_follow": {
+          "threshold_basis": "[P]",
+          "iso34503": null,
+          "anchor_sources": [
+            "(약앵커) ACC/거리 센서 CAN(가용 시) — 선행차 존재 판정은 인지 의존"
+          ],
+          "gt_source_nuscenes": "ann(선행 차량 트랙 지속성 + 거리 유지) — 직접",
+          "change_log": null,
+          "labeling_precedent": [
+            "nuPlan `following_lane_with_lead`",
+            "STSBench `ego→agent:follow agent`"
+          ],
+          "concept_basis": [
+            "KATECH_VOCAB ego_action.ego_follow",
+            "NHTSA #22–26(lead vehicle 시나리오군의 전제 상태) — 간접"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[L]** 라벨링 선례 2건(②)"
+        },
+        "evt.ego_lane_change": {
+          "threshold_basis": "[P]",
+          "iso34503": null,
+          "anchor_sources": [
+            "ego pose + HD map 차로 매칭"
+          ],
+          "gt_source_nuscenes": "pose + map(lane) 시퀀스 매칭, desc('lane change') 교차",
+          "change_log": null,
+          "labeling_precedent": [
+            "Honda HDD `left/right lane change`",
+            "nuPlan `changing_lane`",
+            "STSBench `ego:lane change`",
+            "TAD `changing lanes`"
+          ],
+          "concept_basis": [
+            "NHTSA2007 #18(Vehicle(s) Changing Lanes – Same Direction)",
+            "NUSC_DESC('lane change')"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[L]** 라벨링 선례 4건(②)"
+        },
+        "evt.ego_left_turn": {
+          "threshold_basis": "[P] NHTSA typology는 시나리오 유형만 규정하고 각도 임계 없음",
+          "iso34503": null,
+          "anchor_sources": [
+            "ego pose 헤딩 변화 + HD map"
+          ],
+          "gt_source_nuscenes": "pose(헤딩 적분) + map(교차로)",
+          "change_log": null,
+          "labeling_precedent": [
+            "Honda HDD `left turn`",
+            "nuPlan `starting_left_turn`",
+            "STSBench `ego:left turn`",
+            "TAD `turning left`"
+          ],
+          "concept_basis": [
+            "NHTSA2007 #27/#29(Left Turn Across Path) + #31(Turning at Non-Signalized Junctions)"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[L]** 라벨링 선례 4건(②)"
+        },
+        "evt.ego_right_turn": {
+          "threshold_basis": "[P] NHTSA typology는 시나리오 유형만 규정하고 각도 임계 없음",
+          "iso34503": null,
+          "anchor_sources": [
+            "ego pose 헤딩 변화 + HD map"
+          ],
+          "gt_source_nuscenes": "pose(헤딩 적분) + map(교차로)",
+          "change_log": null,
+          "labeling_precedent": [
+            "Honda HDD `right turn`",
+            "nuPlan `starting_right_turn`",
+            "STSBench `ego:right turn`",
+            "TAD `turning right`"
+          ],
+          "concept_basis": [
+            "NHTSA2007 #28(Vehicle Turning Right at Signalized Junctions)"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[L]** 라벨링 선례 4건(②)"
+        },
+        "evt.ego_u_turn": {
+          "threshold_basis": "[P] NHTSA typology는 시나리오 유형만 규정하고 각도 임계 없음",
+          "iso34503": null,
+          "anchor_sources": [
+            "ego pose 헤딩 변화"
+          ],
+          "gt_source_nuscenes": "pose(헤딩 적분), desc('u-turn') 교차",
+          "change_log": null,
+          "labeling_precedent": [
+            "Honda HDD `u-turn`",
+            "nuPlan `starting_u_turn`",
+            "STSBench `agent:u turn`"
+          ],
+          "concept_basis": [
+            "NHTSA2007 독립 시나리오 없음(turning 계열) — 간접",
+            "NUSC_DESC('u-turn' — 데이터셋 라벨링 관행)"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[L]** 라벨링 선례 3건(②)"
+        },
+        "evt.ego_overtake": {
+          "threshold_basis": "[P]",
+          "iso34503": null,
+          "anchor_sources": [
+            "(약앵커) ego pose 차로 변경 패턴 — 대상 차량 확인은 인지 의존"
+          ],
+          "gt_source_nuscenes": "pose + ann(선행 차량 상대 위치 역전) 규칙 도출, desc('overtak*') 교차",
+          "change_log": null,
+          "labeling_precedent": [
+            "STSBench `ego→agent:overtake agent`"
+          ],
+          "concept_basis": [
+            "NHTSA2007 passing(기동 한정어로만 존재) — 간접",
+            "NUSC_DESC('overtake' — 데이터셋 라벨링 관행)"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[P]** 표준에 독립 시나리오 없음(①), STSBench 선례 1건(②). 완료 조건은 본 프로젝트 설정"
+        },
+        "evt.cut_in": {
+          "threshold_basis": "[P]",
+          "iso34503": null,
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(차량 트랙의 차로 전이 + ego 전방 거리 조건), desc('cut in') 교차",
+          "change_log": null,
+          "labeling_precedent": [
+            "Honda HDD `Attention:cut-in`"
+          ],
+          "concept_basis": [
+            "NHTSA2007 #18(상대차 차로 변경) + #22(Following Vehicle Making a Maneuver)"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[P]** NHTSA #18·#22 간접 대응(①), 선례 1건(②). 전방 20 m 임계는 본 프로젝트 설정"
+        },
+        "evt.lead_brake": {
+          "threshold_basis": "[P]",
+          "iso34503": null,
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(선행 차량 트랙 속도 미분)",
+          "change_log": null,
+          "labeling_precedent": null,
+          "concept_basis": [
+            "NHTSA2007 #25(Lead Vehicle Decelerating)"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[P]** 표준 대응이 없거나 간접(①), 선례 0건, 임계값은 본 프로젝트 설정(③)"
+        },
+        "evt.cut_out": {
+          "threshold_basis": "[P]",
+          "iso34503": null,
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(선행 차량 트랙의 차로 전이 + 직전방 지위 상실)",
+          "change_log": null,
+          "labeling_precedent": null,
+          "concept_basis": [
+            "KATECH_VOCAB relation.cut_out(ISO 34504 정합)",
+            "NHTSA #26(Lead Vehicle Stopped — 컷아웃 후 노출 시나리오) — 간접"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[P]** 표준 대응이 없거나 간접(①), 선례 0건, 임계값은 본 프로젝트 설정(③)"
+        },
+        "evt.vehicle_cross_path": {
+          "threshold_basis": "[P] NHTSA #30 Straight Crossing Paths",
+          "iso34503": null,
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(차량 트랙 × ego 경로 교차 판정)",
+          "change_log": null,
+          "labeling_precedent": [
+            "nuPlan `crossed_by_vehicle`",
+            "Honda HDD `Attention:crossing vehicle`"
+          ],
+          "concept_basis": [
+            "NHTSA #30(Straight Crossing Paths at Non-Signalized Junctions) + #31",
+            "KATECH_VOCAB relation.cross_ego_path"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[L]** 라벨링 선례 2건(②)"
+        },
+        "evt.wrong_way_vehicle": {
+          "threshold_basis": "[P] 극희소 — 셀 제외 가능성",
+          "iso34503": null,
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(차량 트랙 heading) × map(lane 방향) 도출 — 극희소, 셀 제외 가능성 명시",
+          "change_log": null,
+          "labeling_precedent": null,
+          "concept_basis": [
+            "NHTSA #20–21(Vehicle(s) Making a Maneuver – Opposite Direction)",
+            "SPEC_V20 episode.wrong_way"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[P]** 표준 대응이 없거나 간접(①), 선례 0건, 임계값은 본 프로젝트 설정(③)"
+        },
+        "evt.ped_crossing": {
+          "threshold_basis": "NHTSA #11–12.",
+          "iso34503": null,
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(pedestrian 트랙) × map(횡단보도 폴리곤) 교차",
+          "change_log": [
+            "**배타 정정(7/28)** — jaywalking 과 둘 다 any_occurrence 라 한 클립에서 서로 다른 보행자가 각각 가능. 클립 수준 배타가 아니라 인스턴스 단위. [P]"
+          ],
+          "labeling_precedent": [
+            "Honda HDD `crosswalk passing`",
+            "nuPlan `near_pedestrian_on_crosswalk`",
+            "STSBench `agent:cross`"
+          ],
+          "concept_basis": [
+            "NHTSA2007 #11–12(Pedestrian Crash) + crash type 'pedestrian crossing road'",
+            "ISO34503 special_structures.pedestrian_crossing(시설)",
+            "CODA pedestrian"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[L]** 라벨링 선례 3건(②)"
+        },
+        "evt.jaywalking": {
+          "threshold_basis": "NHTSA *pedestrian darting onto road* / Impromptu cat.3.",
+          "iso34503": null,
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(pedestrian 트랙) × map(차도-횡단보도 차집합), desc('jaywalker') 교차",
+          "change_log": [
+            "**배타 정정(7/28)** — ped_crossing 과 인스턴스 단위 배타(클립 수준 아님). [P]"
+          ],
+          "labeling_precedent": [
+            "STSBench `agent:jaywalk`",
+            "nuPlan `behind_pedestrian_on_driveable`"
+          ],
+          "concept_basis": [
+            "NHTSA2007 crash type 'pedestrian darting onto road'",
+            "IMPROMPTU cat.3('VRU in unexpected locations')",
+            "NUSC_DESC('jaywalker')"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[L]** 라벨링 선례 2건(②)"
+        },
+        "evt.road_worker": {
+          "threshold_basis": "⚠️ **분류체계 대응 없음(7/28 재확인)** — ISO 34503 dynamic_elements 는 `presence_of_special_vehicles.work_vehicles`(차량)만 두고 작업자(사람)를 별도 값으로 두지 않는다. `agent_type.vulnerable_road_users` 로만 간접 대응. 외부 근거는 **Impromptu-VLA cat.2**(human traffic controllers 명시) 하나.",
+          "iso34503": "대응 없음 — presence_of_special_vehicles 에 work_vehicles 는 있으나 작업자(사람)는 없다. agent_type.vulnerable_road_users 로만 간접",
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(human.pedestrian.construction_worker) — 직접",
+          "change_log": [
+            "**GT 정정(7/28)** — 정의는 '경찰·교통 지도 요원'을 포함하는데 GT 클래스가 construction_worker 하나였음 → `human.pedestrian.police_officer` 추가. **정의 분리(7/28)** — construction_zone 에서 작업자를 제거하여 두 태그가 독립. [P]"
+          ],
+          "labeling_precedent": null,
+          "concept_basis": [
+            "IMPROMPTU cat.2(human traffic controllers — 명시)"
+          ],
+          "other_basis": [
+            "nuScenes ann 클래스 직접 존재"
+          ],
+          "grade_rationale": "**[P]** 표준 대응이 없거나 간접(①), 선례 0건, 임계값은 본 프로젝트 설정(③)"
+        },
+        "evt.cyclist_interaction": {
+          "threshold_basis": "NHTSA #13–14.",
+          "iso34503": "dynamic_elements.traffic_agents.agent_type.vulnerable_road_users (주석: pedestrians two-wheelers, bicycles, e-scooters)",
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(bicycle/motorcycle+rider 트랙 거리 필터)",
+          "change_log": [
+            "**축 정정(7/28)** — nuScenes 에서 PM 은 human.pedestrian.personal_mobility(보행자 축)인데 GT 에 없었고, 대신 vehicle.motorcycle(차량 축)이 들어 있었음. 이륜차는 evt.vehicle_cross_path 와도 중복이라 제외. 10 m 임계는 [P]"
+          ],
+          "labeling_precedent": [
+            "Honda HDD `Attention:on-road bicyclist`",
+            "nuPlan `near_multiple_bikes`",
+            "STSBench (VRU)"
+          ],
+          "concept_basis": [
+            "NHTSA2007 #13–14(Pedalcyclist Crash)",
+            "CODA cyclist"
+          ],
+          "other_basis": null,
+          "grade_rationale": "ISO 34503 `agent_type.vulnerable_road_users` 는 포괄 범주이고 '10 m 이내 근접'이라는 임계는 우리 것. 선례(HDD·nuPlan·STSBench)로 [L]"
+        },
+        "evt.vulnerable_pedestrian": {
+          "threshold_basis": "[P] CODA stroller 명시",
+          "iso34503": null,
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(human.pedestrian.child, wheelchair, stroller) — 직접",
+          "change_log": null,
+          "labeling_precedent": [
+            "nuScenes ann `child`/`wheelchair`/`stroller`"
+          ],
+          "concept_basis": [
+            "CODA novel class(stroller — 명시) + pedestrian",
+            "KATECH_VOCAB vru_attr(child/mobility_aid)",
+            "IMPROMPTU cat.3(VRU in unexpected locations) — 간접"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[P]** nuScenes ann 클래스가 직접 있어 GT 는 쉬우나(②) 표준·문헌 임계 근거는 없음"
+        },
+        "evt.emergency_vehicle": {
+          "threshold_basis": null,
+          "iso34503": "dynamic_elements.traffic_agents.presence_of_special_vehicles.ambulances / police_vehicles",
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(vehicle.emergency.*) — 희소, Waymo 보완",
+          "change_log": [
+            "**GT 정정(7/28)** — 와일드카드 vehicle.emergency.* → ambulance/police 명시.",
+            "**'Waymo 보완' 주장 철회**: Waymo 3D 클래스는 VEHICLE/PEDESTRIAN/SIGN/CYCLIST 4종뿐이라 긴급차량 세부 부재. 경광등 점등 상태는 nuScenes ann 에도 없어 gold set 전량 사람 판정. [P]"
+          ],
+          "labeling_precedent": null,
+          "concept_basis": [
+            "IMPROMPTU cat.3(대형/이상거동 차량) — 간접"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[P]** 표준 대응이 없거나 간접(①), 선례 0건, 임계값은 본 프로젝트 설정(③)"
+        },
+        "evt.animal_on_road": {
+          "threshold_basis": "NHTSA #9–10 / CODA animal.",
+          "iso34503": "dynamic_elements.traffic_agents.agent_type.animals",
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(animal) — 극희소, 셀 제외 가능성 명시",
+          "change_log": [
+            "**'Waymo 보완' 주장 철회(7/28)** — Waymo 에 animal 클래스 없음. 실데이터 보완은 CADC(Animal 26 박스, 역시 극희소). [P]"
+          ],
+          "labeling_precedent": [
+            "CADC `Animal` 클래스"
+          ],
+          "concept_basis": [
+            "NHTSA2007 #9–10(Animal Crash)",
+            "CODA animal",
+            "IMPROMPTU cat.3(animal encounters — 명시)"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[P]** ISO `agent_type.animals` 대응(①), CADC 클래스 선례(②). 5 m 임계는 본 프로젝트 설정"
+        },
+        "evt.road_obstacle": {
+          "threshold_basis": "**최대 변 0.3 m 이상**(임계는 본 프로젝트 설정). 그 미만은 `undecidable`. **판정 규칙**: 노면 정지 물체만 — 공중 부유물 제외.",
+          "iso34503": "scenery_elements.drivable_area.drivable_area_surface.drivable_area_included_surface_condition.surface_contamination (공중 축 environmental_conditions.particulates.type.blowing_debris 와 별개)",
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(movable_object.debris 등) + 수동 검증",
+          "change_log": [
+            "**GT 정정(7/28)** — 정의의 '이동식 장애물'에 대응하는 movable_object.pushable_pullable 추가"
+          ],
+          "labeling_precedent": [
+            "nuPlan `near_barrier_on_driveable`",
+            "nuPlan `near_trafficcone_on_driveable`"
+          ],
+          "concept_basis": [
+            "NHTSA2007 #35–36(Object Crash)",
+            "CODA obstruction"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[P]** 표준 대응이 없거나 간접(①), 선례 2건, 임계값은 본 프로젝트 설정(③)"
+        },
+        "evt.stationary_vehicle_on_lane": {
+          "threshold_basis": "[P]",
+          "iso34503": null,
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(정지 차량 트랙 × 차로 폴리곤 점유) + desc('parked') 교차",
+          "change_log": null,
+          "labeling_precedent": [
+            "Honda HDD `Cause:parked car`"
+          ],
+          "concept_basis": [
+            "NHTSA2007 #26(Lead Vehicle Stopped) — 간접",
+            "CODA vehicle(비정형 배치) — 간접"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[P]** NHTSA #26 간접(①), HDD Cause 선례 1건(②). 5 s·30% 점유는 본 프로젝트 설정"
+        },
+        "evt.large_vehicle_proximity": {
+          "threshold_basis": "Impromptu-VLA cat.3(large vehicles 명시).",
+          "iso34503": null,
+          "anchor_sources": [],
+          "gt_source_nuscenes": "ann(vehicle.truck/bus/trailer 거리 필터) — 직접",
+          "change_log": [
+            "**GT 정정(7/28)** — vehicle.bus 는 leaf 가 아니어서 bus.bendy / bus.rigid 로 분해. 20 m 임계는 [P]"
+          ],
+          "labeling_precedent": [
+            "nuPlan `behind_long_vehicle`",
+            "nuPlan `near_long_vehicle`"
+          ],
+          "concept_basis": [
+            "IMPROMPTU cat.3(large vehicles — 명시)",
+            "KATECH_VOCAB object_type.large_vehicle"
+          ],
+          "other_basis": null,
+          "grade_rationale": "**[P]** 표준 대응이 없거나 간접(①), 선례 2건, 임계값은 본 프로젝트 설정(③)"
+        },
+        "evt.nominal_driving": {
+          "threshold_basis": null,
+          "iso34503": null,
+          "anchor_sources": [
+            "CAN/IMU + ego pose — ego 이벤트 태그 7종의 전체 부재로 산출(비용 0)"
+          ],
+          "gt_source_nuscenes": "can + pose — anchored ego 이벤트 GT의 논리적 보완으로 자동 산출",
+          "change_log": [
+            "**파생식 정정(7/28)** — '2초 이상 완전 정지 없이'가 곧 evt.ego_stop 인데 all_absent 에 없어 태그만으로 계산이 불가능했음. 추가하여 7개 축 부재-확인으로 완결. [P]"
+          ],
+          "labeling_precedent": null,
+          "concept_basis": [
+            "NHTSA 'without prior vehicle maneuver' 한정어 — 간접"
+          ],
+          "other_basis": [
+            "운영 선정: 균형 샘플링의 베이스라인(nominal data) 질의, CAN 앵커 비용 0"
+          ],
+          "grade_rationale": "**[P]** 표준 대응이 없거나 간접(①), 선례 0건, 임계값은 본 프로젝트 설정(③)"
+        }
+      }
+    },
+    "candidates": {
+      "_meta": {
+        "version": "0.1",
+        "date": "2026-07-28",
+        "purpose": "확장 후보 태그. 본 어휘(TAGS_v0.4.json)는 50개 상한에 도달했으므로 편입은 반드시 1:1 교환이며, 각 후보에 교환 대상 후보를 함께 기록한다. 본 어휘와 동일한 판정 필드를 갖추어 승격 시 기계적으로 옮길 수 있게 했다.",
+        "promotion_rule": "편입 조건 = 선정 규칙 3조건(분류체계 대응 ∩ VLM-독립 GT 도출 가능 ∩ 클립 수준 판정 가능) 통과 ∧ 어휘 상한 준수(1:1 교환) ∧ v1.0 동결 이후라면 MAJOR up + calibration 재구축.",
+        "priority_scale": "1 = 표준 리터럴 + 라벨링 선례 + GT 경로 확보(즉시 검토) | 2 = 근거는 충분하나 보완 데이터셋 필요 | 3 = 근거 약함 또는 우선도 낮음 | x = 배제 유지 권장",
+        "grade_note": "evidence_grade_estimate 는 편입 시 예상 등급이며 본 어휘와 같은 규칙(표준 리터럴 ∧ 선례≥2 → S / 선례≥2 또는 문헌 임계 → L / 그 외 P)을 적용. 단 표준 대응값 자체가 도로 기능분류인 경우 근거로 계상하지 않는다.",
+        "candidate_count": 22,
+        "source_docs": [
+          "OASS_반영검토.md 3순위 확장 카드",
+          "메타태깅_커버리지검토.md 확장 카드",
+          "2026-07-28 데이터셋 라벨 어휘 조사",
+          "ISO 34503 taxonomy 전문(ASAM OpenODD Annex B.3)",
+          "Impromptu-VLA 소스 8개 전수 대조(2026-07-28) — KITTI·IDD·NAVSIM 추가 확인"
+        ],
+        "schema_note": "exchange_candidates 는 현행 어휘의 실제 태그 id 리스트. 어휘 상한 50이므로 편입 시 이 중 하나를 제외한다. 빈 리스트 = 기존 태그의 세분이거나 대체이므로 교환 불필요."
+      },
+      "items": [
+        {
+          "id": "cond.steep_slope",
+          "name_ko": "급경사",
+          "name_en": "steep_slope",
+          "type": "condition",
+          "proposed_anchor_class": "anchored",
+          "visual_decidable": "needs_metadata",
+          "iso34503": "drivable_area_geometry.longitudinal_plane.up-slope / down-slope / level_plane — **리터럴 enum**",
+          "labeling_precedent": [
+            "OpenLane `up_down_case`(평가 분할)",
+            "Synscapes `altitude_variation`(연속)",
+            "iRAP `Grade`(10m 세그먼트)"
+          ],
+          "gt_availability": "**nuScenes ego_pose z 성분·IMU 로 즉시 산출 가능(비용 0)**",
+          "rationale": "표준 리터럴이고 GT 가 무료인데 어휘에 없다. 경사에서 전방 가시 범위가 바뀌어 원거리 객체 판정이 흔들릴 가능성 — 오류 편중 축 후보. nuScenes 도심(보스턴 seaport·싱가포르)에 경사 구간이 얼마나 있는지는 ③ 실측 필요",
+          "promotion_condition": "③ 에서 경사 분포 집계 → 유의미한 구간이 있으면 즉시 편입 가능(GT 비용 0)",
+          "priority": "1",
+          "evidence_grade_estimate": "L",
+          "labeling_precedent_count": 3,
+          "metadata_required": "pose z / IMU",
+          "exchange_candidates": [
+            "evt.cut_out",
+            "cond.free_flow"
+          ]
+        },
+        {
+          "id": "cond.unclear_road_boundary",
+          "name_ko": "도로 경계 불명확",
+          "name_en": "unclear_road_boundary",
+          "type": "condition",
+          "proposed_anchor_class": "predicted",
+          "visual_decidable": "yes",
+          "iso34503": "drivable_area_edge.**none** / temporary_line_marker + drivable_area_type.**shared_space** — 리터럴 값 존재",
+          "labeling_precedent": [
+            "IDD `drivable fall-back`/`non-drivable fall-back`",
+            "StreetSurfaceVis `surface_type:unpaved`",
+            "RTK `unpaved`",
+            "RSCD `material:dirt-mud`/`gravel`",
+            "METEOR `LC` (차선표시 없음)"
+          ],
+          "gt_availability": "nuScenes 부재(도심 포장 위주) → gold set. IDD 는 pixel 라벨이라 클립 수준 투영 필요",
+          "rationale": "**Impromptu-VLA cat.1(불명확 도로 경계)의 직접 대응 태그가 본 어휘에 없다** — 커버리지 구멍. IDD 가 `drivable`/`drivable fall-back`/`non-drivable fall-back` 3분할로 '안전·불안전·주행불가 평면'을 구분하는 것이 이 축의 실무 선례다. 포장 경계가 모호하면 차로 기반 판정 전체가 흔들리므로 degraded_lane_marking 과 함께 오류 편중 축 후보. `cond.undivided_road`(중앙분리 유무)와는 다른 축 — 이쪽은 주행가능 영역 경계의 모호성",
+          "promotion_condition": "IDD 또는 비포장 도로가 있는 데이터셋 편입 시. 또는 gold set 으로 nuScenes 내 사례 확인",
+          "priority": "1",
+          "evidence_grade_estimate": "L",
+          "labeling_precedent_count": 5,
+          "exchange_candidates": [
+            "evt.cut_out"
+          ]
+        },
+        {
+          "id": "cond.degraded_lane_marking",
+          "name_ko": "차선 표시 열화",
+          "name_en": "degraded_lane_marking",
+          "type": "condition",
+          "proposed_anchor_class": "predicted",
+          "visual_decidable": "yes",
+          "iso34503": "drivable_area_lane_specification.lane_marking.blurred_lane_marking / no_lane_marking / temporary_lane_marking — **리터럴 enum 3값**",
+          "labeling_precedent": [
+            "CULane `test4_noline`",
+            "VIL-100 `damaged road`/`road markings`",
+            "Attain(DiB 2025) `Faded Marking` + severity low/medium/high",
+            "METEOR `LC(m)` vs `LC`"
+          ],
+          "gt_availability": "nuScenes 부재 → gold set 필수(V0). Mapillary Vistas 는 pixel class 로만",
+          "rationale": "**오류 편중 축으로 가장 유력한 후보.** 차선 표시가 흐리거나 임시선이면 차로 기반 판정(cut_in·lane_change·stationary_on_lane)이 연쇄로 무너진다. DriveBench 가 corruption 으로 다루는 축과 성격이 같고 표준에 리터럴 3값이 있다",
+          "promotion_condition": "gold set 예산 확보(100클립) + κ ≥ 0.6 확인",
+          "priority": "1",
+          "evidence_grade_estimate": "S",
+          "labeling_precedent_count": 4,
+          "exchange_candidates": [
+            "evt.wrong_way_vehicle"
+          ]
+        },
+        {
+          "id": "cond.roundabout",
+          "name_ko": "회전교차로",
+          "name_en": "roundabout",
+          "type": "condition",
+          "proposed_anchor_class": "anchored",
+          "visual_decidable": "yes",
+          "iso34503": "junctions.roundabout — **리터럴 + 직경 구간 정의**(mini ≤28m / compact 28–36 / normal 36–100 / large ≥100m) + roundabout_classification 3값",
+          "labeling_precedent": [
+            "DSI `Intersection Type:Roundabout`",
+            "iRAP `Intersection type`(16종, roundabout 포함)",
+            "⚠️ 공개 AD 인지 데이터셋 중 scene 값으로 갖는 곳 없음 — rounD·openDD·INTERACTION 은 데이터셋 명명일 뿐"
+          ],
+          "gt_availability": "**nuScenes map 레이어에 roundabout 없음** → V0. AI Hub 특이도로에 직접 라벨 존재(V1*)",
+          "rationale": "표준이 직경 구간까지 정의한 드문 케이스라 임계값이 [S]로 확보된다. 진입·양보 규칙이 복잡해 ego 기동 판정이 어려운 축. 기존에 'nuScenes GT 부재'로 배제했으나 라벨 선례와 표준 근거는 충분",
+          "promotion_condition": "AI Hub 특이도로 또는 K-Radar 편입 시",
+          "priority": "2",
+          "evidence_grade_estimate": "L",
+          "labeling_precedent_count": 2,
+          "exchange_candidates": [
+            "cond.rural_road"
+          ]
+        },
+        {
+          "id": "cond.icy_road",
+          "name_ko": "노면 결빙",
+          "name_en": "icy_road",
+          "type": "condition",
+          "proposed_anchor_class": "predicted",
+          "visual_decidable": "yes",
+          "iso34503": "drivable_area_included_surface_condition.**icy** — 리터럴 enum",
+          "labeling_precedent": [
+            "RSCD `friction:ice`",
+            "RoadSC `Fresh Fallen/Fully Packed/Partially Covered Snow`",
+            "ROADWork `Weather:Ice`",
+            "CADC 노면 적설 이분"
+          ],
+          "gt_availability": "nuScenes 부재. CADC(bare road 18 / snow-covered 57 시퀀스) · K-Radar · IDD-AW(snow 1000)",
+          "rationale": "현재 `cond.dry_road` 파생식의 '결빙 부재' 조항에 대응 태그가 없어 계산 불가 상태다. 이 후보가 그 구멍을 메운다",
+          "promotion_condition": "겨울 데이터셋(CADC·K-Radar) 편입 시 snowy_road 와 함께",
+          "priority": "1",
+          "evidence_grade_estimate": "S",
+          "labeling_precedent_count": 4,
+          "exchange_candidates": [
+            "evt.animal_on_road"
+          ]
+        },
+        {
+          "id": "cond.snowy_road",
+          "name_ko": "노면 적설",
+          "name_en": "snowy_road",
+          "type": "condition",
+          "proposed_anchor_class": "predicted",
+          "visual_decidable": "yes",
+          "iso34503": "drivable_area_included_surface_condition.**snow_on_surface** — 리터럴 enum",
+          "labeling_precedent": [
+            "ZOD Road Surface `snow_coverage`(binary)",
+            "RSCD `friction:fresh snow`/`melted snow`",
+            "RoadSC 3단계",
+            "CADC bare/snow-covered road"
+          ],
+          "gt_availability": "nuScenes 부재. CADC · K-Radar · IDD-AW(snow 1000)",
+          "rationale": "`cond.snow`(기상 축)를 7/28 에 강설로 좁힌 결과 노면 적설이 어휘에서 빠졌다. 직교성을 지키면서 커버리지를 회복하는 자리",
+          "promotion_condition": "겨울 데이터셋 편입 시 icy_road 와 함께",
+          "priority": "1",
+          "evidence_grade_estimate": "S",
+          "labeling_precedent_count": 4,
+          "exchange_candidates": [
+            "evt.cut_out"
+          ]
+        },
+        {
+          "id": "cond.bridge",
+          "name_ko": "교량 주행",
+          "name_en": "bridge",
+          "type": "condition",
+          "proposed_anchor_class": "anchored",
+          "visual_decidable": "yes",
+          "iso34503": "special_structures.special_structures_type.**bridge** + special_structures_usage.driving_on",
+          "labeling_precedent": [
+            "FM3m per-image binary `overpass`",
+            "MM-AU `scenes:tunnel`(인접)",
+            "TruckScenes `structure:bridge`/`overpass`",
+            "Honda HSD `overhead bridge`",
+            "DSI `Grade-separated:Overhead bridges`"
+          ],
+          "gt_availability": "nuScenes map 에 bridge 레이어 없음 → V0",
+          "rationale": "**라벨링 선례가 4건으로 가장 많은 후보.** 기존에 'nuScenes GT 부재'로 배제했으나 표준 리터럴 + 선례 4건이면 근거는 [S]다. 측면 개방·가드레일로 장면 통계가 바뀌는 축",
+          "promotion_condition": "map 레이어 확보 또는 gold set",
+          "priority": "2",
+          "evidence_grade_estimate": "S",
+          "labeling_precedent_count": 5,
+          "exchange_candidates": [
+            "cond.high_speed_road"
+          ],
+          "exchange_note": "둘 다 dataset_sparse"
+        },
+        {
+          "id": "cond.railway_crossing",
+          "name_ko": "철도 건널목",
+          "name_en": "railway_crossing",
+          "type": "condition",
+          "proposed_anchor_class": "anchored",
+          "visual_decidable": "yes",
+          "iso34503": "special_structures.special_structures_type.**rail_crossing** — 리터럴",
+          "labeling_precedent": [
+            "Honda HSD `Road place:railway crossing`",
+            "Honda HDD `railroad passing`",
+            "iRAP `Intersection type`(railway crossing 포함)"
+          ],
+          "gt_availability": "nuScenes map 부재 → V0",
+          "rationale": "표준 리터럴 + 선례 2건. 정지·서행 규칙이 특수해 ego 기동 판정이 흔들리는 축",
+          "promotion_condition": "map 레이어 또는 gold set",
+          "priority": "2",
+          "evidence_grade_estimate": "S",
+          "labeling_precedent_count": 3,
+          "exchange_candidates": [
+            "evt.wrong_way_vehicle"
+          ]
+        },
+        {
+          "id": "cond.school_zone",
+          "name_ko": "어린이 보호구역",
+          "name_en": "school_zone",
+          "type": "condition",
+          "proposed_anchor_class": "anchored",
+          "visual_decidable": "yes",
+          "iso34503": "zone.zone_type.fixed_zone.**school_zone** — 리터럴",
+          "labeling_precedent": [
+            "iRAP `Sc. zone warning`/`Sc. zone crossing supervisor`(배포 미확인)",
+            "DVBench `Geographic Zones:School`",
+            "⚠️ ZOD 는 `Children` **표지판 클래스**만 보유"
+          ],
+          "gt_availability": "nuScenes 부재. AI Hub·한국 데이터에 직접 라벨 가능성",
+          "rationale": "기존에 '한국 특화'로 배제했으나 표준 리터럴이고 DVBench 도 선택지에 둔다. 속도 제한·보행자 밀집이 겹쳐 오류 편중 예상. **국내 확장 챕터의 핵심 태그**",
+          "promotion_condition": "AI Hub 71626 또는 국내 데이터 편입 시",
+          "priority": "3",
+          "evidence_grade_estimate": "L",
+          "labeling_precedent_count": 1,
+          "exchange_candidates": [
+            "cond.rural_road"
+          ]
+        },
+        {
+          "id": "cond.merge_ramp",
+          "name_ko": "진출입로/합류부",
+          "name_en": "merge_ramp",
+          "type": "condition",
+          "proposed_anchor_class": "anchored",
+          "visual_decidable": "yes",
+          "iso34503": "drivable_area_type.**slip_roads_or_off-ramps** — 리터럴",
+          "labeling_precedent": [
+            "Honda HSD `Road environment:ramp`",
+            "Honda HSD `Road place:merge/branch with gore`",
+            "HDD `merge`/`lane branch`",
+            "MM-AU `linear:ramp`",
+            "OpenLane `merge_split_case`(평가 분할)",
+            "FM3m binary `exit`"
+          ],
+          "gt_availability": "nuScenes map lane 연결로 도출 가능성 있음(V2) — ③ 확인 필요",
+          "rationale": "표준 리터럴 + 선례 3건. 합류·분기는 cut_in 과 구별되는 별개 실패 모드이고, 메타태깅 커버리지 검토에서도 `merge` 가 확장 카드로 남아 있었다",
+          "promotion_condition": "map lane 연결 도출 검증 → 가능하면 V2로 즉시 편입",
+          "priority": "1",
+          "evidence_grade_estimate": "S",
+          "labeling_precedent_count": 6,
+          "exchange_candidates": [
+            "evt.cut_out"
+          ]
+        },
+        {
+          "id": "cond.night_unlit",
+          "name_ko": "무가로등 야간",
+          "name_en": "night_unlit",
+          "type": "condition",
+          "proposed_anchor_class": "predicted",
+          "visual_decidable": "yes",
+          "iso34503": "illumination.artificial_illuminance.**streetlights** 부재 — 리터럴 축의 부재로 정의",
+          "labeling_precedent": [
+            "TruckScenes `lighting:illuminated` vs `dark`",
+            "IDD-AW `low light` 1000프레임",
+            "ACDC `night`(가로등 유무 미구분)"
+          ],
+          "gt_availability": "영상 판정(gold set) 또는 조도 프록시",
+          "rationale": "현재 `cond.night` 는 가로등 야간과 칠흑 야간을 구분하지 않는다. TruckScenes 가 `illuminated`/`dark` 로 나누고, 오류율이 갈릴 가능성이 큰 축 — E1 이후 야간 셀 세분 ablation 소재",
+          "promotion_condition": "E1 에서 야간 셀 오류율이 유의미하면 세분 검토",
+          "priority": "2",
+          "evidence_grade_estimate": "L",
+          "labeling_precedent_count": 3,
+          "exchange_candidates": [],
+          "exchange_note": "세분이므로 교환 불필요, night 하위로 (세분·대체이므로 1:1 교환 불필요)"
+        },
+        {
+          "id": "cond.sleet",
+          "name_ko": "진눈깨비",
+          "name_en": "sleet",
+          "type": "condition",
+          "proposed_anchor_class": "anchored",
+          "visual_decidable": "yes",
+          "iso34503": "weather 하위에 sleet 값 없음(rain/snowfall 만) — 표준 대응 없음",
+          "labeling_precedent": [
+            "K-Radar `climate:sleet`"
+          ],
+          "gt_availability": "nuScenes 부재. K-Radar",
+          "rationale": "rain 과 snow 사이 중간 조건. K-Radar 가 별도 값으로 두는 이유가 센서 특성 차이인데, 카메라 태깅에서 별개 실패 모드인지는 미확인",
+          "promotion_condition": "겨울 데이터셋 편입 + 별개 실패 모드 확인",
+          "priority": "3",
+          "evidence_grade_estimate": "P",
+          "labeling_precedent_count": 1,
+          "exchange_candidates": [],
+          "exchange_note": "우선도 낮음 (세분·대체이므로 1:1 교환 불필요)"
+        },
+        {
+          "id": "cond.alleyway",
+          "name_ko": "이면 골목",
+          "name_en": "alleyway",
+          "type": "condition",
+          "proposed_anchor_class": "anchored",
+          "visual_decidable": "needs_metadata",
+          "iso34503": "drivable_area_type.minor_or_local_roads — 기능분류라 근거 계상 불가",
+          "labeling_precedent": [
+            "K-Radar `road_type:alleyway`",
+            "4Seasons `old_town`(간접)"
+          ],
+          "gt_availability": "nuScenes map 도로폭 제한적",
+          "rationale": "현재 `residential_area` 가 부분 커버. K-Radar 가 별개 값으로 두지만 residential 과의 경계가 모호",
+          "promotion_condition": "residential_area 의 κ 가 낮게 나오면 분할 검토",
+          "priority": "3",
+          "evidence_grade_estimate": "L",
+          "labeling_precedent_count": 2,
+          "metadata_required": "map 도로폭",
+          "exchange_candidates": [],
+          "exchange_note": "residential_area 세분 (세분·대체이므로 1:1 교환 불필요)"
+        },
+        {
+          "id": "cond.shoulder_driving",
+          "name_ko": "노견 주행",
+          "name_en": "shoulder_driving",
+          "type": "condition",
+          "proposed_anchor_class": "anchored",
+          "visual_decidable": "yes",
+          "iso34503": "drivable_area_shoulder(paved or gravel / grass) — 축은 있으나 '주행' 값은 없음",
+          "labeling_precedent": [
+            "K-Radar `road_type:shoulder`",
+            "ROAD `loc` 12종(객체 단위)"
+          ],
+          "gt_availability": "nuScenes map shoulder 레이어 부재",
+          "rationale": "비정상 주행 상황이라 오류 편중 예상되나 nuScenes 에 사례가 희소할 것",
+          "promotion_condition": "map 확보 + 사례 확인",
+          "priority": "3",
+          "evidence_grade_estimate": "P",
+          "labeling_precedent_count": 2,
+          "exchange_candidates": [],
+          "exchange_note": "우선도 낮음 (세분·대체이므로 1:1 교환 불필요)"
+        },
+        {
+          "id": "cond.toll_plaza",
+          "name_ko": "요금소",
+          "name_en": "toll_plaza",
+          "type": "condition",
+          "proposed_anchor_class": "anchored",
+          "visual_decidable": "yes",
+          "iso34503": "special_structures.special_structures_type.**toll_plaza** — 리터럴",
+          "labeling_precedent": [
+            "FM3m per-image binary `booth`"
+          ],
+          "gt_availability": "nuScenes 부재",
+          "rationale": "표준 리터럴이나 데이터셋 라벨 선례를 못 찾았고 도심 데이터에 사례가 없다",
+          "promotion_condition": "고속도로 데이터셋 편입 시",
+          "priority": "3",
+          "evidence_grade_estimate": "L",
+          "labeling_precedent_count": 1,
+          "exchange_candidates": [],
+          "exchange_note": "우선도 낮음 (세분·대체이므로 1:1 교환 불필요)"
+        },
+        {
+          "id": "evt.occluded_emergence",
+          "name_ko": "가림에서 출현",
+          "name_en": "occluded_emergence",
+          "type": "event",
+          "proposed_anchor_class": "predicted",
+          "visual_decidable": "yes",
+          "iso34503": "대응 없음",
+          "labeling_precedent": [
+            "DoTA `anomaly_class` 9종(간접)",
+            "(직접 선례 미확인)"
+          ],
+          "gt_availability": "nuScenes ann 트랙의 가시성 속성(visibility 4단계)으로 도출 가능성 — ③ 확인",
+          "rationale": "가려져 있던 객체가 갑자기 나타나는 상황. VLM 이 프레임 간 일관성을 못 지키는 대표 실패 모드이고, **nuScenes 에 visibility 필드가 있어 GT 도출 가능성이 있다**",
+          "promotion_condition": "③ 에서 visibility 필드로 도출 가능한지 검증",
+          "priority": "2",
+          "evidence_grade_estimate": "P",
+          "labeling_precedent_count": 1,
+          "exchange_candidates": [
+            "evt.cut_out"
+          ]
+        },
+        {
+          "id": "evt.merge",
+          "name_ko": "합류 기동",
+          "name_en": "merge",
+          "type": "event",
+          "proposed_anchor_class": "predicted",
+          "visual_decidable": "yes",
+          "iso34503": "대응 없음(NHTSA 간접)",
+          "labeling_precedent": [
+            "Honda HDD `merge`",
+            "Honda HSD `merge with gore`",
+            "MM-AU `linear:ramp`"
+          ],
+          "gt_availability": "nuScenes map lane 연결 + ann 트랙",
+          "rationale": "메타태깅 커버리지 검토에서 `merge` 가 확장 카드로 남아 있었다. cut_in 의 인접 개념이나 합류부 기하가 필요",
+          "promotion_condition": "cond.merge_ramp 와 함께 편입",
+          "priority": "3",
+          "evidence_grade_estimate": "L",
+          "labeling_precedent_count": 3,
+          "exchange_candidates": [
+            "evt.cut_out"
+          ]
+        },
+        {
+          "id": "evt.door_open",
+          "name_ko": "차문 개방",
+          "name_en": "door_open",
+          "type": "event",
+          "proposed_anchor_class": "predicted",
+          "visual_decidable": "yes",
+          "iso34503": "대응 없음",
+          "labeling_precedent": [
+            "KATECH vocab door_open",
+            "(공개 데이터셋 선례 미확인)"
+          ],
+          "gt_availability": "nuScenes GT 부재(V0)",
+          "rationale": "메타태깅 vocab 에 있으나 GT 부재로 배제됐던 항목. 정차 차량의 문 개방은 실제 위험 상황이지만 3D 박스로 표현되지 않는다",
+          "promotion_condition": "gold set 구축 후",
+          "priority": "3",
+          "evidence_grade_estimate": "P",
+          "labeling_precedent_count": 2,
+          "exchange_candidates": [],
+          "exchange_note": "우선도 낮음 (세분·대체이므로 1:1 교환 불필요)"
+        },
+        {
+          "id": "evt.about_to_cross",
+          "name_ko": "횡단 예지",
+          "name_en": "about_to_cross",
+          "type": "event",
+          "proposed_anchor_class": "predicted",
+          "visual_decidable": "yes",
+          "iso34503": "대응 없음",
+          "labeling_precedent": [
+            "KATECH vocab vru_state",
+            "nuPlan `waiting_for_pedestrian_to_cross` 간접"
+          ],
+          "gt_availability": "의도 추론이라 GT 불가(V0)",
+          "rationale": "**배제 유지 권장.** 의도 추론은 사람 판정 일치도가 낮아 κ 기준을 통과하기 어렵다. 우리 보증 의미론이 '판정 프로토콜 기준'이므로 애초에 프로토콜을 세울 수 없는 축",
+          "promotion_condition": "(승격 조건 없음 — 범위 외 유지)",
+          "priority": "x",
+          "evidence_grade_estimate": "P",
+          "labeling_precedent_count": 2,
+          "exchange_candidates": [],
+          "exchange_note": "해당 없음"
+        },
+        {
+          "id": "evt.signal_state",
+          "name_ko": "신호 상태",
+          "name_en": "signal_state",
+          "type": "event",
+          "proposed_anchor_class": "predicted",
+          "visual_decidable": "yes",
+          "iso34503": "drivable_area_signs.sign_types.regulatory_signs(주석 e.g. traffic lights) — 상태 값은 없음",
+          "labeling_precedent": [
+            "Honda HDD `Attention:red light`/`yellow light`",
+            "nuPlan `on_traffic_light_intersection`",
+            "DriveLM(CARLA)"
+          ],
+          "gt_availability": "**nuScenes 에 신호 상태 GT 없음** — 현행 `cond.traffic_light_present` 가 시설 존재만 다루는 이유",
+          "rationale": "라벨링 선례가 3건이나 nuScenes GT 가 없어 배제 상태. Waymo 일부·AI Hub 에 신호 GT 가 있으면 복원 가능. 신호 상태 오판정은 안전 직결이라 수요는 가장 크다",
+          "promotion_condition": "신호 GT 있는 데이터셋 편입 시",
+          "priority": "2",
+          "evidence_grade_estimate": "L",
+          "labeling_precedent_count": 3,
+          "exchange_candidates": [
+            "cond.traffic_light_present"
+          ],
+          "exchange_note": "를 대체(상태 포함으로 격상"
+        },
+        {
+          "id": "cond.shadow",
+          "name_ko": "강한 그림자",
+          "name_en": "shadow",
+          "type": "condition",
+          "proposed_anchor_class": "predicted",
+          "visual_decidable": "yes",
+          "iso34503": "대응 없음 — illumination 축에 그림자 값이 없다",
+          "labeling_precedent": [
+            "CULane `test3_shadow`",
+            "VIL-100 `shadows`"
+          ],
+          "gt_availability": "nuScenes 부재 → gold set. 태양 고도·방위로 후보 추출 후 사람 검증 가능",
+          "rationale": "**차선 검출 계열 두 데이터셋이 공통으로 별도 카테고리로 둔 조건.** 나무·건물 그림자가 노면에 드리우면 차선·노면표시 판정이 무너진다. glare(과노출)의 반대 축(국부 저노출)이며 우리 어휘에 없다. CULane 에서 테스트셋의 2.7%",
+          "promotion_condition": "gold set 또는 degraded_lane_marking 과 함께 편입",
+          "priority": "2",
+          "evidence_grade_estimate": "L",
+          "labeling_precedent_count": 2,
+          "exchange_candidates": [
+            "evt.cut_out"
+          ]
+        },
+        {
+          "id": "cond.unpaved_road",
+          "name_ko": "비포장 노면",
+          "name_en": "unpaved_road",
+          "type": "condition",
+          "proposed_anchor_class": "predicted",
+          "visual_decidable": "yes",
+          "iso34503": "drivable_area_surface_type.**gravel** — 리터럴 값 존재",
+          "labeling_precedent": [
+            "StreetSurfaceVis `surface_type:unpaved`",
+            "RTK `unpaved`",
+            "RSCD `material:dirt-mud`/`gravel`",
+            "IDD `non-drivable fall-back`(인접)"
+          ],
+          "gt_availability": "nuScenes 부재(도심 포장 위주). StreetSurfaceVis·RTK·RSCD",
+          "rationale": "표준 리터럴 + 선례 3건. `unclear_road_boundary`(경계 모호)와 다른 축 — 이쪽은 **노면 재질**. 노면 표면 데이터셋이 별도 계열로 존재할 만큼 확립된 축이고, 차선 표시가 애초에 없어 차로 기반 판정이 불가해진다",
+          "promotion_condition": "비포장 사례가 있는 데이터셋 편입 시 unclear_road_boundary 와 함께",
+          "priority": "2",
+          "evidence_grade_estimate": "S",
+          "labeling_precedent_count": 3,
+          "exchange_candidates": [
+            "evt.wrong_way_vehicle"
+          ]
+        }
+      ]
+    }
+  }
