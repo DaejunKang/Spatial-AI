@@ -6,6 +6,7 @@
   (2) 도로환경(road_env) 단일 분류
   (3) 신호/비신호 교차로
   (4) 기타 맥락(roundabout/merge/construction/toll) + red_light/signal_go
+  (5) 정적환경(조명/기상/노면 단일 + glare/crosswalk/신호등/비분리 bool) — new_tag 흡수, STATUS=vlm_only
 클립 단위 taxonomy present 집합을 반환. gold 대비 재평가용.
 """
 import json
@@ -49,11 +50,37 @@ _ROAD_MAP = {"highway": "road_highway", "urban_arterial": "road_urban_arterial",
              "backstreet": "road_backstreet", "rural": "road_rural", "tunnel": "road_tunnel",
              "bridge": "road_bridge", "parking": "road_parking", "unknown": None}
 
+# 정적환경 VLM 판정 (new_tag v0.4 흡수, 2026-07-31) — STATUS=vlm_only 태그.
+_LIGHT = ["day", "twilight", "night", "unknown"]
+_WEATHER = ["clear", "rain", "snow", "fog", "unknown"]
+_SURFACE = ["dry", "wet", "unknown"]
+_LIGHT_MAP = {"day": "day", "twilight": "twilight", "night": "night", "unknown": None}
+_WEATHER_MAP = {"clear": "clear_weather", "rain": "rain", "snow": "snow", "fog": "fog", "unknown": None}
+_SURFACE_MAP = {"dry": "dry_road", "wet": "wet_road", "unknown": None}
+_ENV_BOOL = {"glare": "glare", "crosswalk_present": "crosswalk_present",
+             "traffic_light_present": "traffic_light_present", "undivided_road": "undivided_road"}
+
+
+def env_cats(v):
+    """VLM 출력 dict → 정적환경 taxonomy 키 집합(조명/기상/노면 단일 + glare/crosswalk/신호등/비분리 bool)."""
+    out = set()
+    for val, mp in ((v.get("lighting"), _LIGHT_MAP), (v.get("weather"), _WEATHER_MAP),
+                    (v.get("road_surface"), _SURFACE_MAP)):
+        k = mp.get(val)
+        if k:
+            out.add(k)
+    for f, k in _ENV_BOOL.items():
+        if v.get(f):
+            out.add(k)
+    return out
+
 
 def _schema():
     return {
         "type": "object", "additionalProperties": False,
-        "required": ["present", "road_env", "intersection", "extras", "red_light_stop", "signal_go"],
+        "required": ["present", "road_env", "intersection", "extras", "red_light_stop", "signal_go",
+                     "lighting", "weather", "road_surface", "glare", "crosswalk_present",
+                     "traffic_light_present", "undivided_road"],
         "properties": {
             "present": {"type": "array", "items": {"type": "string", "enum": list(_INTER)}},
             "road_env": {"type": "string", "enum": _ROAD},
@@ -61,6 +88,14 @@ def _schema():
             "extras": {"type": "array", "items": {"type": "string", "enum": _EXTRA}},
             "red_light_stop": {"type": "boolean"},
             "signal_go": {"type": "boolean"},
+            # 정적환경(clip-wide)
+            "lighting": {"type": "string", "enum": _LIGHT},
+            "weather": {"type": "string", "enum": _WEATHER},
+            "road_surface": {"type": "string", "enum": _SURFACE},
+            "glare": {"type": "boolean"},
+            "crosswalk_present": {"type": "boolean"},
+            "traffic_light_present": {"type": "boolean"},
+            "undivided_road": {"type": "boolean"},
         }}
 
 
@@ -84,6 +119,15 @@ def _prompt(cands, arc):
         "(normal curbs, poles, parked cars, guardrails are NOT construction — if unsure, leave empty); "
         "toll_gate=toll booth/barrier.\n"
         "- red_light_stop: ego stopped for a RED light; signal_go: ego started on GREEN.\n"
+        "Also judge the static ENVIRONMENT (clip-wide; be conservative, use 'unknown' if unclear):\n"
+        "- lighting (exactly one): day / twilight (dawn/dusk) / night / unknown.\n"
+        "- weather (exactly one): clear / rain / snow / fog / unknown.\n"
+        "- road_surface (exactly one): dry / wet (specular highlights or wet tone) / unknown.\n"
+        "- glare: true if strong sun/reflection causes exposure saturation or lens flare.\n"
+        "- crosswalk_present: true if a crosswalk (zebra markings) is on/near ego's path (pedestrians irrelevant).\n"
+        "- traffic_light_present: true if a vehicle traffic light is visible on ego's path.\n"
+        "- undivided_road: true if there is NO physical median/barrier between opposing directions "
+        "(painted lane lines are NOT a divider).\n"
         "Return JSON only.")
 
 
@@ -91,7 +135,10 @@ def _prompt(cands, arc):
 SEM = set(_INTER)                    # 의미 상호작용 — GT후보를 VLM이 '확인만'
 CTX = {"road_highway", "road_urban_arterial", "road_backstreet", "road_rural", "road_tunnel",
        "road_bridge", "road_parking", "intersection_signalized", "intersection_unsignalized",
-       "roundabout", "merge_onramp", "construction_cones", "toll_gate", "red_light_stop", "signal_go"}
+       "roundabout", "merge_onramp", "construction_cones", "toll_gate", "red_light_stop", "signal_go",
+       # 정적환경(VLM 권위) — 조명/기상/노면/glare/crosswalk/신호등/비분리
+       "day", "twilight", "night", "clear_weather", "rain", "snow", "fog", "dry_road", "wet_road",
+       "glare", "crosswalk_present", "traffic_light_present", "undivided_road"}
 KIN = {"close_follow", "creep", "vru_roadside"}   # GT 전담(운동학 + obj3d 존재)
 
 
@@ -189,6 +236,7 @@ def verify_clip(client, path, clip_id):
             for e in v.get("extras", []): wc.add(e)
             if v.get("red_light_stop"): wc.add("red_light_stop")
             if v.get("signal_go"): wc.add("signal_go")
+            wc |= env_cats(v)                          # 정적환경(조명/기상/노면/glare/crosswalk/...)
             wc = ground_signals(wc, clip_id, w0, w1)   # 신호 egomotion 그라운딩
             cats |= wc
             ep_out.append({"win": [round(w0, 1), round(w1, 1)], "cats": sorted(wc)})

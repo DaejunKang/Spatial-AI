@@ -91,6 +91,7 @@ def _vlm_present(client, uri, cands, arc):
         out.add("red_light_stop")
     if v.get("signal_go"):
         out.add("signal_go")
+    out |= VV.env_cats(v)                              # 정적환경(조명/기상/노면/glare/crosswalk/신호등/비분리)
     return out
 
 

@@ -4,6 +4,13 @@
 
 ---
 
+## [2026-07-31] 정적환경 VLM 판정 추가 (흡수 태그 검출 배선)
+> **Task**: episode(Track2)
+- 변경: `vlm_verify._schema`/`_prompt`에 정적환경 필드 추가 — lighting(day/twilight/night)·weather(clear/rain/snow/fog)·road_surface(dry/wet) 단일택 + glare/crosswalk_present/traffic_light_present/undivided_road bool. 공용 매핑 `env_cats(v)`→taxonomy 키. `verify_clip`·`candidates._vlm_present` 양쪽에서 호출. `CTX`에 정적환경 키 추가(fuse에서 VLM 권위·GT 없이 유지).
+- 이유: STATUS=vlm_only 정적환경 13태그(조명/기상/노면/glare/crosswalk/신호등/비분리)에 실제 판정 경로 부여. GT 부재 맥락이라 VLM이 유일 생성원(∩ 불필요, 다수결/단독).
+- 검증: 스키마 유효·env_cats 매핑 OK, VLM 서버 1클립 end-to-end에서 twilight/clear_weather/dry_road/crosswalk_present/traffic_light_present 판정·매핑 확인.
+- 미포함(후속): obj3d 기반 신규 태그는 obj3d GT 업데이트 확인 후. road_worker/vulnerable_pedestrian(이벤트, vlm)은 present enum 확장 별건.
+
 ## [2026-07-31] new_tag.json(v0.4 폐쇄어휘) 정적환경+long-tail 흡수
 > **Task**: episode(Track2) + common
 - 배경: 정적환경 태깅을 성급히 제거했다가(같은 날) 되돌림 — 최종 목적이 **search 기반 학습데이터 큐레이션**이라 정적환경 태그가 필요. `legacy/new_tag.json`(condition 25 + event 25, GT rule·cell_role·3값판정·backoff 갖춘 성숙 어휘)을 확인.
