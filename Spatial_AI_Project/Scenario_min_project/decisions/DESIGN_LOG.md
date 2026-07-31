@@ -4,6 +4,15 @@
 
 ---
 
+## [2026-07-31] cut_in obj3d 검증 (Stage1 산출 사후 대조, 배선 아님)
+> **Task**: episode (검증) / selection(대상)
+- 변경: `task_episode/verify_cutin_obj3d.py` — 선별 산출(event_select/winevent_select)의 VLM cut_in 후보를 `taxo_detect.detect_taxonomy`(obj3d corridor)로 사후 대조. **task_selection엔 미배선**(Stage1은 obj3d-free 유지 확정).
+- 결과(동일 300):
+  - **몽타주 VLM cut_in**: 전체 31개 중 obj3d confirm 2 → **corroboration 6%**, top50 13개 중 **0/13(0%)**. → 사용자 지적("cut_in 대부분 오류") 정량 확증.
+  - **윈도우+video**: cut_in 주장 자체가 31→3(전체)·13→3(top50)로 급감, confirm 1/3. 오검 대폭 감소.
+  - **obj3d 기저율**: 전체 300 중 cut_in계열 7개(cut_in 2+attempt 5)=~2.3% → cut_in은 실제로 희소(gold 0/50·corridor 26/1966과 정합). 몽타주 10% 주장은 과검.
+- 결론: 윈도우+video가 과검을 대부분 제거. 잔여 미세 cut_in/attempt 정밀 확정은 **obj3d를 권위로**(Stage2/task_episode에서), Stage1은 recall triage로 유지.
+
 ## [2026-07-31] 폴더별(조건별) 반응성 선별 알고리즘 (folder_selection)
 > **Task**: selection
 - 변경: `task_selection/folder_selection.py` 신규 — 데이터가 정적환경 조건 폴더(주간/야간·도심/골목)로 분리 저장된 경우, **폴더 안에서 ego motion에 영향 준 event(반응성)** 가 있는 clip 우선 선별.
