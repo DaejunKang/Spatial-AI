@@ -4,6 +4,12 @@
 
 ---
 
+## [2026-07-31] Stage1 기본 선별 = 윈도우+video 반응성으로 승격
+> **Task**: selection
+- 변경: `run_selection.py` 기본 경로를 **윈도우+video 반응성**(`folder_selection.rank_folder_windowed`)으로 전환. 몽타주 흥미도는 `montage` 서브커맨드(legacy)로 강등. `review.py`로 트랜스코드/HTML/샘플링 공용화(중복 제거). canonical 산출(index.html/select300.json)을 windowed 결과로 정본화(기존 winevent 재사용, 재컴퓨트 없이 `review` 재생성).
+- 이유: obj3d 대조 검증에서 몽타주 cut_in corroboration 6%(top50 0%) vs 윈도우+video는 과검 대부분 제거·reactive 50/50. 시간정렬+video가 주변부 투영/오귀속을 구조적으로 해소. Stage1 전제(obj3d-free, CAN+VLM)는 유지(윈도우 엔진도 egomotion+VLM video만 사용).
+- 영향: `run_selection.py`·`SELECTION_STAGE1.md`·README. 엔진은 `folder_selection`에 상주(Stage1 global + 폴더 공용). montage 흥미도 경로 보존(비교용).
+
 ## [2026-07-31] cut_in obj3d 검증 (Stage1 산출 사후 대조, 배선 아님)
 > **Task**: episode (검증) / selection(대상)
 - 변경: `task_episode/verify_cutin_obj3d.py` — 선별 산출(event_select/winevent_select)의 VLM cut_in 후보를 `taxo_detect.detect_taxonomy`(obj3d corridor)로 사후 대조. **task_selection엔 미배선**(Stage1은 obj3d-free 유지 확정).

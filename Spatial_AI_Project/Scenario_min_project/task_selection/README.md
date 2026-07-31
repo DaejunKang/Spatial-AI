@@ -10,8 +10,9 @@
 | 파일 | 역할 |
 |---|---|
 | `selection.py` | **선별 알고리즘 모듈** — `ego_score`(급감속=agent반응 대리신호 포함) · `vlm_interest`(몽타주 guided_json: interesting/score/category/reason) · `combined_score`(max+0.3·min) · `rank_clips`. (구 job tmp의 select_prep/run_select_vlm/build_select_review 통합) |
-| `run_selection.py` | selection 정식 실행 진입점 — 전체 clip에서 gold 제외 후 seed 고정 무작위 N 병렬 랭킹 → 상위 K + <video> 리뷰 HTML(H.264 트랜스코드). `review` 모드=재랭킹 없이 HTML 재생성 |
-| `folder_selection.py` | **폴더별(조건별) 반응성 선별** — 조건 폴더 고정 전제. `react_ego_score`(급제동·정지출발·감속반복 가중) + `vlm_reactive`(외부 agent/hazard 반응 확인) → 폴더 단위 결합 랭킹. `groups={조건:[clip]}` 또는 dir 트리 |
+| `run_selection.py` | Stage1 정식 진입점. **기본=윈도우+video 반응성(정본)** — 전체 clip에서 gold 제외 후 무작위 N 랭킹 → 상위 K + `<video>` 리뷰 HTML. `review`=재랭킹 없이 HTML, `montage`=legacy 흥미도 |
+| `folder_selection.py` | **폴더별(조건별) 선별 + windowed 반응성 엔진**(공유). `rank_folder_windowed`(ego 전이 윈도우별 반응성 × VLM video 확인, 시간정렬) = Stage1·폴더 공용 엔진. `verify`=폴더무시 검증. clip-level montage는 legacy |
+| `review.py` | 공용 리뷰 유틸 — 표본 샘플링·H.264 트랜스코드·`<video>` 리뷰 HTML |
 | `SELECTION_STAGE1.md` | 알고리즘 명세·한계·후속 레버 |
 
 ## 공용 기반 의존 (→ `common/`)

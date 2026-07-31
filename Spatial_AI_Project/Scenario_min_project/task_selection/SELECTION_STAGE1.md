@@ -1,9 +1,16 @@
 # 1차 Clip 선별 랭킹 — 프로세스/로직
 
+> **정본(2026-07-31 승격): 윈도우+video 반응성** — `run_selection.py` 기본 경로.
+> `consolidate_episodes`로 ego 전이 윈도우 분할 → 윈도우별 ego 반응성 + **반응 윈도우 subclip을
+> video로 VLM에 보내** 원인(외부 agent)을 **시간정렬** 확인. 몽타주 정지투영/오귀속을 해소.
+> 여전히 **obj3d 없이 egomotion(CAN)+VLM video만** 사용(Stage1 전제 유지). 엔진=`folder_selection.rank_folder_windowed`.
+> 실측(obj3d 대조): 몽타주 cut_in corroboration 6%(top50 0%) → 윈도우+video로 과검 대부분 제거·reactive 50/50.
+> 아래 "몽타주 흥미도(Stage2)"는 **legacy**(`run_selection.py montage`)로 강등.
+
 ## 목적 & 제약
 전체 주행 로그에서 **의미있는(추출가치) clip을 선별**하여 2차(episode 추출·태깅)로 넘김.
 - 제약: raw 로그엔 **ego CAN + video만** 존재 (obj3d 3DOD·lane detection 없음/신뢰불가).
-- 따라서 선별은 **CAN arc_path(무료 1차) + VLM 경량 패스(2차)** 두 채널의 결합 랭킹.
+- (legacy) 선별은 **CAN arc_path(무료 1차) + VLM 경량 패스(2차)** 두 채널의 결합 랭킹.
 
 ```
 전체 로그 → [Stage1 ego arc 점수(CAN, 전수)] + [Stage2 VLM interestingness(몽타주)] → 결합 랭킹 → 상위 K 선별 → 2차 태깅
