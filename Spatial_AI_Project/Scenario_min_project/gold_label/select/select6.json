@@ -1,0 +1,76 @@
+[
+ {
+  "clip_id": "30a39599-c652-48af-a6d8-d3c3270b5525",
+  "combined": 1.03,
+  "ego_norm": 1.0,
+  "vlm_score": 0.1,
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ],
+  "vlm_category": "routine_cruise",
+  "vlm_reason": "The vehicle drives straight through a well-lit urban area at night with no notable maneuvers, interactions, or hazards."
+ },
+ {
+  "clip_id": "c2ef6d2c-ba8c-4fe4-b369-391cd5b71770",
+  "combined": 0.996,
+  "ego_norm": 0.816,
+  "vlm_score": 0.6,
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_right"
+  ],
+  "vlm_category": "routine_cruise",
+  "vlm_reason": "The vehicle drives straight under an overpass and through an intersection with no notable maneuvers or hazards."
+ },
+ {
+  "clip_id": "110b5fa7-6a35-47c7-af59-43ac082c52ce",
+  "combined": 0.905,
+  "ego_norm": 0.875,
+  "vlm_score": 0.1,
+  "ego_kinds": [
+   "stop",
+   "turn_right"
+  ],
+  "vlm_category": "routine_cruise",
+  "vlm_reason": "Continuous straight driving at night with no maneuvers, interactions, or notable events."
+ },
+ {
+  "clip_id": "9e991ba1-499a-4169-8051-9df875b92f35",
+  "combined": 0.887,
+  "ego_norm": 0.292,
+  "vlm_score": 0.8,
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ],
+  "vlm_category": "intersection",
+  "vlm_reason": "The vehicle approaches and navigates a busy intersection with multiple pedestrians crossing, stop signs, and crosswalks, requiring careful yielding and speed/br"
+ },
+ {
+  "clip_id": "392296ce-dd9d-4458-9b27-4b55697a4c08",
+  "combined": 0.887,
+  "ego_norm": 0.292,
+  "vlm_score": 0.8,
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ],
+  "vlm_category": "intersection",
+  "vlm_reason": "The ego vehicle is stopped at a signalized intersection with multiple vehicles in adjacent lanes, requiring attention to traffic signals and surrounding traffic"
+ },
+ {
+  "clip_id": "024415a5-94a5-4810-9c27-a72314b55146",
+  "combined": 0.438,
+  "ego_norm": 0.408,
+  "vlm_score": 0.1,
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "vlm_category": "routine_cruise",
+  "vlm_reason": "The clip shows a vehicle driving straight through a well-lit urban intersection at night with green traffic lights, maintaining lane position and steady speed. "
+ }
+]

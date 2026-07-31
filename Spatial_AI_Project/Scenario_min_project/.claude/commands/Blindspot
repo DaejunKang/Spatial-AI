@@ -1,3 +1,0 @@
-I'm working on metadata labeling task which tag scene description/analysis/meta action information to video clip for helping autonomous driving AI development but I know nothing about metadata labeling at first in this codebase. Can you do a blindspot pass to help me figure out my relevant unknown unknowns and help me prompt you better. Focus especially on: gaps between CLAUDE.md's stated architecture and the actual code, undocumented assumptions in the tagging pipeline, and anything that could silently violate the frozen-tagger / anti-circularity constraints.
-
-$ARGUMENTS
