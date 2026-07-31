@@ -1,0 +1,108 @@
+[
+ {
+  "clip_id": "9e991ba1-499a-4169-8051-9df875b92f35",
+  "combined": 1.063,
+  "ego_norm": 0.544,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "ped_cyclist",
+  "reason": "Pedestrians crossing the road in front of the ego vehicle, requiring the ego to slow down and yield.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "30a39599-c652-48af-a6d8-d3c3270b5525",
+  "combined": 1.0,
+  "ego_norm": 1.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a green light and continues straight without any visible external agents or hazards influencing its behavior.",
+  "ego_terms": {
+   "harsh_brake": 1.71,
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "024415a5-94a5-4810-9c27-a72314b55146",
+  "combined": 0.876,
+  "ego_norm": 0.846,
+  "vlm_score": 0.1,
+  "reactive": true,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a green light and continues straight without reacting to any other agents or hazards.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "c2ef6d2c-ba8c-4fe4-b369-391cd5b71770",
+  "combined": 0.785,
+  "ego_norm": 0.785,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle drives straight through a series of frames without any visible interaction with other agents or obstacles, maintaining a steady path under an over/4",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "392296ce-dd9d-4458-9b27-4b55697a4c08",
+  "combined": 0.604,
+  "ego_norm": 0.544,
+  "vlm_score": 0.2,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The black SUV ahead of the ego vehicle brakes, causing the ego vehicle to slow down and maintain a safe following distance.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "110b5fa7-6a35-47c7-af59-43ac082c52ce",
+  "combined": 0.483,
+  "ego_norm": 0.483,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady, straight drive at night with no visible external agents, obstacles, or changes in behavior that would indicate a reaction.",
+  "ego_terms": {
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "stop",
+   "turn_right"
+  ]
+ }
+]

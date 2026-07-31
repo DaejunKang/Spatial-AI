@@ -1,0 +1,5143 @@
+[
+ {
+  "clip_id": "ee3ba8e1-b896-44be-a122-9dbdc15d76ca",
+  "combined": 1.057,
+  "ego_norm": 0.525,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "ped_cyclist",
+  "reason": "A pedestrian is crossing the road, requiring the ego vehicle to slow down and yield.",
+  "ego_terms": {
+   "harsh_brake": 2.39,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "0703d88a-2014-4076-9db6-74aee9497b2c",
+  "combined": 1.042,
+  "ego_norm": 0.472,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The lead vehicle ahead is braking, causing the ego vehicle to slow down and maintain a safe following distance.",
+  "ego_terms": {
+   "harsh_brake": 0.61,
+   "decel_repeat": 4.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "cc3646a3-a8c9-4256-b604-f84a38debd40",
+  "combined": 1.038,
+  "ego_norm": 0.461,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "cross_traffic",
+  "reason": "The ego vehicle stops at a red light, yielding to cross traffic that has the right of way.",
+  "ego_terms": {
+   "harsh_brake": 1.48,
+   "decel_repeat": 3.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "8a8e54da-d8ca-4cbb-af0d-0a28a2cc0d6c",
+  "combined": 1.028,
+  "ego_norm": 0.427,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The black SUV directly ahead of the ego vehicle is braking, causing the ego vehicle to slow down and maintain a safe following distance.",
+  "ego_terms": {
+   "harsh_brake": 1.31,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "8c0f487d-7d22-4bea-9cbe-fd4e861b1973",
+  "combined": 1.022,
+  "ego_norm": 0.406,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The ego vehicle is following a lead vehicle that brakes, causing the ego to slow down and maintain a safe following distance.",
+  "ego_terms": {
+   "harsh_brake": 2.48,
+   "decel_repeat": 1.0,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "35e89abf-f4f8-4f80-9cd6-0c432249025c",
+  "combined": 1.02,
+  "ego_norm": 0.399,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "ped_cyclist",
+  "reason": "A pedestrian is crossing the road in front of the ego vehicle, requiring the ego to slow down and yield to ensure safety.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "67de95ed-8ea1-4854-a51d-518de258026b",
+  "combined": 1.018,
+  "ego_norm": 0.394,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "cross_traffic",
+  "reason": "The ego vehicle approaches and stops at a red light, yielding to cross traffic that has the right of way.",
+  "ego_terms": {
+   "harsh_brake": 1.55,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "08d625d8-e718-449b-8f96-3f4688e2c5b4",
+  "combined": 1.003,
+  "ego_norm": 0.345,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "ped_cyclist",
+  "reason": "A cyclist is crossing the road ahead of the ego vehicle, requiring the ego to slow down and yield to avoid collision.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "e819cfac-c96e-4efe-be1f-ad688fe0f8fd",
+  "combined": 1.003,
+  "ego_norm": 0.345,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "yield_negotiation",
+  "reason": "The ego vehicle approaches a stop sign and comes to a complete stop, yielding to cross traffic or pedestrians before proceeding, indicating a clear external cue",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "cd20c5f6-fd75-4d32-addc-b7193f5d7de3",
+  "combined": 1.003,
+  "ego_norm": 0.343,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "yield_negotiation",
+  "reason": "The ego vehicle approaches a stop sign, slows down, and comes to a complete stop before proceeding, indicating a clear yield to the traffic control device.",
+  "ego_terms": {
+   "harsh_brake": 0.98,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "8a631922-2811-4df9-aae4-f8a8698a47a5",
+  "combined": 1.003,
+  "ego_norm": 0.345,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The truck ahead is braking, causing the ego vehicle to slow down and maintain a safe following distance.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "08d2050b-68a3-4d53-89f0-025b44294a2a",
+  "combined": 1.0,
+  "ego_norm": 1.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a signalized intersection and continues straight on a multi-lane road without any visible external agents or hazards requiringa",
+  "ego_terms": {
+   "harsh_brake": 5.63,
+   "decel_repeat": 3.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "2dff7cb5-255f-4ebe-9c8c-313ba0c03b5b",
+  "combined": 0.998,
+  "ego_norm": 0.326,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The vehicle ahead is braking, causing the ego vehicle to slow down and maintain a safe following distance.",
+  "ego_terms": {
+   "decel_repeat": 3.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "56c0fb1a-7357-4929-8a9b-9039ab5a71e9",
+  "combined": 0.995,
+  "ego_norm": 0.317,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The ego vehicle is following a lead vehicle that brakes and slows, requiring the ego to decelerate to maintain safe distance.",
+  "ego_terms": {
+   "harsh_brake": 0.7,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "f2898601-aa03-4ca7-bcd2-62acd322c511",
+  "combined": 0.992,
+  "ego_norm": 0.308,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white car cuts into the lane from the right, forcing the ego vehicle to brake and yield to avoid collision.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "a0fa4ece-5081-4138-9ccb-34e06ea1cca3",
+  "combined": 0.976,
+  "ego_norm": 0.254,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "cross_traffic",
+  "reason": "The ego vehicle stops at a red light, then proceeds as the light turns green, indicating a standard traffic signal response to cross traffic and signal changes.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "fd5b9c12-0286-49b8-a651-819700106618",
+  "combined": 0.976,
+  "ego_norm": 0.254,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white car cuts into the lane from the right, forcing the ego vehicle to brake and yield to avoid collision.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "0005d7fe-67ff-4f38-98e7-17319ecf1678",
+  "combined": 0.976,
+  "ego_norm": 0.254,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The garbage truck ahead is braking and slowing, causing the ego vehicle to decelerate and maintain a safe following distance.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "ec375c1b-1e6b-4026-9907-7e1c0cc5cc71",
+  "combined": 0.965,
+  "ego_norm": 0.218,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white car cuts into the lane from the right, forcing the ego vehicle to brake and yield to avoid collision.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "9ed113ec-12e1-4bc1-946c-6fec04e13c8e",
+  "combined": 0.965,
+  "ego_norm": 0.218,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The lead vehicle ahead is braking and slowing down, causing the ego vehicle to react by braking and slowing down as well.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "9d62bf02-0e8a-436e-914a-34e2e64cc365",
+  "combined": 0.954,
+  "ego_norm": 0.181,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The white SUV ahead brakes and stops at the red light, causing the ego vehicle to slow and stop behind it.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "8ec31540-e00a-4724-b1fe-87bab6687e26",
+  "combined": 0.954,
+  "ego_norm": 0.181,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A vehicle cuts into the lane from the right, requiring the ego vehicle to brake and yield to avoid collision.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "80db1c36-a8ec-4e4f-9023-ffd90ca1cd11",
+  "combined": 0.954,
+  "ego_norm": 0.181,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The lead vehicle ahead is braking, causing the ego vehicle to slow down and maintain a safe following distance.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "f03a1984-1e24-418e-8272-3abf4836217d",
+  "combined": 0.954,
+  "ego_norm": 0.181,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The white car ahead brakes and stops at the intersection, causing the ego vehicle to slow down and stop behind it.",
+  "ego_terms": {
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "77c0f92d-504d-4636-80e9-7e75c6e0d0a2",
+  "combined": 0.952,
+  "ego_norm": 0.506,
+  "vlm_score": 0.8,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white sedan cuts into the lane from the right, requiring the ego vehicle to slow down and yield to avoid collision.",
+  "ego_terms": {
+   "harsh_brake": 1.18,
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "9e991ba1-499a-4169-8051-9df875b92f35",
+  "combined": 0.949,
+  "ego_norm": 0.163,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "ped_cyclist",
+  "reason": "Pedestrians crossing the road in front of the ego vehicle, requiring the ego to slow down and yield.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "29fc09c7-9b6e-4293-837e-cd996931760f",
+  "combined": 0.949,
+  "ego_norm": 0.163,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A vehicle cuts into the lane from the right, forcing the ego vehicle to brake and yield to avoid collision.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "43a3d6c7-cde2-4392-a8d7-342e49db6a57",
+  "combined": 0.949,
+  "ego_norm": 0.163,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white USPS truck cuts into the lane directly in front of the ego vehicle, forcing the ego to brake and yield to avoid collision.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "36c7ddfd-7d15-4b04-81ac-2193f6958444",
+  "combined": 0.949,
+  "ego_norm": 0.163,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The vehicle directly ahead repeatedly brakes and stops, requiring the ego vehicle to continuously slow and stop in response.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "c4281de8-80f9-4fe1-8128-26f3a98dd23b",
+  "combined": 0.949,
+  "ego_norm": 0.163,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "ped_cyclist",
+  "reason": "Pedestrians and a cyclist are crossing the road in front of the ego vehicle, requiring the ego to yield and slow down to avoid collision.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "8ea181c0-028a-42cc-b7f2-29e33ab25df3",
+  "combined": 0.949,
+  "ego_norm": 0.163,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "ped_cyclist",
+  "reason": "Pedestrians crossing the road cause the ego vehicle to slow down and yield.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "857cb206-fdcc-4860-aa6b-7093b36106bb",
+  "combined": 0.949,
+  "ego_norm": 0.163,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white car cuts into the lane from the right, forcing the ego vehicle to brake and yield to avoid collision.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "0fdffd98-4c2c-4050-9a08-767ab3c7cb72",
+  "combined": 0.943,
+  "ego_norm": 0.476,
+  "vlm_score": 0.8,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white car cuts into the lane from the left, requiring the ego vehicle to slow down and yield to avoid collision.",
+  "ego_terms": {
+   "harsh_brake": 3.25,
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "9939eaf7-0f35-4ced-9127-80ea850d8e51",
+  "combined": 0.936,
+  "ego_norm": 0.453,
+  "vlm_score": 0.8,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A black SUV cuts into the lane ahead of the ego vehicle, requiring the ego to slow down to maintain a safe distance.",
+  "ego_terms": {
+   "decel_repeat": 4.0,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "63b147e1-1736-4050-b798-573b968dea28",
+  "combined": 0.927,
+  "ego_norm": 0.091,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "ped_cyclist",
+  "reason": "A pedestrian is crossing the road, requiring the ego vehicle to slow down and yield.",
+  "ego_terms": {
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "88120770-cd92-491b-843d-6a7469ed6183",
+  "combined": 0.927,
+  "ego_norm": 0.091,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A white car ahead brakes and stops at a red light, causing the ego vehicle to slow and stop behind it.",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "acfe2b0b-414a-4b8a-b9fc-3206c590f101",
+  "combined": 0.9,
+  "ego_norm": 0.0,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The ego vehicle is following a silver sedan that brakes and slows, causing the ego to brake and maintain a safe following distance.",
+  "ego_terms": {},
+  "ego_kinds": [
+   "accelerate"
+  ]
+ },
+ {
+  "clip_id": "d0962d4d-23c0-4b5d-a059-2c1435f81468",
+  "combined": 0.9,
+  "ego_norm": 0.0,
+  "vlm_score": 0.9,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A truck cuts into the lane ahead of the ego vehicle, requiring the ego to slow down and maintain a safe distance.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "fc290f0a-b083-4f24-b937-827aa0d169cb",
+  "combined": 0.876,
+  "ego_norm": 0.254,
+  "vlm_score": 0.8,
+  "reactive": true,
+  "event_type": "cross_traffic",
+  "reason": "The ego vehicle slows and yields to cross traffic at the intersection, as indicated by the red traffic light and the presence of vehicles crossing the path.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "077d731f-81d1-4435-b454-16c0c4b986de",
+  "combined": 0.852,
+  "ego_norm": 0.672,
+  "vlm_score": 0.6,
+  "reactive": true,
+  "event_type": "cross_traffic",
+  "reason": "The ego vehicle slows and yields to cross traffic at an intersection, as evidenced by the visible traffic signals and the need to wait for clearance before the ",
+  "ego_terms": {
+   "harsh_brake": 3.01,
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "860410ec-9373-4f4f-8cc6-cf691a71d7cd",
+  "combined": 0.755,
+  "ego_norm": 0.516,
+  "vlm_score": 0.6,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The ego vehicle slows down behind a silver SUV that is braking in the same lane, requiring the ego to decelerate to maintain a safe following distance.",
+  "ego_terms": {
+   "harsh_brake": 1.29,
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "722340f0-ea2d-41e9-abbd-aec5dc271bd0",
+  "combined": 0.746,
+  "ego_norm": 0.716,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds straight through an intersection with no visible external agents or hazards requiring a reaction. Traffic appears light and unobstructed.",
+  "ego_terms": {
+   "harsh_brake": 4.3,
+   "decel_repeat": 2.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "5a510231-aaa8-4ae5-a084-a368ac9d26bb",
+  "combined": 0.746,
+  "ego_norm": 0.716,
+  "vlm_score": 0.1,
+  "reactive": true,
+  "event_type": "cross_traffic",
+  "reason": "The ego vehicle stops at a red light, yielding to cross traffic before proceeding through the intersection.",
+  "ego_terms": {
+   "harsh_brake": 4.5,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "8cd12c32-8d05-4d1c-89a5-dec8a092b8fd",
+  "combined": 0.737,
+  "ego_norm": 0.647,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cross_traffic",
+  "reason": "A white pickup truck is stopped at the intersection, requiring the ego vehicle to slow down and yield before proceeding.",
+  "ego_terms": {
+   "harsh_brake": 3.34,
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "1761e922-9501-4a5e-9228-547d27932d25",
+  "combined": 0.733,
+  "ego_norm": 0.613,
+  "vlm_score": 0.4,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A truck cuts into the lane ahead of the ego vehicle, requiring the ego to slow down and maintain a safe following distance.",
+  "ego_terms": {
+   "harsh_brake": 2.16,
+   "decel_repeat": 4.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "fbda91b5-8cfa-41ea-b77e-05bcac561436",
+  "combined": 0.709,
+  "ego_norm": 0.679,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through intersections and along roads without any visible external agents or hazards requiring a reaction. Traffic appears light and un",
+  "ego_terms": {
+   "harsh_brake": 0.09,
+   "decel_repeat": 4.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "lane_change": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "lane_change_left",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "563b1cc3-739e-424a-b690-dda75cf4599d",
+  "combined": 0.67,
+  "ego_norm": 0.58,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cross_traffic",
+  "reason": "The ego vehicle slows and yields to cross traffic at an intersection, indicating a reaction to other vehicles moving through the junction.",
+  "ego_terms": {
+   "decel_repeat": 4.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "059bf830-4d4a-4e1a-bb93-a67f0328c5c6",
+  "combined": 0.67,
+  "ego_norm": 0.233,
+  "vlm_score": 0.6,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white truck cuts into the lane ahead of the ego vehicle, requiring the ego to slow down or maintain a safe following distance.",
+  "ego_terms": {
+   "harsh_brake": 1.97,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "5547e833-f863-476f-af34-51f1e0d05293",
+  "combined": 0.646,
+  "ego_norm": 0.646,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady forward drive through a parking lot or commercial area with no visible interactions with other vehicles, pedestrians, or obstacles. The",
+  "ego_terms": {
+   "harsh_brake": 4.52,
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "d642ecdd-0d8a-437c-b766-0fd703480e41",
+  "combined": 0.639,
+  "ego_norm": 0.639,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "No visible external agents or hazards; the vehicle appears to be driving straight on an empty road without any interactions or reactions to other road users.",
+  "ego_terms": {
+   "harsh_brake": 3.45,
+   "decel_repeat": 3.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "7efddbb1-a5ec-47bf-867d-e503d587ba8a",
+  "combined": 0.633,
+  "ego_norm": 0.543,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A white car ahead brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "harsh_brake": 2.59,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "76a31568-1acc-47d4-9249-0aae807cfbb7",
+  "combined": 0.605,
+  "ego_norm": 0.605,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "No external agents or hazards are present; the vehicle is driving straight through a clear suburban road with no visible interactions or obstructions.",
+  "ego_terms": {
+   "harsh_brake": 1.87,
+   "decel_repeat": 3.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "f2d56bac-d340-4de2-b45a-a02b5b856dcf",
+  "combined": 0.535,
+  "ego_norm": 0.445,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The vehicle ahead is braking, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "harsh_brake": 1.51,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "27ecfec4-ada9-45bb-844e-11088bb1848b",
+  "combined": 0.532,
+  "ego_norm": 0.502,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through intersections and curves without any visible external agents or hazards requiring a reaction. No braking, yielding, or evasive",
+  "ego_terms": {
+   "harsh_brake": 2.14,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "53aeda2a-cd3f-472b-a23a-7d41addac1e9",
+  "combined": 0.531,
+  "ego_norm": 0.501,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a series of intersections and road segments without any visible external agents or hazards causing a reaction. No lead vehicles",
+  "ego_terms": {
+   "harsh_brake": 2.93,
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "dabd224a-a81e-46fe-b27e-da62131825cf",
+  "combined": 0.526,
+  "ego_norm": 0.496,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds through a green light and continues straight without reacting to any external agents or hazards.",
+  "ego_terms": {
+   "harsh_brake": 2.87,
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "bc7ec582-703c-44d6-8133-5fc6d55263df",
+  "combined": 0.508,
+  "ego_norm": 0.478,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds through intersections and underpasses without any visible external agents or hazards requiring a reaction. No braking, yielding, or evasive",
+  "ego_terms": {
+   "harsh_brake": 0.67,
+   "decel_repeat": 4.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "0ee02f73-9836-4239-ac86-2f61fd507698",
+  "combined": 0.503,
+  "ego_norm": 0.503,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a clear road with no visible external agents, obstacles, or interactions that would cause the ego vehicle to react.",
+  "ego_terms": {
+   "harsh_brake": 1.15,
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "28f838dd-fce5-4f48-a5db-bcd10b66eff2",
+  "combined": 0.49,
+  "ego_norm": 0.49,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a clear, empty road with no visible external agents, obstacles, or cross traffic. The vehicle appears to be driving straight at a steady speed,",
+  "ego_terms": {
+   "decel_repeat": 3.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "0049dc3c-9ba0-443e-bb5f-baa62f4c3910",
+  "combined": 0.49,
+  "ego_norm": 0.49,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a stop sign and intersection without any visible external agents or hazards requiring a reaction. No other vehicles or road ob",
+  "ego_terms": {
+   "decel_repeat": 3.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "b3629fa6-00d8-4d09-a3fd-86360aab40f7",
+  "combined": 0.489,
+  "ego_norm": 0.399,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white SUV cuts into the lane from the right, requiring the ego vehicle to slow down and yield.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "4fcd3151-3400-4aa5-b05d-2032e9d15bce",
+  "combined": 0.489,
+  "ego_norm": 0.399,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white car cuts into the lane ahead of the ego vehicle, requiring a slight adjustment in position to maintain safe clearance.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "8063bf89-d713-4a3c-87c8-818e4f843ab3",
+  "combined": 0.487,
+  "ego_norm": 0.487,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle drives straight through a multi-lane highway with no visible external agents or hazards affecting its behavior. No braking, yielding, or evasive",
+  "ego_terms": {
+   "harsh_brake": 1.57,
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "9bf2d843-bf08-4887-be89-b6d5d0fd5fb2",
+  "combined": 0.487,
+  "ego_norm": 0.487,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show steady forward motion on a clear road with no visible external agents, obstacles, or interactions requiring a reaction from the ego vehicle.",
+  "ego_terms": {
+   "harsh_brake": 2.77,
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "1bdf43f5-0601-4a83-9836-09934960e72a",
+  "combined": 0.475,
+  "ego_norm": 0.475,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a smooth, continuous drive through a well-lit area with no visible external agents or hazards causing the ego vehicle to brake, slow, stop, orsw",
+  "ego_terms": {
+   "harsh_brake": 3.64,
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_left",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "3e41bb87-6f83-45df-a717-d6664ba52311",
+  "combined": 0.472,
+  "ego_norm": 0.382,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A vehicle cuts into the lane ahead of the ego vehicle, requiring a slight adjustment in position to maintain safe following distance.",
+  "ego_terms": {
+   "harsh_brake": 1.61,
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "9a0f16fe-5b71-455e-b48d-76c55252e90b",
+  "combined": 0.459,
+  "ego_norm": 0.399,
+  "vlm_score": 0.2,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A black SUV cuts into the lane from the left, requiring the ego vehicle to slow down and yield.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "4a43a251-9a2f-46b2-bba5-d81f9d53649c",
+  "combined": 0.444,
+  "ego_norm": 0.354,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A white van ahead brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "harsh_brake": 0.11,
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "dfd3305d-b585-46ad-ac41-2b4a900d1fce",
+  "combined": 0.444,
+  "ego_norm": 0.444,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is following a white van at a safe distance with no visible braking, swerving, or yielding maneuvers. No other agents are cutting in or posing a",
+  "ego_terms": {
+   "harsh_brake": 2.3,
+   "decel_repeat": 1.0,
+   "lane_change": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "lane_change_right",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "02caa00c-084f-4f47-ad9a-7704f1daee73",
+  "combined": 0.439,
+  "ego_norm": 0.349,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A dark vehicle ahead brakes, prompting the ego vehicle to slow down.",
+  "ego_terms": {
+   "harsh_brake": 1.05,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "2ae48228-d1a2-4274-be13-f278065b20a3",
+  "combined": 0.435,
+  "ego_norm": 0.345,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white car cuts into the lane from the right, requiring the ego vehicle to slow down and maintain a safe distance.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "fe3a9497-05f0-410f-83df-fa965d8b8135",
+  "combined": 0.435,
+  "ego_norm": 0.345,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A vehicle cuts into the lane ahead of the ego vehicle, requiring a slight adjustment in position to maintain safe following distance.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "4385ef64-ea7f-4b01-8bb4-b2b22abadf19",
+  "combined": 0.435,
+  "ego_norm": 0.345,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A vehicle ahead brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "293ba92c-ed49-4b6e-a5d6-725ad2ab9c64",
+  "combined": 0.435,
+  "ego_norm": 0.345,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The white SUV ahead is braking, causing the ego vehicle to slow down and maintain a safe following distance.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "8d0149ae-03b9-401d-ba10-3a198b047efb",
+  "combined": 0.434,
+  "ego_norm": 0.344,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The ego vehicle slows down as the lead vehicle ahead brakes, indicating a reaction to the lead vehicle's deceleration.",
+  "ego_terms": {
+   "harsh_brake": 0.79,
+   "decel_repeat": 2.0,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "a4ab145b-ed2e-48ca-bb96-0e177959ae51",
+  "combined": 0.43,
+  "ego_norm": 0.43,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a continuous forward drive on a clear road with no visible external agents, obstacles, or interactions that would cause the ego vehicle to brake",
+  "ego_terms": {
+   "harsh_brake": 0.14,
+   "decel_repeat": 3.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "04b0d4d2-07db-44b6-86bb-e2675e4a9997",
+  "combined": 0.429,
+  "ego_norm": 0.399,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle moves smoothly through the parking lot without any visible external agents or hazards requiring a reaction. No braking, yielding, or evasive actions",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "fdcc3944-a2ae-4726-a2a3-20a91b498178",
+  "combined": 0.429,
+  "ego_norm": 0.399,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds straight through a residential area with parked cars and trees, showing no clear external agent or hazard requiring a reaction. The ego",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "cf5786d4-6647-44dc-bcd9-8457e272380e",
+  "combined": 0.428,
+  "ego_norm": 0.428,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady forward progression through an intersection at night with no visible external agents or hazards causing a reaction. The vehicle appears",
+  "ego_terms": {
+   "harsh_brake": 1.32,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "7d048286-6bd5-4313-b8d6-ba8f9383a0bd",
+  "combined": 0.422,
+  "ego_norm": 0.422,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through an intersection and continues straight without any visible external agents or hazards requiring a reaction.",
+  "ego_terms": {
+   "harsh_brake": 1.26,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "cd21d8df-4af9-4674-ab30-2a036ad2be8d",
+  "combined": 0.417,
+  "ego_norm": 0.417,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds through a series of intersections and underpasses without any visible external agents or hazards requiring a reaction. The driving behavior",
+  "ego_terms": {
+   "decel_repeat": 4.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "2cc7c8d4-1cd6-4037-92ac-12fb37d924cc",
+  "combined": 0.416,
+  "ego_norm": 0.326,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white SUV cuts into the lane ahead of the ego vehicle, requiring the ego to slow down to maintain a safe distance.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "a502b2fa-dac6-45e6-99ec-bfc0975a5302",
+  "combined": 0.413,
+  "ego_norm": 0.383,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a highway with no visible external agents or hazards affecting its behavior. No sudden braking, swerving, or yielding is",
+  "ego_terms": {
+   "harsh_brake": 1.63,
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "17af9c29-86c1-42a4-8688-40b0158f53a7",
+  "combined": 0.399,
+  "ego_norm": 0.399,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a static parking lot scene at night with no visible external agents, obstacles, or interactions affecting the ego vehicle's movement. The ego is",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "5cbfe146-70db-4ad9-8a17-c4322a98a35a",
+  "combined": 0.399,
+  "ego_norm": 0.399,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a red light and continues straight without reacting to any external agents or hazards.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "5cc50d6e-fdc2-45a5-bd1d-7aa6ab5c9af2",
+  "combined": 0.399,
+  "ego_norm": 0.399,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a consistent forward progression through a parking lot with no visible external agents or hazards causing the ego vehicle to react. No sudden br",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "b45f7d7a-b0b1-4fdd-98a6-671e82db37f7",
+  "combined": 0.399,
+  "ego_norm": 0.399,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a green light and continues straight without any external agents or hazards affecting its behavior.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "65c6b5f6-baed-49c3-8ff2-b2ae9d8b4173",
+  "combined": 0.399,
+  "ego_norm": 0.399,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds straight through an intersection and continues along a multi-lane road without any visible external agents or hazards requiring a brake",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "086f0367-da28-47cd-8cdf-f69b3febccdd",
+  "combined": 0.399,
+  "ego_norm": 0.399,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a continuous forward drive through an intersection and along a road with no visible external agents or hazards causing a reaction. No braking,sw",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "0d566b43-e5ad-4690-bd64-63dbb4f36b74",
+  "combined": 0.399,
+  "ego_norm": 0.399,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady, unobstructed drive through a parking lot at night with no visible external agents, obstacles, or traffic interactions that would cause",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "a5f9eadf-c668-4323-a69e-b8c1b67a3625",
+  "combined": 0.398,
+  "ego_norm": 0.308,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A vehicle cuts into the lane from the right, requiring the ego vehicle to slow down and yield.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "517de13c-b8c5-45b7-b8ea-69bee41fe2fa",
+  "combined": 0.398,
+  "ego_norm": 0.308,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A vehicle ahead brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "8c3b8a23-7e8e-4ae4-901a-d1f306d44cec",
+  "combined": 0.398,
+  "ego_norm": 0.308,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white pickup truck cuts into the lane ahead of the ego vehicle, requiring the ego to slow down to maintain a safe distance.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "ee126544-bca5-4506-8f03-7024b82c2631",
+  "combined": 0.398,
+  "ego_norm": 0.308,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white truck cuts into the lane from the right, requiring the ego vehicle to adjust its path.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "ac05216e-652a-41ec-aa01-d9a87f719714",
+  "combined": 0.398,
+  "ego_norm": 0.308,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A white van ahead brakes, causing the ego vehicle to slow down and maintain a safe following distance.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "351c7fb7-85f4-42de-bd41-a8e84a89ab71",
+  "combined": 0.398,
+  "ego_norm": 0.308,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "yield_negotiation",
+  "reason": "The ego vehicle approaches an intersection with a stop sign and crosswalk, and must yield to oncoming traffic before proceeding, indicating a need to negotiate.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "be95342c-b486-47b9-b336-0d0181617850",
+  "combined": 0.393,
+  "ego_norm": 0.393,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a clear, empty road with no other vehicles, pedestrians, or obstacles. The ego vehicle maintains a steady path without any visible reaction to外部",
+  "ego_terms": {
+   "harsh_brake": 0.74,
+   "decel_repeat": 3.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "0a1ca392-8df9-4876-a04f-352ae7ec70ab",
+  "combined": 0.388,
+  "ego_norm": 0.388,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through multiple intersections with green lights and then stops at a red light, with no other vehicles or pedestrians affecting its dec",
+  "ego_terms": {
+   "harsh_brake": 0.68,
+   "decel_repeat": 2.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "50a125a8-eac1-4d0d-8f93-048494e1110e",
+  "combined": 0.384,
+  "ego_norm": 0.181,
+  "vlm_score": 0.33,
+  "reactive": true,
+  "event_type": "cross_traffic",
+  "reason": "A red semi-truck crosses the intersection ahead of the ego vehicle, requiring the ego to slow down and yield to the crossing traffic.",
+  "ego_terms": {
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "9025bd5e-3184-4dbb-bf59-eac5dfad2ba3",
+  "combined": 0.382,
+  "ego_norm": 0.352,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a multi-lane road with no visible external agents or hazards requiring a reaction. Traffic appears light and free-flowing",
+  "ego_terms": {
+   "harsh_brake": 0.28,
+   "decel_repeat": 3.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "a0c22994-304d-4188-8744-b3c5056b7d1a",
+  "combined": 0.376,
+  "ego_norm": 0.254,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A vehicle cuts into the lane ahead of the ego vehicle, requiring a slight adjustment in position to maintain safe clearance.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "ca611724-8830-47e3-8f5e-b248549ce76e",
+  "combined": 0.376,
+  "ego_norm": 0.254,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white car cuts into the lane from the right, requiring the ego vehicle to slow down and yield.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "9ef4e96f-1bf1-4122-b9d2-c18e23384e40",
+  "combined": 0.375,
+  "ego_norm": 0.345,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds through a parking lot and onto a road without any visible external agents or hazards requiring a reaction. No other vehicles, pedestrians,或",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "b7d2665a-f710-4302-8f25-70d20b6ce518",
+  "combined": 0.372,
+  "ego_norm": 0.372,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a clear, straight road with no visible agents or obstacles, and the vehicle appears to be moving at a steady speed without any noticeable decel,",
+  "ego_terms": {
+   "harsh_brake": 0.5,
+   "decel_repeat": 3.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "503bc7e5-dc0a-4740-9c73-c3b4c432274b",
+  "combined": 0.371,
+  "ego_norm": 0.236,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cross_traffic",
+  "reason": "The ego vehicle stops at a red light, and cross traffic is visible moving through the intersection, indicating the ego is yielding to cross traffic.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "1cb218d7-29d2-445b-864f-d2c1aa84e719",
+  "combined": 0.371,
+  "ego_norm": 0.236,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cross_traffic",
+  "reason": "A vehicle is crossing the intersection ahead, requiring the ego vehicle to slow down and yield.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "12c4c627-1311-42a2-a28c-307e55996e6f",
+  "combined": 0.368,
+  "ego_norm": 0.308,
+  "vlm_score": 0.2,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The white car ahead brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "352f834a-8ea6-41e9-97ec-b19ee203f077",
+  "combined": 0.365,
+  "ego_norm": 0.218,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cross_traffic",
+  "reason": "The ego vehicle stops at a red light, yielding to cross traffic before proceeding when the light turns green.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "da573166-ceb0-4850-9da2-90fde4355c3f",
+  "combined": 0.359,
+  "ego_norm": 0.359,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady forward drive through a residential area with no visible external agents or hazards causing a reaction. No vehicles cut in, pedestrians",
+  "ego_terms": {
+   "harsh_brake": 1.36,
+   "decel_repeat": 1.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "04452119-3ffe-4b61-b8ad-57e3ffd9ec00",
+  "combined": 0.356,
+  "ego_norm": 0.326,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a multi-lane road with no visible external agents or hazards affecting its behavior. No braking, yielding, or evasive man",
+  "ego_terms": {
+   "decel_repeat": 3.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "4e755ae0-8c60-465c-8988-bb41b75a079f",
+  "combined": 0.356,
+  "ego_norm": 0.356,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a smooth, continuous drive with no visible external agents or hazards causing the ego vehicle to react. No braking, yielding, or evasive actions",
+  "ego_terms": {
+   "harsh_brake": 1.33,
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "f14b0d27-4966-46e8-8f67-d6745f1f56da",
+  "combined": 0.356,
+  "ego_norm": 0.326,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds straight through the intersection without reacting to any external agents or hazards; no cut-in, yielding, or sudden braking is observed.",
+  "ego_terms": {
+   "decel_repeat": 3.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "60259ce0-34b3-4715-9790-67f0a4b25464",
+  "combined": 0.356,
+  "ego_norm": 0.326,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight through intersections and residential streets without any visible external agents or hazards causing a reaction. No braking,",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "0f13dec5-f643-4c22-9660-1854f5e8ec96",
+  "combined": 0.354,
+  "ego_norm": 0.181,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A vehicle ahead is visible with its headlights on, indicating it may be braking or slowing, requiring the ego vehicle to maintain caution and potentially adjust",
+  "ego_terms": {
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "7e59b62a-1e13-45b5-8fd7-563f4d4b039f",
+  "combined": 0.354,
+  "ego_norm": 0.181,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The white car ahead of the ego vehicle brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "088b157d-7de4-43e1-aa77-2bf817df28e2",
+  "combined": 0.353,
+  "ego_norm": 0.177,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A vehicle ahead is braking, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "harsh_brake": 0.35,
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "aa8ff252-b0a4-4ce2-8e54-4c27ae7f92d7",
+  "combined": 0.349,
+  "ego_norm": 0.163,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The lead vehicle ahead is braking, causing the ego vehicle to slow down and maintain a safe following distance.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "392296ce-dd9d-4458-9b27-4b55697a4c08",
+  "combined": 0.349,
+  "ego_norm": 0.163,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The black SUV ahead of the ego vehicle brakes, causing the ego vehicle to slow down and maintain a safe following distance.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "b3711dea-d512-4edc-84ef-a0b2a2568457",
+  "combined": 0.349,
+  "ego_norm": 0.163,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A bus cuts into the lane from the right, requiring the ego vehicle to slow down and yield.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "2cd5796b-5aef-4463-95cc-aebf3b65ed09",
+  "combined": 0.349,
+  "ego_norm": 0.163,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The white SUV ahead brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "0b7364d5-c93f-47fd-8b46-b59d961b5240",
+  "combined": 0.349,
+  "ego_norm": 0.163,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white SUV cuts into the lane from the right, requiring the ego vehicle to slow down and yield.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "f7295b9b-a67a-4f88-8764-7a2d6ec77b6e",
+  "combined": 0.349,
+  "ego_norm": 0.163,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The black car ahead brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "fa3113c5-6408-4d27-bb9d-a42d0858e1c5",
+  "combined": 0.345,
+  "ego_norm": 0.345,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a continuous forward drive through a residential area with no visible external agents or hazards causing the ego vehicle to react. There are no",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "13c1d1f2-3147-4283-b350-92ed06b30313",
+  "combined": 0.344,
+  "ego_norm": 0.145,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A vehicle ahead brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "119ea301-dfce-465f-83b8-0d057361fe4c",
+  "combined": 0.344,
+  "ego_norm": 0.145,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cross_traffic",
+  "reason": "The ego vehicle approaches and stops at an intersection where cross traffic is present, requiring yielding behavior.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_left",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "047462b7-23d0-4e93-a382-68be197823dc",
+  "combined": 0.342,
+  "ego_norm": 0.342,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a smooth, continuous forward drive on a clear road with no visible interactions with other vehicles, pedestrians, or obstacles that would prompt",
+  "ego_terms": {
+   "harsh_brake": 2.17,
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "c2bfe9c5-197c-45f3-8bf0-846b07540966",
+  "combined": 0.333,
+  "ego_norm": 0.273,
+  "vlm_score": 0.2,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white SUV cuts into the lane from the right, requiring the ego vehicle to slow down to avoid a collision.",
+  "ego_terms": {
+   "harsh_brake": 1.41,
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "e4a319c6-9f2c-4083-9399-8f00bd7118ed",
+  "combined": 0.332,
+  "ego_norm": 0.272,
+  "vlm_score": 0.2,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A vehicle ahead in the same lane brakes, causing the ego vehicle to slow down in response.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "01bd6932-1a96-48af-a840-39f6418aed8f",
+  "combined": 0.332,
+  "ego_norm": 0.332,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a residential area without any visible external agents or hazards requiring a reaction. No braking, yielding, or swerving isobs",
+  "ego_terms": {
+   "harsh_brake": 0.26,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "6befdbb8-51d4-46fa-b3c9-34ac765696c5",
+  "combined": 0.328,
+  "ego_norm": 0.328,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a series of intersections and junctions without any visible external agents or hazards requiring a reaction. Traffic lights and",
+  "ego_terms": {
+   "harsh_brake": 0.22,
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "552b6d3d-3d0a-485a-a9aa-e851023a8eae",
+  "combined": 0.327,
+  "ego_norm": 0.091,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white pickup truck cuts into the lane ahead of the ego vehicle, requiring the ego to slow down to maintain a safe following distance.",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "9ae7c268-1d99-4658-9561-52e0cf4ceaa7",
+  "combined": 0.327,
+  "ego_norm": 0.091,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The white car ahead of the ego vehicle brakes, causing the ego vehicle to slow down in response.",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "bb22088d-d4f3-486c-9ddb-4b9f54cb86ee",
+  "combined": 0.327,
+  "ego_norm": 0.091,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A vehicle ahead brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "8779c50d-b2d9-402a-b445-ae35f7dcf214",
+  "combined": 0.326,
+  "ego_norm": 0.326,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a consistent, unchanging nighttime scene with no visible external agents, obstacles, or interactions that would cause the ego vehicle to react. ",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "dbc81317-379d-42bc-a630-ad90dfcf05cd",
+  "combined": 0.326,
+  "ego_norm": 0.326,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady, unobstructed drive at night with no visible external agents, obstacles, or traffic interactions that would cause the ego vehicle to br",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "3a5a8bae-1f1b-4e79-aba8-aa81b2d90a5c",
+  "combined": 0.318,
+  "ego_norm": 0.288,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through intersections and along the road without any visible external agents or hazards requiring a reaction; no braking, yielding, or避",
+  "ego_terms": {
+   "harsh_brake": 1.58,
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_left",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "9e939ef1-feab-4a3f-a60c-f98614fd8db1",
+  "combined": 0.314,
+  "ego_norm": 0.254,
+  "vlm_score": 0.2,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A black car ahead brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "c10f201b-6663-43bf-92e9-52d58a4f279a",
+  "combined": 0.308,
+  "ego_norm": 0.308,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through the intersection without any visible external agents or hazards influencing its behavior; no braking, yielding, or swerving is",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "23af1521-1f35-4fc3-a94c-d2dc62a29697",
+  "combined": 0.308,
+  "ego_norm": 0.308,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle drives straight through the frames without any visible external agents or hazards influencing its behavior. No braking, yielding, or swerving is",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "6564a20a-3fe5-476d-ac17-8d7db14033a2",
+  "combined": 0.308,
+  "ego_norm": 0.308,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a consistent nighttime driving scene with no visible external agents or hazards causing the ego vehicle to react. The vehicle appears to be in a",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "58b79352-d22f-44e1-aa69-b743d5791039",
+  "combined": 0.308,
+  "ego_norm": 0.308,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a smooth, continuous forward drive with no visible external agents or hazards causing a reaction. No braking, yielding, or evasive maneuvers are",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "208a9fee-7da8-4fde-a111-a4d1ea79d3bb",
+  "combined": 0.308,
+  "ego_norm": 0.308,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady forward drive at night with no visible external agents or hazards causing a reaction; the vehicle maintains consistent speed and lane.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "f0db5d89-5a29-4323-9126-c3926a0cfd68",
+  "combined": 0.304,
+  "ego_norm": 0.304,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle drives straight through a clear intersection and continues on a multi-lane road without any external agents or hazards requiring a reaction.",
+  "ego_terms": {
+   "harsh_brake": 1.75,
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "a7e2fcf7-5b62-485a-ab6d-3e22c4497a8c",
+  "combined": 0.302,
+  "ego_norm": 0.272,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a multi-lane road with no visible external agents or hazards affecting its path. Traffic appears light and orderly, with",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "30a39599-c652-48af-a6d8-d3c3270b5525",
+  "combined": 0.3,
+  "ego_norm": 0.3,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a green light at an intersection without any visible external agents or hazards requiring a reaction. No braking, yielding, or避",
+  "ego_terms": {
+   "harsh_brake": 1.71,
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "4b5a5563-c9ad-4c35-abea-85f57507e9f9",
+  "combined": 0.3,
+  "ego_norm": 0.3,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a consistent, unobstructed view of a parking lot with no visible external agents, obstacles, or changes in traffic conditions that would promptE",
+  "ego_terms": {
+   "harsh_brake": 0.71,
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "ae781298-adec-4785-9660-71e3ee029e7a",
+  "combined": 0.3,
+  "ego_norm": 0.0,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A red car cuts into the lane from the right, requiring the ego vehicle to slow down and yield.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "19045b5b-6b04-4a74-b87f-f6cae2690589",
+  "combined": 0.3,
+  "ego_norm": 0.0,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "cut_in",
+  "reason": "A white van cuts into the lane ahead of the ego vehicle, requiring a slight adjustment in position to maintain safe clearance.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "921a1626-0ba6-4043-883e-ccc5d2f77adc",
+  "combined": 0.3,
+  "ego_norm": 0.0,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "yield_negotiation",
+  "reason": "The ego vehicle slows and yields to cross traffic at an intersection, indicating a need to negotiate right-of-way with other vehicles.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "ffe3661e-eb69-4b7b-a5ac-5b21eece0850",
+  "combined": 0.3,
+  "ego_norm": 0.0,
+  "vlm_score": 0.3,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The ego vehicle is following a red pickup truck and must maintain a safe following distance, indicating a mild lead-vehicle-following reaction.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "6709a848-b4bd-459d-8bef-fe0818d0defd",
+  "combined": 0.294,
+  "ego_norm": 0.294,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show steady forward motion on a multi-lane road with no visible external agents or hazards causing the ego vehicle to react. No braking, yielding, or",
+  "ego_terms": {
+   "harsh_brake": 0.64,
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "ed732366-3430-4cc9-98be-5e4008246681",
+  "combined": 0.294,
+  "ego_norm": 0.294,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a clear road with no visible external agents, obstacles, or traffic interactions that would cause the ego vehicle's",
+  "ego_terms": {
+   "harsh_brake": 0.64,
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_left",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "145aa5c9-d92c-4791-b2da-709437ae3719",
+  "combined": 0.289,
+  "ego_norm": 0.289,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a clear road with no visible external agents, obstacles, or traffic interactions that would cause the ego vehicle's",
+  "ego_terms": {
+   "harsh_brake": 1.19,
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "7f97ee8c-4444-4c98-9eec-fad6c9f33cbe",
+  "combined": 0.288,
+  "ego_norm": 0.288,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a clear road with no visible external agents, obstacles, or interactions that would cause the ego vehicle to react.",
+  "ego_terms": {
+   "harsh_brake": 0.58,
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "28aa7b4e-a098-403f-8004-f45bf8a75228",
+  "combined": 0.286,
+  "ego_norm": 0.286,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a smooth, straight drive through an intersection and along a multi-lane road with no visible external agents or hazards causing a reaction. No j",
+  "ego_terms": {
+   "harsh_brake": 0.56,
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "024415a5-94a5-4810-9c27-a72314b55146",
+  "combined": 0.284,
+  "ego_norm": 0.254,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a green light and continues straight on a multi-lane road with no visible interaction with other agents or obstacles.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "02d7faf9-28f9-47cc-9598-93c559e46fbd",
+  "combined": 0.284,
+  "ego_norm": 0.254,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle moves through a gas station area without any visible external agents or hazards causing a reaction; it appears to be routine driving with no need to",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "8955a48a-28ff-4a6a-8b46-db4c2eba6d93",
+  "combined": 0.284,
+  "ego_norm": 0.254,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle moves through a parking lot with no visible external agents or hazards requiring a reaction; it proceeds smoothly without braking, yielding, or swiv",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "aee24bd7-1ac6-4479-b9fa-b65748648aa5",
+  "combined": 0.272,
+  "ego_norm": 0.272,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a clear road with no visible external agents, obstacles, or traffic interactions that would cause the ego vehicle's",
+  "ego_terms": {
+   "decel_repeat": 3.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "9103508a-dd5d-4be3-aab4-0a8e4c6a2b38",
+  "combined": 0.267,
+  "ego_norm": 0.267,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a red light without stopping, indicating no external agent or hazard requiring a reaction.",
+  "ego_terms": {
+   "harsh_brake": 0.94,
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "f55070ab-eb2d-4b48-9095-e40624a86508",
+  "combined": 0.266,
+  "ego_norm": 0.236,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds along a residential road without any visible external agents or hazards requiring a reaction; no braking, yielding, or evasive maneuvers.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "cb51a9c5-9691-47e2-83f3-79c584457b75",
+  "combined": 0.266,
+  "ego_norm": 0.236,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds smoothly through intersections and along the road without any visible external agents or hazards requiring a reaction. No braking, yielding",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "963b6db2-095e-4250-8693-1045e65e0688",
+  "combined": 0.266,
+  "ego_norm": 0.236,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds straight through a school zone with no visible external agents or hazards requiring a reaction. The road is clear, and there are no signs,.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "ac94c0ee-3ea4-4783-8d4a-b14c27f27cb9",
+  "combined": 0.266,
+  "ego_norm": 0.236,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through intersections with green lights and continues straight without reacting to any other agents or hazards.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "f01db357-fe74-4c5d-92a4-e1587af3781b",
+  "combined": 0.266,
+  "ego_norm": 0.236,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle drives straight through a curved road with no visible external agents or hazards requiring a reaction. No lead vehicles, pedestrians, or cross-",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "5397c62a-4a94-445d-b47c-e1b5e530929e",
+  "combined": 0.266,
+  "ego_norm": 0.236,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds straight through a residential area with no visible external agents or hazards requiring a reaction. The drive appears routine with no lane",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "71f427aa-0c20-46b8-a5fc-8996ae3d74df",
+  "combined": 0.266,
+  "ego_norm": 0.236,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds through a green light and continues straight without reacting to any external agents or hazards.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "02a41ec5-ef12-46fe-b9fa-f90f6fb0072f",
+  "combined": 0.254,
+  "ego_norm": 0.254,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a clear road with no visible external agents, obstacles, or interactions that would cause the ego vehicle to react.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "cfae11f3-6359-4898-8bda-e900ccc4627a",
+  "combined": 0.253,
+  "ego_norm": 0.253,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a highway at night with no visible external agents or hazards causing a reaction. No braking, swerving, or yielding",
+  "ego_terms": {
+   "harsh_brake": 1.19,
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "0c78f60c-cf94-4e16-923c-a1e777b1ddfe",
+  "combined": 0.249,
+  "ego_norm": 0.163,
+  "vlm_score": 0.2,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The bus ahead brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "50cc0e64-44bf-4d68-a0b9-463c9b73f883",
+  "combined": 0.249,
+  "ego_norm": 0.163,
+  "vlm_score": 0.2,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The vehicle ahead brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "0d335b77-3917-42d9-91fd-848ae98624ed",
+  "combined": 0.248,
+  "ego_norm": 0.218,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a clear road with no visible external agents or hazards causing a reaction; traffic appears light and unobstructed.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "28b7d2f1-8f98-4d99-8682-8c817c30f76d",
+  "combined": 0.248,
+  "ego_norm": 0.218,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a green light and continues straight on a clear road with no visible external agents or hazards requiring a reaction.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "155ee706-b62f-4d95-8e89-f3d9456a20f4",
+  "combined": 0.244,
+  "ego_norm": 0.145,
+  "vlm_score": 0.2,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A vehicle ahead brakes, prompting the ego vehicle to slow down.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "010d63dd-23e0-4176-8b7a-be10103e085f",
+  "combined": 0.243,
+  "ego_norm": 0.243,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a continuous forward drive along a road with no visible external agents or hazards causing a reaction. The vehicle maintains a steady path and速度",
+  "ego_terms": {
+   "harsh_brake": 0.08,
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "c2ef6d2c-ba8c-4fe4-b369-391cd5b71770",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds smoothly through the sequence without any visible external agents or hazards requiring a reaction. No braking, yielding, or evasive actions",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "0bb0b453-0077-4175-bc9a-6707c4fa1938",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a clear road with no visible external agents, obstacles, or interactions that would cause the ego vehicle to brake,",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "37bbfc37-93c4-40d2-b021-3e376e03fde6",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady forward progression through a commercial area with no visible external agents (vehicles, pedestrians) causing the ego vehicle to brake,",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "9f6fe5b9-0e5b-49b6-866f-9eb4e2957898",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a clear road with no visible external agents or hazards requiring a reaction. No braking, yielding, or evasive maneuvers.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "lane_change": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "lane_change_left",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "350cce19-8055-4b8a-b70c-791929f2d969",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a static, unchanging scene with no visible external agents or hazards affecting the ego vehicle's behavior. There are no signs of braking, swerv",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "5e606c58-d416-418f-99af-f442c0bee1af",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle drives straight through a parking garage without any visible external agents or hazards requiring a reaction.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_left",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "32bdd0d5-9c4d-4515-8843-f14bb0dcd12a",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle drives straight through intersections and along residential streets without any visible external agents or hazards requiring a reaction. No cut‑",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "f08addbf-c29c-4d9b-8707-fd61195ba924",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle drives straight on a clear highway with no visible external agents or hazards affecting its behavior; no braking, yielding, or evasive maneuvers",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "fef866c2-72f9-4eab-bab6-fb989e262832",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a consistent forward progression through a parking lot with no visible external agents or hazards requiring a reaction from the ego vehicle. No刹",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "2f360d20-5479-4742-82f3-97d1cf4c51d4",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady, straight path through a parking lot at night with no visible external agents or hazards causing a reaction. The vehicle maintains a巡航（",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "1dd205f2-e519-4935-b496-cd169e5553ae",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds straight through a green light at an intersection without any visible external agents or hazards requiring a reaction.",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "070c5dfc-4aef-4fec-a868-d5f0c877f7e9",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady, straight drive at night with no visible external agents, obstacles, or traffic interactions that would cause the ego vehicle to brake,",
+  "ego_terms": {
+   "decel_repeat": 2.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "06208cdb-9893-4580-a83e-6b1b3cc70618",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a signalized intersection and continues straight on a multi-lane road without any visible external agents or hazards requiringa",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "2fff5488-f4d8-4e04-94fa-375db63e6a9f",
+  "combined": 0.236,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "No external agents or hazards are present; the vehicle proceeds through a stop sign without yielding or reacting to other road users.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "6a637d30-7b82-456b-a75f-f8bb442675b9",
+  "combined": 0.227,
+  "ego_norm": 0.091,
+  "vlm_score": 0.2,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "The ego vehicle is following a lead vehicle that brakes, causing the ego to slow down in response.",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "294dfe6a-c624-466e-8f56-ff77db1a3ac7",
+  "combined": 0.221,
+  "ego_norm": 0.221,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a multi-lane highway at night with no visible external agents or hazards affecting its behavior. No braking, swerving, or",
+  "ego_terms": {
+   "harsh_brake": 0.44,
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "00bc2719-c610-4b58-a5dd-5911ed67238f",
+  "combined": 0.218,
+  "ego_norm": 0.218,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through intersections and along straight roads without any visible external agents or hazards requiring a reaction. No braking, swerves",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "3ccb5069-d9dc-456e-b3cd-b8b386ddaf35",
+  "combined": 0.211,
+  "ego_norm": 0.181,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds straight through a wet, well-lit intersection at night with no visible cross traffic, pedestrians, or obstacles. The motion is steady and a",
+  "ego_terms": {
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "1d3778ac-cfaf-4d29-b276-4ec22552c4ff",
+  "combined": 0.211,
+  "ego_norm": 0.181,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is cruising straight on a multi-lane road with light traffic, maintaining consistent speed and lane position. No other vehicles are cutting in, ",
+  "ego_terms": {
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "05d18110-2a90-405a-84a9-e14a373e5e53",
+  "combined": 0.211,
+  "ego_norm": 0.181,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a multi-lane road with no visible external agents or hazards causing a reaction. Traffic appears light and free-flowing,",
+  "ego_terms": {
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "c7cc4ea5-56fc-430d-8e53-020568c33bf2",
+  "combined": 0.211,
+  "ego_norm": 0.181,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a highway with no visible external agents or hazards affecting its behavior. No other vehicles are cutting in, no lead-ve",
+  "ego_terms": {
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "2f518870-9d7b-4f0f-b5f7-b162f56906d8",
+  "combined": 0.2,
+  "ego_norm": 0.0,
+  "vlm_score": 0.2,
+  "reactive": true,
+  "event_type": "lead_brake",
+  "reason": "A vehicle ahead in the same lane brakes, causing the ego vehicle to slow down.",
+  "ego_terms": {},
+  "ego_kinds": [
+   "accelerate"
+  ]
+ },
+ {
+  "clip_id": "5f96ba17-c35e-4cd2-a53c-7765138da437",
+  "combined": 0.193,
+  "ego_norm": 0.163,
+  "vlm_score": 0.1,
+  "reactive": true,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a red light, which is a traffic violation and not a reaction to an external agent or hazard.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "79f30fb2-e5cd-430e-af5c-04b102e23420",
+  "combined": 0.193,
+  "ego_norm": 0.163,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds straight through a green light at an intersection without any visible external agents or hazards requiring a reaction. No lead vehicle,",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "de28ab7a-12da-4a27-b065-99d542695fc9",
+  "combined": 0.19,
+  "ego_norm": 0.16,
+  "vlm_score": 0.1,
+  "reactive": true,
+  "event_type": "none",
+  "reason": "Routine highway cruising with no clear external agent or hazard causing a reaction.",
+  "ego_terms": {
+   "harsh_brake": 0.76,
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "1ee06a9f-bf8e-40e9-a7bd-031e4ecb574d",
+  "combined": 0.186,
+  "ego_norm": 0.186,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a straight, clear road with no visible external agents, obstacles, or interactions that would cause the ego vehicle to react. The vehicle is in ",
+  "ego_terms": {
+   "harsh_brake": 1.05,
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "11407cb7-9527-4de9-a6b0-34b8c8ff2256",
+  "combined": 0.186,
+  "ego_norm": 0.186,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight through an intersection with no visible external agents or hazards affecting its path. Traffic appears light, and there are",
+  "ego_terms": {
+   "harsh_brake": 0.45,
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "f00fc3c0-e0a0-4322-833b-249bbfb2d258",
+  "combined": 0.181,
+  "ego_norm": 0.181,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight through a residential street with parked cars on both sides, maintaining a steady speed without any visible external agents,",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "80d3e83b-646a-4a20-80cc-fb059082be36",
+  "combined": 0.181,
+  "ego_norm": 0.181,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a highway with no visible external agents or hazards affecting its behavior. No braking, swerving, or yielding is evident",
+  "ego_terms": {
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "c7f15c87-5870-4e67-b8bc-663acfa31d60",
+  "combined": 0.181,
+  "ego_norm": 0.181,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show steady forward motion on a multi-lane road with no visible interactions, sudden changes, or external agents affecting the ego vehicle's behavior",
+  "ego_terms": {
+   "decel_repeat": 2.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "b73bb859-4130-477e-bc2a-feb310a5870c",
+  "combined": 0.181,
+  "ego_norm": 0.181,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a consistent, unobstructed view of a parking lot or commercial area with no visible external agents, obstacles, or traffic interactions that the",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "0268c800-523f-46d9-88b8-6cc780ec79ba",
+  "combined": 0.175,
+  "ego_norm": 0.145,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a highway with no visible external agents or hazards affecting its behavior. No sudden braking, swerving, or yielding is",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "5c794ccf-be3c-453f-b022-d71990cdb8d1",
+  "combined": 0.175,
+  "ego_norm": 0.145,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight through a parking lot with no visible external agents or hazards requiring a reaction. The path is clear, and there are no o",
+  "ego_terms": {
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "490b3462-f465-4394-8800-490b125d473e",
+  "combined": 0.175,
+  "ego_norm": 0.145,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle moves through a parking lot with no visible external agents or hazards requiring a reaction; it proceeds smoothly without braking, yielding, or避",
+  "ego_terms": {
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "bc9a2fd2-d19d-4e8b-a66b-82c00cbe7572",
+  "combined": 0.175,
+  "ego_norm": 0.145,
+  "vlm_score": 0.1,
+  "reactive": true,
+  "event_type": "none",
+  "reason": "The ego vehicle is stopped at a red light, and no other agents are directly influencing its behavior.",
+  "ego_terms": {
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "09f5051f-4bf8-444b-a2bf-10669ef6847a",
+  "combined": 0.175,
+  "ego_norm": 0.145,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle moves steadily through a parking lot with no visible external agents or hazards requiring a reaction; no braking, yielding, or evasive maneuvers are",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "2c9bfbf8-b509-4096-ba65-7ade32174792",
+  "combined": 0.175,
+  "ego_norm": 0.145,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady forward drive through a suburban area with no visible external agents or hazards causing a reaction. The vehicle maintains a consistent",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "da2d13f2-d1c4-43cc-85e9-926397e9f8b5",
+  "combined": 0.175,
+  "ego_norm": 0.145,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight through an intersection with green traffic lights, following behind a white car. No other vehicles cut in, no pedestrians or",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "b88c6362-e004-495a-a353-1693aa7ce8f5",
+  "combined": 0.175,
+  "ego_norm": 0.145,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a clear road with no visible external agents or hazards requiring a reaction. The frames show consistent forward motion,",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "5d06d81e-63df-4ac3-97cb-36e2c54ac273",
+  "combined": 0.175,
+  "ego_norm": 0.145,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight in the right lane of a multi-lane road with no visible external agents or hazards affecting its path. No other vehicles are",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "2bee5dfe-de9e-4de3-b5f0-2c430cd54e38",
+  "combined": 0.175,
+  "ego_norm": 0.145,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle moves steadily forward in a parking lot at night, with no visible external agents or hazards causing a reaction. The motion is smooth and unimpeded.",
+  "ego_terms": {
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "stop",
+   "turn_left",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "492443df-88dc-40c8-b197-8ee3143a2f62",
+  "combined": 0.175,
+  "ego_norm": 0.145,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds through a wet, nighttime intersection with no visible external agents or hazards requiring a reaction; traffic appears free-flowing and no-",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "ef2f8e47-5c2d-4667-9f77-612009decd3d",
+  "combined": 0.163,
+  "ego_norm": 0.163,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a green light and continues straight on a clear road without any external agents or hazards influencing its behavior.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "266df230-ff49-416b-9729-93be93de586a",
+  "combined": 0.163,
+  "ego_norm": 0.163,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a red light and continues straight without reacting to any external agents or hazards.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "2d4b0957-a160-4553-ae40-dba795b7e600",
+  "combined": 0.163,
+  "ego_norm": 0.163,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady forward drive through an archway and open road with no visible external agents, obstacles, or interactions that would cause a reaction.",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "d39ee2be-1451-4f7e-aecc-82991df19b19",
+  "combined": 0.163,
+  "ego_norm": 0.163,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds through a series of traffic lights without any visible external agents or hazards requiring a reaction. The vehicle maintains a steady,",
+  "ego_terms": {
+   "stop_go": 0.8,
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "110b5fa7-6a35-47c7-af59-43ac082c52ce",
+  "combined": 0.145,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady, straight drive at night with no visible external agents, obstacles, or changes in behavior that would indicate a reaction.",
+  "ego_terms": {
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "8cda92bb-179b-4484-b4e9-2325378c1ccf",
+  "combined": 0.145,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a static indoor garage environment with no visible external agents, hazards, or interactions that would cause the ego vehicle to react. The view",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "e968014e-2c60-4269-8bbd-7087153919b2",
+  "combined": 0.145,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a smooth, straight drive through a parking lot with no visible external agents or hazards causing the ego vehicle to react. No braking, yielding",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "a8a6b035-05e1-4b0a-9e10-485503da080d",
+  "combined": 0.145,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a continuous forward drive at night with no visible external agents, obstacles, or interactions that would cause the ego vehicle to react. The E",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "803594fb-4f9a-420b-a43e-f0f73974f59c",
+  "combined": 0.145,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a smooth, continuous drive through a residential area at dusk with no visible external agents or hazards causing the ego vehicle to react. No br",
+  "ego_terms": {
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "7519dd78-79f4-4736-ba71-a3ba52ef4492",
+  "combined": 0.145,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady forward drive with no visible external agents, obstacles, or interactions that would cause the ego vehicle to brake, swerve, or yield. ",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "ba21ae81-3dad-42a4-9309-0260dcbd13cf",
+  "combined": 0.145,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle moves steadily through a wet parking lot with no visible external agents or hazards causing a reaction; no braking, yielding, or evasive maneuvers.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "f13b1618-7281-47f2-9a6c-30ef7a2b06c9",
+  "combined": 0.145,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight at night with no visible external agents or hazards influencing its behavior; no braking, yielding, or evasive maneuvers are",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "422234b2-33c7-4d43-bb18-793e20308904",
+  "combined": 0.145,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a smooth, straight drive with no visible external agents or hazards causing a reaction. No braking, yielding, or evasive maneuvers are evident.",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "8cb49594-a2d9-4e87-91ac-71df55b11127",
+  "combined": 0.145,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a consistent forward progression along a parking lot or similar area with no visible external agents, obstacles, or changes in behavior that the",
+  "ego_terms": {
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "31d56336-2afc-4dfd-8852-790ae361d8c8",
+  "combined": 0.145,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a continuous forward drive through a residential area with no visible external agents or hazards causing a reaction. No braking, yielding, or sw",
+  "ego_terms": {
+   "decel_repeat": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "00c551fa-3e58-43a0-8e24-97e145f93061",
+  "combined": 0.145,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a consistent, unobstructed view of a static scene with no visible external agents, obstacles, or changes in traffic conditions that would prompt",
+  "ego_terms": {
+   "stop": 1.0,
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "83b1912d-376a-4ab9-9dac-ac8c092b572d",
+  "combined": 0.127,
+  "ego_norm": 0.091,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle is driving straight on a clear road with no visible external agents or hazards affecting its behavior.",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "2a8c293b-1560-4b81-994a-4ad5352a8e93",
+  "combined": 0.127,
+  "ego_norm": 0.091,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a clear road with no visible external agents or hazards affecting its behavior. No other vehicles are cutting in, no jayw",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "ee702166-af87-417c-9175-303869b84927",
+  "combined": 0.127,
+  "ego_norm": 0.091,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle proceeds straight through an intersection with green traffic lights, maintaining steady speed without reacting to any external agents or hazards",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "2a0ec5c4-2244-4902-a7e6-d10ecbdc6c89",
+  "combined": 0.127,
+  "ego_norm": 0.091,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "Routine driving with no clear external agents or hazards affecting the ego vehicle's behavior.",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "58ed0212-8521-4184-a0ae-7d4f0dc423f7",
+  "combined": 0.127,
+  "ego_norm": 0.091,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds straight at a steady speed with no visible external agents or hazards influencing its behavior; no braking, yielding, or evasive maneuvers.",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "3f5974b8-a9ae-4f2b-96a6-9fc0db6587ea",
+  "combined": 0.127,
+  "ego_norm": 0.091,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a multi-lane highway with light traffic. No other vehicles are cutting into the lane, and there are no visible obstacles,",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "915386c4-b6e4-422d-bd7e-ad28c40c99db",
+  "combined": 0.116,
+  "ego_norm": 0.054,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle is driving straight on a clear road with no visible external agents or hazards affecting its behavior.",
+  "ego_terms": {
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "7883fa60-86dd-40e6-8c4d-fbbdd5b2155c",
+  "combined": 0.116,
+  "ego_norm": 0.054,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds straight through an intersection with no visible external agents or hazards requiring a reaction. The path is clear, and no other vehicles,",
+  "ego_terms": {
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "3a54e004-9c6c-4950-8947-53b10309aed7",
+  "combined": 0.1,
+  "ego_norm": 0.0,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds through multiple intersections and junctions without any visible external agents or hazards requiring a reaction. The driving appears to be",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "0c963419-8d75-4039-9ee0-8cd1d56004ed",
+  "combined": 0.1,
+  "ego_norm": 0.0,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "Routine cruising with no clear external agent or hazard causing a reaction; no visible cut-in, yielding, or sudden braking.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "67278800-e17b-4f1c-8935-de322bba69d3",
+  "combined": 0.1,
+  "ego_norm": 0.0,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle proceeds through green lights at intersections without any visible external agents or hazards requiring a reaction.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "3e2d2afa-cb15-4cbe-b955-839f06a6cf49",
+  "combined": 0.1,
+  "ego_norm": 0.0,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a wet road with light traffic, maintaining steady speed without reacting to any specific external agents or hazards.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "e353ba2a-17c6-40c8-a698-27a62eebda43",
+  "combined": 0.1,
+  "ego_norm": 0.0,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle is moving straight through a wet, decorated street at night with no visible external agents or hazards causing a reaction; traffic appears light and",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "933ef751-1c2b-4f80-8d8f-4b398ba6fb09",
+  "combined": 0.1,
+  "ego_norm": 0.0,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a clear road with no visible external agents or hazards affecting its behavior. No braking, yielding, or evasive actions.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "5669e7b8-94d8-4ae0-a6cc-8333ceb9805b",
+  "combined": 0.1,
+  "ego_norm": 0.0,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is cruising straight on a highway with no visible external agents or hazards requiring a reaction. Traffic is light and steady, with no cut-ins,",
+  "ego_terms": {},
+  "ego_kinds": [
+   "accelerate"
+  ]
+ },
+ {
+  "clip_id": "b8e0474e-3686-453f-af64-9bdfe4d01b29",
+  "combined": 0.1,
+  "ego_norm": 0.0,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is cruising on a wet highway with light traffic; no immediate external agents or hazards are causing a reaction. The vehicle maintains steady, b",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "f32b6613-280d-4d78-924a-c2a348e4c8d6",
+  "combined": 0.1,
+  "ego_norm": 0.0,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show steady forward motion on a dark road with no visible external agents or hazards causing a reaction; the vehicle maintains consistent speed and a",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "76d9d4b7-a0d5-4fcf-b36a-d9922f6cbe5b",
+  "combined": 0.1,
+  "ego_norm": 0.0,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle is driving straight in rainy conditions with no visible external agents or hazards causing a reaction; the road appears clear ahead.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "47b68f99-3eec-450d-97ab-dc8f00a551de",
+  "combined": 0.1,
+  "ego_norm": 0.0,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle drives straight through a parking lot with no visible external agents or hazards requiring a reaction. The path is clear, and no other vehicles,",
+  "ego_terms": {},
+  "ego_kinds": [
+   "accelerate"
+  ]
+ },
+ {
+  "clip_id": "db1e3aa8-c547-4673-ad8b-564bf323694b",
+  "combined": 0.1,
+  "ego_norm": 0.0,
+  "vlm_score": 0.1,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show steady forward motion on a straight road with no visible external agents or hazards causing a reaction. No braking, swerving, or yielding isobs",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "b77dfbe6-1efd-4561-b04e-f2785e99dd1e",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is cruising straight on a highway with no visible external agents or hazards causing a reaction. Traffic is light and steady, with no cut-ins, j",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "2613a760-2839-4581-bd31-6cb5e0056a74",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a clear, straight road with no visible external agents or hazards affecting its behavior. No braking, yielding, or swerv",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "0d99e260-e276-41f6-8ad8-5fb931b725e9",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a wet road at night with no visible external agents or hazards causing a reaction; no braking, yielding, or evasive",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "f336931b-157b-4d9b-93ee-96e444eb7f62",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight through a parking lot with no visible external agents or hazards causing a reaction; other vehicles are parked or stationary",
+  "ego_terms": {
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "1d9c3f2e-aca3-40ce-9a10-0beed5a6c3cd",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show steady forward motion through an intersection with no visible external agents causing the ego vehicle to brake, swerve, or yield. Traffic flows,",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "317fea33-b13c-4168-98b2-c3fa45159909",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a clear road with no visible external agents, obstacles, or changes in behavior that would indicate a reaction to a",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "f6faaedf-6530-455d-b43e-a592a5c18dab",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a consistent, unobstructed nighttime driving path with no visible external agents, obstacles, or interactions that would cause the ego vehicle's",
+  "ego_terms": {
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "10977b58-348c-4a2f-84e6-e38b16606d89",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady forward drive at night in rainy conditions with no visible external agents or hazards causing a reaction. The vehicle maintains a clear",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "abd86489-454f-4c65-ab96-3f2b653f838a",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a highway with no visible external agents or hazards affecting its behavior. No braking, yielding, or evasive maneuvers.",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "fcbf0804-cfc2-462f-bdef-125785d00801",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady, unobstructed drive through a parking lot at night with no visible external agents, obstacles, or traffic interactions that would cause",
+  "ego_terms": {
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "413bdfbe-9def-48ef-ac43-78ed0734bafb",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is cruising straight on a highway at night with no visible external agents or hazards affecting its behavior. No braking, yielding, or evasive动作",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "c969a003-7db8-46b9-afe3-5924bcb15f99",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle drives straight through multiple intersections without reacting to any external agents or hazards; no braking, yielding, or swerving is observed",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "01d624d4-82b3-43c4-8eda-61464634afda",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle moves smoothly through a parking lot at night without any visible external agents or hazards requiring a reaction. No braking, yielding, or evasive",
+  "ego_terms": {
+   "stop": 1.0
+  },
+  "ego_kinds": [
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "236fcae4-1fa7-492b-8431-0a5647fec8ed",
+  "combined": 0.091,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle drives straight through a residential area with no visible external agents or hazards requiring a reaction. No braking, yielding, or evasive man",
+  "ego_terms": {
+   "decel_repeat": 1.0
+  },
+  "ego_kinds": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "b234bf96-4999-49f1-a338-f74f4c49e865",
+  "combined": 0.054,
+  "ego_norm": 0.054,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a static parking lot scene with no visible external agents or hazards affecting the ego vehicle's behavior. The vehicle appears to be moving at ",
+  "ego_terms": {
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "8561f2d3-fb64-4f06-8a4c-3868c4745e73",
+  "combined": 0.054,
+  "ego_norm": 0.054,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle drives straight through a parking lot at night with no visible external agents or hazards influencing its behavior; no braking, yielding, or evasive",
+  "ego_terms": {
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "8097f4b4-2467-40a6-9a32-f5fb8e66b6b6",
+  "combined": 0.054,
+  "ego_norm": 0.054,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a consistent forward progression through a parking lot with no visible external agents or hazards causing the ego vehicle to brake, swerve, or y",
+  "ego_terms": {
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "ca7ab4b8-abf2-427e-972d-91c814c7c375",
+  "combined": 0.054,
+  "ego_norm": 0.054,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show steady forward motion on a residential street at night with no visible external agents or hazards causing a reaction. No braking, swerving, or-y",
+  "ego_terms": {
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "accelerate",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "13e61f3e-68f3-4749-9be4-1538301ce191",
+  "combined": 0.054,
+  "ego_norm": 0.054,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a smooth, straight drive through a parking lot with no visible external agents or hazards requiring a reaction. No braking, yielding, or evasive",
+  "ego_terms": {
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "082929f3-b897-416f-aca7-dacf2072023b",
+  "combined": 0.054,
+  "ego_norm": 0.054,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a consistent forward progression through a parking lot with no visible external agents or hazards causing the ego vehicle to react. No sudden br",
+  "ego_terms": {
+   "turn": 0.6
+  },
+  "ego_kinds": [
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "c91b44ea-ed36-473a-94ae-0a01542ea6f1",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show steady forward motion on a multi-lane road at night with no visible external agents or hazards causing a reaction. No braking, swerving, or stop",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "1c765afd-9e2c-420d-b18a-4245aa795130",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is cruising straight on a highway at night with no visible external agents or hazards affecting its behavior. No braking, yielding, or swerving.",
+  "ego_terms": {},
+  "ego_kinds": [
+   "accelerate"
+  ]
+ },
+ {
+  "clip_id": "1b5c596d-4549-42ec-8c5f-c321d3e55a11",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show steady highway driving with no visible external agents or hazards causing the ego vehicle to brake, swerve, or yield. Traffic appears free-flow,",
+  "ego_terms": {},
+  "ego_kinds": [
+   "accelerate"
+  ]
+ },
+ {
+  "clip_id": "9d6c407a-5db3-43d2-9f68-3d19a98fb7a9",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a multi-lane road at night with no visible external agents or hazards causing a reaction. No braking, yielding, or避",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "3689d75d-6345-4392-b8f7-1d4c1394ead7",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a clear road with no visible external agents or hazards affecting its behavior. No braking, yielding, or evasive actions.",
+  "ego_terms": {},
+  "ego_kinds": [
+   "accelerate"
+  ]
+ },
+ {
+  "clip_id": "52ada4cc-6c8f-4d3e-8088-e13d50d15101",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady forward drive through a residential area with no visible external agents or hazards causing the ego vehicle to brake, slow, stop, or sw",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "1da516e0-d0ff-469b-8375-1f57fb5f2280",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is cruising straight on a highway with no visible external agents or hazards requiring a reaction. Traffic is light and steady, with no cut-ins,",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "464c86e9-0f6b-47ec-a1f7-ffca32448313",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show steady highway driving at night with no visible external agents or hazards causing the ego vehicle to brake, swerve, or yield. All frames depict",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "fbea4945-0bf4-4e39-aff3-0e0d604d0617",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a consistent, unobstructed view of a parking area at night with no visible external agents, obstacles, or changes in vehicle behavior that would",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "585daf3f-05d5-4143-9a33-796a584e600e",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a highway with no visible external agents or hazards causing a reaction; the vehicle maintains steady speed and no避",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "a2725491-4fbc-49e8-8ba4-7135408d09ea",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a clear road with no visible external agents or hazards causing a reaction from the ego vehicle.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "c3876bb9-67c3-46dc-af58-c98d521320f1",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a straight road with no visible external agents, obstacles, or changes in behavior that would indicate a reaction.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "78fde1db-15ab-4b87-84c6-1777eb8b12d8",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is driving straight on a clear highway at night with no visible external agents or hazards affecting its behavior. No braking, swerving, or lane",
+  "ego_terms": {},
+  "ego_kinds": [
+   "accelerate"
+  ]
+ },
+ {
+  "clip_id": "1ae363a3-b054-4b98-a617-9bc1551a7f8a",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle is driving straight on a clear highway with no visible external agents or hazards affecting its path.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "8576e640-0cd5-41b6-a50f-428784f1bfc8",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a straight road with no visible external agents, obstacles, or changes in behavior that would indicate a reaction.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "c5a50063-09fa-49ca-b5ac-e5fc2bfea34a",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a steady, straight drive at night with no visible external agents, obstacles, or changes in behavior that would indicate a reaction to another.",
+  "ego_terms": {},
+  "ego_kinds": [
+   "accelerate"
+  ]
+ },
+ {
+  "clip_id": "e73e8785-e2fa-4e15-a98a-10c426c5734a",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a highway at night with no visible external agents or hazards causing a reaction. No braking, swerving, or yielding",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "4648a368-60b8-4a6a-b2c6-35acc0043f97",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous straight highway driving with no visible external agents or hazards affecting the ego vehicle's behavior. No braking, swerving, or ev",
+  "ego_terms": {},
+  "ego_kinds": [
+   "accelerate"
+  ]
+ },
+ {
+  "clip_id": "7329802f-0bc3-4435-9f74-9da14dd20ad1",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a wet road at night with no visible external agents or hazards causing a reaction. No braking, yielding, or evasive",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "e4347afb-f386-4352-b1f4-28731be40bb2",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "No external agents or hazards are present; the ego vehicle is driving straight on a clear road with no visible interactions or reactions needed.",
+  "ego_terms": {},
+  "ego_kinds": [
+   "accelerate"
+  ]
+ },
+ {
+  "clip_id": "8506678d-aad0-46bc-b43a-385b558e9817",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a straight road with no visible external agents, obstacles, or changes in behavior that would indicate a reaction.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "6d0c9f00-cac9-4267-8fd9-6cf38fd65718",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a wet road at night with no visible external agents or hazards causing a reaction. No braking, yielding, or swerves",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "a936394d-23d4-49b3-9bdc-90c31818c1da",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The vehicle is driving straight at night on a clear road with no visible external agents or hazards affecting its path. No braking, yielding, or evasive actions",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "650f3235-b99e-46a7-b342-98feac79d0b9",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show continuous forward motion on a clear road with no visible external agents, obstacles, or changes in behavior that would indicate a reaction to a",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "7a9196e4-27f9-45ac-b6cd-d6ca3c873ff1",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a smooth, continuous drive through a parking lot at night with no visible external agents, obstacles, or traffic interactions that would cause a",
+  "ego_terms": {},
+  "ego_kinds": [
+   "accelerate"
+  ]
+ },
+ {
+  "clip_id": "b5d8c7b9-80f9-469a-9c87-d868db474a22",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The ego vehicle is cruising straight on a highway with no visible external agents or hazards affecting its behavior. No braking, yielding, or evasive maneuvers.",
+  "ego_terms": {},
+  "ego_kinds": []
+ },
+ {
+  "clip_id": "2eed7e73-5329-424f-be50-4b644f8b5b31",
+  "combined": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "reactive": false,
+  "event_type": "none",
+  "reason": "The frames show a smooth, straight drive with no visible external agents or hazards causing a reaction. The vehicle maintains a steady path and speed without br",
+  "ego_terms": {},
+  "ego_kinds": [
+   "accelerate"
+  ]
+ }
+]

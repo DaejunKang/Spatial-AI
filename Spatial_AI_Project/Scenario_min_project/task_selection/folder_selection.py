@@ -131,9 +131,51 @@ def groups_from_root(root):
             for sub in root.iterdir() if sub.is_dir()}
 
 
+def _verify(n=300, k=50, seed=42):
+    """폴더 구분 없이 event 기반(반응성) 선별만 검증 — run_selection과 동일 300 표본.
+    산출: gold_label/select/{event_index.html, event_select{n}.json} (Stage1 index.html과 비교용)."""
+    from collections import Counter
+    import review
+    from client import build_client_pool
+    OUT = Path("/home/daejun/vla-tagging/gold_label/select")
+    sample, total, ngold, npool = review.sample_pool(n, seed)
+    print(f"[verify] 전체 {total} · gold {ngold} 제외 · 유효 {npool} · 무작위 {len(sample)} (seed={seed})", flush=True)
+    pool = build_client_pool()
+    print(f"replica {len(pool)} · 반응성 랭킹(폴더 무시, 단일 그룹)...", flush=True)
+    rows = rank_folder(sample, pool)                       # 전체를 한 그룹으로
+    top = rows[:k]
+    n_react = sum(1 for r in top if r["vlm"].get("reactive"))
+    evt = Counter(r["vlm"].get("event_type") for r in top)
+    print(f"상위{k}: reactive={n_react}/{k} · event_type={dict(evt)}", flush=True)
+    # 저장 + 리뷰 rows 규약 변환
+    slim = [{"clip_id": r["clip_id"], "combined": r["combined"], "ego_norm": r["ego_norm"],
+             "vlm_score": r["vlm_score"], "reactive": r["vlm"].get("reactive"),
+             "event_type": r["vlm"].get("event_type"), "reason": r["vlm"].get("reason"),
+             "ego_terms": r["ego"].get("terms"), "ego_kinds": r["ego"].get("kinds", [])} for r in rows]
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / f"event_select{n}.json").write_text(json.dumps(slim, ensure_ascii=False, indent=1))
+    (OUT / f"event_selected{k}.json").write_text(json.dumps([r["clip_id"] for r in top], ensure_ascii=False, indent=1))
+    print(f"상위{k} 영상 트랜스코드...", flush=True)
+    review.transcode_top([r["clip_id"] for r in top], OUT / "vids")
+    rrows = [{"clip_id": r["clip_id"], "combined": r["combined"], "ego_norm": r["ego_norm"],
+              "vlm_score": r["vlm_score"],
+              "label": (r["vlm"].get("event_type") or "none") + (" ✓반응" if r["vlm"].get("reactive") else ""),
+              "reason": r["vlm"].get("reason"), "arc": r["ego"].get("kinds", [])} for r in rows]
+    review.build_review_html(
+        rrows, k, f"Event 기반 선별 검증 — 상위 {k}/{len(rows)}",
+        f"반응성 combined=max(ego,vlm)+0.3·min · 폴더 무시(단일 그룹) · reactive {n_react}/{k} · {dict(evt)}",
+        OUT / "event_index.html")
+    print(f"완료 → {OUT}/event_index.html · event_select{n}.json", flush=True)
+
+
 def _main():
+    if len(sys.argv) > 1 and sys.argv[1] == "verify":
+        _verify(int(sys.argv[2]) if len(sys.argv) > 2 else 300,
+                int(sys.argv[3]) if len(sys.argv) > 3 else 50,
+                int(sys.argv[4]) if len(sys.argv) > 4 else 42)
+        return
     if len(sys.argv) < 2:
-        raise SystemExit("usage: run_selection … | folder_selection.py <groups.json|root_dir> [top_k]")
+        raise SystemExit("usage: folder_selection.py verify [N K seed] | <groups.json|root_dir> [top_k]")
     src = sys.argv[1]
     top_k = int(sys.argv[2]) if len(sys.argv) > 2 else None
     if os.path.isdir(src):
