@@ -98,7 +98,7 @@ as of 2026-07-23 · 담당 djkang · 자율주행 로그 long-tail 상황 자동
 **코드·산출물**
 - [ ] 파이프라인: `events.py`(egomotion) · `taxo_detect.py`(obj3d GT검출) · `vlm_verify.py`(VLM 검증·융합) · `map_lane.py`(map 경계선·분기) · `taxonomy.py`(공유 어휘) · `classify073.py`
 - [ ] gold/평가: `gold.json`, `gold_label/`(라벨링 도구·리뷰·데모, `python3 -m http.server 8080`로 서빙 중)
-- [ ] 문서: `PROJECT_DESIGN.md`(개념설계), `Concept_Design_v3`(최신 실행명세), `SELECTION_STAGE1.md`, 본 리포트
+- [ ] 문서: `PROJECT_DESIGN.md`(설계 정본), `SELECTION_STAGE1.md`, 본 리포트
 
 **어휘·규격 (합의 필요)**
 - [ ] `taxonomy.py` = 추출/검색 단일 기준(4축: ego기동·상호작용·맥락·규칙 + ODD).

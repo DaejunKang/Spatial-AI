@@ -13,8 +13,7 @@
 ## 문서 목록
 | 문서 | Task | 내용 |
 |---|---|---|
-| `PROJECT_DESIGN.md` | multi | 개념설계 v3 (단일 설계본) |
-| `Concept_Design_v3` | multi | 실행 명세(Phase A–F) |
+| `PROJECT_DESIGN.md` | multi | **설계 정본** — 개요·아키텍처·Phase·현재상태·업무분담 (구 Concept_Design_v3 흡수) |
 | `TEAM_REPORT.md` | multi | 팀 공유 리포트 |
 | `taxonomy_merge_report.md` | episode(Track2) | 병합 근거·정정 |
 | `STRUCTURE.md` | common | 데이터셋 구조 |

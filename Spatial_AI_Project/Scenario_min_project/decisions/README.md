@@ -16,4 +16,4 @@
 - 확정된 불변식은 `CLAUDE.md §2`(design constraints)에 요약, 이 폴더엔 **이력·이유 전문**.
 
 ## 참고 문서
-`../CLAUDE.md`(코드설명+제약) · `../PROJECT_DESIGN.md`(개념 v3) · `../Concept_Design_v3`(실행명세) · `../taxonomy_merge_report.md`
+`../CLAUDE.md`(코드설명+제약) · `../docs/PROJECT_DESIGN.md`(설계 정본) · `../docs/taxonomy_merge_report.md`

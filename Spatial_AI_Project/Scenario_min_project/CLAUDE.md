@@ -22,7 +22,7 @@ task_episode/    Task「episode」(Stage2, 활성만):
                    base   classify073(consolidate)·taxo_detect·map_lane·vlm_verify
                    Track1 tag_v08          Track2 candidates·retrieve
 legacy/          활성이 import 안 하는 구세대(v0.7.1 tagger·vocab·prompts·window/event_tagger·test/batch_readout, norm_embed)
-docs/            설계·리포트(PROJECT_DESIGN·Concept_Design_v3·TEAM_REPORT·taxonomy_merge_report·STRUCTURE 등)
+docs/            설계·리포트(PROJECT_DESIGN[정본]·TEAM_REPORT·taxonomy_merge_report·STRUCTURE 등)
 decisions/       설계 변경/개선 이력(DESIGN_LOG)
 ```
 - import는 `run.sh` PYTHONPATH + venv `.pth`가 `common/task_selection/task_episode/legacy`를 top-level 경로로 올려 유지.
@@ -72,7 +72,7 @@ docker container logs <container>  # 전체형(짧은 `docker logs` 아님)
 - **obj3d**: lidar frame `x=전방, y=좌우`, `boxes_3d`=11-DOF. **vx/vy 16%만 유효(위치미분 사용), occlusion NaN, 일부 clip `track_id` 컬럼 누락**(로더 방어).
 - **map `centerlines`=실제 차선 경계선**(명칭 오류). ego차로=y=0 사이 인접 경계쌍. **`is_intersection` 전부 0(죽음)**, `timestamp_us`=0→frame_idx 선형매핑.
 - **VLM 호출**: `guided_json`으로 enum 강제. 결정론 `TEMPERATURE=0`(config); **n-vote는 temp>0 명시**. 입력 `video_url`(subclip data URI, `SEND_FPS=10`이나 서버 ~12프레임 캡) 또는 `image_url`(몽타주).
-- 설계 문서: `PROJECT_DESIGN.md`·`Concept_Design_v3`·`TEAM_REPORT.md`·`SELECTION_STAGE1.md`·`taxonomy_merge_report.md`.
+- 설계 문서: `PROJECT_DESIGN.md`(정본)·`TEAM_REPORT.md`·`SELECTION_STAGE1.md`·`taxonomy_merge_report.md`.
 
 ---
 

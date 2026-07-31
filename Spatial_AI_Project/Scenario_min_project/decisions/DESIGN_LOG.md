@@ -4,6 +4,12 @@
 
 ---
 
+## [2026-07-31] 설계 문서 통합 — PROJECT_DESIGN 단일 정본
+> **Task**: multi
+- 변경: `docs/Concept_Design_v3` 제거(내용 90% PROJECT_DESIGN와 중복, 고유=수용기준만). `docs/PROJECT_DESIGN.md`를 **단일 정본**으로 재작성 — 개요(2단계·Track1/Track2)·데이터·아키텍처·관점전환·택소노미(5축60키)·Phase 상태표·가드레일·핵심발견·수용기준(흡수)·**현재상태&업무분담(WP1–8)**·코드맵. 참조 갱신(docs/README·CLAUDE.md·TEAM_REPORT·decisions/README).
+- 이유: 두 문서 역할 동일(v3 설계)인데 stale(2026-07-23, Track1/Track2·windowed 승격·taxonomy 확장 미반영). 팀 업무 분담 목적이라 최신 상태+작업 패키지 필요.
+- 영향: 설계 정본 1개로 단일화. 팀 공유/분담 기준.
+
 ## [2026-07-31] Stage1 기본 선별 = 윈도우+video 반응성으로 승격
 > **Task**: selection
 - 변경: `run_selection.py` 기본 경로를 **윈도우+video 반응성**(`folder_selection.rank_folder_windowed`)으로 전환. 몽타주 흥미도는 `montage` 서브커맨드(legacy)로 강등. `review.py`로 트랜스코드/HTML/샘플링 공용화(중복 제거). canonical 산출(index.html/select300.json)을 windowed 결과로 정본화(기존 winevent 재사용, 재컴퓨트 없이 `review` 재생성).
