@@ -1,0 +1,135 @@
+[
+ {
+  "clip_id": "024415a5-94a5-4810-9c27-a72314b55146",
+  "clip_score": 2.24,
+  "score_norm": 1.0,
+  "ego_norm": 0.846,
+  "vlm_score": 0.8,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    5.7
+   ],
+   "event_type": "yield_negotiation",
+   "reactive": true,
+   "reason": "A bus cuts into the ego lane from the left, requiring the ego vehicle to yield and adjust its motion.",
+   "ego_react": 2.8,
+   "terms": {
+    "decel_repeat": 1.0,
+    "stop_go": 0.8,
+    "stop": 1.0
+   }
+  }
+ },
+ {
+  "clip_id": "9e991ba1-499a-4169-8051-9df875b92f35",
+  "clip_score": 1.0,
+  "score_norm": 0.446,
+  "ego_norm": 0.302,
+  "vlm_score": 1.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    1.7,
+    16.0
+   ],
+   "event_type": "ped_cyclist",
+   "reactive": true,
+   "reason": "Pedestrians crossing the road cause the ego vehicle to stop and wait.",
+   "ego_react": 1.0,
+   "terms": {
+    "stop": 1.0
+   }
+  }
+ },
+ {
+  "clip_id": "110b5fa7-6a35-47c7-af59-43ac082c52ce",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.483,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    10.7
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle moves forward in a parking lot with no other vehicles or obstacles in its path.",
+   "ego_react": 1.6,
+   "terms": {
+    "stop": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "30a39599-c652-48af-a6d8-d3c3270b5525",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 1.0,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    6.9,
+    20.2
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is driving straight and then makes a left turn at an intersection without any external agents or hazards in its path. The maneuver is smooth and",
+   "ego_react": 3.31,
+   "terms": {
+    "harsh_brake": 1.71,
+    "decel_repeat": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "c2ef6d2c-ba8c-4fe4-b369-391cd5b71770",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.785,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    1.7,
+    16.8
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is driving straight on a single-lane road with no other vehicles or obstacles in its path. The road markings and signs indicate a stop ahead, so",
+   "ego_react": 2.6,
+   "terms": {
+    "decel_repeat": 2.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "392296ce-dd9d-4458-9b27-4b55697a4c08",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.544,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    15.3
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is stationary at a red light, and the motion change (waiting) is due to the traffic signal, not an external agent or hazard in the ego's path.",
+   "ego_react": 1.8,
+   "terms": {
+    "stop_go": 0.8,
+    "stop": 1.0
+   }
+  }
+ }
+]
