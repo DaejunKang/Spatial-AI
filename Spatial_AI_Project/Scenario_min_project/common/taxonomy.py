@@ -76,15 +76,22 @@ ODD = [
 ]
 ODD_DIMS = [d[0] for d in ODD]
 
-# arc(egomotion)에서 명확히 자동 도출되는 ego 기동 — 사람이 라벨하지 않고 GT 권위로 확정.
-# (평가에서 제외: 파이프라인도 동일 GT를 쓰므로 순환/자명)
-AUTO_GT = {"turn_left", "turn_right", "stop", "u_turn"}
-# 나머지(의미오버레이/상호작용/맥락)는 사람이 에피소드별로 라벨 = gold 평가 대상
+# AUTO_GT = **순수 종방향 kinematic**만 — egomotion rule 단독으로 확정(순환/자명, 평가 제외).
+# 근거(CLAUDE.md §2 두 층위): 종방향(stop/accel/decel/creep)은 egomotion 만으로 결정.
+# 경로 기동(turn_left/turn_right/u_turn/lane_change)은 CAN yaw 만으론 under-determined
+# (교차로 turn/커브/분기/u-turn 구분 불가) → CAN 은 전이 트리거일 뿐, 라벨은 map∪VLM 맥락 해소.
+# 따라서 turn류는 AUTO_GT 에서 제외 = HUMAN_KEYS(gold 평가 대상)로 이동.
+AUTO_GT = {"stop"}
+# 나머지(경로기동·의미오버레이·상호작용·맥락)는 사람이 에피소드별로 라벨 = gold 평가 대상
 HUMAN_KEYS = [k for k in KEYS if k not in AUTO_GT]
 
 
 def auto_tags_from_arc(kinds):
-    """egomotion arc kinds → 자동 확정 ego 기동 태그."""
+    """egomotion arc kinds → ego 기동 태그.
+
+    stop 은 순수 kinematic 확정(AUTO_GT). turn_left/right/u_turn 은 **CAN 트리거 후보**로
+    방출(Phase A recall)하되 GT-확정 아님 — 방향/유형은 하류에서 map∪VLM 맥락으로 해소.
+    """
     out = []
     ks = set(kinds)
     if "u_turn" in ks:

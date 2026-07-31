@@ -95,16 +95,16 @@ docker container logs <container>  # 전체형(짧은 `docker logs` 아님)
 - **경로(turn_L/R·lane_change_L/R·u_turn) = CAN이 전이만 트리거 + 라벨은 맥락 해소 = map ∪ VLM 앙상블.** *근거: CAN yaw만으론 교차로 turn / 커브 / 분기 / u-turn 구분 불가(under-determined).*
 - **앵커의 취지 = 전이 감지**: ego_action 전이 지점이 상황 발생 지점 → rule/CAN이 이를 잡아 key_frame·세그먼트·종방향 확정.
 - **생성은 순방향 SD→SA→MA**: 모델은 관찰 선행(scene_description → critical_components → …)으로 생성하고 **MA(ego_action)는 앵커+맥락으로 마지막에 해소**. behavior-first 금지.
-- ⚠️ **현재 코드 드리프트(수정 대상, 지금 수정 아님)**: `tag_v08.V08_SCHEMA`는 ego_action(MA)을 배열 선두에 둔 model-generated 필드(behavior-first). → 순방향(MA-last)으로 재정렬 + ego_action은 rule/맥락 앵커로 처리. `taxonomy.AUTO_GT={turn/stop/u_turn}`도 turn류를 순수 rule로 취급 중 → turn/lane_change/u_turn은 "CAN트리거+맥락해소" 계층으로 이동(stop/accel/decel/creep만 순수 kinematic).
+- ✅ **드리프트 수정 완료(2026-07-31)**: `tag_v08.V08_SCHEMA`를 순방향(MA-last)으로 재정렬 — `[scene_description, critical_components, chain_of_causation, cause, ego_action]`. ego_action은 `_ground_ego_action`(rule/arc 앵커)로 최종 해소. `taxonomy.AUTO_GT={stop}`로 축소 — turn/u_turn류는 `HUMAN_KEYS`(맥락해소·평가대상)로 이동, `auto_tags_from_arc`는 Phase A recall 후보로만 turn 방출.
 
 ## cause 축
 - `cause ∈ {agent, signal, road_geometry, other}` (boolean agent_present 아님).
 - **cause = "그 ego 전이가 왜 일어났나"의 답** — 전이 결부(ego_action과 동일 앵커 구조).
 - **모든 값이 GT 앵커 + 맥락 함께로 해소** — agent조차 tracking만으론 부족(진행로 agent 존재 ≠ 전이 원인). *근거: 인과는 GT 증거만으론 under-determined.*
-- **cause = 큐레이션 1차 query 키** → **Track2 검색 인덱스에 cause 축 반드시 포함**(현재 v3/taxonomy에 없음 = 갭, 추가 필요).
+- **cause = 큐레이션 1차 query 키** → **Track2 검색 인덱스에 cause 축 포함**. ✅ 추가 완료(2026-07-31): `candidates._cause_candidates`(카테고리→cause 사상, provenance·vf 승계, 증거없음→other) → `retrieve._cause_axis`가 index_clip 에피소드에 `cause:[{cause, confidence, channels, from}]` 축 노출. recall-first 후보(단일 확정은 Phase C).
 
 ## Track2 검색 입도 (패밀리별)
-- **교차로 sig/unsig = 유지(병합 금지)**: cause와 결부(비신호=양보 정차 vs 신호=신호 정지)라 하류 query 가치 있음. ⚠️ 현재 `retrieve.MERGE`가 sig+unsig→intersection 병합 중 → **정정 대상**.
+- **교차로 sig/unsig = 유지(병합 금지)**: cause와 결부(비신호=양보 정차 vs 신호=신호 정지)라 하류 query 가치 있음. ✅ 정정 완료(2026-07-31): `retrieve.MERGE`에서 intersection_* 제거, sig/unsig 별도 카테고리 유지(`road_urban_arterial/backstreet→road_surface`만 병합).
 - **도로유형(urban/backstreet 등) = 병합 허용**: 판단 자체가 애매하고 query 가치 낮음.
 - **병합 규칙**: (a) 판단이 애매하고 **(b) 하류 query/cause 가치가 없을 때만** 병합. 원본은 `sub` 보존.
 

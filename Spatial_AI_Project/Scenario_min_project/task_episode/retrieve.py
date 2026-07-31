@@ -3,11 +3,12 @@
 
 Phase A 후보(OR 합집합)를 검색 가능한 형태로:
   - 정규화(별칭·슬롯 흡수) — guided-decode라 슬롯오류 적음, 별칭만.
-  - 병합: 태거가 못 구분하는 쌍(혼동 리포트 근거)을 검색용으로 통합.
-    · road_urban_arterial + road_backstreet → road_surface (도심/이면 생활도로)
-    · intersection_signalized + intersection_unsignalized → intersection (신호상태 구분은 Phase C에서 복원)
+  - 병합 규칙: (a) 판단이 애매하고 ∧ (b) 하류 query/cause 가치가 없을 때만 통합.
+    · road_urban_arterial + road_backstreet → road_surface (도로유형: 애매+query가치 낮음 → 병합 OK)
+    · 교차로 sig/unsig 는 **병합 금지** — cause 와 결부(비신호=양보 정차 vs 신호=신호 정지)라
+      하류 query 가치가 있음. 별도 카테고리로 유지.
   - confidence: 채널·vote·multi로 후보 순위.
-정밀 구분(sig/unsig, urban/backstreet)은 Phase C(precision·human)에서 회복.
+정밀 구분(urban/backstreet)만 Phase C(precision·human)에서 회복.
 """
 
 ALIAS = {}   # 슬롯/별칭 (guided-decode라 현재 비어있음. 필요시 추가)
@@ -15,13 +16,11 @@ ALIAS = {}   # 슬롯/별칭 (guided-decode라 현재 비어있음. 필요시 �
 MERGE = {
     "road_urban_arterial": "road_surface",
     "road_backstreet": "road_surface",
-    "intersection_signalized": "intersection",
-    "intersection_unsignalized": "intersection",
+    # 교차로 sig/unsig 는 cause 결부 → 병합하지 않음(하류 query 가치).
 }
 # 병합 대표 → 원본 세부(Phase C 복원용)
 MERGE_SUB = {
     "road_surface": ["road_urban_arterial", "road_backstreet"],
-    "intersection": ["intersection_signalized", "intersection_unsignalized"],
 }
 
 
@@ -46,9 +45,21 @@ def confidence(info):
     return round(min(s, 1.0), 2)
 
 
+def _cause_axis(ep):
+    """cause 후보 → 랭킹된 cause 축. cause 는 큐레이션 1차 query 키(별도 축으로 노출).
+    반환: [{cause, confidence, channels, from}...정렬]  (없으면 [])."""
+    causes = []
+    for cz, ci in ep.get("cause_candidates", {}).items():
+        info = {"channels": ci.get("channels", []), "vote_fraction": ci.get("vote_fraction", 0.0)}
+        causes.append({"cause": cz, "confidence": confidence(info),
+                       "channels": info["channels"], "from": ci.get("from", [])})
+    causes.sort(key=lambda c: -c["confidence"])
+    return causes
+
+
 def index_clip(cand_clip):
     """Phase A clip 결과 → 정규화·병합·랭킹된 검색 인덱스.
-    반환: {clip_id, episodes:[{win, tags:[{cat, confidence, channels, sub?}...정렬]}]}
+    반환: {clip_id, episodes:[{win, tags:[{cat, confidence, channels, sub?}...], cause:[...]}]}
     """
     out = {"clip_id": cand_clip.get("clip_id"), "episodes": []}
     for ep in cand_clip.get("episodes", []):
@@ -69,5 +80,6 @@ def index_clip(cand_clip):
             tags.append(t)
         tags.sort(key=lambda t: -t["confidence"])
         out["episodes"].append({"win": ep["win"], "arc": ep.get("arc", []),
-                                "ego_action": ep.get("ego_action"), "tags": tags})
+                                "ego_action": ep.get("ego_action"), "tags": tags,
+                                "cause": _cause_axis(ep)})   # cause 축(전이의 "왜")
     return out

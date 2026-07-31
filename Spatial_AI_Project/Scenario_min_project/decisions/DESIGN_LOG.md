@@ -4,6 +4,16 @@
 
 ---
 
+## [2026-07-31] 드리프트 4건 코드 정합화 (설계 불변식 반영)
+> **Task**: multi (Track1+Track2)
+- 변경:
+  1. `tag_v08.V08_SCHEMA` 순방향 재정렬 — required=`[scene_description, critical_components, chain_of_causation, cause, ego_action]`(MA-last). guided decoding이 관찰 선행 후 MA를 마지막 커밋. rec 출력도 동일 순서. ego_action은 `_ground_ego_action`(rule/arc 앵커) 유지.
+  2. `taxonomy.AUTO_GT` = `{stop}`(순수 종방향 kinematic만). turn/u_turn류는 `HUMAN_KEYS`(맥락해소·평가대상)로 이동. `auto_tags_from_arc`는 Phase A recall 후보로 turn 계속 방출(주석 명시).
+  3. `retrieve.MERGE`에서 `intersection_signalized/unsignalized` 제거 — sig/unsig 별도 유지. 도로유형(`road_urban_arterial/backstreet→road_surface`) 병합만 존치.
+  4. Track2 인덱스에 **cause 축** 추가 — `candidates._cause_candidates`(카테고리→cause 사상, channels·vote_fraction 승계, 증거없음→other) → `retrieve._cause_axis`가 `index_clip` 에피소드에 `cause:[{cause, confidence, channels, from}]` 노출.
+- 이유: CLAUDE.md §2 확정 불변식(순방향 SD→SA→MA / 두 층위 ego_action / cause=1차 query 키 / sig·unsig=cause 결부)과 코드 정합. [[ego_action 두 층위]]·[[cause 축]]·[[Track2 검색 입도]] 반영.
+- 영향: `tag_v08.py`·`taxonomy.py`·`retrieve.py`·`candidates.py`. 스모크 테스트 4/4 통과, import ACTIVE 16/16. cause 단일 확정·상호작용 gt∩vlm은 Phase C 미구현(후속).
+
 ## [2026-07-31] 저장소 정리: legacy/docs 분리, 활성/legacy 판별 가능화
 > **Task**: multi
 - 변경: 활성이 import 안 하는 구세대(`tagger`·`vocab`·`prompts`·`window/event_tagger`·`test/batch_readout`·`norm_embed`)를 `legacy/`로, 설계문서를 `docs/`로 분리. `build_client_pool`을 `common/client.py`로 추출. `legacy/docs/decisions`는 공통 폴더 + 파일별 Task 라벨.

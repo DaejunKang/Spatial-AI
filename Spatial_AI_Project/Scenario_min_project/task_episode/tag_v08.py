@@ -94,13 +94,13 @@ _CAUSE_ENUM = ["agent", "signal", "road_geometry", "other"]
 _VRU_ENUM = ["crossing", "about_to_cross", "walking_along", "stationary", None]
 
 # maxLength/maxItems 로 출력 길이 강제 제한 (nano 모델 장황→truncate 방지)
-# ego_action·cause 를 모델 이해(scene/coc)에서 추출 — rule 대신 의미 기반(arc/GT 는 grounding).
+# 순방향(관찰 선행) 생성: guided decoding 은 스키마 property 순서로 토큰을 커밋하므로
+# 관찰(scene→critical→coc)을 먼저, cause, 그리고 MA(ego_action)를 **마지막**에 둔다.
+# ego_action(MA)은 여기서 모델이 맥락 후보로 내되, 최종은 rule/arc 앵커(_ground_ego_action)로 해소.
 V08_SCHEMA = {
     "type": "object", "additionalProperties": False,
-    "required": ["ego_action", "cause", "scene_description", "critical_components", "chain_of_causation"],
+    "required": ["scene_description", "critical_components", "chain_of_causation", "cause", "ego_action"],
     "properties": {
-        "ego_action": {"type": "string", "enum": EGO_ACTIONS},
-        "cause": {"type": "string", "enum": _CAUSE_ENUM},
         "scene_description": {"type": "string", "maxLength": 400},
         "ego_intent": {"type": "string", "maxLength": 150},
         "critical_components": {"type": "array", "maxItems": 6, "items": {
@@ -111,7 +111,10 @@ V08_SCHEMA = {
                            # 모델이 enum 에서 직접 분류(guided decoding). 객체 아니면 null.
                            "object_type": {"type": ["string", "null"], "enum": OBJECT_TYPES + [None]},
                            "relation": {"type": ["string", "null"], "enum": RELATIONS + [None]}}}},
-        "chain_of_causation": {"type": "string", "maxLength": 400}}}
+        "chain_of_causation": {"type": "string", "maxLength": 400},
+        # cause·ego_action(MA) 은 관찰 뒤에 — 순방향(behavior-first 금지)
+        "cause": {"type": "string", "enum": _CAUSE_ENUM},
+        "ego_action": {"type": "string", "enum": EGO_ACTIONS}}}
 
 
 def _reason(client, uri, hint):
@@ -271,16 +274,17 @@ def tag_clip_v08(client, path, clip_id: str) -> dict:
                     if not _signal_present(client, _frame_uri(path, ep["onset"])):
                         cause = "other"
 
+            # 순방향(관찰→cause→MA) 순서로 기록: SD → critical → coc → cause → ego_action(앵커 해소)
             rec = {
                 "segment_id": i, "window": [round(w0, 2), round(w1, 2)],
                 "key_frame_t": round(ep["onset"], 2),
-                "ego_context": {"ego_action": ego_action, "arc": ep["kinds"],
-                                "arc_rule": ep["ego_action"]},  # arc-rule 라벨도 참고 보관
-                "cause": cause,
                 "scene_description": v.get("scene_description"),
                 "ego_intent": v.get("ego_intent"),
                 "critical_components": comps,
                 "chain_of_causation": v.get("chain_of_causation"),
+                "cause": cause,
+                "ego_context": {"ego_action": ego_action, "arc": ep["kinds"],
+                                "arc_rule": ep["ego_action"]},  # MA: rule/arc 앵커로 해소, arc-rule 라벨 참고 보관
                 "consistency": consistency, "think": think}
             rec["search_tags"] = _search_tags(rec)
             recs.append(rec)

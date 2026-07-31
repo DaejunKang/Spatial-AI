@@ -26,6 +26,43 @@ VOTE_N = 5
 VOTE_TEMP = 0.7
 LEAD_IN = 3.0
 
+# cause 축(전이의 "왜") 후보 매핑 — 각 present 카테고리를 cause 로 사상.
+# recall-first: 단일 확정이 아니라 후보 집합(provenance 부착). 정밀 단일해소는 Phase C.
+# 근거(CLAUDE.md §2): cause = ego 전이의 답, 큐레이션 1차 query 키 → Track2 인덱스 필수.
+_CAUSE_OF = {
+    # agent 상호작용(진행로 상대) — 단, GT+맥락 필요(존재≠원인)이나 recall 후보로 부착
+    "cut_in": "agent", "cut_in_attempt": "agent", "cut_out": "agent",
+    "lead_decel": "agent", "close_follow": "agent", "ped_crossing": "agent",
+    "vru_roadside": "agent", "cyclist_pm_near": "agent", "oncoming_encroach": "agent",
+    "agent_yields_to_ego": "agent", "ego_yields_to_agent": "agent",
+    # signal — 신호등/신호 상태
+    "red_light_stop": "signal", "signal_go": "signal", "intersection_signalized": "signal",
+    # road_geometry — 도로 형상(교차로 협상/합류/회전/분기)
+    "intersection_unsignalized": "road_geometry", "roundabout": "road_geometry",
+    "merge_onramp": "road_geometry", "turn_left": "road_geometry",
+    "turn_right": "road_geometry", "u_turn": "road_geometry",
+}
+
+
+def _cause_candidates(cand):
+    """present 카테고리 dict → cause 후보 {cause:{channels, vote_fraction, from}}.
+    provenance(channels)·vf 는 기여 카테고리에서 승계. 증거 없으면 other."""
+    cc = {}
+    for cat, e in cand.items():
+        cz = _CAUSE_OF.get(cat)
+        if not cz:
+            continue
+        m = cc.setdefault(cz, {"channels": set(), "vote_fraction": 0.0, "from": []})
+        m["channels"] |= set(e.get("channels", []))
+        m["vote_fraction"] = max(m["vote_fraction"], e.get("vote_fraction", 0.0) or 0.0)
+        m["from"].append(cat)
+    if not cc:
+        cc["other"] = {"channels": set(), "vote_fraction": 0.0, "from": []}
+    # set → sorted list (JSON 직렬화)
+    return {cz: {"channels": sorted(m["channels"]),
+                 "vote_fraction": round(m["vote_fraction"], 2),
+                 "from": sorted(m["from"])} for cz, m in cc.items()}
+
 
 def _vlm_present(client, uri, cands, arc):
     """VLM 1회 호출 → present 상호작용 ∪ 맥락 카테고리 집합."""
@@ -110,8 +147,10 @@ def generate_candidates(client_pool, path, clip_id, n_vote=VOTE_N):
                 e["channels"].append("vlm"); e["vote_fraction"] = round(cnt / n_vote, 2)
             for c, e in cand.items():
                 e["multi"] = len(e["channels"]) >= 2       # 다채널 동시 = 고신뢰
+            cause_cands = _cause_candidates(cand)          # cause 축(전이의 "왜") 후보
             out_eps.append({"win": [round(w0, 1), round(w1, 1)], "arc": ep["kinds"],
-                            "ego_action": ep["ego_action"], "candidates": cand})
+                            "ego_action": ep["ego_action"], "candidates": cand,
+                            "cause_candidates": cause_cands})
     finally:
         import shutil; shutil.rmtree(tmp, ignore_errors=True)
     return {"clip_id": clip_id, "ok": True, "dur": dur, "episodes": out_eps}

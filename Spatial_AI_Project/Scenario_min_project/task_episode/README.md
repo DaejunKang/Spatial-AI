@@ -33,6 +33,6 @@
 ## 핵심 원칙 (상위 CLAUDE.md §2)
 - **세그먼트 = ego 전이 = critical**. non-reactive 제외. `key_frame_t`=rule.
 - **ego_action 두 층위**: 종방향=rule 확정 / 경로=CAN트리거+맥락(map∪VLM). **앵커+순방향 SD→SA→MA 생성**.
-- **cause** = 전이의 "왜", GT+맥락, **Track2 검색 인덱스에 필요**(현재 미포함=갭).
+- **cause** = 전이의 "왜", GT+맥락. ✅ Track2 인덱스에 cause 축 추가(`candidates._cause_candidates`→`retrieve._cause_axis`).
 - **Track2 병합**: 교차로 sig/unsig 유지(cause 결부) / 도로유형만 병합.
-- ⚠️ 드리프트(수정 대상): `tag_v08` MA-first schema, `AUTO_GT`의 turn류, `retrieve.MERGE`의 sig/unsig.
+- ✅ 드리프트 수정 완료(2026-07-31): `tag_v08` 스키마 순방향(MA-last), `AUTO_GT={stop}`, `retrieve.MERGE` sig/unsig 복원, cause 축 추가.
