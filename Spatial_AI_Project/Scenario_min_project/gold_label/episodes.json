@@ -1,0 +1,975 @@
+{
+"0368ee92-fea9-4b12-bcca-a219e4a2cd2a": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.5,
+"t1": 8.5,
+"arc": [
+"decelerate",
+"turn_right"
+],
+"ego_action": "ego_turn_right",
+"auto": [
+"turn_right"
+]
+}
+]
+},
+"04794436-e760-424f-98f2-4a66c6188ebe": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 5.5,
+"t1": 6.4,
+"arc": [
+"accelerate"
+],
+"ego_action": "ego_lane_keep",
+"auto": []
+}
+]
+},
+"07784c52-2a27-4975-bea8-d0535137f967": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 4.3,
+"t1": 8.1,
+"arc": [
+"decelerate"
+],
+"ego_action": "ego_lane_keep",
+"auto": []
+},
+{
+"t0": 10.9,
+"t1": 15.8,
+"arc": [
+"accelerate",
+"accelerate"
+],
+"ego_action": "ego_lane_keep",
+"auto": []
+}
+]
+},
+"0b83ef29-5dbe-4024-a4cc-945c3414a034": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 9.2,
+"arc": [
+"decelerate",
+"turn_right",
+"decelerate"
+],
+"ego_action": "ego_turn_right",
+"auto": [
+"turn_right"
+]
+},
+{
+"t0": 16.1,
+"t1": 16.5,
+"arc": [
+"accelerate"
+],
+"ego_action": "ego_lane_keep",
+"auto": []
+}
+]
+},
+"0c5239c7-a3d6-467a-9f32-bebb4a1bb436": {
+"dur": 20.1,
+"episodes": []
+},
+"136aa1d5-d4f4-4ad5-ac76-aa8ad2a5f059": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 17.5,
+"arc": [
+"decelerate",
+"stop",
+"accelerate",
+"turn_right",
+"decelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"turn_right",
+"stop"
+]
+}
+]
+},
+"1ed1a80e-952a-480c-a4f3-f1cad8bd307b": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 9.0,
+"arc": [
+"stop",
+"accelerate",
+"turn_left",
+"decelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"turn_left",
+"stop"
+]
+}
+]
+},
+"21ab6f60-0a84-4328-b354-75b2b359d7ec": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 3.8,
+"t1": 6.1,
+"arc": [
+"decelerate"
+],
+"ego_action": "ego_lane_keep",
+"auto": []
+}
+]
+},
+"25156bd2-2742-424e-9df2-0559ae9a806c": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 4.0,
+"arc": [
+"decelerate"
+],
+"ego_action": "ego_lane_keep",
+"auto": []
+},
+{
+"t0": 7.7,
+"t1": 19.5,
+"arc": [
+"turn_left",
+"accelerate",
+"accelerate"
+],
+"ego_action": "ego_turn_left",
+"auto": [
+"turn_left"
+]
+}
+]
+},
+"30cbf2f0-88b2-4aa9-9d8b-e2131b00b139": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 9.1,
+"t1": 19.6,
+"arc": [
+"decelerate",
+"stop",
+"accelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"3139da7e-6280-4331-a2aa-8eb37f0fc063": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 14.0,
+"arc": [
+"stop",
+"accelerate",
+"turn_left",
+"decelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"turn_left",
+"stop"
+]
+}
+]
+},
+"33103de7-92ad-41e3-a30c-42dfa8197225": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 7.1,
+"arc": [
+"turn_left",
+"decelerate"
+],
+"ego_action": "ego_turn_left",
+"auto": [
+"turn_left"
+]
+}
+]
+},
+"353de014-1456-4a9e-850b-f735f51df207": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 15.5,
+"t1": 20.1,
+"arc": [
+"decelerate",
+"stop"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"3ae63df5-20a3-4611-87c8-97c14b8c4a95": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 6.7,
+"arc": [
+"u_turn",
+"decelerate"
+],
+"ego_action": "ego_lane_keep",
+"auto": [
+"u_turn"
+]
+},
+{
+"t0": 16.2,
+"t1": 19.7,
+"arc": [
+"turn_left",
+"accelerate"
+],
+"ego_action": "ego_turn_left",
+"auto": [
+"turn_left"
+]
+}
+]
+},
+"3eb668d0-9e31-45dd-801f-924e01dac996": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 5.3,
+"arc": [
+"stop",
+"accelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"3f989021-51d2-4c50-a48a-930892291d3d": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 1.1,
+"t1": 20.1,
+"arc": [
+"decelerate",
+"stop",
+"accelerate",
+"turn_right",
+"accelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"turn_right",
+"stop"
+]
+}
+]
+},
+"44ba62cb-6b64-4de3-ae6d-073dcc86cad8": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.4,
+"t1": 12.1,
+"arc": [
+"decelerate",
+"turn_right",
+"decelerate"
+],
+"ego_action": "ego_turn_right",
+"auto": [
+"turn_right"
+]
+}
+]
+},
+"486fd0bf-dd4b-4d59-a5be-543f08201c67": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 7.2,
+"arc": [
+"stop",
+"accelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+},
+{
+"t0": 13.1,
+"t1": 15.8,
+"arc": [
+"accelerate"
+],
+"ego_action": "ego_lane_keep",
+"auto": []
+}
+]
+},
+"490d822f-8899-4ce1-a0ec-d64e19fd3942": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 1.4,
+"t1": 13.4,
+"arc": [
+"decelerate",
+"u_turn"
+],
+"ego_action": "ego_lane_keep",
+"auto": [
+"u_turn"
+]
+}
+]
+},
+"4a4c0ed2-2bb0-43d1-987c-79f51fa27c41": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 5.6,
+"arc": [
+"stop",
+"accelerate",
+"turn_right"
+],
+"ego_action": "ego_stop",
+"auto": [
+"turn_right",
+"stop"
+]
+}
+]
+},
+"65292248-6e1c-41c3-a4d6-2ad92914f1db": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 13.6,
+"arc": [
+"stop",
+"accelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"671c0777-19ad-4113-86ab-69e5add9d3bd": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 5.7,
+"t1": 9.6,
+"arc": [
+"turn_right",
+"decelerate"
+],
+"ego_action": "ego_turn_right",
+"auto": [
+"turn_right"
+]
+}
+]
+},
+"699779aa-bfee-42e4-9256-47b154f613ea": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 10.4,
+"arc": [
+"stop",
+"accelerate",
+"accelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"752afc48-dc67-43f8-88f4-252066e8a1e5": {
+"dur": 19.9,
+"episodes": [
+{
+"t0": 4.6,
+"t1": 19.9,
+"arc": [
+"decelerate",
+"stop"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"7af8779b-2599-4b1e-9f7e-3d4cc4a5de2b": {
+"dur": 20.1,
+"episodes": []
+},
+"7d9cdf3a-881f-4984-b489-a77076ddff96": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 1.3,
+"t1": 12.0,
+"arc": [
+"decelerate",
+"stop",
+"accelerate",
+"turn_left",
+"decelerate",
+"decelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"turn_left",
+"stop"
+]
+}
+]
+},
+"7f144672-3c77-481c-9e07-7256c58b8798": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 2.8,
+"t1": 20.1,
+"arc": [
+"accelerate",
+"decelerate",
+"accelerate",
+"decelerate",
+"turn_right"
+],
+"ego_action": "ego_turn_right",
+"auto": [
+"turn_right"
+]
+}
+]
+},
+"84ce4561-251a-4c7d-9cdd-400e03fa2aa3": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 8.2,
+"arc": [
+"decelerate",
+"turn_right",
+"decelerate"
+],
+"ego_action": "ego_turn_right",
+"auto": [
+"turn_right"
+]
+},
+{
+"t0": 15.8,
+"t1": 20.1,
+"arc": [
+"accelerate",
+"stop"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"8cb3bf87-df13-4fd5-afcf-95c2ac7616cd": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 5.7,
+"t1": 11.6,
+"arc": [
+"decelerate",
+"turn_left",
+"decelerate"
+],
+"ego_action": "ego_turn_left",
+"auto": [
+"turn_left"
+]
+},
+{
+"t0": 17.6,
+"t1": 20.1,
+"arc": [
+"stop"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"8e7acb68-76ec-4913-a314-f0b3de45425d": {
+"dur": 20.1,
+"episodes": []
+},
+"95dba147-3cf6-497e-9936-ee7c012784af": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 11.4,
+"t1": 18.9,
+"arc": [
+"decelerate",
+"turn_left",
+"decelerate"
+],
+"ego_action": "ego_turn_left",
+"auto": [
+"turn_left"
+]
+}
+]
+},
+"9b8c0426-3fe0-458b-b531-0007fcb35d34": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 5.0,
+"arc": [
+"stop",
+"accelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+},
+{
+"t0": 9.2,
+"t1": 13.9,
+"arc": [
+"turn_right",
+"decelerate",
+"decelerate"
+],
+"ego_action": "ego_turn_right",
+"auto": [
+"turn_right"
+]
+}
+]
+},
+"9e2aca40-1806-456c-8aa8-15da0abcf3cf": {
+"dur": 20.1,
+"episodes": []
+},
+"9ee2f6b9-1798-4bec-9173-8bfa7932b0b4": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 12.4,
+"arc": [
+"decelerate",
+"accelerate",
+"turn_left",
+"decelerate"
+],
+"ego_action": "ego_turn_left",
+"auto": [
+"turn_left"
+]
+}
+]
+},
+"a0a0a9c2-07e2-4b3a-b72b-b32f73e86334": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 5.0,
+"t1": 6.6,
+"arc": [
+"decelerate"
+],
+"ego_action": "ego_lane_keep",
+"auto": []
+},
+{
+"t0": 9.2,
+"t1": 20.1,
+"arc": [
+"decelerate",
+"stop",
+"accelerate",
+"turn_left"
+],
+"ego_action": "ego_stop",
+"auto": [
+"turn_left",
+"stop"
+]
+}
+]
+},
+"a68df3e2-ddd6-489c-a25f-468d649f7f84": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 6.3,
+"arc": [
+"stop",
+"accelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+},
+{
+"t0": 8.8,
+"t1": 16.7,
+"arc": [
+"decelerate",
+"u_turn"
+],
+"ego_action": "ego_lane_keep",
+"auto": [
+"u_turn"
+]
+}
+]
+},
+"a7a6586e-c6d4-4785-bb0c-43afe2350378": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 14.7,
+"t1": 20.1,
+"arc": [
+"decelerate",
+"stop"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"ae157181-2f68-4a54-bb3f-c79ebd16a084": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.4,
+"t1": 10.1,
+"arc": [
+"decelerate",
+"stop",
+"accelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"c05c17b2-aafe-4b23-97f6-a6996f924f28": {
+"dur": 20.1,
+"episodes": []
+},
+"c7ef5378-1267-4603-b15a-54916d0f69b1": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.2,
+"t1": 14.9,
+"arc": [
+"decelerate",
+"stop",
+"u_turn",
+"accelerate",
+"decelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"u_turn",
+"stop"
+]
+}
+]
+},
+"ed3953e1-575a-40b3-b2f8-9708ca1acade": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 4.1,
+"t1": 8.5,
+"arc": [
+"turn_right",
+"decelerate"
+],
+"ego_action": "ego_turn_right",
+"auto": [
+"turn_right"
+]
+},
+{
+"t0": 14.9,
+"t1": 19.2,
+"arc": [
+"turn_right"
+],
+"ego_action": "ego_turn_right",
+"auto": [
+"turn_right"
+]
+}
+]
+},
+"ef19ec17-72bf-45f1-8d74-c0baca3dd6f3": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 9.3,
+"t1": 20.1,
+"arc": [
+"decelerate",
+"stop",
+"decelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"f0cb1b7f-2f27-4238-bab6-970410624fc3": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 16.7,
+"t1": 20.1,
+"arc": [
+"decelerate",
+"stop"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"f1ee5309-3e07-4812-b054-90b600aba28e": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 9.6,
+"t1": 15.2,
+"arc": [
+"decelerate"
+],
+"ego_action": "ego_lane_keep",
+"auto": []
+},
+{
+"t0": 17.4,
+"t1": 20.1,
+"arc": [
+"stop"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"f30820ef-1044-4c53-bae6-7e2f4838bf20": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 15.0,
+"arc": [
+"decelerate",
+"stop",
+"accelerate"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"f5531705-65b6-437a-91a1-ac08d1c25331": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 1.7,
+"arc": [
+"decelerate"
+],
+"ego_action": "ego_lane_keep",
+"auto": []
+},
+{
+"t0": 5.4,
+"t1": 14.0,
+"arc": [
+"decelerate",
+"turn_right",
+"accelerate",
+"decelerate"
+],
+"ego_action": "ego_turn_right",
+"auto": [
+"turn_right"
+]
+}
+]
+},
+"f6822f35-55bf-47f3-be2f-6e1c83544449": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 1.5,
+"t1": 3.4,
+"arc": [
+"decelerate"
+],
+"ego_action": "ego_lane_keep",
+"auto": []
+}
+]
+},
+"f69a9538-6694-48aa-952e-5b27b3f915fd": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 3.7,
+"arc": [
+"turn_left",
+"decelerate"
+],
+"ego_action": "ego_turn_left",
+"auto": [
+"turn_left"
+]
+},
+{
+"t0": 17.0,
+"t1": 20.1,
+"arc": [
+"stop"
+],
+"ego_action": "ego_stop",
+"auto": [
+"stop"
+]
+}
+]
+},
+"f710764f-d311-4697-aadb-75e517a15b8d": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 1.0,
+"t1": 3.6,
+"arc": [
+"decelerate"
+],
+"ego_action": "ego_lane_keep",
+"auto": []
+},
+{
+"t0": 11.1,
+"t1": 15.9,
+"arc": [
+"turn_right"
+],
+"ego_action": "ego_turn_right",
+"auto": [
+"turn_right"
+]
+}
+]
+},
+"fc892fbd-4342-4ced-9c5d-2732cd7e8f9f": {
+"dur": 20.1,
+"episodes": [
+{
+"t0": 0.0,
+"t1": 20.1,
+"arc": [
+"stop",
+"turn_right"
+],
+"ego_action": "ego_stop",
+"auto": [
+"turn_right",
+"stop"
+]
+}
+]
+}
+}

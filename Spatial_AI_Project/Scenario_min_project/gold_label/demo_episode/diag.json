@@ -1,0 +1,284 @@
+[
+ {
+  "prefix": "752afc48",
+  "clip_id": "752afc48-dc67-43f8-88f4-252066e8a1e5",
+  "episodes": [
+   {
+    "seg": 1,
+    "t": [
+     4.61,
+     19.93
+    ],
+    "arc": [
+     "감속",
+     "정지"
+    ],
+    "gt_cands": [
+     "close_follow",
+     "decel_at_intersection",
+     "lead_decel"
+    ],
+    "gt_why": {
+     "decel_at_intersection": "decel, ego mean 6.6m/s",
+     "lead_decel": "선행차 감속",
+     "close_follow": "tailgating headway 0.1s (1m@14m/s)"
+    },
+    "vlm_raw": {
+     "present": [
+      "lead_decel"
+     ],
+     "road_env": "urban_arterial",
+     "intersection": "signalized",
+     "extras": [
+      "construction_cones"
+     ],
+     "red_light_stop": true,
+     "signal_go": false
+    },
+    "vlm_cats": [
+     "intersection_signalized",
+     "lead_decel",
+     "red_light_stop",
+     "road_urban_arterial"
+    ],
+    "fused": [
+     "close_follow",
+     "decel_at_intersection",
+     "intersection_signalized",
+     "lead_decel",
+     "red_light_stop",
+     "road_urban_arterial",
+     "stop"
+    ],
+    "gold": [
+     "red_light_stop",
+     "road_urban_arterial",
+     "decel_at_intersection"
+    ]
+   }
+  ]
+ },
+ {
+  "prefix": "9ee2f6b9",
+  "clip_id": "9ee2f6b9-1798-4bec-9173-8bfa7932b0b4",
+  "episodes": [
+   {
+    "seg": 1,
+    "t": [
+     0.0,
+     12.4
+    ],
+    "arc": [
+     "감속",
+     "가속",
+     "좌회전",
+     "감속"
+    ],
+    "gt_cands": [
+     "decel_at_intersection"
+    ],
+    "gt_why": {
+     "decel_at_intersection": "decel, ego mean 5.3m/s"
+    },
+    "vlm_raw": {
+     "present": [
+      "cut_in"
+     ],
+     "road_env": "urban_arterial",
+     "intersection": "signalized",
+     "extras": [
+      "roundabout"
+     ],
+     "red_light_stop": false,
+     "signal_go": true
+    },
+    "vlm_cats": [
+     "cut_in",
+     "intersection_signalized",
+     "road_urban_arterial"
+    ],
+    "fused": [
+     "decel_at_intersection",
+     "intersection_signalized",
+     "road_urban_arterial",
+     "turn_left"
+    ],
+    "gold": [
+     "road_urban_arterial",
+     "intersection_signalized",
+     "decel_at_intersection"
+    ]
+   }
+  ]
+ },
+ {
+  "prefix": "95dba147",
+  "clip_id": "95dba147-3cf6-497e-9936-ee7c012784af",
+  "episodes": [
+   {
+    "seg": 1,
+    "t": [
+     11.39,
+     18.93
+    ],
+    "arc": [
+     "감속",
+     "좌회전",
+     "감속"
+    ],
+    "gt_cands": [
+     "decel_at_intersection"
+    ],
+    "gt_why": {
+     "decel_at_intersection": "decel, ego mean 7.3m/s"
+    },
+    "vlm_raw": {
+     "present": [
+      "lead_decel"
+     ],
+     "road_env": "backstreet",
+     "intersection": "unsignalized",
+     "extras": [
+      "roundabout"
+     ],
+     "red_light_stop": false,
+     "signal_go": false
+    },
+    "vlm_cats": [
+     "intersection_unsignalized",
+     "lead_decel",
+     "road_backstreet"
+    ],
+    "fused": [
+     "decel_at_intersection",
+     "intersection_unsignalized",
+     "road_backstreet",
+     "turn_left"
+    ],
+    "gold": [
+     "intersection_unsignalized",
+     "ego_yields_to_agent",
+     "decel_at_intersection",
+     "road_backstreet"
+    ]
+   }
+  ]
+ },
+ {
+  "prefix": "136aa1d5",
+  "clip_id": "136aa1d5-d4f4-4ad5-ac76-aa8ad2a5f059",
+  "episodes": [
+   {
+    "seg": 1,
+    "t": [
+     0.0,
+     17.54
+    ],
+    "arc": [
+     "감속",
+     "정지",
+     "가속",
+     "우회전",
+     "감속"
+    ],
+    "gt_cands": [
+     "decel_at_intersection",
+     "ego_yields_to_agent"
+    ],
+    "gt_why": {
+     "decel_at_intersection": "decel, ego mean 2.9m/s",
+     "ego_yields_to_agent": "ego 정지·교차차 통과"
+    },
+    "vlm_raw": {
+     "present": [
+      "ego_yields_to_agent"
+     ],
+     "road_env": "backstreet",
+     "intersection": "unsignalized",
+     "extras": [
+      "construction_cones"
+     ],
+     "red_light_stop": false,
+     "signal_go": false
+    },
+    "vlm_cats": [
+     "ego_yields_to_agent",
+     "intersection_unsignalized",
+     "road_backstreet"
+    ],
+    "fused": [
+     "decel_at_intersection",
+     "ego_yields_to_agent",
+     "intersection_unsignalized",
+     "road_backstreet",
+     "stop",
+     "turn_right"
+    ],
+    "gold": [
+     "decel_at_intersection",
+     "intersection_unsignalized",
+     "road_urban_arterial",
+     "close_follow"
+    ]
+   }
+  ]
+ },
+ {
+  "prefix": "30cbf2f0",
+  "clip_id": "30cbf2f0-88b2-4aa9-9d8b-e2131b00b139",
+  "episodes": [
+   {
+    "seg": 1,
+    "t": [
+     9.11,
+     19.57
+    ],
+    "arc": [
+     "감속",
+     "정지",
+     "가속"
+    ],
+    "gt_cands": [
+     "creep",
+     "lead_decel",
+     "ped_crossing"
+    ],
+    "gt_why": {
+     "ped_crossing": "보행자 진행로 횡단",
+     "lead_decel": "선행차 감속",
+     "creep": "정체 서행(선행차+저속 5.2s)"
+    },
+    "vlm_raw": {
+     "present": [
+      "lead_decel",
+      "ped_crossing"
+     ],
+     "road_env": "backstreet",
+     "intersection": "none",
+     "extras": [
+      "construction_cones"
+     ],
+     "red_light_stop": false,
+     "signal_go": false
+    },
+    "vlm_cats": [
+     "lead_decel",
+     "ped_crossing",
+     "road_backstreet"
+    ],
+    "fused": [
+     "creep",
+     "lead_decel",
+     "ped_crossing",
+     "road_backstreet",
+     "stop"
+    ],
+    "gold": [
+     "creep",
+     "ped_crossing",
+     "road_backstreet"
+    ]
+   }
+  ]
+ }
+]

@@ -1,0 +1,1457 @@
+{
+    "0368ee92-fea9-4b12-bcca-a219e4a2cd2a": {
+     "odd": {
+      "lighting": "night"
+     },
+     "episodes": [
+      {
+       "win": [
+        0.5,
+        8.5
+       ],
+       "auto": [
+        "turn_right"
+       ],
+       "arc": [
+        "decelerate",
+        "turn_right"
+       ],
+       "human": [
+        "intersection_signalized",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": [
+      {
+       "win": [
+        0,
+        4
+       ],
+       "arc": [
+        "manual"
+       ],
+       "human": [],
+       "note": "",
+       "manual": true
+      }
+     ]
+    },
+    "04794436-e760-424f-98f2-4a66c6188ebe": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        5.5,
+        6.4
+       ],
+       "auto": [],
+       "arc": [
+        "accelerate"
+       ],
+       "human": [
+        "decel_at_intersection",
+        "intersection_signalized",
+        "road_backstreet"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "07784c52-2a27-4975-bea8-d0535137f967": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        4.3,
+        8.1
+       ],
+       "auto": [],
+       "arc": [
+        "decelerate"
+       ],
+       "human": [
+        "decel_at_intersection",
+        "intersection_unsignalized",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        10.9,
+        15.8
+       ],
+       "auto": [],
+       "arc": [
+        "accelerate",
+        "accelerate"
+       ],
+       "human": [
+        "decel_at_intersection",
+        "intersection",
+        "agent_yields_to_ego",
+        "intersection_unsignalized",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "0b83ef29-5dbe-4024-a4cc-945c3414a034": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        9.2
+       ],
+       "auto": [
+        "turn_right"
+       ],
+       "arc": [
+        "decelerate",
+        "turn_right",
+        "decelerate"
+       ],
+       "human": [
+        "intersection_signalized",
+        "decel_at_intersection",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        16.1,
+        16.5
+       ],
+       "auto": [],
+       "arc": [
+        "accelerate"
+       ],
+       "human": [
+        "lane_change_left",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "0c5239c7-a3d6-467a-9f32-bebb4a1bb436": {
+     "odd": {},
+     "episodes": [],
+     "manual": [
+      {
+       "win": [
+        0,
+        20
+       ],
+       "arc": [
+        "manual"
+       ],
+       "human": [
+        "road_urban_arterial"
+       ],
+       "note": "",
+       "manual": true
+      }
+     ]
+    },
+    "136aa1d5-d4f4-4ad5-ac76-aa8ad2a5f059": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        17.5
+       ],
+       "auto": [
+        "turn_right",
+        "stop"
+       ],
+       "arc": [
+        "decelerate",
+        "stop",
+        "accelerate",
+        "turn_right",
+        "decelerate"
+       ],
+       "human": [
+        "decel_at_intersection",
+        "intersection_unsignalized",
+        "road_urban_arterial",
+        "close_follow"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "1ed1a80e-952a-480c-a4f3-f1cad8bd307b": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        9
+       ],
+       "auto": [
+        "turn_left",
+        "stop"
+       ],
+       "arc": [
+        "stop",
+        "accelerate",
+        "turn_left",
+        "decelerate"
+       ],
+       "human": [
+        "road_urban_arterial"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "21ab6f60-0a84-4328-b354-75b2b359d7ec": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        3.8,
+        6.1
+       ],
+       "auto": [],
+       "arc": [
+        "decelerate"
+       ],
+       "human": [
+        "intersection_signalized",
+        "decel_at_intersection",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "25156bd2-2742-424e-9df2-0559ae9a806c": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        4
+       ],
+       "auto": [],
+       "arc": [
+        "decelerate"
+       ],
+       "human": [
+        "roundabout",
+        "decel_at_intersection",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        7.7,
+        19.5
+       ],
+       "auto": [
+        "turn_left"
+       ],
+       "arc": [
+        "turn_left",
+        "accelerate",
+        "accelerate"
+       ],
+       "human": [
+        "roundabout",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "30cbf2f0-88b2-4aa9-9d8b-e2131b00b139": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        9.1,
+        19.6
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "decelerate",
+        "stop",
+        "accelerate"
+       ],
+       "human": [
+        "creep",
+        "ped_crossing",
+        "road_backstreet"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "3139da7e-6280-4331-a2aa-8eb37f0fc063": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        14
+       ],
+       "auto": [
+        "turn_left",
+        "stop"
+       ],
+       "arc": [
+        "stop",
+        "accelerate",
+        "turn_left",
+        "decelerate"
+       ],
+       "human": [
+        "intersection_unsignalized",
+        "road_urban_arterial",
+        "ego_yields_to_agent"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "33103de7-92ad-41e3-a30c-42dfa8197225": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        7.1
+       ],
+       "auto": [
+        "turn_left"
+       ],
+       "arc": [
+        "turn_left",
+        "decelerate"
+       ],
+       "human": [
+        "road_highway"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "353de014-1456-4a9e-850b-f735f51df207": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        15.5,
+        20.1
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "decelerate",
+        "stop"
+       ],
+       "human": [
+        "road_urban_arterial"
+       ],
+       "note": "데이터에 노이즈가 심해서 구분이 어려움"
+      }
+     ],
+     "manual": []
+    },
+    "3ae63df5-20a3-4611-87c8-97c14b8c4a95": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        6.7
+       ],
+       "auto": [
+        "u_turn"
+       ],
+       "arc": [
+        "u_turn",
+        "decelerate"
+       ],
+       "human": [
+        "road_parking"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        16.2,
+        19.7
+       ],
+       "auto": [
+        "turn_left"
+       ],
+       "arc": [
+        "turn_left",
+        "accelerate"
+       ],
+       "human": [
+        "road_parking"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "3eb668d0-9e31-45dd-801f-924e01dac996": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        5.3
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "stop",
+        "accelerate"
+       ],
+       "human": [
+        "road_parking"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "3f989021-51d2-4c50-a48a-930892291d3d": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        1.1,
+        20.1
+       ],
+       "auto": [
+        "turn_right",
+        "stop"
+       ],
+       "arc": [
+        "decelerate",
+        "stop",
+        "accelerate",
+        "turn_right",
+        "accelerate"
+       ],
+       "human": [
+        "intersection_signalized",
+        "decel_at_intersection",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "44ba62cb-6b64-4de3-ae6d-073dcc86cad8": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0.4,
+        12.1
+       ],
+       "auto": [
+        "turn_right"
+       ],
+       "arc": [
+        "decelerate",
+        "turn_right",
+        "decelerate"
+       ],
+       "human": [
+        "road_urban_arterial",
+        "merge_onramp"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "486fd0bf-dd4b-4d59-a5be-543f08201c67": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        7.2
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "stop",
+        "accelerate"
+       ],
+       "human": [
+        "road_backstreet",
+        "decel_at_intersection",
+        "close_follow",
+        "intersection_signalized",
+        "signal_go"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        13.1,
+        15.8
+       ],
+       "auto": [],
+       "arc": [
+        "accelerate"
+       ],
+       "human": [
+        "road_backstreet",
+        "intersection_signalized",
+        "decel_at_intersection"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "490d822f-8899-4ce1-a0ec-d64e19fd3942": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        1.4,
+        13.4
+       ],
+       "auto": [
+        "u_turn"
+       ],
+       "arc": [
+        "decelerate",
+        "u_turn"
+       ],
+       "human": [
+        "roundabout",
+        "decel_at_intersection"
+       ],
+       "note": "U턴은 아님. 크게 돌아 다른 차선으로 합류. 회전 교차로 통과는 아니지만 바로 옆에 근접하여 영향을 받고 주행."
+      }
+     ],
+     "manual": []
+    },
+    "4a4c0ed2-2bb0-43d1-987c-79f51fa27c41": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        5.6
+       ],
+       "auto": [
+        "turn_right",
+        "stop"
+       ],
+       "arc": [
+        "stop",
+        "accelerate",
+        "turn_right"
+       ],
+       "human": [
+        "decel_at_intersection",
+        "intersection_signalized",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "65292248-6e1c-41c3-a4d6-2ad92914f1db": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        13.6
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "stop",
+        "accelerate"
+       ],
+       "human": [
+        "intersection_signalized",
+        "road_urban_arterial",
+        "signal_go"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "671c0777-19ad-4113-86ab-69e5add9d3bd": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        5.7,
+        9.6
+       ],
+       "auto": [
+        "turn_right"
+       ],
+       "arc": [
+        "turn_right",
+        "decelerate"
+       ],
+       "human": [
+        "road_urban_arterial",
+        "intersection_unsignalized"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "699779aa-bfee-42e4-9256-47b154f613ea": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        10.4
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "stop",
+        "accelerate",
+        "accelerate"
+       ],
+       "human": [
+        "signal_go",
+        "intersection_signalized",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "752afc48-dc67-43f8-88f4-252066e8a1e5": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        4.6,
+        19.9
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "decelerate",
+        "stop"
+       ],
+       "human": [
+        "red_light_stop",
+        "road_urban_arterial",
+        "decel_at_intersection"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "7af8779b-2599-4b1e-9f7e-3d4cc4a5de2b": {
+     "odd": {},
+     "episodes": [],
+     "manual": [
+      {
+       "win": [
+        0,
+        20.1
+       ],
+       "arc": [
+        "manual"
+       ],
+       "human": [
+        "road_rural"
+       ],
+       "note": "차선이 거의 보이지 않음.",
+       "manual": true
+      }
+     ]
+    },
+    "7d9cdf3a-881f-4984-b489-a77076ddff96": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        1.3,
+        12
+       ],
+       "auto": [
+        "turn_left",
+        "stop"
+       ],
+       "arc": [
+        "decelerate",
+        "stop",
+        "accelerate",
+        "turn_left",
+        "decelerate",
+        "decelerate"
+       ],
+       "human": [
+        "road_backstreet",
+        "decel_at_intersection"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "7f144672-3c77-481c-9e07-7256c58b8798": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        2.8,
+        20.1
+       ],
+       "auto": [
+        "turn_right"
+       ],
+       "arc": [
+        "accelerate",
+        "decelerate",
+        "accelerate",
+        "decelerate",
+        "turn_right"
+       ],
+       "human": [
+        "road_urban_arterial",
+        "lane_change_right"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "84ce4561-251a-4c7d-9cdd-400e03fa2aa3": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        8.2
+       ],
+       "auto": [
+        "turn_right"
+       ],
+       "arc": [
+        "decelerate",
+        "turn_right",
+        "decelerate"
+       ],
+       "human": [
+        "intersection_signalized",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        15.8,
+        20.1
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "accelerate",
+        "stop"
+       ],
+       "human": [
+        "intersection_signalized",
+        "red_light_stop",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "8cb3bf87-df13-4fd5-afcf-95c2ac7616cd": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        5.7,
+        11.6
+       ],
+       "auto": [
+        "turn_left"
+       ],
+       "arc": [
+        "decelerate",
+        "turn_left",
+        "decelerate"
+       ],
+       "human": [
+        "road_backstreet",
+        "intersection_signalized",
+        "decel_at_intersection"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        17.6,
+        20.1
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "stop"
+       ],
+       "human": [
+        "red_light_stop",
+        "road_urban_arterial",
+        "intersection_signalized"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "8e7acb68-76ec-4913-a314-f0b3de45425d": {
+     "odd": {},
+     "episodes": [],
+     "manual": []
+    },
+    "95dba147-3cf6-497e-9936-ee7c012784af": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        11.4,
+        18.9
+       ],
+       "auto": [
+        "turn_left"
+       ],
+       "arc": [
+        "decelerate",
+        "turn_left",
+        "decelerate"
+       ],
+       "human": [
+        "intersection_unsignalized",
+        "ego_yields_to_agent",
+        "decel_at_intersection",
+        "road_backstreet"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "9b8c0426-3fe0-458b-b531-0007fcb35d34": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        5
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "stop",
+        "accelerate"
+       ],
+       "human": [
+        "signal_go",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        9.2,
+        13.9
+       ],
+       "auto": [
+        "turn_right"
+       ],
+       "arc": [
+        "turn_right",
+        "decelerate",
+        "decelerate"
+       ],
+       "human": [
+        "intersection_unsignalized",
+        "decel_at_intersection",
+        "road_backstreet"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "9e2aca40-1806-456c-8aa8-15da0abcf3cf": {
+     "odd": {},
+     "episodes": [],
+     "manual": []
+    },
+    "9ee2f6b9-1798-4bec-9173-8bfa7932b0b4": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        12.4
+       ],
+       "auto": [
+        "turn_left"
+       ],
+       "arc": [
+        "decelerate",
+        "accelerate",
+        "turn_left",
+        "decelerate"
+       ],
+       "human": [
+        "road_urban_arterial",
+        "intersection_signalized",
+        "decel_at_intersection"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "a0a0a9c2-07e2-4b3a-b72b-b32f73e86334": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        5,
+        6.6
+       ],
+       "auto": [],
+       "arc": [
+        "decelerate"
+       ],
+       "human": [
+        "decel_at_intersection",
+        "intersection_unsignalized",
+        "road_backstreet"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        9.2,
+        20.1
+       ],
+       "auto": [
+        "turn_left",
+        "stop"
+       ],
+       "arc": [
+        "decelerate",
+        "stop",
+        "accelerate",
+        "turn_left"
+       ],
+       "human": [
+        "ego_yields_to_agent",
+        "intersection_unsignalized",
+        "road_backstreet",
+        "decel_at_intersection"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "a68df3e2-ddd6-489c-a25f-468d649f7f84": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        6.3
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "stop",
+        "accelerate"
+       ],
+       "human": [
+        "signal_go",
+        "road_urban_arterial",
+        "intersection_signalized"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        8.8,
+        16.7
+       ],
+       "auto": [
+        "u_turn"
+       ],
+       "arc": [
+        "decelerate",
+        "u_turn"
+       ],
+       "human": [
+        "intersection_signalized",
+        "road_urban_arterial"
+       ],
+       "note": "U턴 아님. 큰 좌회전"
+      }
+     ],
+     "manual": []
+    },
+    "a7a6586e-c6d4-4785-bb0c-43afe2350378": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        14.7,
+        20.1
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "decelerate",
+        "stop"
+       ],
+       "human": [
+        "decel_at_intersection",
+        "road_backstreet"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "ae157181-2f68-4a54-bb3f-c79ebd16a084": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0.4,
+        10.1
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "decelerate",
+        "stop",
+        "accelerate"
+       ],
+       "human": [
+        "road_backstreet"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "c05c17b2-aafe-4b23-97f6-a6996f924f28": {
+     "odd": {},
+     "episodes": [],
+     "manual": []
+    },
+    "c7ef5378-1267-4603-b15a-54916d0f69b1": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0.2,
+        14.9
+       ],
+       "auto": [
+        "u_turn",
+        "stop"
+       ],
+       "arc": [
+        "decelerate",
+        "stop",
+        "u_turn",
+        "accelerate",
+        "decelerate"
+       ],
+       "human": [
+        "intersection_unsignalized",
+        "decel_at_intersection",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "ed3953e1-575a-40b3-b2f8-9708ca1acade": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        4.1,
+        8.5
+       ],
+       "auto": [
+        "turn_right"
+       ],
+       "arc": [
+        "turn_right",
+        "decelerate"
+       ],
+       "human": [
+        "road_parking"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        14.9,
+        19.2
+       ],
+       "auto": [
+        "turn_right"
+       ],
+       "arc": [
+        "turn_right"
+       ],
+       "human": [
+        "road_parking"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "ef19ec17-72bf-45f1-8d74-c0baca3dd6f3": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        9.3,
+        20.1
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "decelerate",
+        "stop",
+        "decelerate"
+       ],
+       "human": [
+        "road_urban_arterial",
+        "red_light_stop",
+        "intersection_signalized"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "f0cb1b7f-2f27-4238-bab6-970410624fc3": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        16.7,
+        20.1
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "decelerate",
+        "stop"
+       ],
+       "human": [],
+       "note": "노이즈로 앞이 전혀 보이지 않음"
+      }
+     ],
+     "manual": []
+    },
+    "f1ee5309-3e07-4812-b054-90b600aba28e": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        9.6,
+        15.2
+       ],
+       "auto": [],
+       "arc": [
+        "decelerate"
+       ],
+       "human": [
+        "red_light_stop",
+        "intersection_signalized",
+        "road_urban_arterial",
+        "decel_at_intersection"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        17.4,
+        20.1
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "stop"
+       ],
+       "human": [
+        "red_light_stop",
+        "intersection_signalized",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "f30820ef-1044-4c53-bae6-7e2f4838bf20": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        15
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "decelerate",
+        "stop",
+        "accelerate"
+       ],
+       "human": [
+        "decel_at_intersection",
+        "signal_go",
+        "intersection_signalized",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "f5531705-65b6-437a-91a1-ac08d1c25331": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        1.7
+       ],
+       "auto": [],
+       "arc": [
+        "decelerate"
+       ],
+       "human": [],
+       "note": ""
+      },
+      {
+       "win": [
+        5.4,
+        14
+       ],
+       "auto": [
+        "turn_right"
+       ],
+       "arc": [
+        "decelerate",
+        "turn_right",
+        "accelerate",
+        "decelerate"
+       ],
+       "human": [
+        "decel_at_intersection",
+        "ped_crossing",
+        "intersection_signalized",
+        "road_urban_arterial"
+       ],
+       "note": "보행자 횡단 중. 양보는 아님 "
+      }
+     ],
+     "manual": []
+    },
+    "f6822f35-55bf-47f3-be2f-6e1c83544449": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        1.5,
+        3.4
+       ],
+       "auto": [],
+       "arc": [
+        "decelerate"
+       ],
+       "human": [
+        "road_backstreet"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "f69a9538-6694-48aa-952e-5b27b3f915fd": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        3.7
+       ],
+       "auto": [
+        "turn_left"
+       ],
+       "arc": [
+        "turn_left",
+        "decelerate"
+       ],
+       "human": [
+        "road_urban_arterial",
+        "decel_at_intersection"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        17,
+        20.1
+       ],
+       "auto": [
+        "stop"
+       ],
+       "arc": [
+        "stop"
+       ],
+       "human": [
+        "intersection_signalized",
+        "road_urban_arterial",
+        "red_light_stop"
+       ],
+       "note": ""
+      }
+     ],
+     "manual": []
+    },
+    "f710764f-d311-4697-aadb-75e517a15b8d": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        1,
+        3.6
+       ],
+       "auto": [],
+       "arc": [
+        "decelerate"
+       ],
+       "human": [
+        "lead_decel",
+        "intersection_signalized",
+        "road_urban_arterial"
+       ],
+       "note": ""
+      },
+      {
+       "win": [
+        11.1,
+        15.9
+       ],
+       "auto": [
+        "turn_right"
+       ],
+       "arc": [
+        "turn_right"
+       ],
+       "human": [
+        "decel_at_intersection",
+        "intersection_signalized",
+        "road_urban_arterial"
+       ],
+       "note": "선행차 급감속이라는 맥락이 정체로 인한 선행차 감속 및 감속에 따른 대응 기동"
+      }
+     ],
+     "manual": []
+    },
+    "fc892fbd-4342-4ced-9c5d-2732cd7e8f9f": {
+     "odd": {},
+     "episodes": [
+      {
+       "win": [
+        0,
+        20.1
+       ],
+       "auto": [
+        "turn_right",
+        "stop"
+       ],
+       "arc": [
+        "stop",
+        "turn_right"
+       ],
+       "human": [
+        "road_parking"
+       ],
+       "note": "크게 의미 없는 데이터임. "
+      }
+     ],
+     "manual": []
+    }
+   }

@@ -1,0 +1,255 @@
+[
+ {
+  "prefix": "a0a0a9c2",
+  "clip_id": "a0a0a9c2-07e2-4b3a-b72b-b32f73e86334",
+  "n_ep": 2,
+  "segments": [
+   {
+    "clip_id": "a0a0a9c2-07e2-4b3a-b72b-b32f73e86334",
+    "segment_id": 1,
+    "t_start": 5.0,
+    "t_end": 6.56,
+    "arc": [
+     "감속"
+    ],
+    "tags": [
+     "intersection_unsignalized",
+     "road_backstreet",
+     "decel_at_intersection"
+    ],
+    "tags_ko": [
+     "비신호 교차로",
+     "좁은 골목/이면도로",
+     "교차로 서행/감속"
+    ],
+    "tags_axis": [
+     "맥락",
+     "맥락",
+     "ego 기동"
+    ],
+    "demo_label": "감속  |  비신호 교차로 · 좁은 골목/이면도로 · 교차로 서행/감속"
+   },
+   {
+    "clip_id": "a0a0a9c2-07e2-4b3a-b72b-b32f73e86334",
+    "segment_id": 2,
+    "t_start": 9.16,
+    "t_end": 20.13,
+    "arc": [
+     "감속",
+     "정지",
+     "가속",
+     "좌회전"
+    ],
+    "tags": [
+     "road_backstreet"
+    ],
+    "tags_ko": [
+     "좁은 골목/이면도로"
+    ],
+    "tags_axis": [
+     "맥락"
+    ],
+    "demo_label": "감속 → 정지 → 가속 → 좌회전  |  좁은 골목/이면도로"
+   }
+  ]
+ },
+ {
+  "prefix": "486fd0bf",
+  "clip_id": "486fd0bf-dd4b-4d59-a5be-543f08201c67",
+  "n_ep": 2,
+  "segments": [
+   {
+    "clip_id": "486fd0bf-dd4b-4d59-a5be-543f08201c67",
+    "segment_id": 1,
+    "t_start": 0.0,
+    "t_end": 7.17,
+    "arc": [
+     "정지",
+     "가속"
+    ],
+    "tags": [
+     "intersection_unsignalized",
+     "road_urban_arterial"
+    ],
+    "tags_ko": [
+     "비신호 교차로",
+     "도심 간선"
+    ],
+    "tags_axis": [
+     "맥락",
+     "맥락"
+    ],
+    "demo_label": "정지 → 가속  |  비신호 교차로 · 도심 간선"
+   },
+   {
+    "clip_id": "486fd0bf-dd4b-4d59-a5be-543f08201c67",
+    "segment_id": 2,
+    "t_start": 13.14,
+    "t_end": 15.81,
+    "arc": [
+     "가속"
+    ],
+    "tags": [
+     "cyclist_pm_near",
+     "intersection_signalized",
+     "road_urban_arterial"
+    ],
+    "tags_ko": [
+     "자전거/PM 근접",
+     "신호 교차로",
+     "도심 간선"
+    ],
+    "tags_axis": [
+     "상호작용",
+     "맥락",
+     "맥락"
+    ],
+    "demo_label": "가속  |  자전거/PM 근접 · 신호 교차로 · 도심 간선"
+   }
+  ]
+ },
+ {
+  "prefix": "8cb3bf87",
+  "clip_id": "8cb3bf87-df13-4fd5-afcf-95c2ac7616cd",
+  "n_ep": 2,
+  "segments": [
+   {
+    "clip_id": "8cb3bf87-df13-4fd5-afcf-95c2ac7616cd",
+    "segment_id": 1,
+    "t_start": 5.67,
+    "t_end": 11.59,
+    "arc": [
+     "감속",
+     "좌회전",
+     "감속"
+    ],
+    "tags": [
+     "intersection_signalized",
+     "road_urban_arterial",
+     "decel_at_intersection"
+    ],
+    "tags_ko": [
+     "신호 교차로",
+     "도심 간선",
+     "교차로 서행/감속"
+    ],
+    "tags_axis": [
+     "맥락",
+     "맥락",
+     "ego 기동"
+    ],
+    "demo_label": "감속 → 좌회전 → 감속  |  신호 교차로 · 도심 간선 · 교차로 서행/감속"
+   },
+   {
+    "clip_id": "8cb3bf87-df13-4fd5-afcf-95c2ac7616cd",
+    "segment_id": 2,
+    "t_start": 17.55,
+    "t_end": 20.1,
+    "arc": [
+     "정지"
+    ],
+    "tags": [],
+    "tags_ko": [],
+    "tags_axis": [],
+    "demo_label": "정지"
+   }
+  ]
+ },
+ {
+  "prefix": "f710764f",
+  "clip_id": "f710764f-d311-4697-aadb-75e517a15b8d",
+  "n_ep": 2,
+  "segments": [
+   {
+    "clip_id": "f710764f-d311-4697-aadb-75e517a15b8d",
+    "segment_id": 1,
+    "t_start": 0.97,
+    "t_end": 3.65,
+    "arc": [
+     "감속"
+    ],
+    "tags": [
+     "agent_yields_to_ego",
+     "lead_decel",
+     "intersection_signalized",
+     "road_urban_arterial",
+     "creep",
+     "decel_at_intersection"
+    ],
+    "tags_ko": [
+     "상대차 양보(교차로)",
+     "선행차 감속",
+     "신호 교차로",
+     "도심 간선",
+     "서행/기어가기",
+     "교차로 서행/감속"
+    ],
+    "tags_axis": [
+     "상호작용",
+     "상호작용",
+     "맥락",
+     "맥락",
+     "ego 기동",
+     "ego 기동"
+    ],
+    "demo_label": "감속  |  상대차 양보(교차로) · 선행차 감속 · 신호 교차로 · 도심 간선 · 서행/기어가기 · 교차로 서행/감속"
+   },
+   {
+    "clip_id": "f710764f-d311-4697-aadb-75e517a15b8d",
+    "segment_id": 2,
+    "t_start": 11.12,
+    "t_end": 15.88,
+    "arc": [
+     "우회전"
+    ],
+    "tags": [
+     "intersection_signalized",
+     "road_urban_arterial"
+    ],
+    "tags_ko": [
+     "신호 교차로",
+     "도심 간선"
+    ],
+    "tags_axis": [
+     "맥락",
+     "맥락"
+    ],
+    "demo_label": "우회전  |  신호 교차로 · 도심 간선"
+   }
+  ]
+ },
+ {
+  "prefix": "30cbf2f0",
+  "clip_id": "30cbf2f0-88b2-4aa9-9d8b-e2131b00b139",
+  "n_ep": 1,
+  "segments": [
+   {
+    "clip_id": "30cbf2f0-88b2-4aa9-9d8b-e2131b00b139",
+    "segment_id": 1,
+    "t_start": 9.11,
+    "t_end": 19.57,
+    "arc": [
+     "감속",
+     "정지",
+     "가속"
+    ],
+    "tags": [
+     "lead_decel",
+     "ped_crossing",
+     "road_backstreet"
+    ],
+    "tags_ko": [
+     "선행차 감속",
+     "보행자 횡단(+양보)",
+     "좁은 골목/이면도로"
+    ],
+    "tags_axis": [
+     "상호작용",
+     "상호작용",
+     "맥락"
+    ],
+    "demo_label": "감속 → 정지 → 가속  |  선행차 감속 · 보행자 횡단(+양보) · 좁은 골목/이면도로"
+   }
+  ]
+ }
+]

@@ -1,0 +1,1384 @@
+{
+ "sample": [
+  "0140ac2f-ee3a-4999-ba96-b71fdadd4780",
+  "017dbdb0-e0ef-4308-8010-c3e746c77694",
+  "01d89df4-f70f-4e07-9b3b-fee4e595fcc4",
+  "028d6d6e-d456-4da9-8a15-460f02237c80",
+  "03cf79bf-0ad7-40ff-af24-4077115c2a4b",
+  "065dd6e8-8f18-40a8-9e6c-4cef42d3a475",
+  "069e47bd-506f-4f96-a16f-41b994370e9f",
+  "070c5dfc-4aef-4fec-a868-d5f0c877f7e9",
+  "07354ff6-6b6b-4f50-ab3b-098e843eef09",
+  "08613caa-1831-439a-9ed2-dd4a20f710bc",
+  "09b6032f-90db-4610-94b6-67e67ff9bd3e",
+  "09f5051f-4bf8-444b-a2bf-10669ef6847a",
+  "0a8ead6e-9c06-44fa-bf14-78474c4cee56",
+  "110b5fa7-6a35-47c7-af59-43ac082c52ce",
+  "13876bde-f9a2-4432-9ee6-89e2ed17b127",
+  "13a0da28-53f5-481d-bc11-c92565e22265",
+  "1827c039-b11f-498e-964d-0f90a6475baa",
+  "1956fda4-3a75-4cba-ac38-baffde2d9779",
+  "1aaaf8f6-dc3d-4bfd-b74b-f0ee2b0e58c5",
+  "1b06548e-e2b8-4f96-a325-879f0ad46e77",
+  "254af362-7f70-4b49-a7f3-07d0160bf6a3",
+  "26f97e3e-fd3f-4f24-982e-4645dc26156f",
+  "28b7d2f1-8f98-4d99-8682-8c817c30f76d",
+  "2ae48228-d1a2-4274-be13-f278065b20a3",
+  "2e83afd6-ca30-41cf-ae8d-c9724de33a18",
+  "2f5b7c16-0559-4eec-9bbc-3adf395bd0f3",
+  "30a39599-c652-48af-a6d8-d3c3270b5525",
+  "3209c923-f3ef-493b-9ca5-90c2feb8320e",
+  "351c7fb7-85f4-42de-bd41-a8e84a89ab71",
+  "35e89abf-f4f8-4f80-9cd6-0c432249025c",
+  "36c7ddfd-7d15-4b04-81ac-2193f6958444",
+  "3a716987-3ae2-427f-98c5-0933807f4038",
+  "3a95fd29-9383-4be4-a130-fffef186223d",
+  "3afbc412-679f-4477-9f52-d58123b00b12",
+  "3f459da9-dfed-4659-8394-cbd5e7ef322b",
+  "3f88f1e5-3b59-4b1b-8e61-ee2e74d4e824",
+  "4385ef64-ea7f-4b01-8bb4-b2b22abadf19",
+  "4648a368-60b8-4a6a-b2c6-35acc0043f97",
+  "464c86e9-0f6b-47ec-a1f7-ffca32448313",
+  "517de13c-b8c5-45b7-b8ea-69bee41fe2fa",
+  "5289a3c9-0142-4565-8684-5c84871cf2e6",
+  "52ada4cc-6c8f-4d3e-8088-e13d50d15101",
+  "5795a965-a2af-4c6a-90e5-37a4a230b797",
+  "57c8291c-c8d4-4e89-8986-2c6ae212cfb8",
+  "596f43ad-65f6-4352-a987-785a8f974168",
+  "59aaf5c9-f933-49f4-b0be-ac14fc62f58b",
+  "5aa35c0b-cacd-408e-9cb7-baae29c18657",
+  "6481cab1-01f6-49e4-8d51-7c6e6810bac6",
+  "65129343-e7af-4376-9aa8-9fceb025f5e0",
+  "660ff7a1-212d-4c68-a0e9-678f15e2d10f",
+  "6671045d-fa61-428d-8068-42faa9c2cbb5",
+  "69c969c4-fc7e-42ae-909f-bc9da0a6f7a4",
+  "72a9eea0-f0b6-441c-9494-a01fd23b1232",
+  "73b6c7d6-4805-4196-9b54-a5be5a9de309",
+  "7643f9a0-bd7f-4922-8957-5c701ec4694a",
+  "76cfcf2f-6d89-4fea-aca3-5e02a998f05a",
+  "79382b70-493f-4833-90b0-410626a6876d",
+  "7d9cdf3a-881f-4984-b489-a77076ddff96",
+  "7edc97dc-c405-489b-996b-7f376215f09e",
+  "8171824b-e4c7-4775-8449-5fc93044acf0",
+  "823053a7-5fd0-446d-ba71-6e9deaeddfd8",
+  "83b1912d-376a-4ab9-9dac-ac8c092b572d",
+  "84977241-cd7c-4c0c-bf01-3c00e1177218",
+  "88272099-3306-4306-87da-1ec5ba3311a1",
+  "8878f5cb-a213-41e8-b821-49754e0a5167",
+  "8c0cc8af-dafb-4e1f-95db-cb17f418219e",
+  "8e77fe0a-547c-44b1-b4ff-875bb831554a",
+  "928bc0f0-759b-4642-9abd-6d962926e90f",
+  "93d88836-e2c1-443c-9471-85d393a6183a",
+  "9429cbd6-bb65-4adc-9968-f67c93db9434",
+  "95377571-a060-424d-9809-274341dc8451",
+  "9818b768-01ed-4416-a3a1-62f53c83f63e",
+  "98f11562-5261-4e84-bb84-150c2752f2a5",
+  "9bbbab68-7eb8-49fb-bce8-e6fe7938a881",
+  "a0e3f447-1fa7-4c7d-b5e4-ac27472b3407",
+  "a6c0415b-1bae-4eaf-ac32-efcde735e3cd",
+  "ada0dc9b-5d14-4f0a-b7f9-3ff307a03a7d",
+  "af093bbd-b4a8-4f33-8427-1875de0ab810",
+  "b1580b36-bd4a-47ba-b9e1-5fad074ee251",
+  "b76ac27d-b35d-48f8-b8ec-413cf12649ae",
+  "b7ca065a-ae60-4f78-adb9-d17e2816b207",
+  "bf11f265-ad76-470a-8614-9561a7d0c4bc",
+  "c183605a-d401-4454-8990-88a69fbfa8d5",
+  "cdb887f8-0778-42f6-9d35-15db436f2ae7",
+  "d5177a1a-9437-4980-8370-9d9de6718e7b",
+  "d6632bbf-0d38-407f-8454-53e915ff639f",
+  "d6811276-7c07-4e68-946c-a35b2a575c98",
+  "e02bd4ff-1eee-413e-b125-4ceda2170105",
+  "e02c6ac2-2921-4d72-a82a-3c4899c873ed",
+  "e71b3e53-d8fd-4a44-8dff-07cc37b69624",
+  "e9898dc0-b9fa-49b8-8fe5-40240456bc60",
+  "ec5cf8eb-3442-45df-a36d-b27ea7c26fa9",
+  "f0e8ade2-2f04-4c35-9aa5-84d1fec6acf3",
+  "f2d56bac-d340-4de2-b45a-a02b5b856dcf",
+  "f557a9db-815b-4b93-b14f-0cfc547fb4fa",
+  "f657cf25-cb6b-4713-97b0-f646bd9e7520",
+  "f710764f-d311-4697-aadb-75e517a15b8d",
+  "fa1b2c2a-1e4e-4eeb-9600-1f1c72acf238",
+  "fccb7532-794b-4f91-bae4-0e439323d502",
+  "ff26b00f-c2fc-454f-8cad-a24b2dd0fa59"
+ ],
+ "ego": {
+  "0140ac2f-ee3a-4999-ba96-b71fdadd4780": {
+   "score": 4.2,
+   "kinds": [
+    "decelerate",
+    "u_turn"
+   ],
+   "harsh_decel": 2.5,
+   "turn": 0,
+   "u_turn": 1,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 3
+  },
+  "017dbdb0-e0ef-4308-8010-c3e746c77694": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 0.7,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "01d89df4-f70f-4e07-9b3b-fee4e595fcc4": {
+   "score": 0.0,
+   "kinds": [
+    "accelerate"
+   ],
+   "harsh_decel": 0.3,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "028d6d6e-d456-4da9-8a15-460f02237c80": {
+   "score": 0.0,
+   "kinds": [
+    "accelerate"
+   ],
+   "harsh_decel": 1.3,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "03cf79bf-0ad7-40ff-af24-4077115c2a4b": {
+   "score": 3.18,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "turn_left"
+   ],
+   "harsh_decel": 3.3,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 2
+  },
+  "065dd6e8-8f18-40a8-9e6c-4cef42d3a475": {
+   "score": 1.4,
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
+   "harsh_decel": 1.7,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "069e47bd-506f-4f96-a16f-41b994370e9f": {
+   "score": 0.4,
+   "kinds": [
+    "accelerate",
+    "decelerate"
+   ],
+   "harsh_decel": 1.7,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "070c5dfc-4aef-4fec-a868-d5f0c877f7e9": {
+   "score": 2.8,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "turn_right"
+   ],
+   "harsh_decel": 2.8,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 2
+  },
+  "07354ff6-6b6b-4f50-ab3b-098e843eef09": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 1.2,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "08613caa-1831-439a-9ed2-dd4a20f710bc": {
+   "score": 2.4,
+   "kinds": [
+    "decelerate",
+    "turn_right"
+   ],
+   "harsh_decel": 1.8,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "09b6032f-90db-4610-94b6-67e67ff9bd3e": {
+   "score": 2.8,
+   "kinds": [
+    "decelerate",
+    "turn_right"
+   ],
+   "harsh_decel": 2.3,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 2
+  },
+  "09f5051f-4bf8-444b-a2bf-10669ef6847a": {
+   "score": 3.4,
+   "kinds": [
+    "decelerate",
+    "u_turn"
+   ],
+   "harsh_decel": 3.0,
+   "turn": 0,
+   "u_turn": 1,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "0a8ead6e-9c06-44fa-bf14-78474c4cee56": {
+   "score": 0.0,
+   "kinds": [
+    "accelerate"
+   ],
+   "harsh_decel": 0.0,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "110b5fa7-6a35-47c7-af59-43ac082c52ce": {
+   "score": 3.0,
+   "kinds": [
+    "stop",
+    "turn_right"
+   ],
+   "harsh_decel": 1.5,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 0
+  },
+  "13876bde-f9a2-4432-9ee6-89e2ed17b127": {
+   "score": 1.4,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop"
+   ],
+   "harsh_decel": 2.8,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "13a0da28-53f5-481d-bc11-c92565e22265": {
+   "score": 2.4,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "turn_right"
+   ],
+   "harsh_decel": 2.7,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "1827c039-b11f-498e-964d-0f90a6475baa": {
+   "score": 1.18,
+   "kinds": [
+    "decelerate"
+   ],
+   "harsh_decel": 3.3,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 2
+  },
+  "1956fda4-3a75-4cba-ac38-baffde2d9779": {
+   "score": 6.8,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_right",
+    "u_turn"
+   ],
+   "harsh_decel": 2.0,
+   "turn": 1,
+   "u_turn": 1,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 2
+  },
+  "1aaaf8f6-dc3d-4bfd-b74b-f0ee2b0e58c5": {
+   "score": 0.0,
+   "kinds": [
+    "accelerate"
+   ],
+   "harsh_decel": 1.3,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "1b06548e-e2b8-4f96-a325-879f0ad46e77": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 1.1,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "254af362-7f70-4b49-a7f3-07d0160bf6a3": {
+   "score": 6.0,
+   "kinds": [
+    "accelerate",
+    "stop",
+    "turn_left",
+    "u_turn"
+   ],
+   "harsh_decel": 1.3,
+   "turn": 1,
+   "u_turn": 1,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 0
+  },
+  "26f97e3e-fd3f-4f24-982e-4645dc26156f": {
+   "score": 0.4,
+   "kinds": [
+    "decelerate"
+   ],
+   "harsh_decel": 1.4,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "28b7d2f1-8f98-4d99-8682-8c817c30f76d": {
+   "score": 3.0,
+   "kinds": [
+    "accelerate",
+    "stop",
+    "turn_right"
+   ],
+   "harsh_decel": 1.5,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 0
+  },
+  "2ae48228-d1a2-4274-be13-f278065b20a3": {
+   "score": 1.8,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop"
+   ],
+   "harsh_decel": 2.8,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 2
+  },
+  "2e83afd6-ca30-41cf-ae8d-c9724de33a18": {
+   "score": 0.0,
+   "kinds": [
+    "accelerate"
+   ],
+   "harsh_decel": 0.9,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "2f5b7c16-0559-4eec-9bbc-3adf395bd0f3": {
+   "score": 2.2,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop"
+   ],
+   "harsh_decel": 1.3,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 3
+  },
+  "30a39599-c652-48af-a6d8-d3c3270b5525": {
+   "score": 4.43,
+   "kinds": [
+    "decelerate",
+    "u_turn"
+   ],
+   "harsh_decel": 3.7,
+   "turn": 0,
+   "u_turn": 1,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "3209c923-f3ef-493b-9ca5-90c2feb8320e": {
+   "score": 4.52,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_right"
+   ],
+   "harsh_decel": 3.5,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 2
+  },
+  "351c7fb7-85f4-42de-bd41-a8e84a89ab71": {
+   "score": 3.4,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_right"
+   ],
+   "harsh_decel": 2.6,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "35e89abf-f4f8-4f80-9cd6-0c432249025c": {
+   "score": 3.8,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_right"
+   ],
+   "harsh_decel": 2.4,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 2
+  },
+  "36c7ddfd-7d15-4b04-81ac-2193f6958444": {
+   "score": 1.0,
+   "kinds": [
+    "accelerate",
+    "stop"
+   ],
+   "harsh_decel": 0.5,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 0
+  },
+  "3a716987-3ae2-427f-98c5-0933807f4038": {
+   "score": 5.05,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_left"
+   ],
+   "harsh_decel": 3.8,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 2
+  },
+  "3a95fd29-9383-4be4-a130-fffef186223d": {
+   "score": 3.8,
+   "kinds": [
+    "decelerate",
+    "stop",
+    "turn_right"
+   ],
+   "harsh_decel": 2.9,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 2
+  },
+  "3afbc412-679f-4477-9f52-d58123b00b12": {
+   "score": 2.4,
+   "kinds": [
+    "decelerate",
+    "turn_right"
+   ],
+   "harsh_decel": 2.1,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "3f459da9-dfed-4659-8394-cbd5e7ef322b": {
+   "score": 1.0,
+   "kinds": [
+    "accelerate",
+    "stop"
+   ],
+   "harsh_decel": 0.1,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 0
+  },
+  "3f88f1e5-3b59-4b1b-8e61-ee2e74d4e824": {
+   "score": 3.6,
+   "kinds": [
+    "decelerate",
+    "turn_left"
+   ],
+   "harsh_decel": 1.8,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 4
+  },
+  "4385ef64-ea7f-4b01-8bb4-b2b22abadf19": {
+   "score": 1.8,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop"
+   ],
+   "harsh_decel": 2.6,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 2
+  },
+  "4648a368-60b8-4a6a-b2c6-35acc0043f97": {
+   "score": 0.0,
+   "kinds": [
+    "accelerate"
+   ],
+   "harsh_decel": 0.9,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "464c86e9-0f6b-47ec-a1f7-ffca32448313": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 0.5,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "517de13c-b8c5-45b7-b8ea-69bee41fe2fa": {
+   "score": 3.4,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_left"
+   ],
+   "harsh_decel": 1.6,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "5289a3c9-0142-4565-8684-5c84871cf2e6": {
+   "score": 3.0,
+   "kinds": [
+    "u_turn"
+   ],
+   "harsh_decel": 1.6,
+   "turn": 0,
+   "u_turn": 1,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "52ada4cc-6c8f-4d3e-8088-e13d50d15101": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 1.0,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "5795a965-a2af-4c6a-90e5-37a4a230b797": {
+   "score": 6.01,
+   "kinds": [
+    "decelerate",
+    "stop",
+    "u_turn"
+   ],
+   "harsh_decel": 4.1,
+   "turn": 0,
+   "u_turn": 1,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "57c8291c-c8d4-4e89-8986-2c6ae212cfb8": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 0.3,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "596f43ad-65f6-4352-a987-785a8f974168": {
+   "score": 2.4,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "turn_left"
+   ],
+   "harsh_decel": 2.4,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "59aaf5c9-f933-49f4-b0be-ac14fc62f58b": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 1.2,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "5aa35c0b-cacd-408e-9cb7-baae29c18657": {
+   "score": 3.4,
+   "kinds": [
+    "decelerate",
+    "u_turn"
+   ],
+   "harsh_decel": 2.6,
+   "turn": 0,
+   "u_turn": 1,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "6481cab1-01f6-49e4-8d51-7c6e6810bac6": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 0.9,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "65129343-e7af-4376-9aa8-9fceb025f5e0": {
+   "score": 1.8,
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
+   "harsh_decel": 2.7,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 2
+  },
+  "660ff7a1-212d-4c68-a0e9-678f15e2d10f": {
+   "score": 0.4,
+   "kinds": [
+    "accelerate",
+    "decelerate"
+   ],
+   "harsh_decel": 2.4,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "6671045d-fa61-428d-8068-42faa9c2cbb5": {
+   "score": 3.4,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_left"
+   ],
+   "harsh_decel": 1.9,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "69c969c4-fc7e-42ae-909f-bc9da0a6f7a4": {
+   "score": 3.8,
+   "kinds": [
+    "decelerate",
+    "stop",
+    "turn_left"
+   ],
+   "harsh_decel": 1.6,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 2
+  },
+  "72a9eea0-f0b6-441c-9494-a01fd23b1232": {
+   "score": 3.4,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_right"
+   ],
+   "harsh_decel": 1.6,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "73b6c7d6-4805-4196-9b54-a5be5a9de309": {
+   "score": 1.4,
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
+   "harsh_decel": 2.4,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "7643f9a0-bd7f-4922-8957-5c701ec4694a": {
+   "score": 2.2,
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
+   "harsh_decel": 1.6,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 3
+  },
+  "76cfcf2f-6d89-4fea-aca3-5e02a998f05a": {
+   "score": 1.4,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop"
+   ],
+   "harsh_decel": 2.2,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "79382b70-493f-4833-90b0-410626a6876d": {
+   "score": 3.4,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_right"
+   ],
+   "harsh_decel": 2.2,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "7d9cdf3a-881f-4984-b489-a77076ddff96": {
+   "score": 4.2,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_left"
+   ],
+   "harsh_decel": 2.6,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 3
+  },
+  "7edc97dc-c405-489b-996b-7f376215f09e": {
+   "score": 2.8,
+   "kinds": [
+    "decelerate",
+    "turn_right"
+   ],
+   "harsh_decel": 2.9,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 2
+  },
+  "8171824b-e4c7-4775-8449-5fc93044acf0": {
+   "score": 0.4,
+   "kinds": [
+    "accelerate",
+    "decelerate"
+   ],
+   "harsh_decel": 1.9,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "823053a7-5fd0-446d-ba71-6e9deaeddfd8": {
+   "score": 0.0,
+   "kinds": [
+    "accelerate"
+   ],
+   "harsh_decel": 0.2,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "83b1912d-376a-4ab9-9dac-ac8c092b572d": {
+   "score": 0.4,
+   "kinds": [
+    "accelerate",
+    "decelerate"
+   ],
+   "harsh_decel": 1.3,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "84977241-cd7c-4c0c-bf01-3c00e1177218": {
+   "score": 4.46,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "turn_left"
+   ],
+   "harsh_decel": 4.1,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 2
+  },
+  "88272099-3306-4306-87da-1ec5ba3311a1": {
+   "score": 1.4,
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
+   "harsh_decel": 2.9,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "8878f5cb-a213-41e8-b821-49754e0a5167": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 0.5,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "8c0cc8af-dafb-4e1f-95db-cb17f418219e": {
+   "score": 1.26,
+   "kinds": [
+    "accelerate",
+    "decelerate"
+   ],
+   "harsh_decel": 3.3,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 2
+  },
+  "8e77fe0a-547c-44b1-b4ff-875bb831554a": {
+   "score": 3.4,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_right"
+   ],
+   "harsh_decel": 2.3,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "928bc0f0-759b-4642-9abd-6d962926e90f": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 0.5,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "93d88836-e2c1-443c-9471-85d393a6183a": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 0.8,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "9429cbd6-bb65-4adc-9968-f67c93db9434": {
+   "score": 2.4,
+   "kinds": [
+    "decelerate",
+    "turn_left"
+   ],
+   "harsh_decel": 2.1,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "95377571-a060-424d-9809-274341dc8451": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 1.0,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "9818b768-01ed-4416-a3a1-62f53c83f63e": {
+   "score": 6.13,
+   "kinds": [
+    "decelerate",
+    "u_turn"
+   ],
+   "harsh_decel": 4.6,
+   "turn": 0,
+   "u_turn": 1,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 2
+  },
+  "98f11562-5261-4e84-bb84-150c2752f2a5": {
+   "score": 1.8,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop"
+   ],
+   "harsh_decel": 2.9,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 2
+  },
+  "9bbbab68-7eb8-49fb-bce8-e6fe7938a881": {
+   "score": 0.4,
+   "kinds": [
+    "accelerate",
+    "decelerate"
+   ],
+   "harsh_decel": 2.9,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "a0e3f447-1fa7-4c7d-b5e4-ac27472b3407": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 0.8,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "a6c0415b-1bae-4eaf-ac32-efcde735e3cd": {
+   "score": 0.8,
+   "kinds": [
+    "decelerate"
+   ],
+   "harsh_decel": 2.5,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 2
+  },
+  "ada0dc9b-5d14-4f0a-b7f9-3ff307a03a7d": {
+   "score": 0.4,
+   "kinds": [
+    "accelerate",
+    "decelerate"
+   ],
+   "harsh_decel": 1.5,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "af093bbd-b4a8-4f33-8427-1875de0ab810": {
+   "score": 3.4,
+   "kinds": [
+    "decelerate",
+    "stop",
+    "turn_left"
+   ],
+   "harsh_decel": 1.5,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "b1580b36-bd4a-47ba-b9e1-5fad074ee251": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 0.9,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "b76ac27d-b35d-48f8-b8ec-413cf12649ae": {
+   "score": 0.54,
+   "kinds": [
+    "decelerate"
+   ],
+   "harsh_decel": 3.1,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "b7ca065a-ae60-4f78-adb9-d17e2816b207": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 0.8,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "bf11f265-ad76-470a-8614-9561a7d0c4bc": {
+   "score": 3.8,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_left"
+   ],
+   "harsh_decel": 1.4,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 2
+  },
+  "c183605a-d401-4454-8990-88a69fbfa8d5": {
+   "score": 2.8,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "turn_left",
+    "turn_right"
+   ],
+   "harsh_decel": 3.0,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 2
+  },
+  "cdb887f8-0778-42f6-9d35-15db436f2ae7": {
+   "score": 3.0,
+   "kinds": [
+    "stop",
+    "turn_right"
+   ],
+   "harsh_decel": 0.3,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 0
+  },
+  "d5177a1a-9437-4980-8370-9d9de6718e7b": {
+   "score": 0.0,
+   "kinds": [
+    "accelerate"
+   ],
+   "harsh_decel": 1.5,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "d6632bbf-0d38-407f-8454-53e915ff639f": {
+   "score": 0.4,
+   "kinds": [
+    "decelerate"
+   ],
+   "harsh_decel": 2.0,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "d6811276-7c07-4e68-946c-a35b2a575c98": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 0.3,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "e02bd4ff-1eee-413e-b125-4ceda2170105": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 0.3,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "e02c6ac2-2921-4d72-a82a-3c4899c873ed": {
+   "score": 0.4,
+   "kinds": [
+    "accelerate",
+    "decelerate"
+   ],
+   "harsh_decel": 1.5,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "e71b3e53-d8fd-4a44-8dff-07cc37b69624": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 1.1,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "e9898dc0-b9fa-49b8-8fe5-40240456bc60": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 1.1,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "ec5cf8eb-3442-45df-a36d-b27ea7c26fa9": {
+   "score": 0.0,
+   "kinds": [],
+   "harsh_decel": 0.9,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "f0e8ade2-2f04-4c35-9aa5-84d1fec6acf3": {
+   "score": 4.45,
+   "kinds": [
+    "decelerate",
+    "turn_right"
+   ],
+   "harsh_decel": 4.4,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "f2d56bac-d340-4de2-b45a-a02b5b856dcf": {
+   "score": 5.31,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "u_turn"
+   ],
+   "harsh_decel": 3.6,
+   "turn": 0,
+   "u_turn": 1,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "f557a9db-815b-4b93-b14f-0cfc547fb4fa": {
+   "score": 3.4,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_left",
+    "turn_right"
+   ],
+   "harsh_decel": 1.7,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "f657cf25-cb6b-4713-97b0-f646bd9e7520": {
+   "score": 3.0,
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
+   "harsh_decel": 2.3,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 5
+  },
+  "f710764f-d311-4697-aadb-75e517a15b8d": {
+   "score": 2.4,
+   "kinds": [
+    "decelerate",
+    "turn_right"
+   ],
+   "harsh_decel": 2.0,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 1
+  },
+  "fa1b2c2a-1e4e-4eeb-9600-1f1c72acf238": {
+   "score": 1.4,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop"
+   ],
+   "harsh_decel": 2.4,
+   "turn": 0,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  },
+  "fccb7532-794b-4f91-bae4-0e439323d502": {
+   "score": 2.0,
+   "kinds": [
+    "turn_left"
+   ],
+   "harsh_decel": 1.5,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 0,
+   "n_decel": 0
+  },
+  "ff26b00f-c2fc-454f-8cad-a24b2dd0fa59": {
+   "score": 3.4,
+   "kinds": [
+    "accelerate",
+    "decelerate",
+    "stop",
+    "turn_right"
+   ],
+   "harsh_decel": 1.4,
+   "turn": 1,
+   "u_turn": 0,
+   "lane_change": 0,
+   "stop": 1,
+   "n_decel": 1
+  }
+ }
+}

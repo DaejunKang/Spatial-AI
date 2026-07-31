@@ -1,0 +1,124 @@
+{
+  "schema_version": "0.7.1",
+  "name": "dynamic_tag_vocabulary",
+  "description": "동적 태그 어휘 구조 — VLA 메타태깅 라벨 공간 (KATECH)",
+  "standards": [
+    "ISO 34504",
+    "nuPlan",
+    "NHTSA",
+    "nuReasoning"
+  ],
+  "roles": {
+    "preceding_vehicle": "자차 경로상 선행차 — 종방향 거동이 ego에 직접 영향",
+    "adjust": "자차가 대응(감속·회피·양보)해야 하는 인접·측면 객체 (cut-in·합류·병렬 등)",
+    "crossing": "자차 경로를 횡단하는 객체 (보행자·동물 포함 전 클래스)",
+    "ego": "평가 주체인 자차 자신"
+  },
+  "axes": [
+    {
+      "id": 1,
+      "name_ko": "종류",
+      "name_en": "object_type",
+      "cardinality": "single",
+      "standard": "ISO 34504 road user type · nuPlan",
+      "labels": [
+        {"code": "vehicle", "label_ko": "승용/일반차량", "gt": true, "note": null},
+        {"code": "large_vehicle", "label_ko": "긴/대형차량(버스·트럭)", "gt": true, "note": null},
+        {"code": "motorcycle", "label_ko": "이륜(모터)", "gt": true, "note": null},
+        {"code": "bicycle_micromobility", "label_ko": "자전거·마이크로모빌리티", "gt": true, "note": null},
+        {"code": "pedestrian", "label_ko": "보행자", "gt": true, "note": null},
+        {"code": "animal", "label_ko": "동물", "gt": false, "note": "GT 클래스 미포함"},
+        {"code": "emergency_vehicle", "label_ko": "긴급차량", "gt": false, "note": "GT 클래스 미포함(경광등·사이렌 비검출)"},
+        {"code": "other", "label_ko": "기타(낙하물·콘 등 inanimate)", "gt": false, "note": "GT 클래스 미포함"}
+      ]
+    },
+    {
+      "id": 2,
+      "name_ko": "행동·종방향",
+      "name_en": "longitudinal_action",
+      "cardinality": "single",
+      "standard": "ISO 34504 longitudinal action",
+      "labels": [
+        {"code": "accelerate", "label_ko": "가속", "role": "preceding_vehicle", "gt": true, "note": "선행차 가속만 ego 추종거동에 영향(옆차선 무관)"},
+        {"code": "decelerate", "label_ko": "감속", "role": "preceding_vehicle", "gt": true, "note": "선행차 감속이 ego 감속 유발(옆차선 무관)"},
+        {"code": "hard_brake", "label_ko": "급제동", "role": "preceding_vehicle", "gt": true, "note": "선행차 급제동이 ego 급제동·충돌위험 유발"},
+        {"code": "coming_to_stop", "label_ko": "정지 중", "role": "preceding_vehicle", "gt": true, "note": "선행차 정지 진입이 ego 정지 유발"},
+        {"code": "maintain_speed", "label_ko": "속도 유지", "role": "preceding_vehicle", "gt": true, "note": "선행차 정속이 ego 추종 기준"},
+        {"code": "reverse", "label_ko": "후진", "role": "preceding_vehicle", "gt": true, "note": "선행차 후진이 ego 경로 침범"},
+        {"code": "stationary_parked", "label_ko": "정차/주차", "role": "stationary_parked", "gt": false, "note": "경로상 정지객체(차량·동물·장애물)가 ego 진로 차단"}
+      ]
+    },
+    {
+      "id": 3,
+      "name_ko": "자차와의 관계",
+      "name_en": "relation",
+      "cardinality": "single",
+      "standard": "ISO 34504 role wrt subject · NHTSA · nuPlan",
+      "labels": [
+        {"code": "cross_ego_path", "label_ko": "자차 경로 횡단", "role": "crossing", "gt": true, "note": "자차 경로 횡단 → 충돌·정지 유발"},
+        {"code": "oncoming_cross", "label_ko": "대향 횡단", "role": "crossing", "gt": false, "note": "대향에서 자차 경로로 진입·횡단"},
+        {"code": "merge", "label_ko": "합류", "role": "adjust", "gt": false, "note": "합류 차량이 자차 차로로 진입"},
+        {"code": "yield_to_ego", "label_ko": "자차에 양보", "role": "adjust", "gt": false, "note": "측면 진입차/차선변경 상대차/수직 횡단차가 ego에 양보"},
+        {"code": "brake_check", "label_ko": "급제동 유발", "role": "preceding_vehicle", "gt": true, "note": "선행차 고의 급제동으로 ego 급제동 유발"},
+        {"code": "block_lane", "label_ko": "차로 차단", "role": "adjust", "gt": false, "note": "정지·주차차량·장애물·동물이 차로를 막아 ego 진로 차단"},
+        {"code": "door_open", "label_ko": "문 열림", "role": "adjust", "gt": false, "note": "노변 정차차량 문 열림 → ego 회피 필요"},
+        {"code": "board_alight", "label_ko": "승하차 작업", "role": "adjust", "gt": false, "note": "정차차량 승하차 → ego 감속·회피"},
+        {"code": "cut_in", "label_ko": "끼어들기", "role": "adjust", "gt": true, "note": "측면 차량이 ego 앞으로 진입"},
+        {"code": "cut_out", "label_ko": "선행차 이탈(컷아웃)", "role": "adjust", "gt": true, "note": "선행차가 옆차로로 이탈 → 전방 위험 노출·ego 반응"},
+        {"code": "sudden_cut_in", "label_ko": "급끼어들기(급진입)", "role": "adjust", "gt": true, "note": "측면 차량 급진입 → ego 급제동·충돌위험"},
+        {"code": "alongside_parallel", "label_ko": "병렬 주행(유사 속도)", "role": "adjust", "gt": false, "note": "차량·보행자·자전거가 유사속도로 병렬 → 측면 간섭"},
+        {"code": "oncoming_narrow", "label_ko": "좁은 길 대향 교행", "role": "adjust", "gt": false, "note": "좁은 길 대향 교행 → 회피·양보 필요"}
+      ]
+    },
+    {
+      "id": 5,
+      "name_ko": "자차 거동",
+      "name_en": "ego_action",
+      "cardinality": "single",
+      "standard": "확장 · ISO 34504 ego action",
+      "labels": [
+        {"code": "ego_lane_keep", "label_ko": "자차 차로 유지", "role": "ego", "gt": false, "note": null},
+        {"code": "ego_lane_change_left", "label_ko": "자차 좌측 차선변경", "role": "ego", "gt": false, "note": "맵 없이 차선변경 판단 곤란 → GT 제외"},
+        {"code": "ego_lane_change_right", "label_ko": "자차 우측 차선변경", "role": "ego", "gt": false, "note": "맵 없이 차선변경 판단 곤란 → GT 제외"},
+        {"code": "ego_turn_left", "label_ko": "자차 좌회전(교차로)", "role": "ego", "gt": true, "note": null},
+        {"code": "ego_turn_right", "label_ko": "자차 우회전(교차로)", "role": "ego", "gt": true, "note": null},
+        {"code": "ego_unprotected_left", "label_ko": "자차 비보호 좌회전", "role": "ego", "gt": true, "note": "회전 자체는 GT · '비보호' 속성은 신호·맵 필요"},
+        {"code": "ego_u_turn", "label_ko": "자차 U턴", "role": "ego", "gt": true, "note": null},
+        {"code": "ego_reactive_stop", "label_ko": "반응 정지(타 객체에 의해 멈춤)", "role": "ego", "gt": true, "note": null},
+        {"code": "ego_reactive_evade", "label_ko": "반응 회피·경로 변경", "role": "ego", "gt": true, "note": null},
+        {"code": "ego_follow", "label_ko": "자차 선행차 추종", "role": "ego", "gt": false, "note": null},
+        {"code": "ego_yield", "label_ko": "자차 양보", "role": "ego", "gt": false, "note": null}
+      ]
+    },
+    {
+      "id": "vru",
+      "name_ko": "VRU 세부",
+      "name_en": "vru_detail",
+      "cardinality": "optional",
+      "applies_when": {"object_type": "pedestrian"},
+      "standard": "nuReasoning · ISO 34504",
+      "labels": [
+        {"code": "crossing", "label_ko": "횡단 중", "role": "crossing", "gt": null, "note": "횡단 보행자 — ego 경로 간섭"},
+        {"code": "about_to_cross", "label_ko": "횡단 직전", "role": "crossing", "gt": null, "note": "진입 예측 필요"},
+        {"code": "walking_along", "label_ko": "도로변 보행", "role": "pedestrian", "gt": null, "note": "잠재 진입 감시"},
+        {"code": "stationary", "label_ko": "정지", "role": "pedestrian", "gt": null, "note": "정지 보행자 — 진입여부 감시"},
+        {"code": "child", "label_ko": "어린이", "role": "pedestrian", "gt": null, "note": "예측불가 행동 위험"},
+        {"code": "mobility_aid", "label_ko": "이동보조(휠체어 등)", "role": "pedestrian", "gt": null, "note": "저속·취약"},
+        {"code": "group_crowd", "label_ko": "군중", "role": "pedestrian", "gt": null, "note": "다수 동시 진입"}
+      ]
+    }
+  ],
+  "difficulty_rubric": {
+    "name_ko": "난이도 / 큐레이션",
+    "cardinality": "optional",
+    "standard": "nuReasoning 루브릭",
+    "scale": [1, 10],
+    "bands": [
+      {"range": [1, 2], "usage": "일반 — 제외"},
+      {"range": [3, 4], "usage": "경미 — 보조 풀(소량)"},
+      {"range": [5, 6], "usage": "중간 롱테일 — 표준 포함(>5만 유지)"},
+      {"range": [7, 8], "usage": "고가치 — 난이도 평가 핵심"},
+      {"range": [9, 10], "usage": "안전위급 — 전용 분할"}
+    ]
+  }
+}

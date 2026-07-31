@@ -1,0 +1,148 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "meta_tagging_opt1_MODEL_OUTPUT_v0.7.3",
+    "description": "모델 <answer> 생성분 v0.7.3. forward. occlusion 포함. role/ego_action/anchor 미포함.",
+    "x_field_order": [
+      "cause",
+      "object_type",
+      "vru_attr",
+      "occlusion",
+      "longitudinal_action",
+      "relation",
+      "vru_state",
+      "signal_state"
+    ],
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "cause"
+    ],
+    "properties": {
+      "cause": {
+        "type": "string",
+        "enum": [
+          "agent",
+          "signal",
+          "road_geometry",
+          "other"
+        ],
+        "description": "[MODEL·gate] 전이 원인. agent/signal/road_geometry/other"
+      },
+      "object_type": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "vehicle",
+          "large_vehicle",
+          "motorcycle",
+          "bicycle_micromobility",
+          "pedestrian",
+          "animal",
+          "emergency_vehicle",
+          "other",
+          null
+        ],
+        "description": "[MODEL·SD] cause=agent. 도로사용자만(신호는 여기 아님)"
+      },
+      "vru_attr": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "child",
+          "mobility_aid",
+          "group_crowd",
+          null
+        ],
+        "description": "[MODEL·SD] object_type=pedestrian"
+      },
+      "occlusion": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "visible",
+          "partial",
+          "full_inferred",
+          "emerging",
+          "entering",
+          null
+        ],
+        "description": "[MODEL·관측] 에이전트 가림 상태. cause=agent. 거동 추론 신뢰도 조건화. emerging/full_inferred=permanence 검증"
+      },
+      "longitudinal_action": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "accelerate",
+          "decelerate",
+          "hard_brake",
+          "coming_to_stop",
+          "maintain_speed",
+          "reverse",
+          "stationary_parked",
+          null
+        ],
+        "description": "[MODEL·행동] role=preceding_vehicle류. relation과 상호배타"
+      },
+      "relation": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "cross_ego_path",
+          "oncoming_cross",
+          "merge",
+          "agent_yields_to_ego",
+          "brake_check",
+          "block_lane",
+          "door_open",
+          "board_alight",
+          "cut_in",
+          "cut_out",
+          "sudden_cut_in",
+          "alongside_parallel",
+          "oncoming_narrow",
+          null
+        ],
+        "description": "[MODEL·행동] adjust/crossing류. longitudinal_action과 상호배타"
+      },
+      "vru_state": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "crossing",
+          "about_to_cross",
+          "walking_along",
+          "stationary",
+          null
+        ],
+        "description": "[MODEL·행동] object_type=pedestrian"
+      },
+      "signal_state": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "red",
+          "yellow",
+          "green",
+          "red_arrow",
+          "green_arrow",
+          "flashing",
+          null
+        ],
+        "description": "[MODEL] cause=signal일 때 신호 상태"
+      }
+    }
+  }

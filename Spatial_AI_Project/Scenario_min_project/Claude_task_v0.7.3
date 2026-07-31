@@ -1,0 +1,78 @@
+# Claude Code Task — v0.7.3 마이그레이션 & 재실행 (옵션1 이벤트 중심 태깅)
+
+> 연구 설계 확정. 구현·실행 브리프. 기존 `CLAUDE.md` 컨텍스트 전제.
+> 이 문서가 최종 핸드오프본이며, 이전 `CLAUDE_TASK_opt1_trigger.md`(v0.7.1 참조)를 대체한다.
+
+## 0. 목표
+
+기존 파이프라인(v0.7.1로 diverse_set-test 150클립 실행 완료, 리포트 존재)을 **v0.7.3 스키마로 마이그레이션 후 재실행**. 리포트 §6 어휘 갭 3종 + occlusion 신설을 반영해 어휘 밖 라벨을 제거하고 occlusion·cause 분포를 확보한다.
+
+## 1. 환경 & 가드레일 (엄수)
+
+- 서버 `daejun@203.250.187.208`, 작업 폴더 `~/vla-tagging`. 컨테이너 `cosmos_dj`(port 8001, `nvidia/cosmos3-nano-reasoner`).
+- **`cosmos2`(port 8000) 절대 무접촉** — 타 그룹 사용 중.
+- `python3` 사용. venv 매 세션 재활성화. `docker container logs`(full). VPN 필요. `NGC_API_KEY` 꺾쇠 없이.
+
+## 2. 배치할 스키마 파일 (4종 → `~/vla-tagging/schema/`)
+
+| 파일 | 역할 |
+| --- | --- |
+| `meta_tagging_vocab_v0.7.3.json` | 어휘 라벨 공간 + cause/signal/occlusion + `role_derivation` + `normalization` |
+| `meta_tagging_seg_opt1_schema_v0.7.3.json` | 최종 레코드(저장) 스키마. `x_field_order`·`x_role_derivation`·`x_fill_rules` |
+| `meta_tagging_opt1_model_output_v0.7.3.json` | 모델 `<answer>` 생성분(forward, role/anchor 없음) |
+| `meta_tagging_seg_opt1_sample_v0.7.3.jsonl` | 검증 샘플(agent/signal/road_geometry/occlusion) |
+
+## 3. 코드 변경 (리포트에 나타난 기존 파일에 매핑)
+
+- **`voabb.py`(vocab 로더)**: v0.7.3 로드. `role_derivation`·`normalization`·`cause`·`signal_state`·`occlusion` enum 노출.
+- **`tagger.py`(모델 호출)**: 프롬프트에 `model_output_v0.7.3` 스키마 주입. forward 순서 강제 `cause → object_type → vru_attr → occlusion → longitudinal_action|relation → vru_state → signal_state`. **role 미생성(파생)**, `ego_action`은 앵커 context. vLLM **guided_json/grammar로 enum 강제**(자유서술·자리오용 차단).
+- **`event_tagger.py`(앵커+모델 병합)**: RULE 앵커 + 모델출력 병합, `role`을 `role_derivation`으로 계산, `normalization` 적용, `relation`↔`longitudinal_action` 상호배타 검증.
+- **`events.py`(when=GT, egomotion+obstacle)**: 신호 원인 정지는 `cause=signal`로. egomotion 트리거는 급변(미분) 기반 유지(§6 참조).
+- **`overlay.py`**: `occlusion`·`cause`·`signal_state` 시각화 추가.
+
+## 4. 어휘 갭 반영 (리포트 §6 — 정량 검증 대상)
+
+1. **신호**: `traffic_light`(13)·`traffic_control_device`(2) → `cause=signal`(+`signal_state`). `object_type`에서 제거.
+2. **role↔relation 혼용**(oncoming_cross 6·crossing 4·cut_in 2·block_lane 1): role 생성 제거·파생으로 소멸.
+3. **정규화**: `stationary→stationary_parked`, `parked_alongside→alongside_parallel`, `yield→yield_to_ego`, `car/truck/bus→vehicle/large_vehicle`. (vocab `normalization`)
+4. **자유서술**(affecting_ego·waiting_for·stop_at·controls_ego_movement): guided_json 강제로 차단.
+
+## 5. occlusion (신규)
+
+`cause=agent`일 때 `visible|partial|full_inferred|emerging|entering`. object_type 뒤·행동 앞(관측 블록). KPI-19 불확실성 층화 변수. `full_inferred`/`emerging`은 난이도 상위·저calibration 예상.
+※ 근거 프레이밍: Cosmos 3는 permanence를 근사·미측정(모델카드+기술보고서 확인). 태그는 강점 활용이 아니라 **미측정 축의 최초 정량화**. 상세 vocab `occlusion.verify_note`.
+
+## 6. 트리거 스펙 (events.py 참조 — 급변·곡률 불변)
+
+절대 임계 금지. 변화율(미분) + robust 적응 임계.
+- 종방향 `j_x=da_x/dt` 스파이크 + 감속 onset → hard_brake/ego_stop
+- 횡방향 `α=dψ̇/dt` 또는 조향각속도 스파이크 → ego_evade
+- 강건화: ψ̇·a_x에 CUSUM 변화점 + MAD z-score 임계(초기 k=5). CAN 로깅.
+- 계획 회전(매끄러움)은 비트리거가 정상.
+
+## 7. 재실행 & 검증
+
+- `batch_readout.py --split diverse_set-test`(150클립) 재실행.
+- 각 레코드 `meta_tagging_seg_opt1_schema_v0.7.3.json`로 draft-07 검증 + 세그먼트 길이 검증.
+- v0.7.1 대비 **어휘 밖 라벨(경고) 감소** 정량 비교(리포트 51건 기준).
+
+## 8. 수용 기준 (Acceptance)
+
+- [ ] `traffic_light`/`traffic_control_device` object_type 출현 0 → `cause=signal`로 전환
+- [ ] role↔relation 혼용 경고 0 (role 파생)
+- [ ] `normalization` 적용 확인(stationary 등 잔존 0)
+- [ ] `occlusion` 태그 생성·분포 리포트, `cause` 분포(agent/signal/road_geometry) 리포트
+- [ ] 전 레코드 v0.7.3 스키마 검증 통과
+- [ ] 어휘 밖 라벨 총건수 v0.7.1(51) 대비 유의 감소
+- [ ] `cosmos2`/8000 무접촉, `python3`·`docker container logs` 준수
+
+## 9. 산출물
+
+- `outputs/tags/<clip_id>.json`, `tags.jsonl`, `output/overlay/`
+- `v0.7.3_validation.md` (어휘 밖 감소·occlusion/cause 분포·스키마 검증 결과)
+
+## 범위 밖 (Out of Scope)
+
+- KPI-19 Conf-ECE / MC-Dropout 실증(occlusion 층화) — 별도 태스크
+- 트리거 임계 최종 확정 — PR곡선 리뷰 후 사용자 결정
+- 옵션2 융합 보정 패스 — 별도 태스크

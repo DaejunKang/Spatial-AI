@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -m json.tool outputs_v073/tags/0c5239c7-a3d6-467a-9f32-bebb4a1bb436.json)",
+      "Bash(python3 -m json.tool meta_tagging_opt1_model_output_v0.7.3.json)",
+      "Bash(python3 -c ' *)",
+      "Bash(timeout 900 .venv/bin/python tmp/run_demo_episode.py)",
+      "Read(//usr/bin/**)",
+      "Bash(.venv/bin/python -c \"import imageio_ffmpeg; print\\(imageio_ffmpeg.get_ffmpeg_exe\\(\\)\\)\")",
+      "Bash(.venv/bin/python -c ' *)",
+      "Bash(/home/daejun/vla-tagging/.venv/bin/python /home/daejun/vla-tagging/tmp/build_demo_index.py)",
+      "Bash(curl -s -o /dev/null -w \"root/index.html: HTTP %{http_code}\\\\n\" http://localhost:8090/index.html)",
+      "Bash(curl -s -o /dev/null -w \"demo index: HTTP %{http_code}\\\\n\" http://localhost:8090/gold_label/demo_episode/index.html)",
+      "Bash(curl -s -o /dev/null -w \"demo mp4: HTTP %{http_code}\\\\n\" http://localhost:8090/gold_label/demo_episode/a0a0a9c2.mp4)",
+      "Bash(awk '{print \"host IP:\", $1}')",
+      "Bash(curl -s -o /dev/null -w \"index.html: HTTP %{http_code}\\\\n\" http://localhost:8090/index.html)",
+      "Bash(curl -s -o /dev/null -w \"a0a0a9c2.mp4: HTTP %{http_code}\\\\n\" http://localhost:8090/a0a0a9c2.mp4)",
+      "Bash(/home/daejun/vla-tagging/.venv/bin/python *)",
+      "Bash(timeout 900 .venv/bin/python tmp/run_demo_episode2.py)",
+      "Bash(curl -s -o /dev/null -w \"index HTTP %{http_code}\\\\n\" http://localhost:8090/index.html)",
+      "Bash(curl -s -o /dev/null -w \"mp4 HTTP %{http_code}\\\\n\" http://localhost:8090/a0a0a9c2.mp4)",
+      "Bash(timeout 1200 .venv/bin/python tmp/run_demo_episode3.py)",
+      "Bash(timeout 1200 .venv/bin/python tmp/run_demo_diag.py)",
+      "Bash(.venv/bin/python tmp/rebuild_grounded.py)",
+      "Bash(curl -s -o /dev/null -w \"reel.html HTTP %{http_code}\\\\n\" http://localhost:8090/reel.html)",
+      "Bash(curl -s -o /dev/null -w \"demo_reel.mp4 HTTP %{http_code}\\\\n\" http://localhost:8090/demo_reel.mp4)",
+      "Bash(python3 *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8137/gold_label/select/index.html\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8137/gold_label/select/vids/1956fda4.mp4\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8137/index.html\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8137/vids/1956fda4.mp4\")"
+    ]
+  }
+}

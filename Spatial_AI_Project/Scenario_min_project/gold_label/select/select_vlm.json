@@ -1,0 +1,602 @@
+{
+ "0140ac2f-ee3a-4999-ba96-b71fdadd4780": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "turn_maneuver",
+  "reason": "Vehicle executes a right turn at night, navigating through intersections and passing under a large illuminated structure, indicating a complex maneuver rather"
+ },
+ "017dbdb0-e0ef-4308-8010-c3e746c77694": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a clear, well-lit road with no visible maneuvers, obstacles, or interactions."
+ },
+ "01d89df4-f70f-4e07-9b3b-fee4e595fcc4": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a multi-lane road with no notable maneuvers, interactions, or hazards."
+ },
+ "028d6d6e-d456-4da9-8a15-460f02237c80": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight highway driving with no notable maneuvers or events."
+ },
+ "03cf79bf-0ad7-40ff-af24-4077115c2a4b": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "Nighttime highway driving with steady lane keeping and no complex maneuvers or hazards."
+ },
+ "065dd6e8-8f18-40a8-9e6c-4cef42d3a475": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a sunlit residential street with parked cars and light traffic, no notable maneuvers or hazards."
+ },
+ "069e47bd-506f-4f96-a16f-41b994370e9f": {
+  "interesting": true,
+  "score": 0.4,
+  "category": "routine_cruise",
+  "reason": "Urban driving with light traffic and snow-covered sidewalks; no complex maneuvers or hazards observed."
+ },
+ "070c5dfc-4aef-4fec-a868-d5f0c877f7e9": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a multi-lane road at night with no maneuvers, turns, or interactions with other road users."
+ },
+ "07354ff6-6b6b-4f50-ab3b-098e843eef09": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight highway driving at night with no maneuvers, interactions, or notable events."
+ },
+ "08613caa-1831-439a-9ed2-dd4a20f710bc": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The clip shows a vehicle driving straight through a residential area with no notable events, interactions, or hazards. The environment is consistent, and the on"
+ },
+ "09b6032f-90db-4610-94b6-67e67ff9bd3e": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "Urban night driving with intersections and traffic lights, but no complex maneuvers or hazards."
+ },
+ "09f5051f-4bf8-444b-a2bf-10669ef6847a": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "The clip shows a vehicle driving straight through a parking lot with no notable maneuvers, interactions, or hazards."
+ },
+ "0a8ead6e-9c06-44fa-bf14-78474c4cee56": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a multi-lane road with no notable maneuvers, intersections, or unusual events."
+ },
+ "110b5fa7-6a35-47c7-af59-43ac082c52ce": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The frames show a consistent straight path at night with no notable maneuvers, obstacles, or interactions, indicating plain cruising."
+ },
+ "13876bde-f9a2-4432-9ee6-89e2ed17b127": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "stop_or_yield",
+  "reason": "Approaches a stop sign at night, requiring a full stop and yielding to cross traffic before proceeding."
+ },
+ "13a0da28-53f5-481d-bc11-c92565e22265": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "intersection",
+  "reason": "The vehicle navigates a multi-lane intersection with traffic lights, other vehicles, and roadside businesses, requiring attention to signals and surrounding car"
+ },
+ "1827c039-b11f-498e-964d-0f90a6475baa": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "congestion",
+  "reason": "Multiple vehicles are stopped or moving slowly in adjacent lanes, indicating moderate to heavy traffic congestion along the road."
+ },
+ "1956fda4-3a75-4cba-ac38-baffde2d9779": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "The clip shows a vehicle exiting a gas station and proceeding along a well-lit urban street at night, with no notable maneuvers, hazards, or unusual events. The"
+ },
+ "1aaaf8f6-dc3d-4bfd-b74b-f0ee2b0e58c5": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a residential street with no notable events, interactions, or changes in behavior."
+ },
+ "1b06548e-e2b8-4f96-a325-879f0ad46e77": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a clear suburban road with no notable events, interactions, or changes in traffic conditions."
+ },
+ "254af362-7f70-4b49-a7f3-07d0160bf6a3": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The clip shows a series of static or slowly moving frames with no significant maneuvers, interactions, or hazards. The vehicle appears to be driving straight at"
+ },
+ "26f97e3e-fd3f-4f24-982e-4645dc26156f": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "intersection",
+  "reason": "The vehicle approaches and navigates a signalized intersection with moderate traffic, requiring attention to traffic lights, cross-traffic, and lane positioning"
+ },
+ "28b7d2f1-8f98-4d99-8682-8c817c30f76d": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "intersection",
+  "reason": "The vehicle approaches and crosses a signalized intersection at night, with traffic lights changing from red to green, indicating a controlled crossing maneuver"
+ },
+ "2ae48228-d1a2-4274-be13-f278065b20a3": {
+  "interesting": true,
+  "score": 0.4,
+  "category": "routine_cruise",
+  "reason": "The clip shows a vehicle driving straight through a residential area with intersections and stop signs, but no notable maneuvers, hazards, or unusual events are"
+ },
+ "2e83afd6-ca30-41cf-ae8d-c9724de33a18": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "cut_in",
+  "reason": "A large truck enters the lane ahead and moves alongside the ego vehicle, requiring attention to maintain safe distance."
+ },
+ "2f5b7c16-0559-4eec-9bbc-3adf395bd0f3": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The clip shows a vehicle driving straight through a parking lot with no notable maneuvers, interactions, or hazards."
+ },
+ "30a39599-c652-48af-a6d8-d3c3270b5525": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving at night with no notable maneuvers, interactions, or hazards."
+ },
+ "3209c923-f3ef-493b-9ca5-90c2feb8320e": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "intersection",
+  "reason": "The clip shows a sequence of frames approaching and navigating an intersection with traffic signals, vehicles, and lane markings, indicating a notable driving情境"
+ },
+ "351c7fb7-85f4-42de-bd41-a8e84a89ab71": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "intersection",
+  "reason": "The vehicle approaches and navigates a stop-controlled intersection at night, requiring attention to cross traffic, stop signs, and pedestrian crosswalks."
+ },
+ "35e89abf-f4f8-4f80-9cd6-0c432249025c": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "intersection",
+  "reason": "The ego vehicle approaches and navigates a signalized intersection with multiple lanes, crosswalks, and surrounding traffic, requiring attention to traffic flow"
+ },
+ "36c7ddfd-7d15-4b04-81ac-2193f6958444": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "intersection",
+  "reason": "The vehicle approaches and navigates a signalized intersection at night with snow on the road, requiring attention to traffic lights, other vehicles, and road/雪"
+ },
+ "3a716987-3ae2-427f-98c5-0933807f4038": {
+  "interesting": true,
+  "score": 0.4,
+  "category": "routine_cruise",
+  "reason": "The clip shows a straightforward drive through a residential area with no notable maneuvers, hazards, or interactions with other road users."
+ },
+ "3a95fd29-9383-4be4-a130-fffef186223d": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "intersection",
+  "reason": "The vehicle navigates a series of intersections with traffic lights and crosswalks, including a notable right turn and a stop at a red light, indicating active,"
+ },
+ "3afbc412-679f-4477-9f52-d58123b00b12": {
+  "interesting": true,
+  "score": 0.4,
+  "category": "intersection",
+  "reason": "The vehicle approaches and navigates a signalized intersection with visible traffic lights and crosswalks, requiring attention to traffic signals and potential右"
+ },
+ "3f459da9-dfed-4659-8394-cbd5e7ef322b": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "intersection",
+  "reason": "The vehicle approaches and navigates a large, multi-lane intersection with traffic signals, other vehicles, and lane markings, requiring attention to traffic, a"
+ },
+ "3f88f1e5-3b59-4b1b-8e61-ee2e74d4e824": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The clip shows steady forward motion on a highway with no notable events, interactions, or changes in driving conditions."
+ },
+ "4385ef64-ea7f-4b01-8bb4-b2b22abadf19": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "congestion",
+  "reason": "Multiple vehicles are stopped or moving slowly in the same lane, indicating traffic congestion ahead."
+ },
+ "4648a368-60b8-4a6a-b2c6-35acc0043f97": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight highway driving with no maneuvers, interactions, or notable events."
+ },
+ "464c86e9-0f6b-47ec-a1f7-ffca32448313": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "Nighttime highway driving with steady lane-keeping and distant vehicles; no immediate hazards or complex maneuvers."
+ },
+ "517de13c-b8c5-45b7-b8ea-69bee41fe2fa": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "intersection",
+  "reason": "The vehicle navigates a series of intersections with traffic control, including stop signs and crosswalks, requiring attention to other vehicles and pedestrians"
+ },
+ "5289a3c9-0142-4565-8684-5c84871cf2e6": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "The clip shows a vehicle driving through a parking lot under overcast, rainy conditions. The vehicle moves steadily forward, passing parked cars, trees, and a f"
+ },
+ "52ada4cc-6c8f-4d3e-8088-e13d50d15101": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a residential road with no notable maneuvers, intersections, or interactions with other road users."
+ },
+ "5795a965-a2af-4c6a-90e5-37a4a230b797": {
+  "interesting": true,
+  "score": 0.6,
+  "category": "intersection",
+  "reason": "The vehicle approaches and navigates a signalized intersection at night, transitioning from red to green lights, and then continues straight on a multi-lane, 50"
+ },
+ "57c8291c-c8d4-4e89-8986-2c6ae212cfb8": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight highway driving with light traffic and no notable maneuvers or hazards."
+ },
+ "596f43ad-65f6-4352-a987-785a8f974168": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "cut_in",
+  "reason": "A green truck cuts into the lane ahead of the ego vehicle, requiring attention and potential adjustment of speed or position."
+ },
+ "59aaf5c9-f933-49f4-b0be-ac14fc62f58b": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a highway at night with no notable events or interactions."
+ },
+ "5aa35c0b-cacd-408e-9cb7-baae29c18657": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The vehicle drives straight at night on a well-lit road with no notable maneuvers, interactions, or hazards."
+ },
+ "6481cab1-01f6-49e4-8d51-7c6e6810bac6": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a multi-lane highway at night with steady traffic flow and no notable maneuvers or hazards."
+ },
+ "65129343-e7af-4376-9aa8-9fceb025f5e0": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "congestion",
+  "reason": "Multiple vehicles ahead with brake lights illuminated, indicating traffic buildup or slow-moving congestion on the road."
+ },
+ "660ff7a1-212d-4c68-a0e9-678f15e2d10f": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The clip shows a vehicle driving straight through a quiet residential neighborhood at night with no notable events, interactions, or hazards."
+ },
+ "6671045d-fa61-428d-8068-42faa9c2cbb5": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The clip shows a series of straight, residential street views with parked cars and trees, with no notable maneuvers, intersections, or unusual events. The drive"
+ },
+ "69c969c4-fc7e-42ae-909f-bc9da0a6f7a4": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "Nighttime driving with moderate traffic and intersections, but no complex maneuvers or hazards."
+ },
+ "72a9eea0-f0b6-441c-9494-a01fd23b1232": {
+  "interesting": true,
+  "score": 0.6,
+  "category": "intersection",
+  "reason": "The clip shows a vehicle approaching and navigating a stop-controlled intersection, with visible stop signs, crosswalks, and other vehicles waiting or passing,"
+ },
+ "73b6c7d6-4805-4196-9b54-a5be5a9de309": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "cut_in",
+  "reason": "A large white truck cuts into the lane directly in front of the ego vehicle, requiring immediate attention and potential braking to avoid a collision."
+ },
+ "7643f9a0-bd7f-4922-8957-5c701ec4694a": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "congestion",
+  "reason": "Vehicle is stopped in traffic with no forward movement, surrounded by stationary cars and pedestrians, indicating a congested urban environment."
+ },
+ "76cfcf2f-6d89-4fea-aca3-5e02a998f05a": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "cut_in",
+  "reason": "A vehicle cuts into the lane ahead, requiring the ego driver to adjust speed and maintain safe distance while continuing forward."
+ },
+ "79382b70-493f-4833-90b0-410626a6876d": {
+  "interesting": true,
+  "score": 0.6,
+  "category": "routine_cruise",
+  "reason": "Nighttime driving with parked cars and streetlights, but no complex maneuvers or hazards."
+ },
+ "7d9cdf3a-881f-4984-b489-a77076ddff96": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a residential road with no notable events, interactions, or changes in behavior."
+ },
+ "7edc97dc-c405-489b-996b-7f376215f09e": {
+  "interesting": true,
+  "score": 0.6,
+  "category": "routine_cruise",
+  "reason": "The clip shows a vehicle driving straight on a multi-lane road at night with moderate traffic, passing under streetlights and overpasses, with no notable events"
+ },
+ "8171824b-e4c7-4775-8449-5fc93044acf0": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "Nighttime highway driving with steady traffic and clear lane markings; no notable maneuvers or hazards."
+ },
+ "823053a7-5fd0-446d-ba71-6e9deaeddfd8": {
+  "interesting": true,
+  "score": 0.6,
+  "category": "intersection",
+  "reason": "The vehicle approaches and navigates a signalized intersection with traffic lights and crosswalks, requiring attention to traffic signals and potential cross-ve"
+ },
+ "83b1912d-376a-4ab9-9dac-ac8c092b572d": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a highway at night with no notable events or interactions."
+ },
+ "84977241-cd7c-4c0c-bf01-3c00e1177218": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "intersection",
+  "reason": "Nighttime driving in heavy rain with significant glare and reflections, navigating multiple intersections with traffic lights and road signs under challenging, "
+ },
+ "88272099-3306-4306-87da-1ec5ba3311a1": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "Nighttime driving with steady lane keeping and approaching intersections, no unusual maneuvers or hazards."
+ },
+ "8878f5cb-a213-41e8-b821-49754e0a5167": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "Nighttime driving on wet roads with reflections, but no complex maneuvers or hazards."
+ },
+ "8c0cc8af-dafb-4e1f-95db-cb17f418219e": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "Nighttime residential driving with parked cars and streetlights; no complex maneuvers or hazards."
+ },
+ "8e77fe0a-547c-44b1-b4ff-875bb831554a": {
+  "interesting": true,
+  "score": 0.4,
+  "category": "intersection",
+  "reason": "The vehicle navigates through a multi-lane intersection with traffic signals and crosswalks, requiring attention to signal changes and potential cross-traffic."
+ },
+ "928bc0f0-759b-4642-9abd-6d962926e90f": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The clip shows steady, straight driving on a wet road with light traffic and no notable maneuvers or hazards."
+ },
+ "93d88836-e2c1-443c-9471-85d393a6183a": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Consistent straight driving on a wet two-lane road with light traffic and no notable events or interactions."
+ },
+ "9429cbd6-bb65-4adc-9968-f67c93db9434": {
+  "interesting": true,
+  "score": 0.6,
+  "category": "intersection",
+  "reason": "The vehicle approaches and navigates a multi-lane intersection with visible traffic signals, crosswalks, and other vehicles, requiring attention to traffic flow"
+ },
+ "95377571-a060-424d-9809-274341dc8451": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The clip shows a vehicle driving straight through a parking lot with no notable maneuvers, interactions, or hazards."
+ },
+ "9818b768-01ed-4416-a3a1-62f53c83f63e": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a residential road with no notable maneuvers, intersections, or hazards."
+ },
+ "98f11562-5261-4e84-bb84-150c2752f2a5": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "intersection",
+  "reason": "The clip shows a sequence of frames approaching and navigating an intersection, with visible traffic lights and crosswalks, indicating a structured driving task"
+ },
+ "9bbbab68-7eb8-49fb-bce8-e6fe7938a881": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a dark road with no notable events or interactions."
+ },
+ "a0e3f447-1fa7-4c7d-b5e4-ac27472b3407": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a highway at night with no notable events or interactions."
+ },
+ "a6c0415b-1bae-4eaf-ac32-efcde735e3cd": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight highway driving with no notable maneuvers, lane changes, or interactions."
+ },
+ "ada0dc9b-5d14-4f0a-b7f9-3ff307a03a7d": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "congestion",
+  "reason": "Multiple vehicles ahead in traffic, including a white pickup truck and other cars, indicating moderate to heavy congestion on a multi-lane road."
+ },
+ "af093bbd-b4a8-4f33-8427-1875de0ab810": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "intersection",
+  "reason": "The vehicle waits at a red light, then proceeds through a green light at an intersection, followed by a right turn, indicating a sequence of controlled driving."
+ },
+ "b1580b36-bd4a-47ba-b9e1-5fad074ee251": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "The vehicle is driving straight through a parking lot at night, with no notable maneuvers, interactions, or hazards observed across the frames."
+ },
+ "b76ac27d-b35d-48f8-b8ec-413cf12649ae": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "The vehicle drives straight at night with clear visibility, passing intersections and commercial areas without any notable maneuvers, hazards, or interactions."
+ },
+ "b7ca065a-ae60-4f78-adb9-d17e2816b207": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight highway driving in rain with no notable maneuvers or events."
+ },
+ "bf11f265-ad76-470a-8614-9561a7d0c4bc": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "The clip shows a vehicle driving straight through a residential area with intersections and parked cars, but no notable maneuvers, hazards, or unusual events. A"
+ },
+ "c183605a-d401-4454-8990-88a69fbfa8d5": {
+  "interesting": true,
+  "score": 0.6,
+  "category": "routine_cruise",
+  "reason": "The clip shows a vehicle driving straight at night with clear lane markings and streetlights, but no notable maneuvers, interactions, or hazards are present."
+ },
+ "cdb887f8-0778-42f6-9d35-15db436f2ae7": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The frames show a consistent, straight forward view with no notable maneuvers, interactions, or environmental changes; it is plain cruising along a road."
+ },
+ "d5177a1a-9437-4980-8370-9d9de6718e7b": {
+  "interesting": true,
+  "score": 0.6,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving with mild sun glare and light traffic, no notable maneuvers or hazards."
+ },
+ "d6632bbf-0d38-407f-8454-53e915ff639f": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight highway driving with steady traffic flow and no notable maneuvers or hazards."
+ },
+ "d6811276-7c07-4e68-946c-a35b2a575c98": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight highway driving with no maneuvers, interactions, or notable events."
+ },
+ "e02bd4ff-1eee-413e-b125-4ceda2170105": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "The video shows a vehicle driving straight through an urban area with moderate traffic and intersections, but no unusual events or notable maneuvers occur."
+ },
+ "e02c6ac2-2921-4d72-a82a-3c4899c873ed": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "routine_cruise",
+  "reason": "Nighttime urban driving with moderate traffic, no unusual maneuvers or hazards observed."
+ },
+ "e71b3e53-d8fd-4a44-8dff-07cc37b69624": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight highway driving with no maneuvers, interactions, or notable events."
+ },
+ "e9898dc0-b9fa-49b8-8fe5-40240456bc60": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "cut_in",
+  "reason": "A large truck cuts into the lane ahead, requiring the ego vehicle to adjust speed and maintain safe distance while continuing forward."
+ },
+ "ec5cf8eb-3442-45df-a36d-b27ea7c26fa9": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "Continuous straight driving on a multi-lane road at night with no maneuvers, interactions, or notable events."
+ },
+ "f0e8ade2-2f04-4c35-9aa5-84d1fec6acf3": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "turn_maneuver",
+  "reason": "Vehicle executes a right turn at an intersection, transitioning from multi-lane highway to a curved exit ramp, with changing road geometry and signage visible."
+ },
+ "f2d56bac-d340-4de2-b45a-a02b5b856dcf": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "intersection",
+  "reason": "The vehicle navigates a multi-lane intersection at night with green traffic lights, passing through multiple signal phases and lane configurations, including a "
+ },
+ "f557a9db-815b-4b93-b14f-0cfc547fb4fa": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The clip shows a vehicle driving straight through a parking lot with no notable maneuvers, interactions, or hazards. The environment is calm, with no cut-ins, U"
+ },
+ "f657cf25-cb6b-4713-97b0-f646bd9e7520": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "congestion",
+  "reason": "Multiple vehicles with red taillights visible ahead, indicating traffic buildup or congestion on a wet road at night."
+ },
+ "f710764f-d311-4697-aadb-75e517a15b8d": {
+  "interesting": true,
+  "score": 0.8,
+  "category": "intersection",
+  "reason": "Navigating a large, multi-lane intersection with heavy traffic, construction cones, and active traffic signals requires careful attention and coordination."
+ },
+ "fa1b2c2a-1e4e-4eeb-9600-1f1c72acf238": {
+  "interesting": true,
+  "score": 0.3,
+  "category": "intersection",
+  "reason": "Vehicle approaches and crosses a signalized intersection with crosswalks and traffic lights, requiring attention to signals and potential pedestrian activity."
+ },
+ "fccb7532-794b-4f91-bae4-0e439323d502": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The vehicle is driving straight at night in a parking lot with no notable maneuvers, interactions, or hazards."
+ },
+ "ff26b00f-c2fc-454f-8cad-a24b2dd0fa59": {
+  "interesting": false,
+  "score": 0.1,
+  "category": "routine_cruise",
+  "reason": "The clip shows a vehicle driving straight through a series of intersections with traffic lights, maintaining lane position and speed. There are no notable ev"
+ }
+}

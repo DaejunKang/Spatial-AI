@@ -1,0 +1,281 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "meta_tagging_seg_opt1_v0.7.3",
+    "description": "옵션1 v0.7.3 = v0.7.2 + occlusion 축(object permanence 검증). 저장 스키마.",
+    "x_field_order": [
+      "clip_id",
+      "segment_id",
+      "key_frame_t",
+      "t_start",
+      "t_end",
+      "ego_action",
+      "cause",
+      "object_type",
+      "vru_attr",
+      "occlusion",
+      "role",
+      "longitudinal_action",
+      "relation",
+      "vru_state",
+      "signal_state",
+      "difficulty"
+    ],
+    "x_generation": {
+      "given_anchor": [
+        "clip_id",
+        "segment_id",
+        "key_frame_t",
+        "t_start",
+        "t_end",
+        "ego_action"
+      ],
+      "model_generates": [
+        "cause",
+        "object_type",
+        "vru_attr",
+        "occlusion",
+        "longitudinal_action",
+        "relation",
+        "vru_state",
+        "signal_state"
+      ],
+      "derived": [
+        "role"
+      ],
+      "generation_order": "forward: cause → object_type → vru_attr → occlusion → longitudinal_action|relation → vru_state → signal_state. role/ego_action 미생성."
+    },
+    "x_role_derivation": {
+      "accelerate": "preceding_vehicle",
+      "decelerate": "preceding_vehicle",
+      "hard_brake": "preceding_vehicle",
+      "coming_to_stop": "preceding_vehicle",
+      "maintain_speed": "preceding_vehicle",
+      "reverse": "preceding_vehicle",
+      "brake_check": "preceding_vehicle",
+      "cross_ego_path": "crossing",
+      "oncoming_cross": "crossing",
+      "merge": "adjust",
+      "agent_yields_to_ego": "adjust",
+      "block_lane": "adjust",
+      "door_open": "adjust",
+      "board_alight": "adjust",
+      "cut_in": "adjust",
+      "cut_out": "adjust",
+      "sudden_cut_in": "adjust",
+      "alongside_parallel": "adjust",
+      "oncoming_narrow": "adjust",
+      "stationary_parked": "adjust"
+    },
+    "x_constrained_decoding": "각 enum 필드는 vLLM guided_json/grammar로 강제. 자유서술·자리오용(oncoming_cross를 role에, turn_right를 종방향에 등) 원천 차단. relation↔longitudinal 상호배타 후처리 검증.",
+    "x_fill_rules": {
+      "cause=agent": "object_type + occlusion + (longitudinal_action XOR relation) [+vru_attr/vru_state if pedestrian]. signal_state=null",
+      "cause=signal": "signal_state 기입. object_type/role/relation/longitudinal 모두 null",
+      "cause=road_geometry": "전부 null (곡선·과속방지턱 오트리거)",
+      "cause=other": "전부 null (미귀속)"
+    },
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "clip_id",
+      "segment_id",
+      "key_frame_t",
+      "t_start",
+      "t_end",
+      "ego_action",
+      "cause"
+    ],
+    "properties": {
+      "clip_id": {
+        "type": "string",
+        "description": "[id]"
+      },
+      "segment_id": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "[id]"
+      },
+      "key_frame_t": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 20,
+        "description": "[RULE] egomotion 이벤트 시각(초)"
+      },
+      "t_start": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 20,
+        "description": "[RULE] 세그먼트 시작"
+      },
+      "t_end": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 20,
+        "description": "[RULE] 세그먼트 종료. 길이 3~10s(리포트 3s 창)"
+      },
+      "ego_action": {
+        "type": "string",
+        "enum": [
+          "ego_lane_keep",
+          "ego_lane_change_left",
+          "ego_lane_change_right",
+          "ego_turn_left",
+          "ego_turn_right",
+          "ego_unprotected_left",
+          "ego_u_turn",
+          "ego_stop",
+          "ego_evade",
+          "ego_follow",
+          "ego_yield"
+        ],
+        "description": "[RULE] egomotion GT 유도 ego 거동"
+      },
+      "cause": {
+        "type": "string",
+        "enum": [
+          "agent",
+          "signal",
+          "road_geometry",
+          "other"
+        ],
+        "description": "[MODEL·gate] 전이 원인. agent/signal/road_geometry/other"
+      },
+      "object_type": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "vehicle",
+          "large_vehicle",
+          "motorcycle",
+          "bicycle_micromobility",
+          "pedestrian",
+          "animal",
+          "emergency_vehicle",
+          "other",
+          null
+        ],
+        "description": "[MODEL·SD] cause=agent. 도로사용자만(신호는 여기 아님)"
+      },
+      "vru_attr": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "child",
+          "mobility_aid",
+          "group_crowd",
+          null
+        ],
+        "description": "[MODEL·SD] object_type=pedestrian"
+      },
+      "occlusion": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "visible",
+          "partial",
+          "full_inferred",
+          "emerging",
+          "entering",
+          null
+        ],
+        "description": "[MODEL·관측] 에이전트 가림 상태. cause=agent. 거동 추론 신뢰도 조건화. emerging/full_inferred=permanence 검증"
+      },
+      "role": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "preceding_vehicle",
+          "adjust",
+          "crossing",
+          null
+        ],
+        "description": "[DERIVED] behavior→role (role_derivation). 모델 미생성"
+      },
+      "longitudinal_action": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "accelerate",
+          "decelerate",
+          "hard_brake",
+          "coming_to_stop",
+          "maintain_speed",
+          "reverse",
+          "stationary_parked",
+          null
+        ],
+        "description": "[MODEL·행동] role=preceding_vehicle류. relation과 상호배타"
+      },
+      "relation": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "cross_ego_path",
+          "oncoming_cross",
+          "merge",
+          "agent_yields_to_ego",
+          "brake_check",
+          "block_lane",
+          "door_open",
+          "board_alight",
+          "cut_in",
+          "cut_out",
+          "sudden_cut_in",
+          "alongside_parallel",
+          "oncoming_narrow",
+          null
+        ],
+        "description": "[MODEL·행동] adjust/crossing류. longitudinal_action과 상호배타"
+      },
+      "vru_state": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "crossing",
+          "about_to_cross",
+          "walking_along",
+          "stationary",
+          null
+        ],
+        "description": "[MODEL·행동] object_type=pedestrian"
+      },
+      "signal_state": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "red",
+          "yellow",
+          "green",
+          "red_arrow",
+          "green_arrow",
+          "flashing",
+          null
+        ],
+        "description": "[MODEL] cause=signal일 때 신호 상태"
+      },
+      "difficulty": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "minimum": 1,
+        "maximum": 10,
+        "description": "[메타]"
+      }
+    }
+  }

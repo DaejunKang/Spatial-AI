@@ -1,0 +1,176 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "meta_tagging_segment_v0.7.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "clip_id",
+    "segment_id",
+    "t_start",
+    "t_end",
+    "subject"
+  ],
+  "properties": {
+    "clip_id": {
+      "type": "string"
+    },
+    "segment_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "t_start": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 21
+    },
+    "t_end": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 21
+    },
+    "frame_start": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "frame_end": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "windows": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "event_kind": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "subject": {
+      "type": "string",
+      "enum": [
+        "ego",
+        "agent"
+      ]
+    },
+    "ego_action": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "ego_lane_keep",
+        "ego_lane_change_left",
+        "ego_lane_change_right",
+        "ego_turn_left",
+        "ego_turn_right",
+        "ego_unprotected_left",
+        "ego_u_turn",
+        "ego_reactive_stop",
+        "ego_reactive_evade",
+        "ego_follow",
+        "ego_yield",
+        null
+      ]
+    },
+    "object_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "vehicle",
+        "large_vehicle",
+        "motorcycle",
+        "bicycle_micromobility",
+        "pedestrian",
+        "animal",
+        "emergency_vehicle",
+        "other",
+        null
+      ]
+    },
+    "role": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "preceding_vehicle",
+        "adjust",
+        "crossing",
+        null
+      ]
+    },
+    "longitudinal_action": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "accelerate",
+        "decelerate",
+        "hard_brake",
+        "coming_to_stop",
+        "maintain_speed",
+        "reverse",
+        "stationary_parked",
+        null
+      ]
+    },
+    "relation": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "cross_ego_path",
+        "oncoming_cross",
+        "merge",
+        "yield_to_ego",
+        "brake_check",
+        "block_lane",
+        "door_open",
+        "board_alight",
+        "cut_in",
+        "cut_out",
+        "sudden_cut_in",
+        "alongside_parallel",
+        "oncoming_narrow",
+        null
+      ]
+    },
+    "vru_detail": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "crossing",
+        "about_to_cross",
+        "walking_along",
+        "stationary",
+        "child",
+        "mobility_aid",
+        "group_crowd",
+        null
+      ]
+    },
+    "difficulty": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 10
+    }
+  }
+}

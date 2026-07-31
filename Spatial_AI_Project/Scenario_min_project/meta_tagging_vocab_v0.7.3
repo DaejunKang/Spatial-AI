@@ -1,0 +1,634 @@
+{
+  "schema_version": "0.7.3",
+  "name": "dynamic_tag_vocabulary",
+  "description": "동적 태그 어휘 구조 — VLA 메타태깅 라벨 공간 (KATECH)",
+  "standards": [
+    "ISO 34504",
+    "nuPlan",
+    "NHTSA",
+    "nuReasoning"
+  ],
+  "roles": {
+    "preceding_vehicle": "자차 경로상 선행차 — 종방향 거동이 ego에 직접 영향",
+    "adjust_{category}": "자차가 대응(감속·회피·양보)해야 하는 인접·측면 객체 (cut-in·합류·병렬 등)",
+    "crossing_{category}": "자차 경로를 횡단하는 객체 (보행자·동물 포함 전 클래스)",
+    "ego": "평가 주체인 자차 자신",
+    "{category}": "vehicle·pedestrian 등 실제 클래스로 치환되는 자리표시자"
+  },
+  "axes": [
+    {
+      "id": 1,
+      "name_ko": "종류",
+      "name_en": "object_type",
+      "cardinality": "single",
+      "standard": "ISO 34504 road user type · nuPlan",
+      "labels": [
+        {
+          "code": "vehicle",
+          "label_ko": "승용/일반차량",
+          "role": null,
+          "gt": true,
+          "note": null
+        },
+        {
+          "code": "large_vehicle",
+          "label_ko": "긴/대형차량(버스·트럭)",
+          "role": null,
+          "gt": true,
+          "note": null
+        },
+        {
+          "code": "motorcycle",
+          "label_ko": "이륜(모터)",
+          "role": null,
+          "gt": true,
+          "note": null
+        },
+        {
+          "code": "bicycle_micromobility",
+          "label_ko": "자전거·마이크로모빌리티",
+          "role": null,
+          "gt": true,
+          "note": null
+        },
+        {
+          "code": "pedestrian",
+          "label_ko": "보행자",
+          "role": null,
+          "gt": true,
+          "note": null
+        },
+        {
+          "code": "animal",
+          "label_ko": "동물",
+          "role": null,
+          "gt": false,
+          "note": "GT 클래스 미포함"
+        },
+        {
+          "code": "emergency_vehicle",
+          "label_ko": "긴급차량",
+          "role": null,
+          "gt": false,
+          "note": "GT 클래스 미포함(경광등·사이렌 비검출)"
+        },
+        {
+          "code": "other",
+          "label_ko": "기타(낙하물·콘 등 inanimate)",
+          "role": null,
+          "gt": false,
+          "note": "GT 클래스 미포함"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name_ko": "행동·종방향",
+      "name_en": "longitudinal_action",
+      "cardinality": "single",
+      "standard": "ISO 34504 longitudinal action",
+      "labels": [
+        {
+          "code": "accelerate",
+          "label_ko": "가속",
+          "role": "preceding_vehicle",
+          "gt": true,
+          "note": "선행차 가속만 ego 추종거동에 영향(옆차선 무관)"
+        },
+        {
+          "code": "decelerate",
+          "label_ko": "감속",
+          "role": "preceding_vehicle",
+          "gt": true,
+          "note": "선행차 감속이 ego 감속 유발(옆차선 무관)"
+        },
+        {
+          "code": "hard_brake",
+          "label_ko": "급제동",
+          "role": "preceding_vehicle",
+          "gt": true,
+          "note": "선행차 급제동이 ego 급제동·충돌위험 유발"
+        },
+        {
+          "code": "coming_to_stop",
+          "label_ko": "정지 중",
+          "role": "preceding_vehicle",
+          "gt": true,
+          "note": "선행차 정지 진입이 ego 정지 유발"
+        },
+        {
+          "code": "maintain_speed",
+          "label_ko": "속도 유지",
+          "role": "preceding_vehicle",
+          "gt": true,
+          "note": "선행차 정속이 ego 추종 기준"
+        },
+        {
+          "code": "reverse",
+          "label_ko": "후진",
+          "role": "preceding_vehicle",
+          "gt": true,
+          "note": "선행차 후진이 ego 경로 침범"
+        },
+        {
+          "code": "stationary_parked",
+          "label_ko": "정차/주차",
+          "role": "{category}",
+          "gt": false,
+          "note": "경로상 정지객체(차량·동물·장애물)가 ego 진로 차단"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name_ko": "자차와의 관계",
+      "name_en": "relation_wrt_ego",
+      "cardinality": "multi",
+      "standard": "ISO 34504 role wrt subject · NHTSA · nuPlan",
+      "labels": [
+        {
+          "code": "cross_ego_path",
+          "label_ko": "자차 경로 횡단",
+          "role": "crossing_{category}",
+          "gt": true,
+          "note": "자차 경로 횡단 → 충돌·정지 유발"
+        },
+        {
+          "code": "oncoming_cross",
+          "label_ko": "대향 횡단",
+          "role": "crossing_{category}",
+          "gt": false,
+          "note": "대향에서 자차 경로로 진입·횡단"
+        },
+        {
+          "code": "merge",
+          "label_ko": "합류",
+          "role": "adjust_vehicle",
+          "gt": false,
+          "note": "합류 차량이 자차 차로로 진입"
+        },
+        {
+          "code": "agent_yields_to_ego",
+          "label_ko": "자차에 양보",
+          "role": "adjust_vehicle, crossing_{category}",
+          "gt": false,
+          "note": "선행차는 양보 불필요 · 측면 진입차/차선변경 상대차/수직 횡단차가 ego에 양보"
+        },
+        {
+          "code": "brake_check",
+          "label_ko": "급제동 유발",
+          "role": "preceding_vehicle",
+          "gt": true,
+          "note": "선행차 고의 급제동으로 ego 급제동 유발"
+        },
+        {
+          "code": "block_lane",
+          "label_ko": "차로 차단",
+          "role": "{category}",
+          "gt": false,
+          "note": "정지·주차차량·장애물·동물이 차로를 막아 ego 진로 차단"
+        },
+        {
+          "code": "door_open",
+          "label_ko": "문 열림",
+          "role": "adjust_vehicle",
+          "gt": false,
+          "note": "노변 정차차량 문 열림 → ego 회피 필요"
+        },
+        {
+          "code": "board_alight",
+          "label_ko": "승하차 작업",
+          "role": "adjust_vehicle",
+          "gt": false,
+          "note": "정차차량 승하차 → ego 감속·회피"
+        },
+        {
+          "code": "cut_in",
+          "label_ko": "끼어들기",
+          "role": "adjust_vehicle",
+          "gt": true,
+          "note": "측면 차량이 ego 앞으로 진입"
+        },
+        {
+          "code": "cut_out",
+          "label_ko": "선행차 이탈(컷아웃)",
+          "role": "adjust_vehicle",
+          "gt": true,
+          "note": "선행차가 옆차로로 이탈 → 전방 위험 노출·ego 반응"
+        },
+        {
+          "code": "sudden_cut_in",
+          "label_ko": "급끼어들기(급진입)",
+          "role": "adjust_vehicle",
+          "gt": true,
+          "note": "측면 차량 급진입 → ego 급제동·충돌위험"
+        },
+        {
+          "code": "alongside_parallel",
+          "label_ko": "병렬 주행(유사 속도)",
+          "role": "adjust_{category}",
+          "gt": false,
+          "note": "차량·보행자·자전거가 유사속도로 병렬 → 측면 간섭"
+        },
+        {
+          "code": "oncoming_narrow",
+          "label_ko": "좁은 길 대향 교행",
+          "role": "adjust_{category}",
+          "gt": false,
+          "note": "좁은 길 대향 교행 → 회피·양보 필요"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name_ko": "자차 거동",
+      "name_en": "ego_action",
+      "cardinality": "single",
+      "standard": "확장 · ISO 34504 ego action",
+      "labels": [
+        {
+          "code": "ego_lane_keep",
+          "label_ko": "자차 차로 유지",
+          "role": "ego",
+          "gt": false,
+          "note": null
+        },
+        {
+          "code": "ego_lane_change_left",
+          "label_ko": "자차 좌측 차선변경",
+          "role": "ego",
+          "gt": false,
+          "note": "맵 없이 차선변경 판단 곤란 → GT 제외"
+        },
+        {
+          "code": "ego_lane_change_right",
+          "label_ko": "자차 우측 차선변경",
+          "role": "ego",
+          "gt": false,
+          "note": "맵 없이 차선변경 판단 곤란 → GT 제외"
+        },
+        {
+          "code": "ego_turn_left",
+          "label_ko": "자차 좌회전(교차로)",
+          "role": "ego",
+          "gt": true,
+          "note": null
+        },
+        {
+          "code": "ego_turn_right",
+          "label_ko": "자차 우회전(교차로)",
+          "role": "ego",
+          "gt": true,
+          "note": null
+        },
+        {
+          "code": "ego_unprotected_left",
+          "label_ko": "자차 비보호 좌회전",
+          "role": "ego",
+          "gt": true,
+          "note": "회전 자체는 GT · '비보호' 속성은 신호·맵 필요"
+        },
+        {
+          "code": "ego_u_turn",
+          "label_ko": "자차 U턴",
+          "role": "ego",
+          "gt": true,
+          "note": null
+        },
+        {
+          "code": "ego_stop",
+          "label_ko": "정지(타 객체·신호에 의해 멈춤)",
+          "role": "ego",
+          "gt": true,
+          "note": null
+        },
+        {
+          "code": "ego_evade",
+          "label_ko": "회피·경로 변경",
+          "role": "ego",
+          "gt": true,
+          "note": null
+        },
+        {
+          "code": "ego_follow",
+          "label_ko": "자차 선행차 추종",
+          "role": "ego",
+          "gt": false,
+          "note": null
+        },
+        {
+          "code": "ego_yield",
+          "label_ko": "자차 양보",
+          "role": "ego",
+          "gt": false,
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "vru",
+      "name_ko": "VRU 세부",
+      "name_en": "vru_detail",
+      "cardinality": "optional",
+      "applies_when": {
+        "object_type": "pedestrian"
+      },
+      "standard": "nuReasoning · ISO 34504",
+      "labels": [
+        {
+          "code": "crossing",
+          "label_ko": "횡단 중",
+          "role": "crossing_pedestrian",
+          "gt": null,
+          "note": "횡단 보행자 — ego 경로 간섭"
+        },
+        {
+          "code": "about_to_cross",
+          "label_ko": "횡단 직전",
+          "role": "crossing_pedestrian",
+          "gt": null,
+          "note": "진입 예측 필요"
+        },
+        {
+          "code": "walking_along",
+          "label_ko": "도로변 보행",
+          "role": "pedestrian",
+          "gt": null,
+          "note": "잠재 진입 감시"
+        },
+        {
+          "code": "stationary",
+          "label_ko": "정지",
+          "role": "pedestrian",
+          "gt": null,
+          "note": "정지 보행자 — 진입여부 감시"
+        },
+        {
+          "code": "child",
+          "label_ko": "어린이",
+          "role": "pedestrian",
+          "gt": null,
+          "note": "예측불가 행동 위험"
+        },
+        {
+          "code": "mobility_aid",
+          "label_ko": "이동보조(휠체어 등)",
+          "role": "pedestrian",
+          "gt": null,
+          "note": "저속·취약"
+        },
+        {
+          "code": "group_crowd",
+          "label_ko": "군중",
+          "role": "pedestrian",
+          "gt": null,
+          "note": "다수 동시 진입"
+        }
+      ]
+    }
+  ],
+  "difficulty_rubric": {
+    "name_ko": "난이도 / 큐레이션",
+    "cardinality": "optional",
+    "standard": "nuReasoning 루브릭",
+    "scale": [
+      1,
+      10
+    ],
+    "bands": [
+      {
+        "range": [
+          1,
+          2
+        ],
+        "usage": "일반 — 제외"
+      },
+      {
+        "range": [
+          3,
+          4
+        ],
+        "usage": "경미 — 보조 풀(소량)"
+      },
+      {
+        "range": [
+          5,
+          6
+        ],
+        "usage": "중간 롱테일 — 표준 포함(>5만 유지)"
+      },
+      {
+        "range": [
+          7,
+          8
+        ],
+        "usage": "고가치 — 난이도 평가 핵심"
+      },
+      {
+        "range": [
+          9,
+          10
+        ],
+        "usage": "안전위급 — 전용 분할"
+      }
+    ]
+  },
+  "deprecated": [
+    {
+      "axis": "② 횡방향",
+      "code": "lane_keep",
+      "label_ko": "차로유지",
+      "reason": "영향 없음 · ego_follow와 중첩"
+    },
+    {
+      "axis": "② 횡방향",
+      "code": "lane_change_left",
+      "label_ko": "좌측차선변경",
+      "reason": "영향 없음 · cut_in/cut_out과 중첩"
+    },
+    {
+      "axis": "② 횡방향",
+      "code": "lane_change_right",
+      "label_ko": "우측차선변경",
+      "reason": "영향 없음 · cut_in/cut_out과 중첩"
+    },
+    {
+      "axis": "② 횡방향",
+      "code": "turn_left",
+      "label_ko": "좌회전",
+      "reason": "영향 없음 · cut_in/cut_out과 중첩"
+    },
+    {
+      "axis": "② 횡방향",
+      "code": "turn_right",
+      "label_ko": "우회전",
+      "reason": "영향 없음 · cut_out과 중첩"
+    },
+    {
+      "axis": "② 횡방향",
+      "code": "u_turn",
+      "label_ko": "U턴",
+      "reason": "영향 없음 · cut_out과 중첩"
+    },
+    {
+      "axis": "② 횡방향",
+      "code": "swerve",
+      "label_ko": "급조향",
+      "reason": "영향 없음 · 자차 앞 급조향은 sudden_cut_in과 중첩"
+    },
+    {
+      "axis": "② 횡방향",
+      "code": "drift_wander",
+      "label_ko": "사행/차로이탈",
+      "reason": "의미 모호 · 정상성 abnormal로 대체"
+    },
+    {
+      "axis": "② 횡방향",
+      "code": "none",
+      "label_ko": "없음",
+      "reason": "행동 미표기용 · 관계/거동으로 대체되어 불필요"
+    },
+    {
+      "axis": "③ 관계",
+      "code": "trail_of_ego",
+      "label_ko": "자차 후행차",
+      "reason": "후방 차량은 자차에 영향 없음"
+    },
+    {
+      "axis": "③ 관계",
+      "code": "overtake_pass",
+      "label_ko": "추월",
+      "reason": "후방→차선변경→cut_in과 중첩"
+    },
+    {
+      "axis": "③ 관계",
+      "code": "tailgate",
+      "label_ko": "밀착추종",
+      "reason": "후방차 밀착추종 — ego 영향 없음"
+    }
+  ],
+  "changelog_from_0.7.1": [
+    "add cause axis (agent|signal|road_geometry|other) — 신호/도로기하 등 비-agent 정지 원인 표현",
+    "add signal_state (red/yellow/green/arrow/flashing) — traffic_light 15건 오용 해소",
+    "role는 생성 제거·behavior에서 파생(role_derivation) — role↔relation 혼용 제거",
+    "normalization 맵 추가 — stationary/parked_alongside/yield/car·truck 등 정규화",
+    "traffic_light·traffic_control_device는 object_type이 아니라 cause=signal로 이관"
+  ],
+  "cause": {
+    "name_ko": "전이 원인",
+    "cardinality": "single",
+    "enum": [
+      "agent",
+      "signal",
+      "road_geometry",
+      "other"
+    ],
+    "note": "agent→도로사용자 귀속, signal→신호상태, road_geometry→곡선/과속방지턱 오트리거, other→미귀속"
+  },
+  "signal_state": {
+    "name_ko": "신호 상태",
+    "cardinality": "optional",
+    "applies_when": {
+      "cause": "signal"
+    },
+    "enum": [
+      "red",
+      "yellow",
+      "green",
+      "red_arrow",
+      "green_arrow",
+      "flashing"
+    ],
+    "note": "cosmos <box> grounding으로 신호등 검출 시 상태 기입(§8 확장)"
+  },
+  "role_derivation": {
+    "accelerate": "preceding_vehicle",
+    "decelerate": "preceding_vehicle",
+    "hard_brake": "preceding_vehicle",
+    "coming_to_stop": "preceding_vehicle",
+    "maintain_speed": "preceding_vehicle",
+    "reverse": "preceding_vehicle",
+    "brake_check": "preceding_vehicle",
+    "cross_ego_path": "crossing",
+    "oncoming_cross": "crossing",
+    "merge": "adjust",
+    "agent_yields_to_ego": "adjust",
+    "block_lane": "adjust",
+    "door_open": "adjust",
+    "board_alight": "adjust",
+    "cut_in": "adjust",
+    "cut_out": "adjust",
+    "sudden_cut_in": "adjust",
+    "alongside_parallel": "adjust",
+    "oncoming_narrow": "adjust",
+    "stationary_parked": "adjust"
+  },
+  "normalization": {
+    "car": {
+      "object_type": "vehicle"
+    },
+    "truck": {
+      "object_type": "large_vehicle"
+    },
+    "bus": {
+      "object_type": "large_vehicle"
+    },
+    "traffic_light": {
+      "cause": "signal"
+    },
+    "traffic_control_device": {
+      "cause": "signal"
+    },
+    "stationary": {
+      "longitudinal_action": "stationary_parked"
+    },
+    "parked_alongside": {
+      "relation": "alongside_parallel"
+    },
+    "stop_at_light": {
+      "cause": "signal"
+    },
+    "yield": {
+      "relation": "agent_yields_to_ego"
+    },
+    "crossing": {
+      "relation": "cross_ego_path"
+    },
+    "parked": {
+      "longitudinal_action": "stationary_parked"
+    }
+  },
+  "freetext_reject": [
+    "affecting_ego",
+    "waiting_for",
+    "stop_at",
+    "controls_ego_movement"
+  ],
+  "changelog_from_0.7.2": [
+    "add occlusion axis (visible|partial|full_inferred|emerging|entering) — object permanence 검증 라벨",
+    "occlusion은 관측 블록(object_type 뒤·행동 앞)에 배치 — 가림이 거동 추론 신뢰도를 조건화"
+  ],
+  "occlusion": {
+    "name_ko": "가림 상태",
+    "cardinality": "optional",
+    "applies_when": {
+      "cause": "agent"
+    },
+    "enum": [
+      "visible",
+      "partial",
+      "full_inferred",
+      "emerging",
+      "entering"
+    ],
+    "labels": {
+      "visible": "세그먼트 내 완전 관측(기본, null 허용)",
+      "partial": "부분 가림 — 관측되나 일부 차폐",
+      "full_inferred": "세그먼트 중 완전 가림 구간을 permanence로 존재·거동 추론",
+      "emerging": "가림에서 출현(dart-out; 정차차 뒤 보행자 등) — 안전 임계",
+      "entering": "관측 → 가림 진입"
+    },
+    "framework_link": "KPI-19 불확실성 층화 · VLADBench T26 · object permanence probe. Cosmos3는 permanence가 근사 수준이라 full_inferred/emerging은 실패·저calibration 예상 구간 → 가림 세그먼트에서 Conf-ECE·MC-Dropout 분산이 상승하는지가 KPI-19 실증.",
+    "verify_note": "검증완료(2026-07). 세 층위: (1) Cosmos-Reason1(arXiv 2503.15558, preprint) — object permanence 전용 벤치마크로 학습·수치화(강점). (2) Cosmos 3 모델카드(HF Cosmos3-Super) — 명시적 물리 시뮬레이터 부재로 object permanence '근사'·객체 소멸/변형 실패모드(약점). (3) Cosmos 3 기술보고서(arXiv 2606.02800) reasoner 평가 §6.1 — General/Robotics/Smart/Driving 집계 + VideoPhy-2/Cosmos-HUE 물리판단(보존·중력·충돌·시간인과·공간제약)만; object permanence/occlusion 전용 지표 없음(미측정). → Cosmos3의 occlusion 성능 인용 근거 수치 부재. occlusion 태그는 미측정 축을 프레임워크가 처음 정량화하는 것으로 프레이밍. 인용 규칙: 능력 존재=Reason1(preprint 표기), 근사·미측정 caveat=Cosmos3 모델카드+기술보고서."
+  }
+}

@@ -1,0 +1,18 @@
+# 환경/캐시
+.venv/
+__pycache__/
+*.pyc
+logs/
+tmp/
+.DS_Store
+
+# 대용량 산출물 (재생성 가능)
+outputs/
+outputs_v073/
+outputs_v08/
+
+# 라벨링 영상/데모 (대용량 바이너리) — 도구 html/json은 커밋
+*.mp4
+gold_label/select/vids/
+gold_label/vids/
+gold_label/select/*.mp4

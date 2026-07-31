@@ -1,0 +1,159 @@
+<!doctype html><html lang=ko><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>episode taxonomy tagging 데모 (근거 포함)</title>
+<style>
+:root{--paper:#f5f7f8;--panel:#fff;--ink:#151d21;--muted:#65757c;--line:#dde4e6;--accent:#0d8fa6;--chip:#eef2f3;--ix:#c96a2a;--ctx:#2c9c68;--rule:#7a5bd6;--bad:#c0403a}
+@media(prefers-color-scheme:dark){:root{--paper:#0c1214;--panel:#141d21;--ink:#e6eef1;--muted:#8598a0;--line:#233036;--accent:#2ab6cc;--chip:#1b262b;--ix:#e08a48;--ctx:#3fb27f;--rule:#a58be6;--bad:#e0645e}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:system-ui,"Noto Sans KR",sans-serif;line-height:1.45}
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 20px}
+header h1{font-size:16px;margin:0 0 3px;font-weight:700}header p{margin:0;font-size:12.5px;color:var(--muted)}
+.wrap{max-width:1180px;margin:0 auto;padding:18px 20px 70px;display:grid;gap:20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.chd{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--line)}
+.chd h2{font-size:15px;margin:0;font-family:ui-monospace,monospace}
+.badge{font-size:12px;color:var(--muted);background:var(--chip);border-radius:20px;padding:3px 11px}
+.body{display:grid;grid-template-columns:minmax(360px,1.05fr) 1fr}
+@media(max-width:820px){.body{grid-template-columns:1fr}}
+video{width:100%;height:100%;max-height:420px;background:#000;display:block;object-fit:contain}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:11.5px;padding:9px 12px;border-bottom:1px solid var(--line);text-transform:uppercase;letter-spacing:.03em}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}tr:last-child td{border-bottom:none}
+.sid{font-family:ui-monospace,monospace;color:var(--muted);font-size:12px}
+.tspan{font-family:ui-monospace,monospace;font-size:12px;white-space:nowrap}
+.arc{display:inline-flex;align-items:center;flex-wrap:wrap;gap:3px}.arw{color:var(--muted);font-size:11px}
+.tags{line-height:2}
+.chip{display:inline-block;font-size:11.5px;background:var(--chip);border-radius:6px;padding:2px 8px;margin:1px 0;white-space:nowrap}
+.chip.ego{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent);font-weight:600}
+.chip.ix{background:color-mix(in srgb,var(--ix) 18%,transparent);color:var(--ix);font-weight:600}
+.chip.ctx{background:color-mix(in srgb,var(--ctx) 18%,transparent);color:var(--ctx);font-weight:600}
+.chip.rule{background:color-mix(in srgb,var(--rule) 20%,transparent);color:var(--rule);font-weight:600}
+.muted{color:var(--muted)}
+details.ev{margin-top:8px}
+details.ev summary{cursor:pointer;font-size:11.5px;color:var(--accent);user-select:none}
+.evb{margin-top:6px;font-size:12px;color:var(--muted);background:var(--chip);border-radius:8px;padding:8px 11px;line-height:1.7;display:grid;gap:2px}
+.evb b{color:var(--ink)}
+.fp b,.fn b{color:var(--bad)}
+.note{font-size:12px;color:var(--muted);background:var(--chip);border-radius:8px;padding:10px 14px}
+.leg{display:inline-block;width:9px;height:9px;border-radius:2px;margin:0 3px 0 8px;vertical-align:middle}
+</style></head><body>
+<header>
+  <h1>episode 단위 taxonomy tagging 데모 · 근거 포함</h1>
+  <p>episode별 우리 taxonomy tag + 각 구간 <b>근거</b>(GT 검출·raw VLM·gold 정답) 펼쳐보기. 오류가 VLM 인지인지/융합인지/gold 미스매치인지 대조 가능.</p>
+</header>
+<div class="wrap">
+  <div class="note">
+    <span class="leg" style="background:var(--accent)"></span>ego 기동(arc)
+    <span class="leg" style="background:var(--ix)"></span>상호작용
+    <span class="leg" style="background:var(--ctx)"></span>맥락
+    <span class="leg" style="background:var(--rule)"></span>규칙 ·
+    각 tag 셀의 <b>“근거·정답 대조 보기”</b>를 누르면 GT·VLM 원출력과 gold 대비 FP/FN 확인. <b>개선 적용</b>: 공사/콘=obj3d 경로내 콘 그라운딩, 회전교차로/합류=map 부재로 gating, creep=정지-게이트 완화.
+  </div>
+  <section class="card">
+  <div class="chd"><h2>752afc48</h2><span class="badge">episode 1</span></div>
+  <div class="body">
+    <video src="752afc48.mp4" controls preload="metadata" playsinline></video>
+    <table><thead><tr><th>ep</th><th>구간</th><th>ego 기동(arc)</th><th>taxonomy tag · 근거</th></tr></thead>
+    <tbody><tr>
+  <td class="sid">#1</td>
+  <td class="tspan">4.61–19.93s</td>
+  <td><span class="arc"><span class="chip ego">감속</span><span class="arw">→</span><span class="chip ego">정지</span></span></td>
+  <td class="tags"><span class="chip ix">근접 추종</span> <span class="chip ix">선행차 감속</span> <span class="chip ctx">신호 교차로</span> <span class="chip ctx">도심 간선</span> <span class="chip rule">적신호 정지</span> <span class="chip ">교차로 서행/감속</span><details class="ev">
+  <summary>근거·정답 대조 보기</summary>
+  <div class="evb">
+    <div><b>GT 검출근거</b>(egomotion·obj3d): decel_at_intersection=decel, ego mean 6.6m/s; lead_decel=선행차 감속; close_follow=tailgating headway 0.1s (1m@14m/s)</div>
+    <div><b>raw VLM 출력</b>: present=[&#x27;lead_decel&#x27;] · road_env=urban_arterial · intersection=signalized · extras=[&#x27;construction_cones&#x27;] · red_light_stop=True · signal_go=False</div>
+    <div><b>gold 정답</b>(사람 라벨): 적신호 정지, 도심 간선, 교차로 서행/감속</div>
+    <div class="fp"><b>FP</b>(gold에 없음): 근접 추종, 선행차 감속, 신호 교차로</div>
+    <div class="fn"><b>FN</b>(gold에 있는데 놓침): —</div>
+  </div>
+</details></td>
+</tr></tbody></table>
+  </div>
+</section><section class="card">
+  <div class="chd"><h2>9ee2f6b9</h2><span class="badge">episode 1</span></div>
+  <div class="body">
+    <video src="9ee2f6b9.mp4" controls preload="metadata" playsinline></video>
+    <table><thead><tr><th>ep</th><th>구간</th><th>ego 기동(arc)</th><th>taxonomy tag · 근거</th></tr></thead>
+    <tbody><tr>
+  <td class="sid">#1</td>
+  <td class="tspan">0.0–12.4s</td>
+  <td><span class="arc"><span class="chip ego">감속</span><span class="arw">→</span><span class="chip ego">가속</span><span class="arw">→</span><span class="chip ego">좌회전</span><span class="arw">→</span><span class="chip ego">감속</span></span></td>
+  <td class="tags"><span class="chip ctx">신호 교차로</span> <span class="chip ctx">도심 간선</span> <span class="chip ">교차로 서행/감속</span><details class="ev">
+  <summary>근거·정답 대조 보기</summary>
+  <div class="evb">
+    <div><b>GT 검출근거</b>(egomotion·obj3d): decel_at_intersection=decel, ego mean 5.3m/s</div>
+    <div><b>raw VLM 출력</b>: present=[&#x27;cut_in&#x27;] · road_env=urban_arterial · intersection=signalized · extras=[&#x27;roundabout&#x27;] · red_light_stop=False · signal_go=True</div>
+    <div><b>gold 정답</b>(사람 라벨): 도심 간선, 신호 교차로, 교차로 서행/감속</div>
+    <div class="fp"><b>FP</b>(gold에 없음): —</div>
+    <div class="fn"><b>FN</b>(gold에 있는데 놓침): —</div>
+  </div>
+</details></td>
+</tr></tbody></table>
+  </div>
+</section><section class="card">
+  <div class="chd"><h2>95dba147</h2><span class="badge">episode 1</span></div>
+  <div class="body">
+    <video src="95dba147.mp4" controls preload="metadata" playsinline></video>
+    <table><thead><tr><th>ep</th><th>구간</th><th>ego 기동(arc)</th><th>taxonomy tag · 근거</th></tr></thead>
+    <tbody><tr>
+  <td class="sid">#1</td>
+  <td class="tspan">11.39–18.93s</td>
+  <td><span class="arc"><span class="chip ego">감속</span><span class="arw">→</span><span class="chip ego">좌회전</span><span class="arw">→</span><span class="chip ego">감속</span></span></td>
+  <td class="tags"><span class="chip ctx">비신호 교차로</span> <span class="chip ctx">좁은 골목/이면도로</span> <span class="chip ">교차로 서행/감속</span><details class="ev">
+  <summary>근거·정답 대조 보기</summary>
+  <div class="evb">
+    <div><b>GT 검출근거</b>(egomotion·obj3d): decel_at_intersection=decel, ego mean 7.3m/s</div>
+    <div><b>raw VLM 출력</b>: present=[&#x27;lead_decel&#x27;] · road_env=backstreet · intersection=unsignalized · extras=[&#x27;roundabout&#x27;] · red_light_stop=False · signal_go=False</div>
+    <div><b>gold 정답</b>(사람 라벨): 비신호 교차로, ego 양보(교차로), 교차로 서행/감속, 좁은 골목/이면도로</div>
+    <div class="fp"><b>FP</b>(gold에 없음): —</div>
+    <div class="fn"><b>FN</b>(gold에 있는데 놓침): ego 양보(교차로)</div>
+  </div>
+</details></td>
+</tr></tbody></table>
+  </div>
+</section><section class="card">
+  <div class="chd"><h2>136aa1d5</h2><span class="badge">episode 1</span></div>
+  <div class="body">
+    <video src="136aa1d5.mp4" controls preload="metadata" playsinline></video>
+    <table><thead><tr><th>ep</th><th>구간</th><th>ego 기동(arc)</th><th>taxonomy tag · 근거</th></tr></thead>
+    <tbody><tr>
+  <td class="sid">#1</td>
+  <td class="tspan">0.0–17.54s</td>
+  <td><span class="arc"><span class="chip ego">감속</span><span class="arw">→</span><span class="chip ego">정지</span><span class="arw">→</span><span class="chip ego">가속</span><span class="arw">→</span><span class="chip ego">우회전</span><span class="arw">→</span><span class="chip ego">감속</span></span></td>
+  <td class="tags"><span class="chip ix">ego 양보(교차로)</span> <span class="chip ctx">비신호 교차로</span> <span class="chip ctx">좁은 골목/이면도로</span> <span class="chip ">교차로 서행/감속</span><details class="ev">
+  <summary>근거·정답 대조 보기</summary>
+  <div class="evb">
+    <div><b>GT 검출근거</b>(egomotion·obj3d): decel_at_intersection=decel, ego mean 2.9m/s; ego_yields_to_agent=ego 정지·교차차 통과</div>
+    <div><b>raw VLM 출력</b>: present=[&#x27;ego_yields_to_agent&#x27;] · road_env=backstreet · intersection=unsignalized · extras=[&#x27;construction_cones&#x27;] · red_light_stop=False · signal_go=False</div>
+    <div><b>gold 정답</b>(사람 라벨): 교차로 서행/감속, 비신호 교차로, 도심 간선, 근접 추종</div>
+    <div class="fp"><b>FP</b>(gold에 없음): ego 양보(교차로), 좁은 골목/이면도로</div>
+    <div class="fn"><b>FN</b>(gold에 있는데 놓침): 도심 간선, 근접 추종</div>
+  </div>
+</details></td>
+</tr></tbody></table>
+  </div>
+</section><section class="card">
+  <div class="chd"><h2>30cbf2f0</h2><span class="badge">episode 1</span></div>
+  <div class="body">
+    <video src="30cbf2f0.mp4" controls preload="metadata" playsinline></video>
+    <table><thead><tr><th>ep</th><th>구간</th><th>ego 기동(arc)</th><th>taxonomy tag · 근거</th></tr></thead>
+    <tbody><tr>
+  <td class="sid">#1</td>
+  <td class="tspan">9.11–19.57s</td>
+  <td><span class="arc"><span class="chip ego">감속</span><span class="arw">→</span><span class="chip ego">정지</span><span class="arw">→</span><span class="chip ego">가속</span></span></td>
+  <td class="tags"><span class="chip ix">선행차 감속</span> <span class="chip ix">보행자 횡단(+양보)</span> <span class="chip ctx">좁은 골목/이면도로</span> <span class="chip ">서행/기어가기</span><details class="ev">
+  <summary>근거·정답 대조 보기</summary>
+  <div class="evb">
+    <div><b>GT 검출근거</b>(egomotion·obj3d): ped_crossing=보행자 진행로 횡단; lead_decel=선행차 감속; creep=정체 서행(선행차+저속 5.2s)</div>
+    <div><b>raw VLM 출력</b>: present=[&#x27;lead_decel&#x27;, &#x27;ped_crossing&#x27;] · road_env=backstreet · intersection=none · extras=[&#x27;construction_cones&#x27;] · red_light_stop=False · signal_go=False</div>
+    <div><b>gold 정답</b>(사람 라벨): 서행/기어가기, 보행자 횡단(+양보), 좁은 골목/이면도로</div>
+    <div class="fp"><b>FP</b>(gold에 없음): 선행차 감속</div>
+    <div class="fn"><b>FN</b>(gold에 있는데 놓침): —</div>
+  </div>
+</details></td>
+</tr></tbody></table>
+  </div>
+</section>
+</div>
+</body></html>
