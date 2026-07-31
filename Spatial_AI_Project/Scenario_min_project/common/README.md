@@ -12,9 +12,11 @@
 | `dataset.py` | 프레임/몽타주 샘플링·subclip 생성·data URI (`sample_montage`·`write_subclip`·`to_data_uri`) |
 | `events.py` | **egomotion primitives** — `load_egomotion_clip`(카메라 범위 클립)·`detect_events`(net-heading 거동). 양 단계 공용 |
 | `taxonomy.py` | 단일 공유 택소노미(4축+ODD)·`AUTO_GT`/`HUMAN_KEYS`/`auto_tags_from_arc` |
-| `tagger.py` | VLM client pool(`build_client_pool`, 8001–4 헬스체크 라운드로빈) |
-| `vocab.py`·`vocab073.py` | KPI 어휘(v0.7.1/v0.7.3) 로더·스키마·검증 |
+| `client.py` | VLM client pool(`build_client_pool`, 8001–4 헬스체크 라운드로빈) |
+| `vocab073.py` | KPI 어휘(v0.7.3) 로더·스키마·검증 (활성 enum: EGO_ACTIONS/OBJECT_TYPES/RELATIONS) |
 | `overlay.py` | 세그먼트 태그 영상 burn-in(정성 확인 util) |
+
+> v0.7.1 `tagger`·`vocab`·`prompts`는 `legacy/`로 이관됨. client pool은 `client.py`가 대체.
 
 ## 규약(요약, 상세는 상위 CLAUDE.md §2)
 - 이 계층은 태거 frozen·anti-circularity에 중립적 인프라. cosmos2(8000) 무접촉.

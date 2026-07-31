@@ -5,9 +5,10 @@
 ## 사용법
 - 설계 변경이 생기면 `DESIGN_LOG.md` 최상단에 새 엔트리 추가(최신이 위).
 - 큰 결정은 별도 파일 `ADR-NNNN-<제목>.md`로 남겨도 됨.
-- 엔트리 형식:
+- 엔트리 형식 (**Task 라벨 필수** — 컨벤션 `../docs/README.md`):
   ```
   ## [YYYY-MM-DD] 제목
+  > **Task**: common | selection | episode(Track1|Track2) | multi
   - 변경: 무엇을 바꿨나
   - 이유: 왜 (근거·실측·트레이드오프)
   - 영향: 파일/후속 작업·드리프트

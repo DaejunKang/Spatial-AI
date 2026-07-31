@@ -11,7 +11,7 @@
 
 set -euo pipefail
 cd "$(dirname "$0")"
-export PYTHONPATH="$PWD/common:$PWD/task_selection:$PWD/task_episode:${PYTHONPATH:-}"
+export PYTHONPATH="$PWD/common:$PWD/task_selection:$PWD/task_episode:$PWD/legacy:${PYTHONPATH:-}"
 
 PY=".venv/bin/python"
 SCRIPT="${1:-test_readout.py}"

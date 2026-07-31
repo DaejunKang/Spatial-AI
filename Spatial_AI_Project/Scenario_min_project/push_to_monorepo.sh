@@ -29,9 +29,10 @@ git add "$PREFIX"
 if git diff --cached --quiet; then
   echo "모노레포 변경 없음 — push 생략."
 else
+  N=$(git diff --cached --name-only | wc -l)
   git commit -q -m "update Scenario_min_project: $MSG
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
   git push -q origin HEAD
-  echo "push 완료: $(git rev-parse --short HEAD)  ($(git diff --cached --name-only | wc -l) 파일)"
+  echo "push 완료: $(git rev-parse --short HEAD)  ($N 파일)"
 fi

@@ -14,11 +14,19 @@ metadata labeling = **① clip 선별 → ② 선별 clip에서 episode 추출·
 - **Stage 2 = Task「episode」**: 선별 clip(**3DOD + map** 사용) → egomotion **ego 전이**로 에피소드 분할 → 에피소드별 메타데이터(Track1 SD/SA/MA+cause / Track2 taxonomy 후보).
 - 근거: obj3d/map 없는 raw 로그는 **싸게 넓게 선별**하고, 비싼 상세 태깅은 **선별 clip에만** 적용(비용·recall 퍼널).
 
-## Task 분할 & ownership (관리 단위)
-- **공용 기반 (상위 프로젝트로 공유)** — 두 task·타 프로젝트가 함께 쓰는 인프라:
-  `config.py`(서버/추론) · `paths.py`(데이터 경로) · `dataset.py`(프레임/subclip/데이터URI) · `events.py`(egomotion primitives — 양 단계 공용) · `taxonomy.py`(단일 어휘) · `tagger.py`·`vocab.py`·`vocab073.py`(VLM client·어휘) · `overlay.py`(시각화).
-- **Task「선별」 개별 알고리즘** — ego arc 스코어 + VLM 몽타주 interestingness + 결합 랭킹. *현재 repo 모듈 없이 job tmp 스크립트에 산재 → 모듈화 필요.* 산출 `gold_label/select/`. 문서 `SELECTION_STAGE1.md`.
-- **Task「episode」 개별 알고리즘** — `classify073.py`(세그먼트 consolidation) · `taxo_detect.py`(obj3d) · `map_lane.py`(map 차선/분기) · `vlm_verify.py`(VLM 검증) · `candidates.py`(Phase A) · `retrieve.py`(Phase B) · `tag_v08.py`(Track1 메타데이터) · `event_tagger.py`/`window_tagger.py`(legacy) · `norm_embed.py`. 산출 `outputs*/`·`gold.json`.
+## 폴더 구조 & ownership
+```
+common/          공유 인프라(상위 프로젝트 공유): config·paths·dataset·events·taxonomy·vocab073·client·overlay + schema
+task_selection/  Task「선별」(Stage1): selection.py + SELECTION_STAGE1.md → gold_label/select/
+task_episode/    Task「episode」(Stage2, 활성만):
+                   base   classify073(consolidate)·taxo_detect·map_lane·vlm_verify
+                   Track1 tag_v08          Track2 candidates·retrieve
+legacy/          활성이 import 안 하는 구세대(v0.7.1 tagger·vocab·prompts·window/event_tagger·test/batch_readout, norm_embed)
+docs/            설계·리포트(PROJECT_DESIGN·Concept_Design_v3·TEAM_REPORT·taxonomy_merge_report·STRUCTURE 등)
+decisions/       설계 변경/개선 이력(DESIGN_LOG)
+```
+- import는 `run.sh` PYTHONPATH + venv `.pth`가 `common/task_selection/task_episode/legacy`를 top-level 경로로 올려 유지.
+- **Task 라벨 컨벤션**: `legacy/docs/decisions`는 task별로 안 쪼개고 공통 폴더로 두되, **각 파일/엔트리 최상단에 `> **Task**: common|selection|episode(Track1|Track2)|multi` 라벨을 명시**(정본 `docs/README.md`).
 
 ## 명령어
 정식 test/lint 프레임워크 없음. `test_readout.py`는 단위테스트가 아니라 단일클립 smoke run.

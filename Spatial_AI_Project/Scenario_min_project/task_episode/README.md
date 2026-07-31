@@ -20,11 +20,12 @@
 | `candidates.py` | **Track2 Phase A** — OR 앙상블 후보생성(ego/gt/VLM 5-vote) |
 | `retrieve.py` | **Track2 Phase B** — 정규화·병합·confidence 랭킹 |
 | `tag_v08.py` | **Track1** — SD/critical_components 메타데이터(v0.8) |
-| `event_tagger.py`·`window_tagger.py` | legacy 태깅 경로 |
-| `norm_embed.py` | 임베딩 정규화(자유기술→어휘) |
+
+> 그룹: **base**(classify073·taxo_detect·map_lane·vlm_verify) / **Track1**(tag_v08) / **Track2**(candidates·retrieve).
+> v0.7.1 태깅(`tagger`·`event/window_tagger`·`test/batch_readout`)과 `norm_embed`는 `legacy/`.
 
 ## 공용 기반 의존 (→ `common/`)
-`events`(전이) · `paths`(obj3d/map) · `dataset`(subclip) · `taxonomy` · `config` · `tagger`
+`events`(전이) · `paths`(obj3d/map) · `dataset`(subclip) · `taxonomy` · `config` · `vocab073` · `client`
 
 ## 산출물
 `gold.json`(episode gold) · `gold_label/`(라벨링 도구·리뷰) · `outputs*/`(태그)
