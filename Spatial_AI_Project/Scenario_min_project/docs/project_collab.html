@@ -1,0 +1,268 @@
+<title>VLA Long-tail 파이프라인 — 설계·협업 구도</title>
+<style>
+:root{
+  --bg:#f5f8f9; --panel:#ffffff; --panel2:#f0f4f6; --ink:#132029; --muted:#5b6a74;
+  --line:#e0e7ea; --accent:#0d7f9e; --accent-soft:#0d7f9e18;
+  --done:#2c9c68; --wip:#c0842a; --todo:#8a97a0; --danger:#c0492e;
+  --t-sel:#2f7fb8; --t-base:#7a5cc0; --t-t1:#2c9c68; --t-t2:#c0842a; --t-common:#556570;
+  --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI","Noto Sans KR","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0c1417; --panel:#141f25; --panel2:#101a1f; --ink:#e7eef2; --muted:#8ea0aa;
+  --line:#233139; --accent:#38b6d4; --accent-soft:#38b6d422;
+  --done:#43b884; --wip:#d7a24e; --todo:#7c8b95; --danger:#e0715a;
+  --t-sel:#5aa8dd; --t-base:#a68ce0; --t-t1:#43b884; --t-t2:#d7a24e; --t-common:#8ea0aa;
+}}
+:root[data-theme=dark]{
+  --bg:#0c1417; --panel:#141f25; --panel2:#101a1f; --ink:#e7eef2; --muted:#8ea0aa;
+  --line:#233139; --accent:#38b6d4; --accent-soft:#38b6d422;
+  --done:#43b884; --wip:#d7a24e; --todo:#7c8b95; --danger:#e0715a;
+  --t-sel:#5aa8dd; --t-base:#a68ce0; --t-t1:#43b884; --t-t2:#d7a24e; --t-common:#8ea0aa;
+}
+:root[data-theme=light]{
+  --bg:#f5f8f9; --panel:#ffffff; --panel2:#f0f4f6; --ink:#132029; --muted:#5b6a74;
+  --line:#e0e7ea; --accent:#0d7f9e; --accent-soft:#0d7f9e18;
+  --done:#2c9c68; --wip:#c0842a; --todo:#8a97a0; --danger:#c0492e;
+  --t-sel:#2f7fb8; --t-base:#7a5cc0; --t-t1:#2c9c68; --t-t2:#c0842a; --t-common:#556570;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;
+  -webkit-font-smoothing:antialiased;font-size:15px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px 80px}
+a{color:var(--accent)}
+.eyebrow{font:600 11.5px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:30px;line-height:1.12;margin:12px 0 8px;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:19px;margin:0 0 4px;letter-spacing:-.005em}
+h3{font-size:14px;margin:0 0 8px}
+.lead{color:var(--muted);font-size:15.5px;max-width:70ch;margin:0}
+header.hero{padding:44px 0 26px;border-bottom:1px solid var(--line)}
+.meta{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;font:12px/1 var(--mono);color:var(--muted)}
+.meta span{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:6px 11px}
+section{padding:30px 0;border-bottom:1px solid var(--line)}
+.sechead{display:flex;align-items:baseline;gap:10px;margin-bottom:16px}
+.secno{font:600 12px var(--mono);color:var(--accent);border:1px solid var(--accent);border-radius:6px;padding:2px 7px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:720px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 17px}
+.card .k{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.card p{margin:7px 0 0;font-size:13.5px;color:var(--muted)}
+.card b{color:var(--ink)}
+/* flow */
+.flow{display:flex;flex-direction:column;gap:10px}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.stage .tag{font:600 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:20px;display:inline-block}
+.tag.sel{background:var(--t-sel)22;color:var(--t-sel);border:1px solid var(--t-sel)55}
+.tag.ep{background:var(--t-base)22;color:var(--t-base);border:1px solid var(--t-base)55}
+.arrow{align-self:center;color:var(--muted);font-size:18px;line-height:.6}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media(max-width:620px){.split{grid-template-columns:1fr}}
+.sub{border:1px dashed var(--line);border-radius:10px;padding:11px 13px;background:var(--panel2)}
+.sub .t1{color:var(--t-t1);font-weight:700}.sub .t2{color:var(--t-t2);font-weight:700}
+.sub small{color:var(--muted);display:block;margin-top:3px;font-size:12.5px}
+code{font:12.5px var(--mono);background:var(--accent-soft);color:var(--ink);padding:1px 5px;border-radius:5px}
+/* status */
+.pill{font:600 10.5px var(--mono);padding:2px 8px;border-radius:20px;white-space:nowrap}
+.pill.done{background:var(--done)22;color:var(--done)}
+.pill.wip{background:var(--wip)22;color:var(--wip)}
+.pill.todo{background:var(--todo)22;color:var(--todo)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:5px 11px;font-size:12.5px}
+.chip::before{content:"✓";color:var(--done);font-weight:700;margin-right:6px}
+table{width:100%;border-collapse:collapse;margin-top:6px;font-size:13px}
+.scroll{overflow-x:auto}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td code{font-size:11.5px}
+/* WP cards */
+.wpgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+@media(max-width:760px){.wpgrid{grid-template-columns:1fr}}
+.wp{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 16px;position:relative}
+.wp .top{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.wp .no{font:700 12px var(--mono);color:#fff;background:var(--accent);border-radius:7px;padding:3px 8px}
+.wp .ti{font-weight:700;font-size:14.5px;flex:1}
+.lane{font:600 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:6px}
+.lane.sel{background:var(--t-sel)22;color:var(--t-sel)} .lane.base{background:var(--t-base)22;color:var(--t-base)}
+.lane.t1{background:var(--t-t1)22;color:var(--t-t1)} .lane.t2{background:var(--t-t2)22;color:var(--t-t2)}
+.lane.common{background:var(--t-common)22;color:var(--t-common)}
+.wp dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:12.5px}
+.wp dt{color:var(--muted);font:600 11px var(--mono)}
+.wp dd{margin:0;color:var(--ink)}
+.wp .dep{color:var(--wip)} .wp .dep.free{color:var(--done)}
+/* stream */
+.stream{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:13px 16px;margin-bottom:11px}
+.stream h3{margin:0 0 3px;font-size:14px}
+.stream .wps{font:600 12px var(--mono);color:var(--accent)}
+.stream p{margin:5px 0 0;font-size:13px;color:var(--muted)}
+/* guardrail */
+.guard{background:var(--danger)0e;border:1px solid var(--danger)55;border-radius:12px;padding:16px 18px}
+.guard h2{color:var(--danger)}
+.guard ul{margin:8px 0 0;padding-left:18px;font-size:13.5px}.guard li{margin:5px 0}
+.note{background:var(--accent-soft);border:1px solid var(--accent)44;border-radius:10px;padding:13px 16px;margin-top:14px}
+.note b{color:var(--accent)}
+ul.q{margin:8px 0 0;padding-left:18px;font-size:13.5px}ul.q li{margin:6px 0}
+footer{padding:26px 0 0;color:var(--muted);font-size:12.5px}
+footer code{font-size:11.5px}
+.team{display:grid;grid-template-columns:repeat(2,1fr);gap:13px;margin:6px 0 22px}
+@media(max-width:760px){.team{grid-template-columns:1fr}}
+.role{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 16px;border-top:3px solid var(--accent)}
+.role.lead{border-top-color:var(--t-common)}.role.ea{border-top-color:var(--t-t2)}
+.role.eb{border-top-color:var(--t-sel)}.role.gl{border-top-color:var(--done)}
+.role .who{font-weight:700;font-size:14.5px}
+.role .sub2{font:600 10.5px var(--mono);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.role p{margin:8px 0 0;font-size:12.8px;color:var(--muted)}
+.role .wps{font:700 12px var(--mono);color:var(--accent);margin-top:9px;display:block}
+.own{font:700 9.5px var(--mono);border-radius:5px;padding:2px 6px;letter-spacing:.03em;white-space:nowrap}
+.own.L{background:var(--t-common)22;color:var(--t-common)}.own.A{background:var(--t-t2)22;color:var(--t-t2)}
+.own.B{background:var(--t-sel)22;color:var(--t-sel)}.own.G{background:var(--done)22;color:var(--done)}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">KATECH VLA · 설계 정본</div>
+  <h1>Long-tail 메타데이터·추출 파이프라인</h1>
+  <p class="lead">자율주행 20초 클립에 scene/analysis/meta-action 메타데이터를 <b>tag</b>하고 long-tail 상황을 <b>추출</b>한다. VLM(NVIDIA Cosmos-Reason)은 <b>frozen</b> — 재학습 없이 GT(egomotion·obj3d·map)+규칙+VLM 조합을 개선한다.</p>
+  <div class="meta">
+    <span>단일 설계 정본</span><span>2단계 퍼널</span><span>두 제품 Track1·Track2</span><span>갱신 2026-07-31</span>
+  </div>
+</header>
+
+<section>
+  <div class="sechead"><span class="secno">1</span><h2>개요 — 무엇을 만드나</h2></div>
+  <p class="lead" style="margin-bottom:16px">metadata labeling = <b>① clip 선별 → ② 선별 clip에서 episode 추출·labeling</b>의 2단계 퍼널. 싼 신호(CAN+video)로 <b>넓게 선별</b>하고, 비싼 상세 태깅(3DOD+map)은 <b>선별 clip에만</b> 적용한다(비용·recall 퍼널).</p>
+  <div class="grid2">
+    <div class="card">
+      <div class="k" style="color:var(--t-t1)">Track 1 — 세그먼트 메타데이터</div>
+      <p><b>v08형 SD/SA/MA + cause + key_frame</b>. 자율주행 개발용 라벨링. 계보 <code>tag_v08.py</code>. 생성은 관찰 선행 순방향(SD→critical→cause→MA), MA는 rule/arc 앵커로 해소.</p>
+    </div>
+    <div class="card">
+      <div class="k" style="color:var(--t-t2)">Track 2 — 추출 retriever</div>
+      <p><b>taxonomy 카테고리 후보 검색</b>. 큐레이션용. <code>candidates.py</code>→<code>retrieve.py</code>. 태거=관대한 후보 생성기(recall 우선), precision은 하류에서 회복.</p>
+    </div>
+  </div>
+  <p class="lead" style="margin-top:14px;font-size:14px">공용 기반 공유: <code>events</code>(egomotion) · <code>taxo_detect</code>(obj3d) · <code>map_lane</code>(map) · <code>vlm_verify</code>(VLM) · <code>classify073.consolidate_episodes</code>(세그먼테이션) · <code>taxonomy</code>(단일 어휘).</p>
+</section>
+
+<section>
+  <div class="sechead"><span class="secno">2</span><h2>아키텍처</h2></div>
+  <div class="flow">
+    <div class="stage">
+      <span class="tag sel">Stage 1 · 선별 (task_selection)</span>
+      <p style="margin:8px 0 0;font-size:13.5px;color:var(--muted)"><b style="color:var(--ink)">obj3d 없이</b> — 전체 로그(CAN+video). <b style="color:var(--ink)">정본: ego 전이 윈도우별 반응성 × VLM(video, 같은 윈도우) 시간정렬</b> → 상위 K. (legacy: 클립레벨 몽타주 흥미도)</p>
+    </div>
+    <div class="arrow">▼ 선별 clip</div>
+    <div class="stage">
+      <span class="tag ep">Stage 2 · episode (task_episode)</span>
+      <p style="margin:8px 0 0;font-size:13.5px;color:var(--muted)"><b style="color:var(--ink)">3DOD+map</b> — <code>consolidate_episodes</code>로 ego 전이 분할. <b style="color:var(--ink)">세그먼트 = ego 전이 = critical</b> (1 record = 1 transition).</p>
+      <div class="split">
+        <div class="sub"><span class="t1">Track 1 · tag_v08</span><small>SD → critical → cause → MA(앵커). 세그먼트 메타데이터.</small></div>
+        <div class="sub"><span class="t2">Track 2 · Phase A→B→C→D</span><small>OR앙상블 후보 → 정규화·병합·랭킹 → precision → gold.</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead"><span class="secno">3</span><h2>현재 상태</h2></div>
+  <h3 style="color:var(--muted);font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase">완료</h3>
+  <div class="chips" style="margin-bottom:18px">
+    <span class="chip">저장소 재정리 (common/task_selection/task_episode/legacy/docs/decisions)</span>
+    <span class="chip">택소노미 5축 60키 (new_tag 흡수·정적환경)</span>
+    <span class="chip">드리프트 4건 수정</span>
+    <span class="chip">정적환경 VLM 판정</span>
+    <span class="chip">Stage1 windowed+video 승격</span>
+    <span class="chip">folder_selection (조건별)</span>
+    <span class="chip">obj3d cut_in 검증 도구</span>
+    <span class="chip">sparse gold 50 · 데모</span>
+  </div>
+  <div class="legend">
+    <span><span class="pill done">DONE</span> 완료</span>
+    <span><span class="pill wip">WIP</span> 부분/진행</span>
+    <span><span class="pill todo">TODO</span> 미착수</span>
+  </div>
+  <div class="scroll"><table>
+    <tr><th>Track2 Phase</th><th>내용</th><th>상태</th></tr>
+    <tr><td><b>A</b> 후보생성</td><td>3채널 OR 합집합(ego/obj3d/VLM 5-vote), provenance·cause 축. ∩·게이트 금지</td><td><span class="pill done">DONE</span></td></tr>
+    <tr><td><b>B</b> 정규화·병합·랭킹</td><td>별칭·슬롯 흡수, 도로유형 병합(sig/unsig 유지), confidence 랭킹</td><td><span class="pill done">DONE</span></td></tr>
+    <tr><td><b>C</b> precision 게이트</td><td>gt∩vlm·다수결·Tier-B human·학습셋 등급</td><td><span class="pill todo">TODO</span></td></tr>
+    <tr><td><b>D</b> gold & 측정</td><td>완전라벨 gold ≥60(present/absent), recall 1차 지표</td><td><span class="pill todo">TODO</span></td></tr>
+    <tr><td><b>E</b> 어휘 통일</td><td>taxonomy ↔ v0.7.3 vocab 매핑</td><td><span class="pill wip">WIP</span></td></tr>
+    <tr><td>Track1 <b>tag_v08</b></td><td>순방향 스키마 완료 · ego_action map∪VLM 완전 해소 후속</td><td><span class="pill wip">WIP</span></td></tr>
+  </table></div>
+</section>
+
+<section>
+  <div class="sechead"><span class="secno">4</span><h2>협업 구도 — 업무 분담</h2></div>
+  <p class="lead" style="margin-bottom:14px">편성 = <b>리드 1(나) + 엔지니어 2 + gold 라벨러 1–2(on-demand)</b>. 엔지니어는 <b>Track 경계로 1인 1트랙</b>(코드 충돌 없음), 리드는 공용 기반·통합·GT 조율, 라벨러는 gold 공급.</p>
+  <div class="team">
+    <div class="role lead"><div class="sub2">리드 · 나</div><div class="who">공용 기반 · 통합 · GT 조율</div><p><code>common/</code> 인프라, 아키텍처 결정, 가드레일(frozen·anti-circularity) 관리, obj3d GT 업데이트 조율, 스트림 통합.</p><span class="wps">WP4 · WP8 · 통합/리뷰</span></div>
+    <div class="role gl"><div class="sub2">gold 라벨러 · 1–2</div><div class="who">gold 공급 (on-demand)</div><p><code>gold_label</code> 도구로 라벨 생산. <b>전체 병목</b> — WP1·WP2가 모두 의존하므로 조기 투입이 속도 결정.</p><span class="wps">WP2 완전gold → WP1 critical</span></div>
+    <div class="role ea"><div class="sub2">엔지니어 A · Track2</div><div class="who">추출·큐레이션 (precision)</div><p><code>candidates·retrieve·vlm_verify</code>. recall→precision→학습셋 승격 파이프라인. 제품의 핵심 경로.</p><span class="wps">WP3 · WP5 (+WP2 gold 설계·검증)</span></div>
+    <div class="role eb"><div class="sub2">엔지니어 B · Track1+선별</div><div class="who">라벨링 산출물 · 선별</div><p><code>tag_v08·run_selection·folder_selection</code>. 세그먼트 메타데이터 + Stage1 선별 품질.</p><span class="wps">WP6 · WP1 · WP7</span></div>
+  </div>
+  <div class="wpgrid">
+    <div class="wp"><div class="top"><span class="no">WP1</span><span class="ti">Stage1 정량검증</span><span class="lane sel">selection</span><span class="own B">엔지니어 B</span></div>
+      <dl><dt>내용</dt><dd>300에 critical y/n gold → windowed recall@K, montage 대비</dd>
+      <dt>모듈</dt><dd><code>run_selection·review</code></dd><dt>선행</dt><dd class="dep">gold 라벨 필요</dd></dl></div>
+    <div class="wp"><div class="top"><span class="no">WP2</span><span class="ti">완전라벨 gold ≥60</span><span class="lane t2">episode</span><span class="own G">gold 라벨러</span></div>
+      <dl><dt>내용</dt><dd>present/absent 명시, sparse 금지 = Phase D 기반</dd>
+      <dt>모듈</dt><dd><code>gold_tool·gold.json</code></dd><dt>선행</dt><dd class="dep free">없음 (즉시)</dd></dl></div>
+    <div class="wp"><div class="top"><span class="no">WP3</span><span class="ti">Phase C precision 게이트</span><span class="lane t2">Track2</span><span class="own A">엔지니어 A</span></div>
+      <dl><dt>내용</dt><dd>gt∩vlm·다수결·Tier-B human·학습셋 등급</dd>
+      <dt>모듈</dt><dd><code>vlm_verify.fuse</code>+신규</dd><dt>선행</dt><dd class="dep">Phase A/B(완료), WP2 병행</dd></dl></div>
+    <div class="wp"><div class="top"><span class="no">WP4</span><span class="ti">obj3d 검출기 배선</span><span class="lane base">base</span><span class="own L">리드</span></div>
+      <dl><dt>내용</dt><dd>GT 업데이트 후 cut_in·신규 obj3d 태그 검출기</dd>
+      <dt>모듈</dt><dd><code>taxo_detect·map_lane</code></dd><dt>선행</dt><dd class="dep">obj3d GT 업데이트 대기</dd></dl></div>
+    <div class="wp"><div class="top"><span class="no">WP5</span><span class="ti">정적환경 VLM 스케일</span><span class="lane t2">Track2</span><span class="own A">엔지니어 A</span></div>
+      <dl><dt>내용</dt><dd>조명/기상/노면 등 vlm_only 태그 스케일 판정 + gold</dd>
+      <dt>모듈</dt><dd><code>vlm_verify.env_cats·candidates</code></dd><dt>선행</dt><dd class="dep free">없음 (즉시)</dd></dl></div>
+    <div class="wp"><div class="top"><span class="no">WP6</span><span class="ti">Track1 tag_v08 완성</span><span class="lane t1">Track1</span><span class="own B">엔지니어 B</span></div>
+      <dl><dt>내용</dt><dd>ego_action map∪VLM 해소, 순방향 생성 검증</dd>
+      <dt>모듈</dt><dd><code>tag_v08</code></dd><dt>선행</dt><dd class="dep free">없음 (즉시)</dd></dl></div>
+    <div class="wp"><div class="top"><span class="no">WP7</span><span class="ti">실제 조건 폴더 적용</span><span class="lane sel">selection</span><span class="own B">엔지니어 B</span></div>
+      <dl><dt>내용</dt><dd>folder_selection groups_from_root로 조건별 선별 운영</dd>
+      <dt>모듈</dt><dd><code>folder_selection</code></dd><dt>선행</dt><dd class="dep">조건 폴더 데이터</dd></dl></div>
+    <div class="wp"><div class="top"><span class="no">WP8</span><span class="ti">map 유효율 개선</span><span class="lane base">base</span><span class="own L">리드</span></div>
+      <dl><dt>내용</dt><dd>Phase F — 다프레임 경계선 누적(선택)</dd>
+      <dt>모듈</dt><dd><code>map_lane</code></dd><dt>선행</dt><dd class="dep free">없음 (선택)</dd></dl></div>
+  </div>
+
+  <h3 style="margin:24px 0 10px;color:var(--muted);font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase">지금 시작 순서 (선행 무관 = 즉시 착수)</h3>
+  <div class="scroll"><table>
+    <tr><th>담당</th><th>지금 바로 (blocker 없음)</th><th>다음 (선행 해소 후)</th></tr>
+    <tr><td><span class="own G">gold 라벨러</span></td><td><b>WP2</b> 완전 gold ≥60 (present/absent) — <b>최우선</b></td><td>WP1 critical y/n 300</td></tr>
+    <tr><td><span class="own A">엔지니어 A</span></td><td><b>WP5</b> 정적환경 VLM 스케일 (gold 쌓이는 동안)</td><td>WP3 Phase C precision <span class="pill todo">gold 후</span></td></tr>
+    <tr><td><span class="own B">엔지니어 B</span></td><td><b>WP6</b> tag_v08 완성</td><td>WP1 정량검증 <span class="pill todo">gold 후</span> · WP7 <span class="pill todo">폴더 후</span></td></tr>
+    <tr><td><span class="own L">리드 (나)</span></td><td>common 리뷰 · 통합 · <b>obj3d GT 일정 조율</b></td><td>WP4 <span class="pill todo">GT 후</span> · WP8 선택</td></tr>
+  </table></div>
+
+  <div class="note"><b>이 편성의 핵심 포인트</b>
+    <ul class="q">
+      <li><b>gold가 최대 병목</b> — WP1·WP2·WP3가 모두 사람 gold에 의존. 라벨러 <b>조기 투입</b>이 전체 속도를 결정하므로, 라벨러 1–2명을 <b>WP2부터 즉시</b> 붙이는 것을 권장.</li>
+      <li><b>2인이라 GT 인프라(WP4·WP8)는 리드가 흡수</b> — 엔지니어 A/B는 각자 Track에만 집중해 컨텍스트 스위칭 최소화.</li>
+      <li><b>병렬성 보장</b>: A=Track2, B=Track1+선별 → 코드 경로가 <code>task_episode</code> 내에서도 분리(candidates/retrieve vs tag_v08)되고 선별은 <code>task_selection</code>. 충돌 지점은 <code>common/</code>뿐.</li>
+      <li><b>공용 기반 변경 규약</b>: <code>common/</code> 수정은 3인 전체 영향 → 변경 시 <code>decisions/DESIGN_LOG.md</code>에 Task 라벨로 기록·공지(리드 승인).</li>
+      <li><b>외부 의존</b>: obj3d GT 업데이트(타 그룹)가 WP4·WP3의 gt∩vlm 정밀도 선행 — 일정 확인 필요.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="guard">
+    <h2>가드레일 — 절대 위반 금지</h2>
+    <ul>
+      <li>태거 <b>fine-tuning 금지</b>(순환). 태거 출력이 태거 학습에 되먹임 금지. gold=사람 라벨, <code>AUTO_GT</code>는 평가 제외.</li>
+      <li><b>cosmos2(port 8000) 무접촉</b>(타 그룹). 우리 복제본 8001–8004, <b>8001=평가-frozen</b>. NIM 컨테이너 파일 수정 시 blake3로 컨테이너 사망 → <b>운영 서버(재기동 승인 필요)</b>.</li>
+      <li>KV-cache·TTA·합성데이터·다운스트림 VLA 학습·비용최적화 = <b>범위 밖</b>(별도 트랙).</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <b>코드맵</b> — common: <code>config paths dataset events taxonomy vocab073 client overlay</code> · task_selection: <code>selection run_selection folder_selection review</code> · task_episode: <code>classify073 taxo_detect map_lane vlm_verify tag_v08 candidates retrieve verify_cutin_obj3d gold_tool</code><br>
+  <b>문서</b> — 설계 정본 <code>docs/PROJECT_DESIGN.md</code> · 코드실태·불변식 <code>CLAUDE.md</code> · 이력 <code>decisions/DESIGN_LOG.md</code> · 팀 리포트 <code>docs/TEAM_REPORT.md</code>
+</footer>
+
+</div>
