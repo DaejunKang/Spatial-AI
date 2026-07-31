@@ -5,10 +5,14 @@ lane-keeping이 다수인 데이터셋에서 '의미 있는' 주행 상황을 �
 주 신호(source)는 검출 근거: egomotion / obj3d / map / vlm.
 
 축: ego 기동 / 상호작용 / 맥락 / 정적환경 / 규칙.
-2026-07-31 `legacy/new_tag.json`(v0.4 폐쇄어휘 50태그)의 정적환경(조명·기상·노면·정적장면·기하)
-+ long-tail 이벤트(긴급차·동물·장애물·무단횡단·역주행·급기동 등)를 흡수. 각 흡수 태그의
+2026-07-31 `legacy/new_tag.json`(v0.4 폐쇄어휘 50태그)의 정적환경(조명·기상·노면·정적장면)
++ long-tail 이벤트(긴급차·동물·장애물·무단횡단·역주행·취약보행자 등)를 흡수. 각 흡수 태그의
 visionary 실행 상태는 `STATUS`(runnable/vlm_only/sparse/gold). new_tag 원본의 GT rule 세부는
 미채택(우리 데이터에 부재하는 nuScenes/Waymo GT 전제) — source/status 로 대체.
+- **egomotion 기반**(hard_brake/hard_steer/overtake/congestion/free_flow/sharp_curve)은 별도 태그
+  추가 안 함 — egomotion primitives/기존 tag(creep·events kinds)로 병합.
+- **obj3d 기반** 신규 태그(vehicle_cross_path·large_vehicle·emergency·stationary 등)는 어휘만 두고
+  검출기는 obj3d 결과 확인 후 도입(deferred).
 """
 
 TAXONOMY = [
@@ -23,10 +27,9 @@ TAXONOMY = [
     ("ego 기동", "decel_at_intersection","교차로 서행/감속",   "egomotion+map", "교차로 접근 감속(정지 아님)"),
     ("ego 기동", "creep",                "서행/기어가기",      "egomotion", "정체·혼잡 저속 주행"),
     ("ego 기동", "pull_over",            "갓길 정차",          "egomotion", "도로변으로 붙여 정차"),
-    # ego 급기동·추월 (new_tag.json v0.4 흡수, 2026-07-31)
-    ("ego 기동", "ego_hard_brake",       "급제동",             "egomotion", "종감속 3m/s²+ 0.5초+ 지속"),
-    ("ego 기동", "ego_hard_steer",       "급조향",             "egomotion", "급격한 조향(yaw rate 큼)"),
-    ("ego 기동", "ego_overtake",         "추월",               "egomotion+obj3d", "선행차 앞질러 전방 복귀"),
+    # egomotion 기반 급기동(hard_brake/hard_steer/overtake)·속도regime(congestion/free_flow)·
+    # 도로기하(sharp_curve)는 별도 태그로 추가하지 않음 — egomotion primitives/기존 tag가 커버.
+    #   congestion→기존 creep, 급제동/급조향→events.py decelerate/turn·harsh_decel, overtake→lane_change.
 
     ("상호작용", "cut_in",               "끼어들기(cut-in)",   "obj3d", "인접차로→ego차로 앞 완전 진입"),
     ("상호작용", "cut_in_attempt",       "끼어들기 시도",      "obj3d", "인접차가 ego차로 쪽으로 밀고 들어오나 완전 진입은 아님"),
@@ -80,10 +83,7 @@ TAXONOMY = [
     ("정적환경", "glare",                "역광/눈부심",         "vlm", "태양 직사·강반사로 노출 포화·플레어"),
     ("정적환경", "crosswalk_present",    "횡단보도 존재",        "vlm", "경로상 횡단보도(보행자 유무 무관)"),
     ("정적환경", "traffic_light_present", "신호등 존재",         "vlm", "경로상 차량용 신호등(상태 무관)"),
-    ("정적환경", "sharp_curve",          "급곡선로",            "egomotion", "도로 선형 급곡선(R≤100m). 교차로 회전 제외"),
     ("정적환경", "undivided_road",       "비분리 도로",         "vlm", "양방향 물리적 분리물 부재(차선표시≠분리)"),
-    ("정적환경", "congestion",           "정체/서행",           "egomotion", "평균<10km/h·정지출발≥2. 신호대기 단독 제외"),
-    ("정적환경", "free_flow",            "원활 교통",           "egomotion", "정지출발 없음·평균≥30km/h"),
     ("정적환경", "crowd",                "보행자 밀집(군중)",    "obj3d", "전/측방 30m 내 보행자 8인+"),
 
     ("규칙",     "red_light_stop",       "적신호 정지",        "vlm+egomotion", "적색 신호로 정지"),
@@ -136,13 +136,11 @@ STATUS = {
     "rain": "vlm_only", "snow": "sparse", "fog": "sparse", "clear_weather": "vlm_only",
     "wet_road": "vlm_only", "dry_road": "vlm_only", "glare": "vlm_only",
     "crosswalk_present": "vlm_only", "traffic_light_present": "vlm_only",
-    "sharp_curve": "runnable", "undivided_road": "vlm_only",
-    "congestion": "runnable", "free_flow": "runnable", "crowd": "runnable",
+    "undivided_road": "vlm_only", "crowd": "runnable",
     "vehicle_cross_path": "runnable", "wrong_way_vehicle": "sparse",
     "stationary_vehicle_on_lane": "runnable", "large_vehicle_proximity": "runnable",
     "emergency_vehicle": "gold", "animal_on_road": "sparse", "road_obstacle": "runnable",
     "jaywalking": "runnable", "road_worker": "vlm_only", "vulnerable_pedestrian": "vlm_only",
-    "ego_hard_brake": "runnable", "ego_hard_steer": "gold", "ego_overtake": "runnable",
 }
 
 

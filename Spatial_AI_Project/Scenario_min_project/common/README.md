@@ -11,7 +11,7 @@
 | `paths.py` | **visionary-nvidia** 데이터셋 경로(video/egomotion/obj3d/map). 신규 코드의 데이터 접근 표준 |
 | `dataset.py` | 프레임/몽타주 샘플링·subclip 생성·data URI (`sample_montage`·`write_subclip`·`to_data_uri`) |
 | `events.py` | **egomotion primitives** — `load_egomotion_clip`(카메라 범위 클립)·`detect_events`(net-heading 거동). 양 단계 공용 |
-| `taxonomy.py` | 단일 공유 택소노미(5축: ego기동·상호작용·맥락·정적환경·규칙, KEYS 66)·`AUTO_GT`/`HUMAN_KEYS`/`STATUS`/`auto_tags_from_arc`. `legacy/new_tag.json` v0.4 정적환경+long-tail 흡수(2026-07-31) |
+| `taxonomy.py` | 단일 공유 택소노미(5축: ego기동·상호작용·맥락·정적환경·규칙, KEYS 60)·`AUTO_GT`/`HUMAN_KEYS`/`STATUS`/`auto_tags_from_arc`. `legacy/new_tag.json` v0.4 정적환경+long-tail(obj3d/vlm) 흡수; egomotion 기반은 기존 tag 병합(2026-07-31) |
 | `client.py` | VLM client pool(`build_client_pool`, 8001–4 헬스체크 라운드로빈) |
 | `vocab073.py` | KPI 어휘(v0.7.3) 로더·스키마·검증 (활성 enum: EGO_ACTIONS/OBJECT_TYPES/RELATIONS) |
 | `overlay.py` | 세그먼트 태그 영상 burn-in(정성 확인 util) |
