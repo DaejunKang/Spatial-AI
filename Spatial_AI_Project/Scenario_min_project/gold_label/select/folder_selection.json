@@ -1,0 +1,60 @@
+{
+ "pseudo_day": [
+  {
+   "clip_id": "cc3646a3-a8c9-4256-b604-f84a38debd40",
+   "combined": 1.211,
+   "ego_norm": 0.941,
+   "vlm_score": 0.9,
+   "event_type": "cross_traffic",
+   "reactive": true,
+   "ego_terms": {
+    "harsh_brake": 1.48,
+    "decel_repeat": 3.0,
+    "turn": 0.6
+   }
+  },
+  {
+   "clip_id": "35e89abf-f4f8-4f80-9cd6-0c432249025c",
+   "combined": 1.144,
+   "ego_norm": 0.815,
+   "vlm_score": 0.9,
+   "event_type": "ped_cyclist",
+   "reactive": true,
+   "ego_terms": {
+    "decel_repeat": 2.0,
+    "stop_go": 0.8,
+    "stop": 1.0,
+    "turn": 0.6
+   }
+  }
+ ],
+ "pseudo_backstreet": [
+  {
+   "clip_id": "4a43a251-9a2f-46b2-bba5-d81f9d53649c",
+   "combined": 1.24,
+   "ego_norm": 1.0,
+   "vlm_score": 0.8,
+   "event_type": "lead_brake",
+   "reactive": true,
+   "ego_terms": {
+    "harsh_brake": 0.11,
+    "decel_repeat": 2.0,
+    "stop_go": 0.8,
+    "stop": 1.0
+   }
+  },
+  {
+   "clip_id": "2ae48228-d1a2-4274-be13-f278065b20a3",
+   "combined": 1.002,
+   "ego_norm": 0.972,
+   "vlm_score": 0.1,
+   "event_type": "none",
+   "reactive": false,
+   "ego_terms": {
+    "decel_repeat": 2.0,
+    "stop_go": 0.8,
+    "stop": 1.0
+   }
+  }
+ ]
+}

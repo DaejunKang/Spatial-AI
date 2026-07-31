@@ -4,6 +4,14 @@
 
 ---
 
+## [2026-07-31] 폴더별(조건별) 반응성 선별 알고리즘 (folder_selection)
+> **Task**: selection
+- 변경: `task_selection/folder_selection.py` 신규 — 데이터가 정적환경 조건 폴더(주간/야간·도심/골목)로 분리 저장된 경우, **폴더 안에서 ego motion에 영향 준 event(반응성)** 가 있는 clip 우선 선별.
+- 설계: 패러다임 (B) egomotion+VLM 융합 유지. ego 반응성 점수(`react_ego_score`) = 급제동 2.5·min(harsh,4) ≫ 감속반복·정지출발 > 정지 > 차선변경 > 회전(0.6). VLM(`vlm_reactive`)은 조건 고정이라 맥락 판정 대신 **외부 agent/hazard 반응 여부** 확인(신호대기 routine 정지 배제, event_type enum). `combined=max(ego_norm,vlm)+0.3·min`, **정규화·랭킹은 폴더 단위**.
+- 이유: 사용자 지시 — 조건별 폴더 전제에서 "ego 전이/반응이 있는 critical clip" 우선. Stage1(전역 흥미도 triage)과 **별개**(조건 고정 → VLM 역할이 맥락→반응확인으로 이동).
+- 입력: `groups={조건:[clip_id]}` 또는 `groups_from_root(루트/<조건>/<clip>)`. 실행 `./run.sh task_selection/folder_selection.py <groups.json> [top_k]`.
+- 검증: 합성 2폴더×4클립 end-to-end OK — 폴더별 독립 랭킹, 반응성 이벤트 분해(harsh_brake/decel_repeat/stop_go), ego 강하나 VLM 미확인 clip은 결합점수 하향(융합 의도대로).
+
 ## [2026-07-31] 정적환경 VLM 판정 추가 (흡수 태그 검출 배선)
 > **Task**: episode(Track2)
 - 변경: `vlm_verify._schema`/`_prompt`에 정적환경 필드 추가 — lighting(day/twilight/night)·weather(clear/rain/snow/fog)·road_surface(dry/wet) 단일택 + glare/crosswalk_present/traffic_light_present/undivided_road bool. 공용 매핑 `env_cats(v)`→taxonomy 키. `verify_clip`·`candidates._vlm_present` 양쪽에서 호출. `CTX`에 정적환경 키 추가(fuse에서 VLM 권위·GT 없이 유지).
