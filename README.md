@@ -35,7 +35,7 @@ Spatial_AI_Project/
 │
 ├── Ref_AI_project/           # BEVFormer 기반 3D 객체 탐지
 ├── Scenario_gen_project/     # 시나리오 생성
-├── Scenario_min_project/     # 시나리오 마이닝
+├── Scenario_min_project/     # 자율주행 에피소드 태깅 + long-tail 시나리오 추출 (KATECH VLA)
 │
 ├── tools/                    # 공용 도구 (학습/평가 스크립트)
 ├── util/                     # 공용 유틸리티
@@ -96,7 +96,7 @@ python reconstruction/approach2_3dgut.py /path/to/output --iterations 30000
 | **Photo-real_project** | 포토리얼리스틱 배경 복원 + 3D 재구성 | Active |
 | **Ref_AI_project** | BEVFormer 기반 3D 객체 탐지/인식 | Available |
 | **Scenario_gen_project** | 자율주행 시나리오 생성 | Planned |
-| **Scenario_min_project** | 시나리오 마이닝 및 분석 | Planned |
+| **Scenario_min_project** | 자율주행 에피소드 태깅 + long-tail 시나리오 추출 (KATECH VLA) | Active |
 
 ## Tech Stack
 
@@ -114,6 +114,7 @@ python reconstruction/approach2_3dgut.py /path/to/output --iterations 30000
 - [Inpainting](Spatial_AI_Project/Photo-real_project/Inpainting/README.md) — Inpainting 상세
 - [Reconstruction](Spatial_AI_Project/Photo-real_project/reconstruction/README.md) — 3D 재구성 상세
 - [Preprocessing](Spatial_AI_Project/Photo-real_project/preprocessing/README.md) — 전처리 상세
+- [Scenario_min_project](Spatial_AI_Project/Scenario_min_project/README.md) — KATECH VLA 에피소드 태깅/long-tail 추출 파이프라인
 
 ## License
 
