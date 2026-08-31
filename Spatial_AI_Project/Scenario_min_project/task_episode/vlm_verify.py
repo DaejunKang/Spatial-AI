@@ -18,6 +18,7 @@ from dataset import to_data_uri, video_meta, write_subclip
 import events
 import classify073 as C
 import taxo_detect as D
+import disclosure
 
 LEAD_IN = 3.0
 
@@ -239,7 +240,8 @@ def verify_clip(client, path, clip_id):
             wc |= env_cats(v)                          # 정적환경(조명/기상/노면/glare/crosswalk/...)
             wc = ground_signals(wc, clip_id, w0, w1)   # 신호 egomotion 그라운딩
             cats |= wc
-            ep_out.append({"win": [round(w0, 1), round(w1, 1)], "cats": sorted(wc)})
+            ep_out.append({"win": [round(w0, 1), round(w1, 1)], "cats": sorted(wc),
+                          "flags": disclosure.stamp()})
     finally:
         import shutil; shutil.rmtree(tmp, ignore_errors=True)
     return {"clip_id": clip_id, "ok": True, "cats": cats, "episodes": ep_out}

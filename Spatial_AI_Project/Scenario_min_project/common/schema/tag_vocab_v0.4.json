@@ -1,0 +1,1538 @@
+{
+    "schema_version": "v0.4",
+    "name": "tag_vocab",
+    "description": "에피소드 메타데이터 태그 어휘 정본. 설계 근거는 pipeline_design_guide_v0.4.md",
+    "episode_unit": "1 record = 1 ego 거동 사건 = (ego 거동, 원인 집합) 쌍. 종·횡 병합, 원인은 순위 없는 다중 집합, 직접 원인만 기록",
+    "episode_structure": {
+      "segment": [
+        "anchor",
+        "window",
+        "ego_action",
+        "environment",
+        "causal_links",
+        "flags",
+        "versioning",
+        "episode_confidence"
+      ],
+      "subjects": "원인 후보별 배열. 각 항목 = candidate_id + cause_type + 유형별 서술 블록 + measurements + visual_attributes + candidate_assessment",
+      "note": "environment는 맥락 필드이며 cause_type이 아님 (이중 계상 방지)",
+      "see_also": {
+        "window": "시간 경계 정의는 최상위 window 블록",
+        "anchor": "key_frame_t 산출 규칙은 anchor 블록",
+        "ego_action": "거동 라벨 해소 정책은 ego_action.anchor_policy"
+      }
+    },
+    "anchor": {
+      "key_frame_t": {
+        "type": "timestamp",
+        "source": "CAN rule",
+        "note": "모델 비관여. 규칙 산출 전용"
+      },
+      "transition_threshold_set_id": {
+        "type": "string",
+        "note": "임계 변경 = 데이터셋 변경. 반드시 각인"
+      },
+      "see_also": "거동 유형별 산출 정책은 ego_action.anchor_policy"
+    },
+    "window": {
+      "role": "에피소드 시간 경계 정의 — 본 블록이 유일 정본. key_frame_t는 anchor 블록에서 정의되며 여기서는 경계 기준점으로만 사용",
+      "window_start": {
+        "type": "timestamp",
+        "semantics": "사건 기준 역방향 확장 — 직전 자차 전이 또는 원인 후보 상태변화 중 먼저 만나는 지점"
+      },
+      "window_end": {
+        "type": "timestamp",
+        "semantics": "자차 거동 완료·안정 상태 진입 시점. key_frame_t에서 끊지 않음 (ego-path·결과 상태 보존)"
+      },
+      "window_start_reason": {
+        "type": "enum",
+        "values": [
+          "prev_ego_transition",
+          "candidate_state_change",
+          "budget_truncation"
+        ]
+      },
+      "window_end_reason": {
+        "type": "enum",
+        "values": [
+          "maneuver_complete",
+          "next_transition",
+          "clip_end",
+          "budget_truncation"
+        ]
+      },
+      "window_truncated": {
+        "type": "bool",
+        "note": "true여도 정상 에피소드로 편입. 절단률은 원인 유형·거동 유형별 집계 보고"
+      },
+      "judgment_scope": "모든 필드 판정에 창 전 구간 사용 (시점 제한 없음). 사후 정보 사용 사실은 export_contract에 표기",
+      "causal_judgment_scope": {
+        "type": "enum",
+        "values": ["full_window", "pre_anchor"],
+        "default": "full_window",
+        "note": "judgment_scope 정책(서술문)의 레코드별 기록형. full_window=창 전체 사용(사후정보 포함, 기본) / pre_anchor=key_frame_t 이전만(순환성·EPR 대조실험용, §3.6 이중 pass calibration과 연동 가능). 제안 필드 — v0.4 최초 도입, guide 원문에 필드명 없음"
+      }
+    },
+    "ego_action": {
+      "form": "transition + resulting_state 병기. 종·횡 병합 단일 사건",
+      "longitudinal": {
+        "transition": {
+          "type": "enum",
+          "values": [
+            "decel_onset",
+            "accel_onset",
+            "stop_initiate",
+            "launch",
+            "reverse_onset",
+            "none"
+          ]
+        },
+        "resulting_state": {
+          "type": "enum",
+          "values": [
+            "standstill",
+            "cruise",
+            "creep",
+            "decelerating",
+            "accelerating",
+            "reversing"
+          ]
+        }
+      },
+      "lateral": {
+        "transition": {
+          "type": "enum",
+          "values": [
+            "lane_change_left_onset",
+            "lane_change_right_onset",
+            "in_lane_shift_left",
+            "in_lane_shift_right",
+            "turn_left_onset",
+            "turn_right_onset",
+            "none"
+          ]
+        },
+        "resulting_state": {
+          "type": "enum",
+          "values": [
+            "lane_keep",
+            "changing_left",
+            "changing_right",
+            "turning_left",
+            "turning_right",
+            "offset_left",
+            "offset_right"
+          ]
+        }
+      },
+      "consistency_check": "transition과 resulting_state의 조합 정합성은 자동 검증 항목. 결정론적 귀결이 아닌 조합(decel_onset→cruise)은 유효",
+      "anchor_policy": {
+        "transition_time": "CAN 규칙 확정 — 모델 비관여",
+        "longitudinal": "CAN 규칙 확정",
+        "lateral_type": "CAN은 전이 트리거만. 좌/우회전·차선변경·U턴 라벨은 지도 ∪ VLM으로 해소 — CAN 요레이트만으로 교차로 회전·도로 곡률·분기·U턴 구분 불가",
+        "evaluation": "경로 유형 라벨은 규칙 확정값이 아니므로 평가 대상. AUTO_GT 사용 금지"
+      }
+    },
+    "cause_type": {
+      "values": [
+        "agent",
+        "static_object",
+        "traffic_control",
+        "road_geometry",
+        "road_condition",
+        "ego_intent"
+      ],
+      "note": "유형에 따라 필드 집합이 달라짐. environment는 cause_type이 아니라 맥락 필드",
+      "field_sets": {
+        "agent": [
+          "object_type",
+          "position_wrt_ego",
+          "motion_primitive",
+          "measurements",
+          "visual_attributes"
+        ],
+        "static_object": [
+          "static_object_type",
+          "position_wrt_ego",
+          "measurements",
+          "visual_attributes"
+        ],
+        "traffic_control": [
+          "control_element",
+          "control_state",
+          "applies_to",
+          "position_wrt_ego"
+        ],
+        "road_geometry": [
+          "geometry_type",
+          "position_wrt_ego",
+          "measurements"
+        ],
+        "road_condition": [
+          "condition_type",
+          "position_wrt_ego"
+        ],
+        "ego_intent": [
+          "intent_type"
+        ]
+      }
+    },
+    "axes": {
+      "object_type": {
+        "applies_to": [
+          "agent"
+        ],
+        "cardinality": "single",
+        "values": [
+          "car",
+          "truck",
+          "bus",
+          "van",
+          "motorcycle",
+          "bicycle",
+          "personal_mobility",
+          "pedestrian",
+          "animal",
+          "emergency_vehicle",
+          "construction_vehicle",
+          "trailer",
+          "other"
+        ]
+      },
+      "static_object_type": {
+        "applies_to": [
+          "static_object"
+        ],
+        "cardinality": "single",
+        "values": [
+          "parked_vehicle",
+          "stopped_vehicle",
+          "construction_barrier",
+          "traffic_cone",
+          "debris",
+          "fallen_object",
+          "median",
+          "guardrail",
+          "temporary_structure",
+          "other"
+        ],
+        "note": "agent와 분리. 노면에 귀속되는 요철·포트홀은 road_condition으로 배정"
+      },
+      "position_wrt_ego": {
+        "applies_to": [
+          "agent",
+          "static_object",
+          "traffic_control",
+          "road_geometry",
+          "road_condition"
+        ],
+        "structure": "lane_relative + bearing 병기. 두 필드는 독립 기록",
+        "lane_relative": {
+          "type": "enum",
+          "map_dependent": true,
+          "values": [
+            "same_lane",
+            "adjacent_left",
+            "adjacent_right",
+            "two_plus_left",
+            "two_plus_right",
+            "oncoming_lane",
+            "cross_lane",
+            "shoulder",
+            "sidewalk",
+            "off_road",
+            "unknown"
+          ],
+          "note": "map_valid=false 시 corridor 근사 폴백. fallback_path 플래그 필수"
+        },
+        "bearing": {
+          "type": "enum",
+          "map_dependent": false,
+          "values": [
+            "front",
+            "front_left",
+            "front_right",
+            "left",
+            "right",
+            "rear_left",
+            "rear_right",
+            "rear"
+          ],
+          "note": "ego 진행방향 기준. 카메라 시점 기준 아님"
+        }
+      },
+      "motion_primitive": {
+        "applies_to": [
+          "agent"
+        ],
+        "cardinality": "ordered multi",
+        "groups": {
+          "longitudinal": [
+            "decelerate",
+            "accelerate",
+            "stop",
+            "maintain_speed",
+            "reverse"
+          ],
+          "lateral": [
+            "lane_change_left",
+            "lane_change_right",
+            "enter_ego_path",
+            "exit_ego_path",
+            "cross_ego_path",
+            "merge",
+            "diverge",
+            "turn_left",
+            "turn_right",
+            "drift_in_lane"
+          ],
+          "state": [
+            "stationary",
+            "occluded",
+            "appear",
+            "disappear"
+          ]
+        },
+        "note": "cut_in 등 관계 사건은 코드로 두지 않음 — position_wrt_ego × motion_primitive의 조합으로 파생(예: adjacent_* × enter_ego_path). 조합 유도 가능하면 코드 생략"
+      },
+      "control_element": {
+        "applies_to": [
+          "traffic_control"
+        ],
+        "cardinality": "single",
+        "values": [
+          "traffic_light",
+          "stop_sign",
+          "yield_sign",
+          "speed_limit_sign",
+          "no_entry_sign",
+          "turn_restriction_sign",
+          "crosswalk_marking",
+          "stop_line",
+          "lane_marking",
+          "railway_signal",
+          "school_zone_sign",
+          "temporary_sign",
+          "other_sign"
+        ],
+        "note": "세부 표지 종류는 외부 표준 코드 위임 여부 미결",
+        "hierarchy": {
+          "category": [
+            "regulatory",
+            "warning",
+            "indication",
+            "auxiliary"
+          ],
+          "named": "현행 12값 유지 (고빈도)",
+          "sign_code": "표준 표지 일련번호 — 국가 표준 코드 체계 위임 (선택)",
+          "sign_value": "수치 (속도제한 값 등, 선택)",
+          "note": "전수 enum 불가 — 범주 + 고빈도 + 외부 표준 참조 3층. open_items.vocab의 '표지 세부' 해소"
+        }
+      },
+      "control_state": {
+        "applies_to": [
+          "traffic_control"
+        ],
+        "source": "S2 VLM 전담",
+        "values": [
+          "red",
+          "yellow",
+          "green",
+          "green_arrow_left",
+          "green_arrow_right",
+          "green_arrow_straight",
+          "flashing_red",
+          "flashing_yellow",
+          "off",
+          "not_applicable",
+          "occluded",
+          "unknown"
+        ],
+        "note": "occluded(가려짐)와 unknown(판독 실패)을 구분. camera_visible과 중복 아님"
+      },
+      "applies_to": {
+        "applies_to": [
+          "traffic_control"
+        ],
+        "values": [
+          "ego_lane",
+          "all_lanes",
+          "opposing",
+          "crossing_direction",
+          "turn_lane",
+          "unknown"
+        ],
+        "note": "신호·표지는 위치보다 적용 대상이 인과 판단의 핵심"
+      },
+      "geometry_type": {
+        "applies_to": [
+          "road_geometry"
+        ],
+        "cardinality": "multi",
+        "map_dependent": true,
+        "values": [
+          "curve",
+          "lane_ends",
+          "lane_narrows",
+          "signalized_intersection",
+          "unsignalized_intersection",
+          "roundabout",
+          "merge_zone",
+          "diverge_zone",
+          "ramp",
+          "tunnel_entrance",
+          "tunnel_exit",
+          "bridge",
+          "speed_bump",
+          "steep_grade",
+          "railway_crossing",
+          "parking_entrance",
+          "dead_end",
+          "narrow_two_way"
+        ],
+        "note": "traffic_control과 분리 유지 — 신호/비신호 교차로 빈도가 근거"
+      },
+      "condition_type": {
+        "applies_to": [
+          "road_condition"
+        ],
+        "cardinality": "multi",
+        "source": "S2 VLM 판정",
+        "values": [
+          "wet_surface",
+          "snow_ice",
+          "puddle",
+          "flooded",
+          "pothole",
+          "rough_surface",
+          "unpaved",
+          "construction_zone",
+          "debris_area",
+          "oil_spill",
+          "manhole",
+          "lane_marking_worn"
+        ]
+      },
+      "intent_type": {
+        "applies_to": [
+          "ego_intent"
+        ],
+        "cardinality": "single",
+        "values": [
+          "route_turn",
+          "route_lane_change",
+          "destination_approach",
+          "parking_maneuver",
+          "lane_position_preference",
+          "speed_preference",
+          "unspecified_intent"
+        ],
+        "note": "관측 불가 원인(내비 경로·목적지)의 수용처. 발생률이 파이프라인 성능 상한의 지표. cause_type 값으로 승격되어 none_source에서는 제외됨"
+      }
+    },
+    "environment": {
+      "role": "맥락 필드 전용. cause_type 아님 (이중 계상 방지)",
+      "scope": "segment",
+      "fields": {
+        "weather": [
+          "clear",
+          "cloudy",
+          "rain",
+          "heavy_rain",
+          "snow",
+          "sleet",
+          "fog",
+          "unknown"
+        ],
+        "time_of_day": [
+          "day",
+          "night",
+          "dawn",
+          "dusk"
+        ],
+        "illumination": [
+          "well_lit",
+          "dim",
+          "dark",
+          "glare",
+          "tunnel_lit",
+          "unknown"
+        ],
+        "road_type": [
+          "highway",
+          "urban_arterial",
+          "urban_local",
+          "rural",
+          "parking_lot",
+          "ramp",
+          "service_road",
+          "unknown"
+        ],
+        "traffic_density": [
+          "free_flow",
+          "moderate",
+          "congested",
+          "stop_and_go",
+          "unknown"
+        ],
+        "visibility": [
+          "good",
+          "reduced",
+          "poor",
+          "unknown"
+        ]
+      },
+      "caution": "야간·우천에서 3DOD 품질 자체가 저하됨. 이 저하가 라벨에 표시 없이 전파되지 않도록 상류 품질 플래그와 함께 해석할 것"
+    },
+    "measurements": {
+      "principle": "판정 유예 — 범주 대신 원시 측정량 저장. 범주는 임계의 파생값. 임계 변경 시 재태깅 없이 재분류",
+      "source": "CAN + 3DOD + map (규칙 산출)",
+      "fields": {
+        "ego_decel_mps2": "unit m/s^2",
+        "ego_accel_mps2": "unit m/s^2",
+        "ego_speed_at_anchor_mps": "unit m/s",
+        "ego_yaw_rate_dps": "unit deg/s",
+        "subject_decel_mps2": "unit m/s^2",
+        "entry_lat_speed_mps": "차로 진입 횡속도",
+        "min_ttc_s": "구간 내 최소 TTC",
+        "gap_m": "종방향 간격",
+        "lateral_clearance_m": "측방 여유",
+        "dwell_s": "정지·대기 지속",
+        "reaction_latency_s": "원인 상태변화 시각과 key_frame_t의 차. B 게이트 항목",
+        "event_duration_s": "거동 지속 구간"
+      },
+      "note": "급/완, 근접/원거리 등 강도 범주는 어휘에 두지 않음. 전부 임계 파생"
+    },
+    "visual_attributes": {
+      "source": "S2 VLM Pass 1",
+      "input_grounding": "객체 ID + bbox만 제공. 물리 서술·파생 판단 미제공 (S1→S2 전파 차단)",
+      "bbox_representation": "구간 내 시작 좌표 + 종료 좌표 압축 표현. 프레임별 전체 제공하지 않음. 트래킹 ID는 창 전체 유지 필수",
+      "object_level": {
+        "camera_visible": [
+          "true",
+          "false",
+          "partial"
+        ],
+        "brake_light": [
+          "on",
+          "off",
+          "unknown",
+          "occluded"
+        ],
+        "turn_signal": [
+          "left",
+          "right",
+          "hazard",
+          "none",
+          "unknown",
+          "occluded"
+        ],
+        "reverse_light": [
+          "on",
+          "off",
+          "unknown",
+          "occluded"
+        ],
+        "door_state": [
+          "open",
+          "closed",
+          "unknown"
+        ],
+        "vehicle_marking": [
+          "emergency",
+          "police",
+          "taxi",
+          "school_bus",
+          "construction",
+          "delivery",
+          "none",
+          "unknown"
+        ],
+        "pedestrian_gaze": [
+          "toward_ego",
+          "away",
+          "unknown"
+        ],
+        "pedestrian_posture": [
+          "standing",
+          "walking",
+          "running",
+          "seated",
+          "crouching",
+          "unknown"
+        ],
+        "gesture": [
+          "stop",
+          "proceed",
+          "point",
+          "wave",
+          "none",
+          "unknown"
+        ],
+        "intent_cue": [
+          "approaching_curb",
+          "stepping_off",
+          "head_turn",
+          "body_orientation_shift",
+          "none",
+          "unknown"
+        ]
+      },
+      "scene_level": {
+        "traffic_light_visible_state": "control_state 어휘 참조",
+        "sign_present": [
+          "true",
+          "false"
+        ],
+        "crosswalk_present": [
+          "true",
+          "false",
+          "unknown"
+        ],
+        "road_surface_visual": "condition_type 어휘 참조",
+        "visibility_grade": [
+          "good",
+          "reduced",
+          "poor"
+        ],
+        "occlusion_source": [
+          "vehicle",
+          "structure",
+          "vegetation",
+          "weather",
+          "glare",
+          "none",
+          "unknown"
+        ]
+      },
+      "free_slot": {
+        "field": "other_visual_cue",
+        "status": "ablation 항목 — 채택 미확정",
+        "note": "후보 목록 외 시각적 주목 대상. S1 후보 누락 탐지 이득 vs 채점 불가 비용의 실측 필요"
+      }
+    },
+    "candidate_assessment": {
+      "scope": "subjects[] 각 항목",
+      "fields": {
+        "candidate_id": "3DOD 트래킹 ID 또는 비객체 요소 ID",
+        "relevance": [
+          "causal",
+          "present_not_causal",
+          "uncertain"
+        ],
+        "rationale": "단문. 채점 대상 여부 미결",
+        "confidence": "[0,1] 필드별 부여"
+      },
+      "constraint": "causal_links는 relevance=causal인 후보의 부분집합이어야 함 — 자동 검증 항목"
+    },
+    "causal_links": {
+      "cardinality": "multi (순위 없는 집합)",
+      "depth": "직접 원인만. 다단 인과의 근본 원인까지 연결하지 않음",
+      "target_axis": "미표기. 원인 집합은 거동 전체에 대응 (종·횡 분리 귀속 없음)",
+      "fields": {
+        "candidate_id": "참조",
+        "cause_type": "cause_type 어휘 참조",
+        "confidence": "[0,1]"
+      },
+      "special_values": {
+        "none": {
+          "meaning": "원인 없음",
+          "none_source": [
+            "empty_candidate_set"
+          ],
+          "note": "ego_intent는 cause_type으로 승격되었으므로 none_source에서 제외됨. none은 순수 미검출 신호이며 발생률이 파이프라인 recall 지표"
+        },
+        "unresolved": {
+          "meaning": "원인 특정 실패",
+          "criterion": "신뢰도 임계 미만 (단일 기준)",
+          "scoring": "오답/기권 취급이 조건 순위를 바꿈 → 커버리지-정확도 곡선으로 보고",
+          "note": "임계가 하이퍼파라미터이므로 임계 스윕이 곧 calibration 평가"
+        }
+      },
+      "reporting": "none·unresolved 발생률은 조건별 필수 보고 항목 (회피 경로 남용 탐지)",
+      "candidate_openness": {
+        "decision": "C3 hybrid 확정",
+        "rule": "원인은 후보 목록 내에서만 선택. 목록 밖에 원인이 있다고 판단되면 out_of_candidate_flag=true로 표시만 허용 (자유 지목 불가)",
+        "fields": {
+          "out_of_candidate_flag": "bool",
+          "out_of_candidate_note": "선택 — 자유 서술, 채점 대상 아님"
+        },
+        "rationale": "채점 명확성 유지 + 규칙 누락 탐지 가능. closed는 누락 영구 은폐, open은 채점 불가"
+      }
+    },
+    "confidence_policy": {
+      "placement": "필드별 부여",
+      "rationale": "필드 단위 calibration 산출 — 시각 인식과 인과 추론을 분리 측정",
+      "interpretation": "조건부 신뢰도. 앞 필드가 뒤 필드 생성을 조건화하므로 절대 신뢰도 아님. 해석 규약을 지표 정의서에 명시",
+      "open": "오염 회피용 이중 pass(강조건화 라벨용 + 독립 calibration용) 실행 여부 미결"
+    },
+    "flags": {
+      "camera_visible": "bool/partial — 학습용 필터, 분포 분석 포함",
+      "map_valid": "bool",
+      "map_dependent": "bool — 라벨이 map 유래 정보에 의존",
+      "fallback_path": [
+        "none",
+        "corridor_approx",
+        "bearing_only",
+        "other"
+      ],
+      "views_used": "array — 라벨 생성에 사용된 뷰 집합",
+      "window_truncated": "bool",
+      "budget_profile": [
+        "high",
+        "low"
+      ],
+      "physical_gate_passed": [
+        "pass",
+        "fail",
+        "undetermined"
+      ],
+      "s2_conditioning": {
+        "type": "enum",
+        "values": ["minimal", "rule_injected"],
+        "default": "minimal",
+        "note": "S2(VLM) 입력에 규칙 판정값이 섞였는지 공개. minimal=ID+bbox 등 관측 사실만(기본, invariants 단계독립) / rule_injected=규칙 파생 카테고리·힌트 포함(실험 C로 정확도 이득 확인 시 채택). 제안 필드 — v0.4 최초 도입, guide 원문에 필드명 없음"
+      },
+      "additional_frames_from_candidates": {
+        "type": "bool",
+        "note": "sampling_policy.additional 대응 — 원인 후보 상태변화 시점 기반 추가 프레임 사용 여부. 기본 false(candidate-비의존 균등/계층 샘플링만)"
+      },
+      "view_expanded_from_scene": {
+        "type": "bool",
+        "note": "sampling_policy.view 대응 — 장면 구조(도로기하·객체밀도) 기반 뷰 확대 사용 여부. 후보 방위 기반 축소(금지)와는 구분. 기본 false. 제안 필드 — v0.4 최초 도입, guide 원문에 필드명 없음"
+      },
+      "principle": "무기록 fallback 금지. 대체 경로는 반드시 플래그로 기록 — 미기록 시 품질 저하가 평균에 희석되고 오류 귀속이 무효화됨"
+    },
+    "intermediate_artifacts": {
+      "principle": "오류 귀속 분리의 전제. 최종 결과만 저장하면 사후 분리 불가",
+      "persist": {
+        "s0_anchor": "transition 검출 결과 + 임계 세트",
+        "s1_candidate_set": "물리 게이트 통과 후보 전체 — 누락과 선택오류의 분리에 필수",
+        "s1_facts": "차선 귀속·상대 위치·measurements",
+        "s2_output": "visual_attributes 전량",
+        "s3_output": "candidate_assessment + causal_links"
+      },
+      "failure_codes": [
+        "map_match_failed",
+        "obj3d_missing",
+        "visibility_undetermined",
+        "empty_candidate_set",
+        "tracking_id_broken",
+        "frame_budget_exceeded"
+      ]
+    },
+    "generation_order": {
+      "note": "스키마 정의부는 논리 그룹 순, 생성 순서는 본 배열로 별도 명시. 순서 변경 실험 시 어휘 정의 불변",
+      "principle": "필드 순서 = 조건화 방향 = 인과 방향. ego 거동은 출력이 아니라 입력 조건 (Action-first)",
+      "sequence": [
+        "observed_agents",
+        "traffic_control_state",
+        "road_context",
+        "environment",
+        "candidate_assessment",
+        "causal_links",
+        "episode_confidence"
+      ],
+      "two_pass_mapping": {
+        "pass1": [
+          "observed_agents",
+          "traffic_control_state",
+          "road_context",
+          "environment"
+        ],
+        "pass2": [
+          "candidate_assessment",
+          "causal_links",
+          "episode_confidence"
+        ],
+        "note": "순서가 곧 단계 경계와 일치 → EPR 측정 지점이 파일 구조에 명시됨"
+      },
+      "think_block": {
+        "status": "미결",
+        "note": "자유 추론 영역의 gold 채점 대상 여부 미확정"
+      }
+    },
+    "auto_checks": {
+      "B_gate": {
+        "role": "물리 필요조건 전수 검사. 산출값은 오답확정/미판정 두 가지뿐 — 정답 판정 없음. 통과율을 정확도로 보고 금지",
+        "checks": {
+          "temporal_order": {
+            "input": ["cause_state_change_t", "key_frame_t"],
+            "logic": "t_c < key_frame_t",
+            "violation": "오답 확정"
+          },
+          "reaction_latency_bounds": {
+            "input": ["key_frame_t - t_c"],
+            "logic": "원인 유형별 [하한, 상한] 범위 내. 하한 미만=인지·반응 불가, 상한 초과=인과 불성립",
+            "violation": "오답 확정",
+            "note": "단일 상수 금지 — 유형별 gold 실측에서 도출"
+          },
+          "geometric_consistency": {
+            "input": ["원인 객체 위치", "자차 진행 경로"],
+            "logic": "원인이 자차 경로 또는 관련 인접 영역 내",
+            "violation": "오답 확정"
+          },
+          "proximity_range": {
+            "input": ["gap", "ttc", "lateral_clearance"],
+            "logic": "후보 범위(scope.candidate_scope) 내",
+            "violation": "오답 확정"
+          },
+          "visibility": {
+            "input": ["camera_visible", "센서 관측 여부"],
+            "logic": "어느 센서로도 미관측이면 원인 불가. 카메라 비가시·LiDAR 단독 검출은 통과시키되 플래그 유지",
+            "violation": "비관측 시 오답 확정"
+          },
+          "type_direction_exclusivity": {
+            "input": ["cause_type", "자차 거동 방향"],
+            "logic": "원인 유형과 거동 방향의 정합 — 좌측 회피인데 원인이 우측 단독, 신호 정지인데 통제 요소 미관측 등",
+            "violation": "오답 확정"
+          }
+        },
+        "violation_handling": "라벨 삭제 금지. 위반 사실·위반 항목을 에피소드에 기록 → 오류 유형 분류와 재라벨 우선순위에 사용"
+      },
+      "schema_checks": [
+        "causal_links ⊆ {relevance=causal}",
+        "ego transition-resulting_state 조합 정합성",
+        "cause_type별 필수 필드 존재",
+        "map_dependent=true 시 map_valid 확인",
+        "window_start < key_frame_t ≤ window_end"
+      ]
+    },
+    "error_taxonomy": {
+      "ERR-ANCHOR": "S0 전이 검출 오류",
+      "ERR-FACT": "S1 3DOD 좌표·속도 오류",
+      "ERR-MAP": "S1 지도 정합 실패",
+      "ERR-VISUAL": "S2 등화·신호·표지 오독",
+      "ERR-ATTRIB": "S3 인과 귀속 오답",
+      "note": "gold 채점 시작 전 고정 — 사후 정의 시 조건 간 비교 불가"
+    },
+    "versioning": {
+      "required_fields": [
+        "schema_version",
+        "generator_version",
+        "model_version",
+        "input_data_version",
+        "threshold_set_id"
+      ],
+      "note": "임계 변경은 데이터셋 변경. threshold_set_id 필수",
+      "reproducibility_params": {
+        "model": [
+          "checkpoint_hash",
+          "tokenizer_version",
+          "dtype",
+          "tensor_parallel_size"
+        ],
+        "serving": [
+          "max_concurrent_seqs",
+          "prefix_cache_enabled",
+          "cuda_graph_enabled",
+          "serving_framework_version"
+        ],
+        "decoding": [
+          "seed",
+          "temperature",
+          "top_p",
+          "top_k",
+          "max_output_tokens",
+          "inference_path"
+        ],
+        "input": [
+          "static_prefix_hash",
+          "exemplar_bucket_id",
+          "frame_count",
+          "frame_rate",
+          "resolution",
+          "views_used"
+        ],
+        "data": [
+          "gt_version",
+          "vocab_version",
+          "threshold_set_id",
+          "placement_policy_version"
+        ],
+        "note": "seed 고정만으로 불충분 — 배치 크기·캐시 히트에 따른 부동소수점 합산 순서 변화 가능"
+      }
+    },
+    "open_items": {
+      "hyperparameters": [
+        "transition_threshold",
+        "reaction_latency_bounds",
+        "lookback_depth",
+        "candidate_filter_threshold",
+        "unresolved_confidence_threshold",
+        "simultaneous_transition_tolerance"
+      ],
+      "design": [
+        "후방경계 서술 예외",
+        "think 채점 여부",
+        "이중 pass calibration",
+        "반응없는 원인 보완 트랙",
+        "유효 표본 수 산정",
+        "원인유형별 최소 표본 기준"
+      ],
+      "vocab": [
+        "노면 상태 세목",
+        "지역·차종 의존 임계 범위",
+        "표지 category 매핑표(국가 표준 코드) 작성",
+        "refined 뷰 임계 τ_* 선언"
+      ]
+    },
+    "design_variables": {
+      "DV-1": {
+        "name": "물리 정보 가공 수준",
+        "stage": "S1→S2/S3",
+        "levels": [
+          "L0 원측정값",
+          "L1 파생 판단"
+        ]
+      },
+      "DV-2": {
+        "name": "시간창 길이 × 프레임률",
+        "stage": "S2 입력",
+        "levels": [
+          "F1 고정",
+          "F2 자차 거동 적응"
+        ]
+      },
+      "DV-3": {
+        "name": "뷰 선택",
+        "stage": "S2 입력",
+        "levels": [
+          "V1 고정 뷰셋",
+          "V2 GT(3DOD·map) 기반 적응 라우팅"
+        ]
+      },
+      "DV-4": {
+        "name": "영상 입력 사양",
+        "stage": "S2",
+        "items": [
+          "해상도",
+          "다중뷰 배치",
+          "bbox 표현",
+          "bbox 시계열 압축"
+        ]
+      },
+      "DV-5": {
+        "name": "텍스트 입력 구성",
+        "stage": "S2/S3",
+        "items": [
+          "직렬화 형식",
+          "단위·좌표계 표기",
+          "후보 나열 순서"
+        ]
+      },
+      "DV-6": {
+        "name": "프롬프팅 규칙",
+        "stage": "S2/S3",
+        "items": [
+          "질의 분할 단위",
+          "선택지 제시 방식",
+          "출력 형식 강제",
+          "few-shot",
+          "think 허용"
+        ]
+      },
+      "DV-7": {
+        "name": "중간 산출물 외부화",
+        "stage": "S2·S3 구조",
+        "levels": [
+          "P1 2-pass 분리",
+          "P2 단일 pass"
+        ],
+        "note": "차이는 모델 내부 연산이 아니라 채점·개입 가능성"
+      },
+      "확정": {
+        "원인 후보 개방성": "C3 hybrid",
+        "프레임·뷰 선택의 순환 배제": "원인 후보 조건부 선택 금지"
+      },
+      "DV-8": {
+        "name": "GT 주입 배치",
+        "stage": "S1→S2",
+        "levels": [
+          "gt_only",
+          "gt_before",
+          "gt_free"
+        ],
+        "note": "3-way 확정. gt_after 미채택으로 S2 독립성 유지"
+      },
+      "DV-9": {
+        "name": "필드별 추론 경로",
+        "stage": "전 단계",
+        "levels": [
+          "gt_only",
+          "scored",
+          "generated"
+        ],
+        "note": "DV-8·조건화 강도·신뢰도 정의의 전제"
+      }
+    },
+    "invariants": [
+      "앵커 비오염 — key_frame_t(전이 시점)·종방향 거동은 규칙 산출. 모델 유래 값 진입 금지. 경로 유형 라벨은 지도∪VLM 해소(예외 아님)",
+      "판정 근거 시점 표기 — 판정에는 창 전 구간 사용(사후 정보 제한 없음). 사용 사실을 산출물에 표기",
+      "판정 유예 — 범주 대신 측정량 저장, 범주는 임계 파생",
+      "단계 독립 (기본값) — S2 입력 기본은 ID+bbox 최소 grounding. 금지가 아니며 라벨 정확도 이득 실측 시 완화 (실험 C)",
+      "순환 입력 구성 제한 — 기본 프레임 샘플링·뷰 축소를 규칙 판단에 의존시키지 않음. 후보 기반 추가 프레임·뷰 확대는 플래그 기록 후 허용",
+      "fallback 기록 — 무기록 대체 경로 금지",
+      "필요조건 ≠ 정답 — B 게이트 통과율을 정확도로 보고 금지",
+      "가시성 ≠ 존재 — 비가시 객체 원인 에피소드를 카메라 전용 모델 supervision에 사용 금지"
+    ],
+    "derived_views": {
+      "policy": {
+        "판정_금지": "뷰는 판정 대상이 아님 — 원자 축·속성·measurements에서 자동 산출되는 소비자 검색 별칭. VLM 프롬프트·gold 판정 항목에 뷰 이름 사용 금지 (원자만 질의). 위반 시 코드 폭발형 판정 부담이 재발",
+        "2계층": "core = 원자 조합만으로 정의 (export 기본 노출) / refined = core + measurements 임계 조건 (임계 선언 후 자동 활성)",
+        "분기_원리": "세분화는 어휘 개정이 아니라 measurements·visual 기록률 상승으로 발생. 신규 요구 시 조합 정의만 추가",
+        "생략_기준": "조합으로 유도 가능하고 뷰로 대응 가능하면 어휘에 코드를 두지 않음 (motion_primitive note와 동일 원칙)",
+        "쌍_구조": "에피소드 = (ego 거동, 원인 집합) 쌍이므로 라벨도 2조각 — 원인 측(cause_side) + ego 측(ego_side), 표시 명칭은 템플릿 결합. 코드 수는 곱이 아니라 합으로 증가",
+        "선후_관계": "라벨은 인과를 판정하지 않음 — S3에서 확정된 causal_links 위에 붙는 조회용 명칭",
+        "의존성_표기": "라벨별 dependency 필수: rule-only(3DOD·map·CAN) / map-dependent(map 무효 시 근사 강등) / vlm-dependent(등화·신호·의도 포함)"
+      },
+      "core": [
+        {
+          "code": "cut_in",
+          "combo": {
+            "cause_type": "agent",
+            "lane_relative": [
+              "adjacent_left",
+              "adjacent_right"
+            ],
+            "motion_primitive": [
+              "enter_ego_path"
+            ]
+          },
+          "side": "cause_side",
+          "dependency": "map-dependent"
+        },
+        {
+          "code": "cut_out",
+          "combo": {
+            "cause_type": "agent",
+            "lane_relative": [
+              "same_lane"
+            ],
+            "motion_primitive": [
+              "exit_ego_path"
+            ]
+          },
+          "side": "cause_side",
+          "dependency": "map-dependent"
+        },
+        {
+          "code": "lead_slowdown",
+          "combo": {
+            "cause_type": "agent",
+            "lane_relative": [
+              "same_lane"
+            ],
+            "motion_primitive": [
+              "decelerate",
+              "stop"
+            ]
+          },
+          "side": "cause_side",
+          "dependency": "map-dependent"
+        },
+        {
+          "code": "merge_conflict",
+          "combo": {
+            "cause_type": "agent",
+            "motion_primitive": [
+              "merge"
+            ]
+          },
+          "side": "cause_side",
+          "dependency": "rule-only"
+        },
+        {
+          "code": "oncoming_conflict",
+          "combo": {
+            "cause_type": "agent",
+            "lane_relative": [
+              "oncoming_lane"
+            ],
+            "motion_primitive": [
+              "enter_ego_path",
+              "cross_ego_path"
+            ]
+          },
+          "side": "cause_side",
+          "dependency": "map-dependent"
+        },
+        {
+          "code": "cross_conflict",
+          "combo": {
+            "cause_type": "agent",
+            "motion_primitive": [
+              "cross_ego_path"
+            ]
+          },
+          "side": "cause_side",
+          "dependency": "rule-only"
+        },
+        {
+          "code": "vru_crossing",
+          "combo": {
+            "cause_type": "agent",
+            "object_type": [
+              "pedestrian",
+              "bicycle",
+              "personal_mobility"
+            ],
+            "motion_primitive": [
+              "cross_ego_path"
+            ]
+          },
+          "side": "cause_side",
+          "dependency": "rule-only"
+        },
+        {
+          "code": "blocking_static",
+          "combo": {
+            "cause_type": "static_object",
+            "lane_relative": [
+              "same_lane"
+            ]
+          },
+          "side": "cause_side",
+          "dependency": "map-dependent"
+        },
+        {
+          "code": "signal_stop",
+          "combo": {
+            "cause_type": "traffic_control",
+            "control_element": [
+              "traffic_light"
+            ],
+            "control_state": [
+              "red",
+              "yellow",
+              "flashing_red"
+            ]
+          },
+          "side": "cause_side",
+          "dependency": "vlm-dependent"
+        },
+        {
+          "code": "sign_yield",
+          "combo": {
+            "cause_type": "traffic_control",
+            "control_element": [
+              "stop_sign",
+              "yield_sign"
+            ]
+          },
+          "side": "cause_side",
+          "dependency": "vlm-dependent"
+        },
+        {
+          "code": "geometry_maneuver",
+          "combo": {
+            "cause_type": "road_geometry"
+          },
+          "side": "cause_side",
+          "dependency": "rule-only"
+        },
+        {
+          "code": "ego_initiated",
+          "combo": {
+            "cause_type": "ego_intent"
+          },
+          "note": "자발 거동 — 원인 미상(none)과 구분",
+          "side": "cause_side",
+          "dependency": "rule-only"
+        }
+      ],
+      "refined": [
+        {
+          "code": "sudden_cut_in",
+          "base": "cut_in",
+          "condition": "measurements.entry_lat_speed_mps ≥ τ_sudden",
+          "side": "cause_side",
+          "dependency": "rule-only (측정량 기반)"
+        },
+        {
+          "code": "hard_brake_lead",
+          "base": "lead_slowdown",
+          "condition": "measurements.subject_decel_mps2 ≥ τ_hard",
+          "side": "cause_side",
+          "dependency": "rule-only (측정량 기반)"
+        },
+        {
+          "code": "close_following",
+          "base": "lead_slowdown",
+          "condition": "measurements.gap_m ≤ τ_close",
+          "side": "cause_side",
+          "dependency": "rule-only (측정량 기반)"
+        },
+        {
+          "code": "near_conflict",
+          "base": "*",
+          "condition": "measurements.min_ttc_s ≤ τ_ttc",
+          "side": "cause_side",
+          "dependency": "rule-only (측정량 기반)"
+        },
+        {
+          "code": "narrow_passing",
+          "base": "*",
+          "condition": "measurements.lateral_clearance_m ≤ τ_narrow",
+          "side": "cause_side",
+          "dependency": "rule-only (측정량 기반)"
+        },
+        {
+          "code": "long_term_blocking",
+          "base": "blocking_static",
+          "condition": "measurements.dwell_s ≥ τ_dwell",
+          "side": "cause_side",
+          "dependency": "rule-only (측정량 기반)"
+        },
+        {
+          "code": "ego_decel_lane_change",
+          "base": "*",
+          "condition": "ego_action.longitudinal.transition=decel_onset AND lateral.transition∈{lane_change_*_onset}",
+          "note": "종·횡 동시 거동 — 사건은 단일, 표현은 분해 저장",
+          "side": "cause_side",
+          "dependency": "rule-only (측정량 기반)"
+        }
+      ],
+      "note": "τ_* 전부 하이퍼파라미터 (open_items.hyperparameters). 임계 미선언 시 refined 뷰 비활성 — core만 노출",
+      "ego_side": [
+        {
+          "code": "ego_decel",
+          "combo": {
+            "ego_action.longitudinal.transition": [
+              "decel_onset"
+            ]
+          },
+          "dependency": "rule-only"
+        },
+        {
+          "code": "ego_stop",
+          "combo": {
+            "ego_action.longitudinal.transition": [
+              "stop_initiate"
+            ]
+          },
+          "dependency": "rule-only"
+        },
+        {
+          "code": "ego_launch",
+          "combo": {
+            "ego_action.longitudinal.transition": [
+              "launch"
+            ]
+          },
+          "dependency": "rule-only"
+        },
+        {
+          "code": "ego_lane_change",
+          "combo": {
+            "ego_action.lateral.transition": [
+              "lane_change_left_onset",
+              "lane_change_right_onset"
+            ]
+          },
+          "dependency": "rule-only"
+        },
+        {
+          "code": "ego_in_lane_shift",
+          "combo": {
+            "ego_action.lateral.transition": [
+              "in_lane_shift_left",
+              "in_lane_shift_right"
+            ]
+          },
+          "dependency": "rule-only"
+        },
+        {
+          "code": "ego_turn",
+          "combo": {
+            "ego_action.lateral.transition": [
+              "turn_left_onset",
+              "turn_right_onset"
+            ]
+          },
+          "dependency": "rule-only"
+        }
+      ],
+      "display_template": "{cause_side 라벨} → {ego_side 라벨}. 원인 다중 시 cause_side 라벨을 쉼표로 나열. 예: '선행차 감속, 우측 끼어들기 → 자차 감속'"
+    },
+    "upstream_interface": {
+      "note": "본 어휘는 선별 통과 클립에 적용됨 (Stage 2). 선별 단계(Stage 1)와의 계약을 명시하지 않으면 모집단 편향이 추적 불가",
+      "stage1_contract": {
+        "input_to_stage2": "선별 통과 clip + video·CAN·3DOD·map",
+        "carried_fields": [
+          "selection_score",
+          "selection_rank",
+          "selection_version",
+          "selection_reason"
+        ],
+        "principle": "선별 점수·근거를 에피소드에 각인 — 태깅 대상 모집단이 선별기의 함수이므로, 분포 분석 시 선별 편향 보정에 필요"
+      },
+      "difficulty_rubric": {
+        "scale": [
+          1,
+          10
+        ],
+        "source": "VLM 또는 규칙 산출 — 미검증 표기",
+        "bands": [
+          {
+            "range": [
+              1,
+              2
+            ],
+            "usage": "일반 — 큐레이션 제외"
+          },
+          {
+            "range": [
+              3,
+              5
+            ],
+            "usage": "보통"
+          },
+          {
+            "range": [
+              6,
+              7
+            ],
+            "usage": "long-tail 후보"
+          },
+          {
+            "range": [
+              8,
+              9
+            ],
+            "usage": "long-tail 우선"
+          },
+          {
+            "range": [
+              10,
+              10
+            ],
+            "usage": "극단 corner case"
+          }
+        ],
+        "note": "제품 목적(long-tail 큐레이션)의 직접 신호. 선별 점수와 별개 층 — 선별은 클립 단위, 난이도는 에피소드 단위"
+      }
+    },
+    "gt_semantics": {
+      "rule_derivable": "규칙(CAN·3DOD·map)으로 값 산출 가능 여부 + 소스 명시. 스키마와 함께 확정",
+      "reliability": "그 규칙의 gold 대비 실측 정확도. 스키마 동결 대상 아님 — 측정 후 필드별 기입. 현재 전 필드 unmeasured",
+      "freeze_policy": "동결 = 구조 + rule_derivable. reliability 미기입 필드를 기계 채점 기준(AUTO_GT)으로 사용 금지",
+      "distinction": "'규칙으로 산출 가능'과 '그 값이 정확함'은 다름 — 단일 gt 불리언으로 혼용 금지 (구 v0.7.3 결함)",
+      "distinction_from_field_execution_policy": "rule_derivable=규칙 산출 가능성(정의 속성) / field_execution_policy.inference_path=VLM 호출 여부(실행 결정). 겹치되 동일하지 않음"
+    },
+    "scope": {
+      "principle": "기록 범위(넓게 — 소급 생성 불가 정보 보존) ≠ 원인 후보 범위(좁게 — 인과 판정 대상). 두 범위를 하나로 두면 검색 커버리지와 판정 비용이 동시에 나빠짐",
+      "episode_scope": {
+        "longitudinal_ahead_m": "τ_rec_ahead",
+        "longitudinal_rear_m": "τ_rec_rear",
+        "lateral": "ego 차로 ±1차로 (map 유효) | corridor 근사 (폴백)",
+        "note": "범위 내 검출 객체 전부를 후보 배열에 기록"
+      },
+      "candidate_scope": {
+        "criterion": "거리·TTC 임계 통과 + 물리 게이트 B 통과",
+        "note": "인과 귀속 판정 대상"
+      },
+      "exclusion_disclosure": "범위 밖 = 미탐이 아니라 정의상 제외 — export 문서에 명시 의무"
+    },
+    "export_contract": {
+      "quality_tiers": {
+        "rule_verified": "규칙 산출 — 기계 검증 가능",
+        "human_sampled": "표본 사람 확인 이력 존재",
+        "unverified": "검증 이력 없음 (VLM 판단 전용 필드·서술 계열)"
+      },
+      "required_fields": [
+        "schema_version",
+        "generator_version",
+        "threshold_set_id"
+      ],
+      "excluded_tags": "미포함·조건부 제공 태그 목록 명시 (map 의존 필드는 map_valid=false 클립에서 부재)",
+      "note": "v0.7.x 계열과 비호환 — 버전 숫자 리셋으로 인한 오해 방지 문구 병기",
+      "causal_label_scope": "사후 정보 포함 판정 — 예측 모델 학습 용도 시 시점 제한 재라벨 필요 가능"
+    },
+    "gold_policy": {
+      "plural_answer": "판단 전용 필드(intent_cue·gesture·relevance 등)는 허용 정답 집합으로 채점 — 단일 정답 강제 시 일치도 하락이 태그 결함이 아니라 구조 문제일 수 있음",
+      "iaa_precheck": "초기 소표본 2인 독립 라벨로 라벨러 간 일치도 선측정 — 파이프라인 정확도의 실질 상한",
+      "blind": "자동 태그·점수 비노출"
+    },
+    "conflict_register": {
+      "resolved": {
+        "C1_ego_종횡": "필드는 분해 저장, 사건은 단일 — 현행 ego_action 형태 유지 (구 문서의 '분해' 서술은 표현 차이)",
+        "C3_다단_인과": "직접 원인만 — 현행 유지",
+        "C4_environment": "맥락 전용, road_geometry·road_condition은 별도 cause_type — 현행 유지 (이중 계상 방지)"
+      },
+      "pending": {
+        "C2_원인_축_귀속": "target_axis 미표기 유지 여부 — KPI-18-5 Causal-F1 채점 단위에 직접 영향. KPI 정의서 대조 후 결정",
+        "C5_relevance_vs_influence": "relevance 3값이 구 criticality·influence_level을 대체 가능한지 — KPI-18-3 Influence-κ 대응 확인 필요"
+      }
+    },
+    "field_execution_policy": {
+      "note": "필드별 실행 경로·값 집합 성격·GT 배치. rule_derivable(정의 속성)과 별개 — 이쪽은 실행 결정",
+      "value_set": {
+        "closed": "고정 값 집합에서만 선택",
+        "open": "자유 서술"
+      },
+      "inference_path": {
+        "gt_only": "규칙 산출값 그대로, VLM 미호출",
+        "scored": "닫힌 집합 후보 점수화, decode 0회",
+        "generated": "자유 서술, decode 필요"
+      },
+      "scoring_method": {
+        "default": "sequence — 후보를 각각 이어붙여 확률 합산 (충돌 없음)",
+        "fast_path": "first_token — 후보 첫 토큰이 상이함이 검증된 필드에 한해 허용",
+        "collision_note": "실측 완료(2026-08-28, nvidia/cosmos3-nano-reasoner 서빙 토크나이저=Qwen2Tokenizer, common/schema/scoring_probe.py). 19개 닫힌 필드 중 9개 충돌 — 좌/우 쌍(turn_left/right, lane_change_left/right_onset 등)뿐 아니라 road_geometry/road_condition·stop_sign/stop_line·green_arrow_*·tunnel_entrance/exit·route_turn/route_lane_change 등 접두어 공유 계열도 포함",
+        "field_assignment": {
+          "note": "scoring_probe.py 실측 결과. 필드 경로는 이 vocab 파일 기준. first_token=안전(충돌없음) / sequence=강제(충돌 있음, collisions에 first_token_id별 충돌군 기록)",
+          "first_token": [
+            "window.window_start_reason", "window.window_end_reason", "window.causal_judgment_scope",
+            "ego_action.longitudinal.transition", "ego_action.longitudinal.resulting_state",
+            "axes.object_type", "axes.static_object_type", "axes.applies_to",
+            "axes.condition_type", "flags.s2_conditioning"
+          ],
+          "sequence": {
+            "ego_action.lateral.transition": {"lane_change_left_onset/lane_change_right_onset": true, "in_lane_shift_left/right": true, "turn_left_onset/turn_right_onset": true},
+            "ego_action.lateral.resulting_state": {"changing_left/right": true, "turning_left/right": true, "offset_left/right": true},
+            "cause_type": {"road_geometry/road_condition": true},
+            "axes.position_wrt_ego.lane_relative": {"adjacent_left/right": true, "two_plus_left/right": true},
+            "axes.position_wrt_ego.bearing": {"front/front_left/front_right": true, "rear_left/right/rear": true},
+            "axes.control_element": {"stop_sign/stop_line": true},
+            "axes.control_state": {"green/green_arrow_*": true, "flashing_red/yellow": true},
+            "axes.geometry_type": {"lane_ends/lane_narrows": true, "tunnel_entrance/exit": true},
+            "axes.intent_type": {"route_turn/route_lane_change": true}
+          }
+        }
+      },
+      "conditional_demotion": "rule_uncertainty 임계 초과 객체는 gt_before에서 제외하거나 '자동 검출값, 오차 가능' 주석 부착 (gt_after 미채택이므로 이동 대상 없음)",
+      "narrative_rule": "자유 서술 필드는 구조 필드 확정 후 decode 1회로 초안 생성 (에피소드 전 구간 대상이므로 점수화 불가)",
+      "execution_layers": {
+        "gt_fields": "모델 호출 없음 — 규칙 산출값이 최종값",
+        "semantic_fields": "생성 1회 + 결과 JSON 재프리필로 전 필드 분포 수집 (요청 2)",
+        "correction": "판별이 갈리는 소수 필드만 후보 시퀀스 채점 (요청 α)",
+        "note": "잠정 구성 — 실험 A(arm ①~⑤)로 확정",
+        "caveat": "재프리필 확신도는 자기 생성값에 조건화된 값 — calibration 확인 필요"
+      },
+      "candidate_position_rule": "값 확률은 필드 이름이 아니라 위치에 붙는다. 질의는 값이 시작될 지점에서 끊어야 자리가 생성됨. 어휘를 프롬프트에 포함하는 것과 자리 생성은 별개",
+      "gt_injection": {
+        "criteria": [
+          "VLM이 그 정보 없이 답할 수 있는가 — 없으면 주입",
+          "주입 시 그대로 복사하는가 — 복사하면 gt_only로 강등",
+          "주입이 독립 판단을 편향시키는가 — 편향되면 미주입"
+        ],
+        "gt_only": [
+          "ego_speed", "ego_accel", "ego_yaw_rate", "distance", "bearing",
+          "lane_id", "road_geometry(map)", "measurements(전량)"
+        ],
+        "gt_before": [
+          "객체 목록(id·종류·좌표·속도)", "position_wrt_ego",
+          "객체 motion_primitive", "자차 거동 전이"
+        ],
+        "gt_free": [
+          "signal_lights", "vehicle_marking", "road_surface", "occlusion",
+          "intent_cue", "pedestrian_pose", "gaze", "weather", "lighting",
+          "time_of_day", "road_type", "scene_type"
+        ],
+        "gt_before_writing_rule": "관측 사실만 기재 — 위치·속도·크기·ID. '감속 중'까지는 관측, '위험'·'끼어드는 중'은 판정이므로 제외. rule_uncertainty 초과 객체는 오차 주석 부착 또는 제외. 지도 무효 시 코리도어 근사임을 명시",
+        "gt_after": "기본값 미채택 — 모순 탐지는 독립 실행 후 사후 대조로 대체. 금지가 아니며 실험 C에서 이득 확인 시 채택"
+      }
+    },
+    "input_layout": {
+      "static_prefix": [
+        "system 지시",
+        "태그 어휘 (결정적 직렬화)",
+        "few-shot (버킷 고정)"
+      ],
+      "clip_prefix": [
+        "GT-before 블록",
+        "영상 토큰 (창 전 구간)"
+      ],
+      "field_tail": [
+        "필드 지시 + 후보 목록"
+      ],
+      "rules": [
+        "정적 블록에 가변 요소 혼입 금지",
+        "GT-before는 관측 사실만 — 판정값 주입 금지",
+        "어휘 변경은 릴리스 단위로 묶어 반영 + 배치 경계 기록"
+      ]
+    },
+    "label_priority_principle": "라벨 품질이 측정 편의에 우선. 태깅 시점 확보 정보는 제한 없이 사용. 측정 목적 제약은 표본 한정 이중 실행·조건 분리 보고로 대응하고, 전역 금지는 순환성·재현성 항목에 한정",
+    "sampling_policy": {
+      "base": "후보 비의존 (균등·계층)",
+      "additional": "원인 후보 상태변화 시점 기반 추가 프레임 허용 — additional_frames_from_candidates 플래그 기록 → flags.additional_frames_from_candidates",
+      "view": "후보 방위 기반 축소 금지, 장면 구조 기반 확대 허용 → flags.view_expanded_from_scene",
+      "reporting": "recall 평가 시 추가 프레임 사용 여부로 조건 분리 보고"
+    },
+    "transition_detection": {
+      "role": "앵커 검출 시 사건이 아닌 변화(도로 곡률 추종·차로 내 흔들림·노면 요철·가다서다)를 걸러내는 규칙 구조. 임계값은 open_items.hyperparameters",
+      "filters": [
+        {
+          "order": 1,
+          "name": "magnitude",
+          "signal": "종방향 = 속도 변화량·감속도 / 횡방향 = 누적 방위 변화량(순간 요레이트 아님)",
+          "reason": "완만한 대곡선과 급한 소회전은 순간값으로 구분 불가"
+        },
+        {
+          "order": 2,
+          "name": "duration",
+          "signal": "변화 지속시간이 하한 이상",
+          "reason": "순간 스파이크 제거"
+        },
+        {
+          "order": 3,
+          "name": "curvature_correction",
+          "signal": "자차 방위 변화 − 도로 기하가 설명하는 몫 = 잔차로 판정(map). map 부재 시 수치 보정 대신 VLM이 조향-기인/도로형상-기인 여부를 직접 확인(vlm_confirmed)",
+          "reason": "곡선로 주행이 회전 전이로 오검출되는 것 방지",
+          "source": ["map", "vlm_confirmed", "estimated", "none"],
+          "source_note": {
+            "map": "task_episode(Stage2) — map 차로중심선 곡률로 수치 잔차 계산. 규칙 전용, VLM 미호출",
+            "vlm_confirmed": "task_selection(Stage1) — map 부재. 경계값 근처 애매 후보만 VLM에 '조향 기인 vs 도로형상 기인' 이진 확인. 수치 보정이 아니라 판정 override",
+            "estimated": "선행 구간 곡률 추정치(기하학적, VLM 미개입) — 예비값, v1 미사용",
+            "none": "보정 미적용 — 크기가 명확해 애매 구간 아니었거나 확인 미실행"
+          }
+        },
+        {
+          "order": 4,
+          "name": "merge",
+          "signal": "같은 방향 전이가 짧은 간격으로 연속 시 1건 병합. 반대 방향은 병합 안 함",
+          "reason": "가다서다 분절 방지. 앞 필터 통과분끼리만 병합"
+        }
+      ],
+      "record_fields": ["transition_filters_passed", "curvature_correction_source", "merged_from"],
+      "limitation": "필터 미통과 변화는 에피소드 미생성. 점진적 사건 누락 가능 → 경계 탈락 사례를 별도 로그로 축적하여 임계 조정 근거로 사용"
+    },
+    "rule_uncertainty": {
+      "role": "S1 판정의 신뢰도를 VLM 호출 전에 결정론적으로 판별하는 신호",
+      "signals": {
+        "map_validity": {
+          "input": "자차 차로 경계쌍 검출",
+          "logic": "경계 간 폭이 정상 범위 + 창 내 일정 비율 이상 유지",
+          "output": "valid|fallback"
+        },
+        "geometric_margin": {
+          "input": "객체 횡위치, 차로 경계, 차로 폭",
+          "logic": "판정 경계까지 거리를 차로 폭으로 정규화 — 경계 근접 시 차로 귀속 불안정",
+          "output": "0~1 (작을수록 불확실)"
+        },
+        "detection_quality": {
+          "input": "track 관측 프레임, 박스 시계열, 겹침",
+          "logic": "창 내 관측 프레임 비율 · 프레임 간 위치·크기 변동폭 · 타 객체 겹침 정도",
+          "output": "0~1"
+        },
+        "source_conflict": {
+          "input": "코리도어 근사 판정, 지도 기반 판정, 횡변위, 차로 인덱스",
+          "logic": "같은 값을 두 경로로 구했을 때 불일치 항목 계수",
+          "output": "불일치 수"
+        },
+        "temporal_flicker": {
+          "input": "창 내 프레임별 판정 라벨",
+          "logic": "라벨 변경 횟수 (같은 차로↔인접 차로 왕복 등)",
+          "output": "변경 횟수"
+        }
+      },
+      "usage": [
+        "gt_before 주입 제어 (임계 초과 시 제외 또는 오차 주석)",
+        "VLM 라우팅 (전 신호 잠잠하면 규칙 확정·질의 생략)",
+        "신뢰 점수 원료"
+      ],
+      "v1_scope": "map_validity + geometric_margin 2개만 가동. 나머지 3개는 값만 기록하여 분포 축적 (동시 튜닝 시 근거 없는 상수 증가)",
+      "thresholds": "open_items.hyperparameters"
+    }
+  }

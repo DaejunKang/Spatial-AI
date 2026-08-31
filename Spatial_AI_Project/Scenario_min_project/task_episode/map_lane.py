@@ -11,6 +11,7 @@ visionary map의 'centerlines' 필드는 실제로 **차선 경계선(line)** �
 
 무효(map_valid=False) clip은 호출측에서 corridor fallback(Branch B)로 분기한다.
 """
+import math
 import statistics
 import numpy as np
 import pyarrow.parquet as pq
@@ -88,6 +89,50 @@ def frame_idx_at(clip_id, t, dur):
     frames = _lines(clip_id)
     n = len(frames) if frames else 1
     return min(n - 1, max(0, int(round(t / max(dur, 1e-6) * (n - 1)))))
+
+
+CURV_X_NEAR, CURV_X_FAR = 5.0, 30.0  # 도로 형상 탄젠트 각(근거리→원거리) 산출 구간(m)
+
+
+def road_curvature_over(clip_id, t0, t1, dur):
+    """[t0,t1] 구간 동안 도로 형상이 설명하는 자차 heading 변화량(deg) 근사.
+
+    매 프레임 ego-relative 경계선에서 근거리(x=CURV_X_NEAR)→원거리(x=CURV_X_FAR) 벡터의
+    각도를 "그 시점에 이 도로 형상을 따라가려면 필요한 heading"으로 보고, 구간 시작·끝
+    프레임의 각도 차를 반환한다. 곡선 도로를 따라 순수 주행만 했다면 이 값이 실측
+    heading 변화(raw)를 대부분 설명해야 한다(잔차 ≈ 0). 좌/우 경계 중 ego와 더 가까운
+    쪽(|y| 최소)을 대표선으로 삼는다 — 폭 계산과 다른 소스라도 좌우 대칭이라 부호는 불변.
+
+    1차 근사(v1): 엄밀한 호 길이 곡률 적분이 아니라 대표 탄젠트각의 시점간 차이.
+    map_valid=False·경계선 부족 시 None(호출측이 curvature_correction_source=none으로 강등).
+    """
+    frames = _lines(clip_id)
+    if not frames:
+        return None
+    fi0, fi1 = frame_idx_at(clip_id, t0, dur), frame_idx_at(clip_id, t1, dur)
+
+    def _tangent_angle(fi):
+        lns = frames[min(max(fi, 0), len(frames) - 1)]
+        near = _boundary_ys(lns, CURV_X_NEAR)
+        far = _boundary_ys(lns, CURV_X_FAR)
+        if not near or not far:
+            return None
+        y_near = min(near, key=abs)
+        y_far = min(far, key=abs)
+        return math.degrees(math.atan2(y_far - y_near, CURV_X_FAR - CURV_X_NEAR))
+
+    a0, a1 = _tangent_angle(fi0), _tangent_angle(fi1)
+    if a0 is None or a1 is None:
+        return None
+    return float(a1 - a0)
+
+
+def default_curvature_fn(clip_id, dur):
+    """Stage2(task_episode) 기본 배선용 — map_valid clip만 실제 보정함수 반환, 아니면 None(무보정).
+    호출부는 `events.detect_events(clip_id, curvature_fn=default_curvature_fn(clip_id, dur))`로 사용."""
+    if not map_valid(clip_id)[0]:
+        return None
+    return lambda t0, t1: road_curvature_over(clip_id, t0, t1, dur)
 
 
 def lane_offset(y, boundary_ys):

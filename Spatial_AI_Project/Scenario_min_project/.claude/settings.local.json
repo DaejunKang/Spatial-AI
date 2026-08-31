@@ -28,7 +28,31 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8137/gold_label/select/index.html\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8137/gold_label/select/vids/1956fda4.mp4\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8137/index.html\")",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8137/vids/1956fda4.mp4\")"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:8137/vids/1956fda4.mp4\")",
+      "Bash(chmod +x deploy/build.sh)",
+      "Bash(./deploy/build.sh --version 1.0.0)",
+      "Bash(awk '{print substr\\($1,1,16\\)\"  \"$2}')",
+      "Bash(set -e)",
+      "Bash(mkdir -p /home/daejun/vla-tagging/docs/design)",
+      "Bash(cp /home/daejun/vla-tagging/.claude/worktrees/selection-dist/docs/design/pipeline_design_guide_v0.4.md /home/daejun/vla-tagging/docs/design/pipeline_design_guide_v0.4.md)",
+      "Bash(cp /home/daejun/vla-tagging/.claude/worktrees/selection-dist/common/schema/tag_vocab_v0.4.json /home/daejun/vla-tagging/common/schema/tag_vocab_v0.4.json)",
+      "Bash(cp /home/daejun/vla-tagging/.claude/worktrees/selection-dist/common/schema/Vocab_lint.py /home/daejun/vla-tagging/common/schema/Vocab_lint.py)",
+      "Bash(cp docs/design/pipeline_design_guide_v0.4.md /home/daejun/vla-tagging/docs/design/pipeline_design_guide_v0.4.md)",
+      "Bash(cp common/schema/tag_vocab_v0.4.json /home/daejun/vla-tagging/common/schema/tag_vocab_v0.4.json)",
+      "Bash(cp common/schema/Vocab_lint.py /home/daejun/vla-tagging/common/schema/Vocab_lint.py)",
+      "Bash(.venv/bin/python -c \"import transformers; print\\(transformers.__version__\\)\")",
+      "Bash(timeout 5 .venv/bin/python -c ' *)",
+      "Bash(echo \"실제 종료코드: $?\")",
+      "Bash(awk '{print $2}')",
+      "Bash(grep -iE \":1f4[1-4]$\")",
+      "Bash(nvidia-smi --query-gpu=index,name,memory.used,memory.total,utilization.gpu --format=csv)",
+      "Bash(docker start *)",
+      "Bash(curl -s http://localhost:8001/v1/models)",
+      "Bash(curl -s -X POST http://localhost:8001/tokenize -H \"Content-Type: application/json\" -d '{\"model\":\"nvidia/cosmos3-nano-reasoner\",\"prompt\":\"turn_left_onset\",\"add_special_tokens\":false}')",
+      "Bash(curl -s -X POST http://localhost:8001/v1/tokenize -H \"Content-Type: application/json\" -d '{\"model\":\"nvidia/cosmos3-nano-reasoner\",\"prompt\":\"turn_left_onset\"}')",
+      "Bash(curl -s http://localhost:8001/openapi.json)",
+      "Bash(docker exec *)",
+      "Bash(nvidia-smi *)"
     ]
   }
 }

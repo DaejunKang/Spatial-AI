@@ -21,6 +21,7 @@ import taxonomy
 import classify073 as C
 import taxo_detect as D
 import vlm_verify as VV
+import disclosure
 
 VOTE_N = 5
 VOTE_TEMP = 0.7
@@ -151,7 +152,7 @@ def generate_candidates(client_pool, path, clip_id, n_vote=VOTE_N):
             cause_cands = _cause_candidates(cand)          # cause 축(전이의 "왜") 후보
             out_eps.append({"win": [round(w0, 1), round(w1, 1)], "arc": ep["kinds"],
                             "ego_action": ep["ego_action"], "candidates": cand,
-                            "cause_candidates": cause_cands})
+                            "cause_candidates": cause_cands, "flags": disclosure.stamp()})
     finally:
         import shutil; shutil.rmtree(tmp, ignore_errors=True)
     return {"clip_id": clip_id, "ok": True, "dur": dur, "episodes": out_eps}

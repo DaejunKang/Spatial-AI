@@ -114,8 +114,15 @@ def _merge_same(events, gap):
     return merged
 
 
-def detect_events(clip_id: str, camera: str = CAMERA) -> dict:
-    """egomotion 이벤트 목록 반환. {ok, dur, events:[{t0,t1,center,kind,detail}]}."""
+def detect_events(clip_id: str, camera: str = CAMERA, curvature_fn=None) -> dict:
+    """egomotion 이벤트 목록 반환. {ok, dur, events:[{t0,t1,center,kind,detail}]}.
+
+    curvature_fn: 선택적 callable(t0, t1) -> 도로 형상이 설명하는 heading 변화량(deg) | None.
+    turn/lane_change 판정 시 raw heading에서 이 값을 뺀 잔차를 쓴다(곡선로 오검출 방지).
+    미지정(기본값, Stage1/task_selection이 쓰는 경로)이면 raw heading 그대로 — 이 함수는
+    map 모듈을 import하지 않으며 map 의존이 전혀 생기지 않는다. Stage2/task_episode 호출부만
+    map_lane.road_curvature_over를 감싼 클로저를 넘겨 잔차 보정을 켠다.
+    """
     import numpy as np
 
     eg = load_egomotion_clip(clip_id, camera)
@@ -140,13 +147,21 @@ def detect_events(clip_id: str, camera: str = CAMERA) -> dict:
     heading_deg = np.degrees(yaw)
     # yaw 편위 후보 구간(양·음 합쳐 하나로): |yaw_rate|>thr 를 min_sec 이상
     for i0, i1, a, b in _runs(np.abs(yr) > EVENT_TURN_YAWRATE, t, EVENT_MIN_SEC):
-        net = heading_deg[i1] - heading_deg[i0]      # net 방향 전환(deg)
+        net_raw = heading_deg[i1] - heading_deg[i0]  # net 방향 전환(deg), 보정 전
         # 측방 변위: 초기 heading 기준 lateral = ∫ v·sin(θ-θ0) dt
         seg_t = t[i0:i1 + 1]
         rel = yaw[i0:i1 + 1] - yaw[i0]
         lat = float(np.trapezoid(speed[i0:i1 + 1] * np.sin(rel), seg_t)) \
             if hasattr(np, "trapezoid") else \
             float(np.trapz(speed[i0:i1 + 1] * np.sin(rel), seg_t))
+        road_component = None
+        if curvature_fn is not None:
+            try:
+                road_component = curvature_fn(a, b)
+            except Exception:
+                road_component = None
+        net = net_raw - road_component if road_component is not None else net_raw
+        curv_source = "map" if road_component is not None else "none"
         amag = abs(net)
         # u_turn은 맵 없이 신뢰 판별 불가 → 회전 방향(net 부호)으로 turn_left/right만.
         if amag >= EVENT_TURN_HEADING:
@@ -156,7 +171,8 @@ def detect_events(clip_id: str, camera: str = CAMERA) -> dict:
         else:
             continue                                  # 완만한 커브·노이즈 → 태그 안 함
         ev.append({"kind": kind, "t0": a, "t1": b,
-                   "detail": f"net={net:.0f}deg lat={lat:.1f}m"})
+                   "curvature_correction_source": curv_source,
+                   "detail": f"net={net:.0f}deg(raw={net_raw:.0f}) lat={lat:.1f}m"})
 
     ev = _merge_same(ev, EVENT_MERGE_SEC)
     for e in ev:

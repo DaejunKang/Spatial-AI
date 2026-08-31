@@ -81,5 +81,6 @@ def index_clip(cand_clip):
         tags.sort(key=lambda t: -t["confidence"])
         out["episodes"].append({"win": ep["win"], "arc": ep.get("arc", []),
                                 "ego_action": ep.get("ego_action"), "tags": tags,
-                                "cause": _cause_axis(ep)})   # cause 축(전이의 "왜")
+                                "cause": _cause_axis(ep),   # cause 축(전이의 "왜")
+                                "flags": ep.get("flags")})  # Phase A 공개의무 필드 pass-through
     return out

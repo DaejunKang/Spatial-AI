@@ -90,6 +90,7 @@ def _gt_hint(ep, agents):
 
 
 from vocab073 import EGO_ACTIONS, OBJECT_TYPES, RELATIONS
+import disclosure
 _CAUSE_ENUM = ["agent", "signal", "road_geometry", "other"]
 _VRU_ENUM = ["crossing", "about_to_cross", "walking_along", "stationary", None]
 
@@ -218,7 +219,8 @@ def tag_clip_v08(client, path, clip_id: str) -> dict:
     result = {"clip_id": clip_id, "ok": False, "mode": "v08"}
     try:
         meta = video_meta(path); dur = meta["duration_s"]
-        det = detect_events(clip_id)
+        import map_lane as _M
+        det = detect_events(clip_id, curvature_fn=_M.default_curvature_fn(clip_id, dur))
         if not det["ok"]:
             result["error"] = det.get("reason"); return result
         obst = detect_obj3d_events(clip_id, dur)
@@ -287,6 +289,7 @@ def tag_clip_v08(client, path, clip_id: str) -> dict:
                                 "arc_rule": ep["ego_action"]},  # MA: rule/arc 앵커로 해소, arc-rule 라벨 참고 보관
                 "consistency": consistency, "think": think}
             rec["search_tags"] = _search_tags(rec)
+            rec["flags"] = disclosure.stamp()
             recs.append(rec)
         result["records"] = recs
         result["ok"] = True

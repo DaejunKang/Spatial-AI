@@ -176,6 +176,69 @@ def vlm_window(client, path, w0, w1, tmp):
         return {}
 
 
+# --- 곡률 보정(Stage1 — map 없음, VLM 확인) -----------------------------
+# transition_detection.filters[2].source=vlm_confirmed (tag_vocab_v0.4.json).
+# map이 있는 task_episode는 map_lane.road_curvature_over로 수치 보정하지만,
+# task_selection은 map이 없으므로 애매 구간(문턱 근처) 후보만 VLM 이진 확인으로 대체한다.
+CURVE_AMBIGUOUS_MARGIN = 10.0  # 문턱(EVENT_TURN_HEADING/EVENT_LC_HEADING_MAX) ± 이내만 확인 대상
+
+_CURVE_SCHEMA = {"type": "object", "additionalProperties": False,
+                 "required": ["maneuver", "confidence"],
+                 "properties": {"maneuver": {"type": "boolean"}, "confidence": {"type": "number"}}}
+_CURVE_PROMPT = (
+    "This is a segment where the ego vehicle's heading changed. Judge: is this heading change "
+    "caused by the ego STEERING (an intentional turn or lane-change maneuver) or simply the ROAD "
+    "CURVING while the ego just follows the lane (no deliberate steering beyond lane-keeping)?\n"
+    "Return JSON: maneuver (true=steering-caused maneuver, false=road curve/lane-following only), "
+    "confidence 0-1.")
+
+
+def is_curve_ambiguous(event, margin=CURVE_AMBIGUOUS_MARGIN):
+    """이벤트(kind=turn_*/lane_change_*)가 문턱 근처 애매 구간인지. detail의 raw= 값 사용."""
+    import re
+    if event["kind"] not in ("turn_left", "turn_right", "lane_change_left", "lane_change_right"):
+        return False
+    m = re.search(r"raw=(-?\d+)", event.get("detail", ""))
+    if not m:
+        return False
+    raw = abs(int(m.group(1)))
+    from config import EVENT_TURN_HEADING, EVENT_LC_HEADING_MAX
+    return (abs(raw - EVENT_TURN_HEADING) <= margin) or (abs(raw - EVENT_LC_HEADING_MAX) <= margin)
+
+
+def vlm_curve_check(client, path, w0, w1, tmp):
+    """애매 구간 후보 → VLM에 '조향 기인 vs 도로형상 기인' 이진 확인 {maneuver, confidence}."""
+    sub = tmp / f"curve_{int(w0 * 10)}_{int(w1 * 10)}.mp4"
+    try:
+        write_subclip(path, w0, w1, sub, WINDOW_MAX_SIDE, SEND_FPS)
+        uri = to_data_uri(sub); sub.unlink(missing_ok=True)
+        r = client.chat.completions.create(
+            model=MODEL, temperature=TEMPERATURE, max_tokens=256,
+            messages=[{"role": "user", "content": [
+                {"type": "text", "text": _CURVE_PROMPT},
+                {"type": "video_url", "video_url": {"url": uri}}]}],
+            extra_body={"guided_json": _CURVE_SCHEMA})
+        return json.loads(r.choices[0].message.content)
+    except Exception:
+        return {}
+
+
+def verify_ambiguous_curves(client, path, ev_events, tmp):
+    """detect_events() 원본 이벤트 목록 중 애매 구간만 VLM 확인, maneuver=False면 제거.
+    반환: 확인 후 살아남은 이벤트 목록(애매 아닌 이벤트는 그대로 통과)."""
+    out = []
+    for e in ev_events:
+        if not is_curve_ambiguous(e):
+            out.append(e)
+            continue
+        v = vlm_curve_check(client, path, e["t0"], e["t1"], tmp)
+        if v.get("maneuver", True):  # 확인 실패(빈 dict) 시 보수적으로 유지(기본 True)
+            e = {**e, "curvature_correction_source": "vlm_confirmed"}
+            out.append(e)
+        # maneuver=False면 드롭(도로형상 기인으로 판정 — 태그 제거)
+    return out
+
+
 def score_clip_windowed(clip_id, client):
     """윈도우별 ego 반응성 × VLM(video, 같은 윈도우) 확인 → clip 점수(최강 반응 윈도우)."""
     dur, wins = clip_windows(clip_id)
