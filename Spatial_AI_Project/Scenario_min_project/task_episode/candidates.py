@@ -26,6 +26,10 @@ import disclosure
 VOTE_N = 5
 VOTE_TEMP = 0.7
 LEAD_IN = 3.0
+# n-vote seed 기준값 — 투표 j번째 호출에 VOTE_SEED_BASE+j 부여.
+# 근거(DESIGN_LOG [2026-08-31] same-anchor 실험): seed 없이는 동일 anchor로도 10/10 전부
+# 다른 vote_fraction(완전 비재현). seed만 추가해도 10→3, 포트 고정까지 더하면 10/10 완전 재현.
+VOTE_SEED_BASE = 1000
 
 # cause 축(전이의 "왜") 후보 매핑 — 각 present 카테고리를 cause 로 사상.
 # recall-first: 단일 확정이 아니라 후보 집합(provenance 부착). 정밀 단일해소는 Phase C.
@@ -65,10 +69,10 @@ def _cause_candidates(cand):
                  "from": sorted(m["from"])} for cz, m in cc.items()}
 
 
-def _vlm_present(client, uri, cands, arc):
+def _vlm_present(client, uri, cands, arc, seed=None):
     """VLM 1회 호출 → present 상호작용 ∪ 맥락 카테고리 집합."""
     r = client.chat.completions.create(
-        model=MODEL, temperature=VOTE_TEMP, max_tokens=1024,
+        model=MODEL, temperature=VOTE_TEMP, max_tokens=1024, seed=seed,
         messages=[{"role": "user", "content": [
             {"type": "text", "text": VV._prompt(cands, arc)},
             {"type": "video_url", "video_url": {"url": uri}}]}],
@@ -137,7 +141,7 @@ def generate_candidates(client_pool, path, clip_id, n_vote=VOTE_N):
             hint = gt_cats                                 # GT 후보를 힌트로(확정 아님)
             for j in range(n_vote):
                 cl = client_pool[j % len(client_pool)]
-                votes.update(_vlm_present(cl, uri, hint, ep["kinds"]))
+                votes.update(_vlm_present(cl, uri, hint, ep["kinds"], seed=VOTE_SEED_BASE + j))
             # --- 합집합 병합 ---
             cand = {}
             for c in ego_cats:
