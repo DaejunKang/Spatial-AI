@@ -1,8 +1,5 @@
 # CLAUDE.md
-## Language Policy
-- 모든 응답은 한국어 또는 영어로만 작성한다.
-- 한자(漢字)나 일본어 문자(히라가나/가타카나) 혼용을 절대 금지한다.
-- 상태 메시지(대기, 완료, 계획 등 진행 보고 문구)도 예외 없이 순수 한국어만 사용한다.
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 자율주행 클립에서 **자차 거동 사건(에피소드) 메타데이터를 태깅**하고 long-tail 상황을 **추출**하는 파이프라인(KATECH VLA). VLM(NVIDIA Cosmos-Reason)은 **frozen** — 재학습하지 않고 GT(egomotion/obj3d/map)+규칙+VLM 조합 로직을 개선한다.
