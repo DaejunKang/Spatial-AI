@@ -15,8 +15,10 @@ from collections import Counter
 from pathlib import Path
 
 from config import MODEL
+from thresholds import LEAD_IN
 from dataset import to_data_uri, video_meta, write_subclip
 import events
+import map_lane as M
 import taxonomy
 import classify073 as C
 import taxo_detect as D
@@ -25,7 +27,6 @@ import disclosure
 
 VOTE_N = 5
 VOTE_TEMP = 0.7
-LEAD_IN = 3.0
 # n-vote seed 기준값 — 투표 j번째 호출에 VOTE_SEED_BASE+j 부여.
 # 근거(DESIGN_LOG [2026-08-31] same-anchor 실험): seed 없이는 동일 anchor로도 10/10 전부
 # 다른 vote_fraction(완전 비재현). seed만 추가해도 10→3, 포트 고정까지 더하면 10/10 완전 재현.
@@ -108,7 +109,10 @@ def generate_candidates(client_pool, path, clip_id, n_vote=VOTE_N):
         dur = video_meta(path)["duration_s"]
     except Exception as e:
         return {"clip_id": clip_id, "ok": False, "error": str(e)}
-    ev = events.detect_events(clip_id)
+    # 곡률보정 배선 — tag_v08.py:223과 동일(2026-09-08, DESIGN_LOG "NVIDIA 데이터셋 전체
+    # workflow" 실측: 무보정이던 이 호출이 Track1과 arc 불일치를 냄, 1/50 확인 후 통일).
+    curvature_fn = M.default_curvature_fn(clip_id, dur)
+    ev = events.detect_events(clip_id, curvature_fn=curvature_fn)
     if not ev.get("ok"):
         return {"clip_id": clip_id, "ok": False, "error": ev.get("reason")}
     eps = C.consolidate_episodes(ev["events"])
@@ -126,10 +130,11 @@ def generate_candidates(client_pool, path, clip_id, n_vote=VOTE_N):
         for i, ep in enumerate(eps):
             w0 = max(0.0, ep["onset"] - LEAD_IN); w1 = min(dur, ep["t1"] + 1.0)
             # --- ego 채널: arc 기동 ---
-            ego_cats = set(taxonomy.auto_tags_from_arc(ep["kinds"]))
-            for k in ep["kinds"]:
-                if k in ("lane_change_left", "lane_change_right"):
-                    ego_cats.add(k)
+            # auto_tags_from_arc(u_turn/turn_left/turn_right/stop)만으로는 accelerate/
+            # decelerate/evade 등이 검색 태그에 안 잡혀 recall이 샌다(2026-09-08 발견).
+            # recall-우선 설계(OR 합집합)에 맞춰 kinds 전체를 그대로 합집합한다 —
+            # _CAUSE_OF에 없는 카테고리는 기존처럼 cause 축엔 안 잡히고 candidate 태그로만 남음.
+            ego_cats = set(taxonomy.auto_tags_from_arc(ep["kinds"])) | set(ep["kinds"])
             # --- gt 채널: obj3d 상호작용 ---
             gt_cats = gt_in(w0, w1)
             gt_only = gt_cats - ego_cats

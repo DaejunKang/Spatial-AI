@@ -4,6 +4,214 @@
 
 ---
 
+## [2026-09-08] Track2 곡률보정 배선 — Track1/Track2 arc 불일치 해소
+> **Task**: episode(Track2)
+
+**배경**: 직전 엔트리("NVIDIA 데이터셋 전체 workflow 최초 실행")에서 50개 중 1개 clip
+(`024415a5-94a5-4810-9c27-a72314b55146`)이 Track1엔 `lane_change_right`가 있고 Track2엔
+없는 걸 실측 확인함. 원인은 `task_episode/candidates.py:111`이 `events.detect_events()`를
+곡률보정 없이 호출하는 것(`tag_v08.py:223`은 2026-08-28부터 보정 적용 중이었음 — 7개
+무보정 호출부 중 하나였음).
+
+**변경**: `candidates.py`에 `map_lane.default_curvature_fn(clip_id, dur)`를 계산해
+`detect_events(clip_id, curvature_fn=curvature_fn)`로 전달 — `tag_v08.py`와 동일 배선.
+
+**검증**: 불일치가 났던 그 clip 하나로 재실행 → Track1/Track2 arc가
+`['accelerate','decelerate','lane_change_right','stop']`로 **완전 일치**함을 확인(이전엔
+Track2에서 `lane_change_right` 누락). 나머지 49개 clip 전체 재실행은 비용상 이번엔
+생략 — 필요시 `./run.sh task_episode/run_workflow_audit.py --n 50`로 재확인 가능.
+
+**영향**: `task_episode/candidates.py`(커밋 여부 미결). 나머지 6개 무보정 호출부
+(`classify073.py:183`·`taxo_detect.py:118`·`vlm_verify.py:192`·`map_lane.py:161`·
+`selection.py:35`·`folder_selection.py:47,139`)는 이번 범위 밖 — Track1/Track2 직접
+대조가 가능한 candidates.py만 우선 처리.
+
+---
+
+## [2026-09-08] NVIDIA 데이터셋 전체 workflow 최초 실행 — 오류 점검 결과
+> **Task**: multi
+
+**배경**: "전체 workflow를 실제로 진행하며 ①agent 설계상 중복 오류 ②설계 파이프라인상
+오류 ③단계별 오류를 점검"하라는 요청. 실행 전 조사에서 **Track1(`tag_v08.tag_clip_v08`)과
+Track2(`candidates.generate_candidates`→`retrieve.index_clip`)를 실제로 호출하는 러너가
+저장소에 없다**는 사실이 먼저 드러났다(`git log --all -S`로 재확인 — 과거에도 없었음).
+이 엔트리는 그 러너(`task_episode/run_workflow_audit.py`)를 신설해 처음 실행한 결과다.
+
+### ① agent 설계상 중복 오류 — `.claude/agents/`(Claude Code 서브에이전트 번들)
+
+외부에서 만들어져 오늘 이 저장소에 복사된 번들(`docs/design/AGENT_DESIGN.md` + 서브에이전트
+7개 + pre-commit 인프라)에서 발견·정정한 것:
+- `rule-engieer.md`(오타) → `rule-engineer.md`로 리네임(매니페스트와 실물 파일명 불일치 해소)
+- `.claude/_common.py` 0바이트 방치 파일 제거(확인 시점엔 이미 병렬 프로세스가 삭제해둔 상태)
+- `hooks/hook_utils.py`의 `LINT` 경로 대소문자 수정(`vocab_lint.py`→`Vocab_lint.py`, 실재
+  확인 완료)
+- **pre-commit 훅 6개 중 4개가 이 저장소에서 상시 무력화돼 있었다** — `VERIFY_DIRS=
+  ["verification/"]`·`GOLD_DIR="data/gold/"`·`CARDS_DIR`/`RESULTS_DIR="experiments/..."`가
+  가리키는 디렉토리가 전부 미실재. `check_import_separation`·`check_experiment_card`는
+  검사 대상이 항상 0건이라 "Passed"가 사실은 "검사할 게 없어서 통과"였다.
+  `check_gold_isolation`은 `data/gold/`를 찾는데 실제 관행은 `gold.json`+`gold_label/`라
+  실제 gold 참조를 하나도 못 잡는 상태였다. → `GOLD_DIR`을 실제 경로로 정정하고
+  `task_selection/review.py`·`task_episode/gold_tool.py`(정당한 참조)를 화이트리스트
+  처리, 나머지 두 훅은 실재 디렉토리가 생기기 전까지 "비활성 상태"를 **명시적으로
+  출력**하도록 정정(`verbose: true`까지 추가 — pre-commit이 기본적으로 통과 시 출력을
+  숨겨서 정보 메시지가 안 보이는 것도 같이 발견해 고침)
+- `MANIFEST.txt`/`SHA256.txt` 재검증 — 표본 5개 해시가 5/5 전부 실제 파일과 불일치했음
+  (무결성 검증 용도로 못 쓰는 상태). 21개 파일 전부 재해시해 21/21 일치로 갱신
+- `AGENT_DESIGN.md`의 설치 지침 경로 오류(`hooks/.pre-commit-config.yaml`→실제는 루트,
+  `hooks/_common.py`→실제는 `hooks/hook_utils.py`) 정정
+- (미해결, 기계적 수정 아님) 인수인계 파일 계약(`outputs/episodes/`·`data/gold/`·
+  `experiments/cards/` 등)이 이 저장소의 실제 산출물 위치(`gold.json`·`gold_label/`·
+  `outputs_v08/tags/`)와 다른 세계를 전제하고 있고, rule-engineer(S0+S1)/vlm-engineer
+  (S2+S3) 역할 분리가 전제하는 파일 경계가 `tag_v08.tag_clip_v08()` 한 함수 안에 전부
+  융합돼 있어 실제로 안 맞음. CLAUDE.md §4 위임 규칙도 미반영— 이번엔 안 건드림
+
+### ② 설계 파이프라인상 오류 (실행으로 확인)
+
+- **최상위 발견**: Track1·Track2 러너 자체가 존재하지 않았다(위 배경 참조) — "전체
+  workflow"가 이번이 최초 실행
+- **Track1/Track2 arc 불일치 실측 확인**: 50개 중 1개 clip(`024415a5-...`)에서
+  Track1 arc=`[accelerate, decelerate, lane_change_right, stop]`, Track2 arc=
+  `[accelerate, decelerate, stop]` — **lane_change_right 하나가 Track2에서만 빠졌다.**
+  원인은 설계상 이미 알려진 배선 차이: Track1(`tag_v08.py:223`)은 `curvature_fn`을 주지만
+  Track2(`candidates.py:111`)는 여전히 무보정으로 `detect_events`를 호출한다(2026-08-28
+  배선 이후에도 안 고쳐진 7개 무보정 호출부 중 하나) — **가설이 아니라 실측으로 확인된
+  설계 파이프라인 오류**
+- **map_valid 20/50(40%)** — Stage1이 실제로 선별한 50개 기준. 기존 실측(28~35%,
+  무작위 표본)보다 다소 높지만 표본 방식이 다르므로(Stage1 랭킹 vs 순수 무작위) 직접
+  비교는 부적절 — 참고치로만 기록
+- **cause 분포 편중**: `agent 71 · other 3 · road_geometry 2 · signal 1`(전체 77
+  records). Stage1이 "반응성"(외부 agent 자극에 대한 ego 반응) 기준으로 선별하므로
+  자연스러운 결과 — 다만 이 selection bias가 Track1 산출물 분포에 그대로 전이된다는
+  걸 보여준다(Stage1→Stage2 연결이 실제로 생기니 처음 드러난 효과)
+
+### ③ 단계별 오류 (S0~S2, 실측)
+
+- **S0**: 50/50 성공, 0건 실패. clip당 평균 1.54 에피소드, 0에피소드 clip 없음(Stage1이
+  이미 반응성 있는 clip만 골라서일 가능성). 평균 0.75초/clip로 매우 빠름
+- **S1+S2+S3(Track1)**: 50/50 성공, guided_json 파싱 실패 0건, **CJK 혼입 1건/77
+  records(1.3%)** — 기존에 확정한 원인(`maxLength` 포화)과 발생률 자릿수가 일치.
+  평균 16.1초/clip
+- **S1+S2(Track2)**: 50/50 성공, 예외 0건. 평균 22.9초/clip
+- 총 소요(순차 기준): 약 33분/50clip. 병렬화 여지 있음(Track1/Track2를 clip별로
+  동시에 돌리지 않았음 — 이번 스크립트는 순차 실행)
+- **S3(원인 귀속) 미해결 사례 0건** — cause가 전부 확정값으로 나옴(위 분포 참조).
+  물리 게이트(준거 B, 목표설계)는 아직 코드가 없어 "미판정" 상태 자체를 산출할 수 없음
+  — 이번 실행은 그 게이트 부재 상태에서 나온 결과라는 점을 표기해둔다
+
+**산출물**: `task_episode/run_workflow_audit.py`(신설), `gold_label/workflow_audit/
+report.json`(50 clip 전수), `gold_label/select/{select300.json, selected50.json,
+index.html}`(Stage1 실행 결과, 최초로 실제 산출).
+
+**영향**: 코드 변경은 `.claude/agents/`·`hooks/`·`docs/design/AGENT_DESIGN.md`·
+`MANIFEST.txt`·`SHA256.txt`·`.pre-commit-config.yaml`(전부 미커밋, 사용자 지시에 따라
+적용만 하고 커밋 안 함) + `task_episode/run_workflow_audit.py`(신규, 커밋 여부 미결).
+
+**미결(다음 조치 대상)**:
+- Track2(`candidates.py:111` 등 7곳)에 곡률보정·차선교차 배선 확대 여부 결정 — 이번
+  실측으로 실제 영향(1/50)이 확인됐으므로 §4 전환 규칙(1 브랜치 1 변경축) 따라 별도
+  브랜치로 진행
+- Track1/Track2를 clip 단위로 병렬화해 33분→단축
+- 인수인계 파일 계약과 rule/vlm 역할 분리를 이 저장소 실제 구조에 맞게 재설계(agent 설계
+  ①의 근본 미해결 항목)
+
+---
+
+## [2026-09-08] ego_action 함정 해결 — 2축 분리 + Track2 arc 흡수 + map 차선교차 계측
+> **Task**: multi
+
+**배경**: S0 검증 리뷰 중 발견된 함정 — `classify073._dominant(kinds)`가 ego_action을
+고정 우선순위(stop>evade>turn_left>turn_right>그외=ego_lane_keep) 하나로만 정해서
+accelerate/decelerate/lane_change_left/lane_change_right가 arc에는 남아도 ego_action
+필드엔 안 드러났다. 조사 결과 `tag_vocab_v0.4.json`의 `ego_action`은 이미
+longitudinal(가감속/정지)+lateral(회전/차선변경) 2축으로 정의돼 있었고(목표설계 §2.3
+anchor_policy), 현재 코드는 이를 구현하지 않은 v0.7.1 계보 잔재였다. Track2 검색 경로
+(`candidates.py`→`retrieve.py`)도 auto_tags_from_arc(u_turn/turn_left/turn_right/stop만)
++ 수동 lane_change만 흡수해 accelerate/decelerate/evade가 검색 태그에서 누락돼 있었다
+(`tag_v08._search_tags()`는 arc 전체를 흡수하지만 다운스트림 소비자가 없는 죽은 코드).
+
+**변경**(앵커 비오염 원칙 — 기존 판정 로직은 안 바꾸고 필드만 추가):
+1. `task_episode/classify073.py` — `consolidate_episodes()`에 `axes` 필드 신설
+   (`_axes()` 함수). longitudinal은 kind 시퀀스 첫/마지막 값으로 transition/
+   resulting_state 근사, lateral은 트리거 후보만 담고 `resolved:false`로 "map∪VLM
+   해소 전" 상태 명시. 기존 `ego_action`/`dom_kind`는 하위호환으로 그대로 유지.
+2. `task_episode/candidates.py` — `ego_cats` 구성을 `auto_tags_from_arc` 결과와
+   `ep["kinds"]` 전체의 합집합으로 확장. accelerate/decelerate/evade도 Track2
+   candidate·검색 태그에 잡히게 됨(recall-우선 설계와 일치).
+3. `task_episode/map_lane.py` — `lane_crossing_count()`/`default_lane_crossing_fn()`
+   신설. `common/events.py`의 `detect_events()`에 `lane_crossing_fn=None` opt-in
+   파라미터 추가(curvature_fn과 동일 패턴, 미지정 시 기존 동작 완전 동일) — turn/
+   lane_change 이벤트에 `lane_crossings` 필드로 **계측값만 기록**, 분류 임계값(45°)은
+   안 건드림.
+
+**실측(50-clip S0 표본 재실행)**: `axes` 필드 69/69 episode에 반영. `lane_crossings`는
+map_valid clip(14/50)에서 turn/lane_change 이벤트 4건에 값이 붙음. **주의: 값이
+노이즈가 크다** — 단일 lane_change_right(2.4초)에 3회, turn_left(5초)에 15회로
+비현실적인 수치가 나왔다. 프레임별 경계선 개수를 그대로 세는 1차 구현이라 경계선
+검출 흔들림(occlusion·짧은 폴리라인)에 취약한 것으로 추정 — **그래서 계획대로 판정에는
+아직 반영하지 않는다.** 정제(스무딩/최소지속 필터)는 후속 작업.
+
+**범위 밖(명시)**: lane_crossings로 실제 turn/lane_change 판정 전환(별도 브랜치 대상),
+u_turn을 lateral enum에 추가(원리적으로 ego 기동만으론 불가 — 같은 방향 연속 개별 회전과
+진짜 u-turn이 net heading 크기만으론 구분 안 됨, map 위상 정보 필요 — turn류와 동일하게
+CAN 트리거+map∪VLM 해소 구조가 필요하나 별도 작업), `_search_tags()`를 실제 검색
+기능으로 연결(Track1엔 소비자 자체가 없음), longitudinal resulting_state의 엄밀한
+계산(원시 속도/가속도 배열 필요 — 물리정보 가공수준 DV 자체가 미정), `vocab073.EGO_ACTIONS`
+flat enum·`_ground_ego_action`은 하위호환 위해 그대로 유지.
+
+**검증**: `py_compile` 통과, `extract_s0_validation.py` 재실행 50/50 성공(seed=42 동일
+표본), `gold_tool.py` 무인자 실행 회귀 없음(기존 Track1 워크플로우 영향 없음).
+
+**영향**: `common/events.py`·`task_episode/classify073.py`·`task_episode/candidates.py`·
+`task_episode/map_lane.py`·`task_episode/extract_s0_validation.py`.
+
+---
+
+## [2026-09-08] S0 단계 검증 clip 50개 추출 — 단계별 gold 검증의 첫 표본
+> **Task**: multi
+
+**배경**: 메타데이터 라벨링 파이프라인을 목표설계 v0.4의 4단계(S0/S1/S2/S3)별로 검증하는
+작업의 첫 단계. 지침서 §4.3의 준거A(gold 채점)는 S1/S2/S3만 채점 대상으로 명시하고 S0을
+빠뜨렸으나, 같은 절이 `ERR-ANCHOR`("transition 검출 오류·점진 거동 미검출")를 S0 전용
+오류코드로 이미 정의해뒀다. 실제 S0 검증 실적은 2026-08-28 엔트리의 37-clip 곡률보정
+on/off 대조(gold 없는 회귀 확인) 1건뿐이었다.
+
+**방법**:
+- `task_episode/extract_s0_validation.py` 신설. `task_selection/review.sample_pool(50,
+  seed=42)`로 기존 gold.json 50개를 제외한 순수 무작위 50개 clip 추출(순환성 배제 —
+  임계값 튜닝에 이미 쓰였을 수 있는 clip으로 검증하지 않음)
+- 각 clip에 production Track1이 실제 쓰는 배선을 그대로 재현: `map_lane.default_curvature_fn`
+  로 곡률보정 여부를 결정한 뒤 `events.detect_events` + `classify073.consolidate_episodes`
+  (`tag_v08.py:223`과 동일 호출 방식)
+- 곡률보정 미적용 버전도 같이 계산해 2026-08-28의 on/off 대조를 이 표본으로 확장
+- `task_episode/gold_tool.py`에 선택적 위치 인자 1개 추가(기본값은 기존 `gold_label/` 그대로
+  — 무인자 호출 회귀 확인 완료). `./run.sh task_episode/gold_tool.py gold_label/s0_validation`
+  로 기존 review UI(에피소드별 win/arc, 수동 구간 추가로 누락 전이 기록)를 그대로 재사용
+
+**결과**: 50/50 clip 처리 성공(실패 0건). `map_valid`(곡률보정 적용 가능) 14/50(28%).
+곡률보정 유무로 kind 분류가 달라진 clip 1건(2%) — 2026-08-28의 1/37(2.7%)과 같은 자릿수로
+방향 일치. `gold.json` 기존 50개와 교집합 0건 확인.
+
+**산출물**: `gold_label/s0_validation/{sample_clips.json, episodes.json, s0_raw.json,
+vids/*.mp4, index.html}`. `s0_raw.json`은 곡률보정 전/후 원본 이벤트(있는 경우
+`curvature_correction_source`만 이벤트 단위로 보존)를 그대로 남겨 감사용으로 쓴다.
+
+**남겨둔 한계 (범위 밖, 명시적으로 미착수)**:
+- 실제 사람 리뷰(50개 전수 확인, recall/precision 산출)는 이번 작업 범위 밖 — 리뷰 가능한
+  상태까지만 준비
+- `transition_filters_passed`·`merged_from`·`window_start_reason`/`window_end_reason`·
+  `threshold_set_id`는 여전히 스키마 선언뿐이고 코드 계산 로직이 없다. 이번 추출에서도
+  새로 만들지 않았다(범위 확대 방지)
+- 지침서 §2.3.1이 요구하는 "필터 통과 직전 탈락 경계 사례" 로그는 `detect_events()`가 중간
+  후보를 노출하지 않아 이번 스크립트로 커버 불가 — 필요해지면 `events.py` 자체 수정 필요
+- 지침서 §4의 준거A가 S0을 단계별 채점 대상에서 빠뜨린 공백은 여전히 남아있음(이번 표본은
+  그 공백을 메우는 재료일 뿐, 채점 기준 자체를 정의하지는 않았다)
+
+**영향**: `task_episode/extract_s0_validation.py`(신규), `task_episode/gold_tool.py`
+(하위호환 파라미터화). `gold_label/s0_validation/`는 신규 검증 라운드용 디렉토리로 기존
+`gold_label/` Track1 워크플로우와 분리.
+
+---
+
 ## [2026-08-31] same-anchor 재현성 실험 — 5-vote는 seed로 해소, tag_v08 잔차는 서빙층
 > **Task**: multi
 

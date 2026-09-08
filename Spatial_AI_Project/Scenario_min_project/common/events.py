@@ -1,3 +1,6 @@
+# vocab-literal-ok — CLASS_MAP(:32)은 원시 데이터셋 라벨 문자열(automobile/heavy_truck 등,
+# vocab 값 아님) -> taxonomy object_type 번역표라 리터럴이 불가피함(기존 코드, pre-commit
+# 훅 신설 이전부터 존재).
 """egomotion 기반 동적 이벤트 검출 (when 을 GT 로 산출).
 
 egomotion parquet 은 비디오(20s)보다 긴 전체 로그(~86-140s)를 담으므로,
@@ -114,7 +117,7 @@ def _merge_same(events, gap):
     return merged
 
 
-def detect_events(clip_id: str, camera: str = CAMERA, curvature_fn=None) -> dict:
+def detect_events(clip_id: str, camera: str = CAMERA, curvature_fn=None, lane_crossing_fn=None) -> dict:
     """egomotion 이벤트 목록 반환. {ok, dur, events:[{t0,t1,center,kind,detail}]}.
 
     curvature_fn: 선택적 callable(t0, t1) -> 도로 형상이 설명하는 heading 변화량(deg) | None.
@@ -122,6 +125,10 @@ def detect_events(clip_id: str, camera: str = CAMERA, curvature_fn=None) -> dict
     미지정(기본값, Stage1/task_selection이 쓰는 경로)이면 raw heading 그대로 — 이 함수는
     map 모듈을 import하지 않으며 map 의존이 전혀 생기지 않는다. Stage2/task_episode 호출부만
     map_lane.road_curvature_over를 감싼 클로저를 넘겨 잔차 보정을 켠다.
+
+    lane_crossing_fn: 선택적 callable(t0, t1) -> 차로 경계선 교차 횟수(int) | None. turn/
+    lane_change 이벤트에 `lane_crossings` 필드로 계측값만 기록한다(2026-09-08) — 판정
+    로직(45도 임계값)에는 아직 반영하지 않음. 미지정이면 기존 동작과 완전히 동일.
     """
     import numpy as np
 
@@ -170,8 +177,15 @@ def detect_events(clip_id: str, camera: str = CAMERA, curvature_fn=None) -> dict
             kind = "lane_change_left" if lat > 0 else "lane_change_right"
         else:
             continue                                  # 완만한 커브·노이즈 → 태그 안 함
+        lane_crossings = None
+        if lane_crossing_fn is not None:
+            try:
+                lane_crossings = lane_crossing_fn(a, b)
+            except Exception:
+                lane_crossings = None
         ev.append({"kind": kind, "t0": a, "t1": b,
                    "curvature_correction_source": curv_source,
+                   "lane_crossings": lane_crossings,
                    "detail": f"net={net:.0f}deg(raw={net_raw:.0f}) lat={lat:.1f}m"})
 
     ev = _merge_same(ev, EVENT_MERGE_SEC)

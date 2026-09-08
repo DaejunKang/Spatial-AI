@@ -18,9 +18,9 @@ import pyarrow.parquet as pq
 
 import paths as P
 import events
+from thresholds import VALID_FRAC
 
 LANE_W_MIN, LANE_W_MAX = 2.5, 4.5   # ego 차로폭 유효 범위(m)
-VALID_FRAC = 0.5                    # 유효 프레임 비율 게이트
 REF_X = 8.0                         # ego 차로폭 기준 전방거리(m)
 FWD_NEAR = 35.0                     # cut_in/out 관심 전방(m)
 SUSTAIN = 3                         # 상태 지속 최소 관측점
@@ -133,6 +133,39 @@ def default_curvature_fn(clip_id, dur):
     if not map_valid(clip_id)[0]:
         return None
     return lambda t0, t1: road_curvature_over(clip_id, t0, t1, dur)
+
+
+def lane_crossing_count(clip_id, t0, t1, dur, x=REF_X):
+    """[t0,t1] 구간 동안 ego가 지나친 차로 경계선 개수 — 계측 전용, 판정(turn/lane_change
+    분류)에는 아직 미사용(2026-09-08, ego_action 2축 분리 작업 — 사람 리뷰용 보조 신호).
+
+    프레임별 x지점 경계선 중 y<=0(ego 기준 우측) 개수를 ego의 "차로 순번" 근사로 쓴다
+    (개별 경계선은 lane_ids가 프레임 로컬 인덱스라 프레임 간 ID 추적 불가 — 순번 값
+    자체를 신호로 씀). 이 순번이 프레임 간 바뀐 횟수를 반환. map_valid 아니면 None
+    (호출측이 lane_crossing_source=none으로 강등, curvature_fn과 동일 패턴).
+    """
+    if not map_valid(clip_id)[0]:
+        return None
+    frames = _lines(clip_id)
+    fi0, fi1 = frame_idx_at(clip_id, t0, dur), frame_idx_at(clip_id, t1, dur)
+    if fi1 <= fi0:
+        return 0
+    idx_seq = []
+    for fi in range(fi0, fi1 + 1):
+        lns = frames[min(max(fi, 0), len(frames) - 1)]
+        ys = _boundary_ys(lns, x)
+        if not ys:
+            continue
+        idx_seq.append(sum(1 for y in ys if y <= 0))
+    return sum(1 for a, b in zip(idx_seq, idx_seq[1:]) if a != b)
+
+
+def default_lane_crossing_fn(clip_id, dur):
+    """`default_curvature_fn`과 동일 opt-in 패턴 — map_valid clip만 실제 함수 반환.
+    호출부는 `events.detect_events(clip_id, lane_crossing_fn=default_lane_crossing_fn(clip_id, dur))`."""
+    if not map_valid(clip_id)[0]:
+        return None
+    return lambda t0, t1: lane_crossing_count(clip_id, t0, t1, dur)
 
 
 def lane_offset(y, boundary_ys):

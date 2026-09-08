@@ -1,0 +1,3407 @@
+[
+ {
+  "clip_id": "fbda91b5-8cfa-41ea-b77e-05bcac561436",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 10,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "decelerate",
+     "accelerate",
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_right",
+     "decelerate",
+     "accelerate",
+     "lane_change_left"
+    ]
+   ],
+   "elapsed_s": 4.8
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 14.7,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "decelerate",
+     "accelerate",
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_right",
+     "decelerate",
+     "accelerate",
+     "lane_change_left"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 21.0,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "decelerate",
+     "accelerate",
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_right",
+     "decelerate",
+     "accelerate",
+     "lane_change_left"
+    ]
+   ],
+   "n_tags_total": 26
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "lane_change_left",
+   "stop",
+   "turn_right"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "lane_change_left",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "5a510231-aaa8-4ae5-a084-a368ac9d26bb",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 4,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 5.5
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 12.2,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 14.2,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 18
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "722340f0-ea2d-41e9-abbd-aec5dc271bd0",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 4,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "turn_left",
+     "stop",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 5.1
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 14.9,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "turn_left",
+     "stop",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 18.1,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "turn_left",
+     "stop",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 18
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "563b1cc3-739e-424a-b690-dda75cf4599d",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 8,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_right",
+     "accelerate",
+     "decelerate"
+    ],
+    [
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 5.4
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 17.7,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_right",
+     "accelerate",
+     "decelerate"
+    ],
+    [
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 23.9,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_right",
+     "accelerate",
+     "decelerate"
+    ],
+    [
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 30
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "7efddbb1-a5ec-47bf-867d-e503d587ba8a",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 4,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_left"
+    ]
+   ],
+   "elapsed_s": 0.6
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 15.3,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_left"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 17.3,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_left"
+    ]
+   ],
+   "n_tags_total": 16
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "8063bf89-d713-4a3c-87c8-818e4f843ab3",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 4,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "elapsed_s": 0.6
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 18.7,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 29.8,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "n_tags_total": 25
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "8c0f487d-7d22-4bea-9cbe-fd4e861b1973",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 2,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "elapsed_s": 0.6
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 12.0,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 16.9,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "n_tags_total": 11
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "dfd3305d-b585-46ad-ac41-2b4a900d1fce",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 5,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "lane_change_right",
+     "decelerate",
+     "lane_change_right",
+     "turn_right",
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 1.1
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 17.7,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "lane_change_right",
+     "decelerate",
+     "lane_change_right",
+     "turn_right",
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "road_geometry"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 22.2,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "lane_change_right",
+     "decelerate",
+     "lane_change_right",
+     "turn_right",
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 14
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "lane_change_right",
+   "turn_right"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "lane_change_right",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "65c6b5f6-baed-49c3-8ff2-b2ae9d8b4173",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 5,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_right",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 1.1
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 17.4,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_right",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 17.8,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_right",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 10
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "8a8e54da-d8ca-4cbb-af0d-0a28a2cc0d6c",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 4,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 1.1
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 13.9,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 20.6,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 18
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "f2d56bac-d340-4de2-b45a-a02b5b856dcf",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 4,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 2.0
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 14.5,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 1,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 21.1,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 19
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "02caa00c-084f-4f47-ad9a-7704f1daee73",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 3,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 0.7
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 13.9,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 21.0,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 15
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "a4ab145b-ed2e-48ca-bb96-0e177959ae51",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 5,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "decelerate",
+     "stop",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 0.5
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 17.8,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "decelerate",
+     "stop",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 20.0,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "decelerate",
+     "stop",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 18
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "cd20c5f6-fd75-4d32-addc-b7193f5d7de3",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 4,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ],
+    [
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 0.6
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 23.7,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ],
+    [
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 30.2,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ],
+    [
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 26
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "4385ef64-ea7f-4b01-8bb4-b2b22abadf19",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 5,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "stop",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 0.3
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 14.0,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "stop",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 17.6,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "stop",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 16
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "fdcc3944-a2ae-4726-a2a3-20a91b498178",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 5,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 0.6
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 14.9,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 19.7,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 16
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "77c0f92d-504d-4636-80e9-7e75c6e0d0a2",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 7,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ],
+    [
+     "stop",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 0.6
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 25.8,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ],
+    [
+     "stop",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 26.7,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left",
+     "decelerate"
+    ],
+    [
+     "stop",
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 33
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "517de13c-b8c5-45b7-b8ea-69bee41fe2fa",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 4,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "turn_left",
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 0.5
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 13.4,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "turn_left",
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "other"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 16.5,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "turn_left",
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 14
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "5547e833-f863-476f-af34-51f1e0d05293",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 5,
+   "n_episodes": 3,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "turn_right"
+    ],
+    [
+     "decelerate",
+     "turn_right"
+    ],
+    [
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 1.1
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 25.4,
+   "error": null,
+   "n_records": 3,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "turn_right"
+    ],
+    [
+     "decelerate",
+     "turn_right"
+    ],
+    [
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 37.9,
+   "error": null,
+   "n_episodes": 3,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "turn_right"
+    ],
+    [
+     "decelerate",
+     "turn_right"
+    ],
+    [
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 32
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "turn_right"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "08d625d8-e718-449b-8f96-3f4688e2c5b4",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 4,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "elapsed_s": 0.9
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 18.9,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 27.8,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "n_tags_total": 21
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "8a631922-2811-4df9-aae4-f8a8698a47a5",
+  "s0": {
+   "ok": true,
+   "dur": 20.133333333333333,
+   "map_valid": true,
+   "n_raw_events": 6,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "accelerate",
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 0.7
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 24.5,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "accelerate",
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 26.8,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "accelerate",
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 21
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "01bd6932-1a96-48af-a840-39f6418aed8f",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 4,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_right"
+    ]
+   ],
+   "elapsed_s": 0.5
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 13.5,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_right"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 20.1,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_right"
+    ]
+   ],
+   "n_tags_total": 17
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "4a43a251-9a2f-46b2-bba5-d81f9d53649c",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 4,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ],
+    [
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 0.7
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 19.6,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ],
+    [
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 27.1,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ],
+    [
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 20
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "860410ec-9373-4f4f-8cc6-cf691a71d7cd",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 5,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "turn_left",
+     "decelerate"
+    ],
+    [
+     "accelerate",
+     "stop",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 0.8
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 22.9,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "turn_left",
+     "decelerate"
+    ],
+    [
+     "accelerate",
+     "stop",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "other",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 29.8,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "turn_left",
+     "decelerate"
+    ],
+    [
+     "accelerate",
+     "stop",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 25
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "0005d7fe-67ff-4f38-98e7-17319ecf1678",
+  "s0": {
+   "ok": true,
+   "dur": 20.133333333333333,
+   "map_valid": false,
+   "n_raw_events": 4,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 0.3
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 22.7,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 29.0,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 23
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "2dff7cb5-255f-4ebe-9c8c-313ba0c03b5b",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 4,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate",
+     "turn_right"
+    ]
+   ],
+   "elapsed_s": 1.1
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 19.5,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate",
+     "turn_right"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 29.1,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate",
+     "turn_right"
+    ]
+   ],
+   "n_tags_total": 22
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "decelerate",
+   "turn_right"
+  ],
+  "track2_arc_union": [
+   "decelerate",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "58b79352-d22f-44e1-aa69-b743d5791039",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 4,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_left"
+    ]
+   ],
+   "elapsed_s": 0.9
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 11.9,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_left"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 18.7,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "turn_left"
+    ]
+   ],
+   "n_tags_total": 13
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "56c0fb1a-7357-4929-8a9b-9039ab5a71e9",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 3,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "elapsed_s": 0.9
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 20.4,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 30.2,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "n_tags_total": 24
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "ac05216e-652a-41ec-aa01-d9a87f719714",
+  "s0": {
+   "ok": true,
+   "dur": 20.133333333333333,
+   "map_valid": false,
+   "n_raw_events": 4,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ],
+    [
+     "turn_left"
+    ]
+   ],
+   "elapsed_s": 0.4
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 20.3,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ],
+    [
+     "turn_left"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 29.0,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ],
+    [
+     "turn_left"
+    ]
+   ],
+   "n_tags_total": 46
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "ca611724-8830-47e3-8f5e-b248549ce76e",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 3,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 1.7
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 13.2,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 18.9,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 19
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "0d335b77-3917-42d9-91fd-848ae98624ed",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 3,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "stop",
+     "turn_right",
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 0.9
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 11.8,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "stop",
+     "turn_right",
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 14.1,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "stop",
+     "turn_right",
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 11
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "stop",
+   "turn_right"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "27ecfec4-ada9-45bb-844e-11088bb1848b",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 6,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "stop",
+     "accelerate",
+     "turn_right"
+    ],
+    [
+     "decelerate",
+     "turn_right",
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 1.0
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 17.5,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "turn_right"
+    ],
+    [
+     "decelerate",
+     "turn_right",
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 28.3,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "turn_right"
+    ],
+    [
+     "decelerate",
+     "turn_right",
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 32
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop",
+   "turn_right"
+  ]
+ },
+ {
+  "clip_id": "9939eaf7-0f35-4ced-9127-80ea850d8e51",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 5,
+   "n_episodes": 3,
+   "episode_kinds": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "elapsed_s": 1.2
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 26.1,
+   "error": null,
+   "n_records": 3,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 39.7,
+   "error": null,
+   "n_episodes": 3,
+   "arc_by_segment": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "n_tags_total": 23
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "024415a5-94a5-4810-9c27-a72314b55146",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 4,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "lane_change_right"
+    ]
+   ],
+   "elapsed_s": 0.8
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 9.9,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "lane_change_right"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 11.7,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate",
+     "lane_change_right"
+    ]
+   ],
+   "n_tags_total": 16
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "lane_change_right",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "lane_change_right",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "9ed113ec-12e1-4bc1-946c-6fec04e13c8e",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 3,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left"
+    ]
+   ],
+   "elapsed_s": 1.1
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 13.1,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 18.5,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "turn_left"
+    ]
+   ],
+   "n_tags_total": 15
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "8d0149ae-03b9-401d-ba10-3a198b047efb",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 3,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "elapsed_s": 1.3
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 18.9,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 22.2,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "n_tags_total": 13
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "e4a319c6-9f2c-4083-9399-8f00bd7118ed",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 3,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "elapsed_s": 0.9
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 15.4,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 21.7,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "n_tags_total": 17
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "a7e2fcf7-5b62-485a-ab6d-3e22c4497a8c",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 3,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "elapsed_s": 0.4
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 15.8,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 21.9,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "decelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "n_tags_total": 27
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "293ba92c-ed49-4b6e-a5d6-725ad2ab9c64",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 5,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "elapsed_s": 0.3
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 23.9,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "cause_by_segment": [
+    "other",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 30.0,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop",
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "n_tags_total": 24
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "7e59b62a-1e13-45b5-8fd7-563f4d4b039f",
+  "s0": {
+   "ok": true,
+   "dur": 20.133333333333333,
+   "map_valid": true,
+   "n_raw_events": 2,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 1.2
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 10.3,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 14.4,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 10
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "decelerate"
+  ],
+  "track2_arc_union": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "1d3778ac-cfaf-4d29-b276-4ec22552c4ff",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 2,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 1.2
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 13.3,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 16.4,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 12
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "decelerate"
+  ],
+  "track2_arc_union": [
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "80db1c36-a8ec-4e4f-9023-ffd90ca1cd11",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 2,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "elapsed_s": 1.1
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 10.2,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 13.2,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "n_tags_total": 12
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "294dfe6a-c624-466e-8f56-ff77db1a3ac7",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 3,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 0.9
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 16.5,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "other"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 23.2,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 15
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate"
+  ]
+ },
+ {
+  "clip_id": "9e939ef1-feab-4a3f-a60c-f98614fd8db1",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 3,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "stop",
+     "accelerate"
+    ],
+    [
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 0.9
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 19.1,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate"
+    ],
+    [
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 25.5,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate"
+    ],
+    [
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 27
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "60259ce0-34b3-4715-9790-67f0a4b25464",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 4,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "decelerate",
+     "stop"
+    ],
+    [
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "elapsed_s": 0.4
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 17.0,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop"
+    ],
+    [
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 23.6,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "decelerate",
+     "stop"
+    ],
+    [
+     "turn_left",
+     "decelerate"
+    ]
+   ],
+   "n_tags_total": 28
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ],
+  "track2_arc_union": [
+   "decelerate",
+   "stop",
+   "turn_left"
+  ]
+ },
+ {
+  "clip_id": "aa8ff252-b0a4-4ce2-8e54-4c27ae7f92d7",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 4,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "stop",
+     "accelerate",
+     "accelerate"
+    ],
+    [
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 0.8
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 18.8,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "accelerate"
+    ],
+    [
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 24.2,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "accelerate"
+    ],
+    [
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 20
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "36c7ddfd-7d15-4b04-81ac-2193f6958444",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": false,
+   "n_raw_events": 3,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "stop",
+     "accelerate"
+    ],
+    [
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 0.3
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 18.5,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate"
+    ],
+    [
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 23.3,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate"
+    ],
+    [
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 22
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "fc290f0a-b083-4f24-b937-827aa0d169cb",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 3,
+   "n_episodes": 2,
+   "episode_kinds": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "elapsed_s": 0.5
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 20.5,
+   "error": null,
+   "n_records": 2,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent",
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 24.2,
+   "error": null,
+   "n_episodes": 2,
+   "arc_by_segment": [
+    [
+     "accelerate"
+    ],
+    [
+     "decelerate",
+     "stop"
+    ]
+   ],
+   "n_tags_total": 29
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "decelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "f7295b9b-a67a-4f88-8764-7a2d6ec77b6e",
+  "s0": {
+   "ok": true,
+   "dur": 20.166666666666668,
+   "map_valid": true,
+   "n_raw_events": 3,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "stop",
+     "accelerate",
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 0.8
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 9.7,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 14.3,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 10
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "stop"
+  ]
+ },
+ {
+  "clip_id": "43a3d6c7-cde2-4392-a8d7-342e49db6a57",
+  "s0": {
+   "ok": true,
+   "dur": 20.133333333333333,
+   "map_valid": false,
+   "n_raw_events": 3,
+   "n_episodes": 1,
+   "episode_kinds": [
+    [
+     "stop",
+     "accelerate",
+     "accelerate"
+    ]
+   ],
+   "elapsed_s": 0.7
+  },
+  "track1": {
+   "ok": true,
+   "elapsed_s": 13.4,
+   "error": null,
+   "n_records": 1,
+   "n_parse_fail": 0,
+   "n_cjk": 0,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "accelerate"
+    ]
+   ],
+   "cause_by_segment": [
+    "agent"
+   ]
+  },
+  "track2": {
+   "ok": true,
+   "elapsed_s": 17.2,
+   "error": null,
+   "n_episodes": 1,
+   "arc_by_segment": [
+    [
+     "stop",
+     "accelerate",
+     "accelerate"
+    ]
+   ],
+   "n_tags_total": 17
+  },
+  "track_arc_mismatch": false,
+  "track1_arc_union": [
+   "accelerate",
+   "stop"
+  ],
+  "track2_arc_union": [
+   "accelerate",
+   "stop"
+  ]
+ }
+]

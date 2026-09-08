@@ -1,3 +1,5 @@
+# vocab-literal-ok — _axes()는 S0 kind 어휘 -> tag_vocab_v0.4.json ego_action enum
+# 번역표라 리터럴이 불가피함. 값은 로드 시 vocab과 대조 검증(assert)해 드리프트를 막는다.
 """v0.7.3 2-pass 분류기 + 조립.
 
 Pass1: 비제약 추론(<think>) — 원인/객체/가림/거동/신호를 단계적으로.
@@ -6,6 +8,7 @@ Pass2: guided_json 으로 model_output_v0.7.3 스키마 enum 강제 추출.
 """
 
 import base64
+import json
 import tempfile
 from pathlib import Path
 
@@ -106,6 +109,44 @@ def _dominant(kinds: list) -> tuple:
     return "ego_lane_keep", kinds[0] if kinds else "decelerate"
 
 
+# S0 kind(자체 검출 어휘) → tag_vocab_v0.4.json ego_action enum 번역표.
+# 어휘를 복제하는 게 아니라 서로 다른 두 이름체계를 잇는 표 — 값은 아래에서 vocab과
+# 대조 검증해 드리프트를 즉시 실패시킨다(단순 하드코딩과 구분).
+_VOCAB_PATH = Path(__file__).resolve().parent.parent / "common" / "schema" / "tag_vocab_v0.4.json"
+_EGO_ACTION_VOCAB = json.loads(_VOCAB_PATH.read_text(encoding="utf-8"))["ego_action"]
+
+_LON_KINDS = {"decelerate", "accelerate", "stop"}
+_LAT_KINDS = {"turn_left", "turn_right", "lane_change_left", "lane_change_right"}
+_LON_TRANSITION = {"decelerate": "decel_onset", "accelerate": "accel_onset", "stop": "stop_initiate"}
+_LON_RESULT = {"decelerate": "decelerating", "accelerate": "accelerating", "stop": "standstill"}
+_LAT_TRANSITION = {"turn_left": "turn_left_onset", "turn_right": "turn_right_onset",
+                    "lane_change_left": "lane_change_left_onset",
+                    "lane_change_right": "lane_change_right_onset"}
+
+assert set(_LON_TRANSITION.values()) <= set(_EGO_ACTION_VOCAB["longitudinal"]["transition"]["values"])
+assert set(_LON_RESULT.values()) <= set(_EGO_ACTION_VOCAB["longitudinal"]["resulting_state"]["values"])
+assert set(_LAT_TRANSITION.values()) <= set(_EGO_ACTION_VOCAB["lateral"]["transition"]["values"])
+
+
+def _axes(kinds: list) -> dict:
+    """목표설계 v0.4 ego_action 2축(longitudinal/lateral) 근사 — tag_vocab_v0.4.json 대응.
+
+    원시 속도/가속도 배열 없이 kind 시퀀스(이미 t0 순)만으로 근사한다(엄밀한 값 아님).
+    longitudinal은 CAN 확정(anchor_policy), lateral은 트리거 후보일 뿐 — resolved=false로
+    "map∪VLM 해소 전" 상태를 명시한다(CLAUDE.md §3 검출/라벨해소 분리). 기존 ego_action/
+    dom_kind는 그대로 유지하고 이 함수는 별도 axes 필드로만 추가된다(하위호환).
+    """
+    lon = [k for k in kinds if k in _LON_KINDS]
+    lat = [k for k in kinds if k in _LAT_KINDS]
+    lon_transition = _LON_TRANSITION.get(lon[0], "none") if lon else "none"
+    lon_result = _LON_RESULT.get(lon[-1], "cruise") if lon else "cruise"
+    lat_transition = _LAT_TRANSITION.get(lat[0], "none") if lat else "none"
+    return {
+        "longitudinal": {"transition": lon_transition, "resulting_state": lon_result},
+        "lateral": {"transition": lat_transition, "resolved": False},
+    }
+
+
 def consolidate_episodes(events: list, gap: float = _EP_GAP) -> list:
     """[원칙1] 인접/겹치는 egomotion 이벤트를 하나의 거동 에피소드로 병합."""
     evs = sorted(events, key=lambda e: e["t0"])
@@ -119,6 +160,7 @@ def consolidate_episodes(events: list, gap: float = _EP_GAP) -> list:
     for ep in eps:
         ep["onset"] = ep["t0"]
         ep["ego_action"], ep["dom_kind"] = _dominant(ep["kinds"])
+        ep["axes"] = _axes(ep["kinds"])
     return eps
 
 

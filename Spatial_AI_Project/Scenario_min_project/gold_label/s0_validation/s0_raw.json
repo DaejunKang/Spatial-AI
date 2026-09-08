@@ -1,0 +1,2699 @@
+{
+ "9e991ba1-499a-4169-8051-9df875b92f35": {
+  "dur": 20.133333333333333,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 4.67,
+    "t1": 15.0,
+    "detail": "spd_min=0.0",
+    "center": 9.84
+   },
+   {
+    "kind": "accelerate",
+    "t0": 17.63,
+    "t1": 19.02,
+    "detail": "ax_max=1.54 spd 2.1->4.0",
+    "center": 18.33
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 4.67,
+    "t1": 15.0,
+    "detail": "spd_min=0.0",
+    "center": 9.84
+   },
+   {
+    "kind": "accelerate",
+    "t0": 17.63,
+    "t1": 19.02,
+    "detail": "ax_max=1.54 spd 2.1->4.0",
+    "center": 18.33
+   }
+  ],
+  "kind_diff": false
+ },
+ "110b5fa7-6a35-47c7-af59-43ac082c52ce": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "turn_right",
+    "t0": 2.69,
+    "t1": 6.81,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-57deg(raw=-57) lat=-3.0m",
+    "center": 4.75
+   },
+   {
+    "kind": "stop",
+    "t0": 5.45,
+    "t1": 9.69,
+    "detail": "spd_min=0.7",
+    "center": 7.57
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "turn_right",
+    "t0": 2.69,
+    "t1": 6.81,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-57deg(raw=-57) lat=-3.0m",
+    "center": 4.75
+   },
+   {
+    "kind": "stop",
+    "t0": 5.45,
+    "t1": 9.69,
+    "detail": "spd_min=0.7",
+    "center": 7.57
+   }
+  ],
+  "kind_diff": false
+ },
+ "024415a5-94a5-4810-9c27-a72314b55146": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 0.14,
+    "t1": 2.18,
+    "detail": "ax_min=-2.06 spd 4.0->0.8",
+    "center": 1.16
+   },
+   {
+    "kind": "stop",
+    "t0": 1.61,
+    "t1": 3.81,
+    "detail": "spd_min=0.5",
+    "center": 2.71
+   },
+   {
+    "kind": "accelerate",
+    "t0": 3.4,
+    "t1": 4.65,
+    "detail": "ax_max=2.21 spd 0.8->3.2",
+    "center": 4.02
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 0.14,
+    "t1": 2.18,
+    "detail": "ax_min=-2.06 spd 4.0->0.8",
+    "center": 1.16
+   },
+   {
+    "kind": "stop",
+    "t0": 1.61,
+    "t1": 3.81,
+    "detail": "spd_min=0.5",
+    "center": 2.71
+   },
+   {
+    "kind": "accelerate",
+    "t0": 3.4,
+    "t1": 4.65,
+    "detail": "ax_max=2.21 spd 0.8->3.2",
+    "center": 4.02
+   },
+   {
+    "kind": "lane_change_right",
+    "t0": 3.97,
+    "t1": 6.41,
+    "curvature_correction_source": "map",
+    "lane_crossings": 3,
+    "detail": "net=-22deg(raw=-42) lat=-4.1m",
+    "center": 5.19
+   }
+  ],
+  "kind_diff": true
+ },
+ "c2ef6d2c-ba8c-4fe4-b369-391cd5b71770": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 4.68,
+    "t1": 10.01,
+    "detail": "ax_min=-2.59 spd 12.2->3.7",
+    "center": 7.34
+   },
+   {
+    "kind": "decelerate",
+    "t0": 10.62,
+    "t1": 11.34,
+    "detail": "ax_min=-1.15 spd 2.5->1.7",
+    "center": 10.98
+   },
+   {
+    "kind": "accelerate",
+    "t0": 12.39,
+    "t1": 13.43,
+    "detail": "ax_max=1.79 spd 1.9->4.0",
+    "center": 12.91
+   },
+   {
+    "kind": "turn_right",
+    "t0": 12.89,
+    "t1": 15.77,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-45deg(raw=-45) lat=-7.3m",
+    "center": 14.33
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 4.68,
+    "t1": 10.01,
+    "detail": "ax_min=-2.59 spd 12.2->3.7",
+    "center": 7.34
+   },
+   {
+    "kind": "decelerate",
+    "t0": 10.62,
+    "t1": 11.34,
+    "detail": "ax_min=-1.15 spd 2.5->1.7",
+    "center": 10.98
+   },
+   {
+    "kind": "accelerate",
+    "t0": 12.39,
+    "t1": 13.43,
+    "detail": "ax_max=1.79 spd 1.9->4.0",
+    "center": 12.91
+   },
+   {
+    "kind": "turn_right",
+    "t0": 12.89,
+    "t1": 15.77,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-45deg(raw=-45) lat=-7.3m",
+    "center": 14.33
+   }
+  ],
+  "kind_diff": false
+ },
+ "392296ce-dd9d-4458-9b27-4b55697a4c08": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 0.01,
+    "t1": 8.72,
+    "detail": "spd_min=0.0",
+    "center": 4.36
+   },
+   {
+    "kind": "accelerate",
+    "t0": 7.95,
+    "t1": 14.3,
+    "detail": "ax_max=2.17 spd 0.4->7.9",
+    "center": 11.12
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 0.01,
+    "t1": 8.72,
+    "detail": "spd_min=0.0",
+    "center": 4.36
+   },
+   {
+    "kind": "accelerate",
+    "t0": 7.95,
+    "t1": 14.3,
+    "detail": "ax_max=2.17 spd 0.4->7.9",
+    "center": 11.12
+   }
+  ],
+  "kind_diff": false
+ },
+ "30a39599-c652-48af-a6d8-d3c3270b5525": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 9.87,
+    "t1": 20.13,
+    "detail": "ax_min=-1.95 spd 15.8->13.6",
+    "center": 15.0
+   },
+   {
+    "kind": "turn_left",
+    "t0": 15.13,
+    "t1": 20.06,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=170deg(raw=170) lat=11.5m",
+    "center": 17.59
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 9.87,
+    "t1": 20.13,
+    "detail": "ax_min=-1.95 spd 15.8->13.6",
+    "center": 15.0
+   },
+   {
+    "kind": "turn_left",
+    "t0": 15.13,
+    "t1": 20.06,
+    "curvature_correction_source": "map",
+    "lane_crossings": 15,
+    "detail": "net=179deg(raw=170) lat=11.5m",
+    "center": 17.59
+   }
+  ],
+  "kind_diff": false
+ },
+ "2ae48228-d1a2-4274-be13-f278065b20a3": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 2.72,
+    "t1": 3.2,
+    "detail": "ax_min=-1.91 spd 10.4->9.7",
+    "center": 2.96
+   },
+   {
+    "kind": "decelerate",
+    "t0": 8.61,
+    "t1": 11.1,
+    "detail": "ax_min=-2.84 spd 5.9->0.5",
+    "center": 9.86
+   },
+   {
+    "kind": "stop",
+    "t0": 10.51,
+    "t1": 12.43,
+    "detail": "spd_min=0.4",
+    "center": 11.47
+   },
+   {
+    "kind": "accelerate",
+    "t0": 11.89,
+    "t1": 16.82,
+    "detail": "ax_max=2.77 spd 0.5->10.6",
+    "center": 14.36
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 2.72,
+    "t1": 3.2,
+    "detail": "ax_min=-1.91 spd 10.4->9.7",
+    "center": 2.96
+   },
+   {
+    "kind": "decelerate",
+    "t0": 8.61,
+    "t1": 11.1,
+    "detail": "ax_min=-2.84 spd 5.9->0.5",
+    "center": 9.86
+   },
+   {
+    "kind": "stop",
+    "t0": 10.51,
+    "t1": 12.43,
+    "detail": "spd_min=0.4",
+    "center": 11.47
+   },
+   {
+    "kind": "accelerate",
+    "t0": 11.89,
+    "t1": 16.82,
+    "detail": "ax_max=2.77 spd 0.5->10.6",
+    "center": 14.36
+   }
+  ],
+  "kind_diff": false
+ },
+ "17af9c29-86c1-42a4-8688-40b0158f53a7": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 2.76,
+    "t1": 3.54,
+    "detail": "ax_min=-1.54 spd 5.7->4.8",
+    "center": 3.15
+   },
+   {
+    "kind": "turn_right",
+    "t0": 4.3,
+    "t1": 10.76,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-162deg(raw=-162) lat=-13.3m",
+    "center": 7.53
+   },
+   {
+    "kind": "decelerate",
+    "t0": 6.04,
+    "t1": 10.82,
+    "detail": "ax_min=-1.70 spd 3.6->3.6",
+    "center": 8.43
+   },
+   {
+    "kind": "accelerate",
+    "t0": 15.75,
+    "t1": 18.99,
+    "detail": "ax_max=2.80 spd 6.6->0.0",
+    "center": 17.37
+   },
+   {
+    "kind": "stop",
+    "t0": 18.25,
+    "t1": 20.13,
+    "detail": "spd_min=0.0",
+    "center": 19.19
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 2.76,
+    "t1": 3.54,
+    "detail": "ax_min=-1.54 spd 5.7->4.8",
+    "center": 3.15
+   },
+   {
+    "kind": "turn_right",
+    "t0": 4.3,
+    "t1": 10.76,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-162deg(raw=-162) lat=-13.3m",
+    "center": 7.53
+   },
+   {
+    "kind": "decelerate",
+    "t0": 6.04,
+    "t1": 10.82,
+    "detail": "ax_min=-1.70 spd 3.6->3.6",
+    "center": 8.43
+   },
+   {
+    "kind": "accelerate",
+    "t0": 15.75,
+    "t1": 18.99,
+    "detail": "ax_max=2.80 spd 6.6->0.0",
+    "center": 17.37
+   },
+   {
+    "kind": "stop",
+    "t0": 18.25,
+    "t1": 20.13,
+    "detail": "spd_min=0.0",
+    "center": 19.19
+   }
+  ],
+  "kind_diff": false
+ },
+ "c10f201b-6663-43bf-92e9-52d58a4f279a": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 9.58,
+    "detail": "spd_min=0.0",
+    "center": 4.79
+   },
+   {
+    "kind": "accelerate",
+    "t0": 9.01,
+    "t1": 12.72,
+    "detail": "ax_max=3.49 spd 0.2->8.0",
+    "center": 10.87
+   },
+   {
+    "kind": "turn_left",
+    "t0": 13.59,
+    "t1": 16.83,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=48deg(raw=48) lat=12.6m",
+    "center": 15.21
+   },
+   {
+    "kind": "decelerate",
+    "t0": 15.5,
+    "t1": 16.16,
+    "detail": "ax_min=-1.48 spd 9.6->10.2",
+    "center": 15.83
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 9.58,
+    "detail": "spd_min=0.0",
+    "center": 4.79
+   },
+   {
+    "kind": "accelerate",
+    "t0": 9.01,
+    "t1": 12.72,
+    "detail": "ax_max=3.49 spd 0.2->8.0",
+    "center": 10.87
+   },
+   {
+    "kind": "turn_left",
+    "t0": 13.59,
+    "t1": 16.83,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=48deg(raw=48) lat=12.6m",
+    "center": 15.21
+   },
+   {
+    "kind": "decelerate",
+    "t0": 15.5,
+    "t1": 16.16,
+    "detail": "ax_min=-1.48 spd 9.6->10.2",
+    "center": 15.83
+   }
+  ],
+  "kind_diff": false
+ },
+ "0f13dec5-f643-4c22-9660-1854f5e8ec96": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 11.66,
+    "t1": 15.97,
+    "detail": "ax_min=-1.71 spd 23.5->23.3",
+    "center": 13.82
+   },
+   {
+    "kind": "decelerate",
+    "t0": 17.13,
+    "t1": 20.13,
+    "detail": "ax_min=-1.40 spd 22.5->22.4",
+    "center": 18.63
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 11.66,
+    "t1": 15.97,
+    "detail": "ax_min=-1.71 spd 23.5->23.3",
+    "center": 13.82
+   },
+   {
+    "kind": "decelerate",
+    "t0": 17.13,
+    "t1": 20.13,
+    "detail": "ax_min=-1.40 spd 22.5->22.4",
+    "center": 18.63
+   }
+  ],
+  "kind_diff": false
+ },
+ "aa8ff252-b0a4-4ce2-8e54-4c27ae7f92d7": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 8.79,
+    "detail": "spd_min=0.0",
+    "center": 4.4
+   },
+   {
+    "kind": "accelerate",
+    "t0": 8.22,
+    "t1": 9.96,
+    "detail": "ax_max=1.99 spd 0.6->3.4",
+    "center": 9.09
+   },
+   {
+    "kind": "accelerate",
+    "t0": 11.56,
+    "t1": 11.99,
+    "detail": "ax_max=2.08 spd 4.5->5.1",
+    "center": 11.78
+   },
+   {
+    "kind": "accelerate",
+    "t0": 14.54,
+    "t1": 15.49,
+    "detail": "ax_max=1.40 spd 7.6->8.7",
+    "center": 15.02
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 8.79,
+    "detail": "spd_min=0.0",
+    "center": 4.4
+   },
+   {
+    "kind": "accelerate",
+    "t0": 8.22,
+    "t1": 9.96,
+    "detail": "ax_max=1.99 spd 0.6->3.4",
+    "center": 9.09
+   },
+   {
+    "kind": "accelerate",
+    "t0": 11.56,
+    "t1": 11.99,
+    "detail": "ax_max=2.08 spd 4.5->5.1",
+    "center": 11.78
+   },
+   {
+    "kind": "accelerate",
+    "t0": 14.54,
+    "t1": 15.49,
+    "detail": "ax_max=1.40 spd 7.6->8.7",
+    "center": 15.02
+   }
+  ],
+  "kind_diff": false
+ },
+ "c2bfe9c5-197c-45f3-8bf0-846b07540966": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "accelerate",
+    "t0": 0.01,
+    "t1": 1.16,
+    "detail": "ax_max=1.66 spd 1.2->2.9",
+    "center": 0.58
+   },
+   {
+    "kind": "accelerate",
+    "t0": 7.04,
+    "t1": 7.61,
+    "detail": "ax_max=1.27 spd 2.5->3.1",
+    "center": 7.32
+   },
+   {
+    "kind": "turn_left",
+    "t0": 7.2,
+    "t1": 11.35,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=125deg(raw=125) lat=12.5m",
+    "center": 9.27
+   },
+   {
+    "kind": "decelerate",
+    "t0": 8.49,
+    "t1": 12.15,
+    "detail": "ax_min=-3.56 spd 3.5->7.4",
+    "center": 10.32
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "accelerate",
+    "t0": 0.01,
+    "t1": 1.16,
+    "detail": "ax_max=1.66 spd 1.2->2.9",
+    "center": 0.58
+   },
+   {
+    "kind": "accelerate",
+    "t0": 7.04,
+    "t1": 7.61,
+    "detail": "ax_max=1.27 spd 2.5->3.1",
+    "center": 7.32
+   },
+   {
+    "kind": "turn_left",
+    "t0": 7.2,
+    "t1": 11.35,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=125deg(raw=125) lat=12.5m",
+    "center": 9.27
+   },
+   {
+    "kind": "decelerate",
+    "t0": 8.49,
+    "t1": 12.15,
+    "detail": "ax_min=-3.56 spd 3.5->7.4",
+    "center": 10.32
+   }
+  ],
+  "kind_diff": false
+ },
+ "f55070ab-eb2d-4b48-9095-e40624a86508": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 3.65,
+    "t1": 6.38,
+    "detail": "ax_min=-1.71 spd 6.4->5.9",
+    "center": 5.01
+   },
+   {
+    "kind": "turn_left",
+    "t0": 7.02,
+    "t1": 14.22,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=141deg(raw=141) lat=15.8m",
+    "center": 10.62
+   },
+   {
+    "kind": "decelerate",
+    "t0": 12.75,
+    "t1": 13.26,
+    "detail": "ax_min=-1.35 spd 3.8->4.1",
+    "center": 13.0
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 3.65,
+    "t1": 6.38,
+    "detail": "ax_min=-1.71 spd 6.4->5.9",
+    "center": 5.01
+   },
+   {
+    "kind": "turn_left",
+    "t0": 7.02,
+    "t1": 14.22,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=141deg(raw=141) lat=15.8m",
+    "center": 10.62
+   },
+   {
+    "kind": "decelerate",
+    "t0": 12.75,
+    "t1": 13.26,
+    "detail": "ax_min=-1.35 spd 3.8->4.1",
+    "center": 13.0
+   }
+  ],
+  "kind_diff": false
+ },
+ "83b1912d-376a-4ab9-9dac-ac8c092b572d": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 1.65,
+    "t1": 3.1,
+    "detail": "ax_min=-1.28 spd 22.0->20.4",
+    "center": 2.38
+   },
+   {
+    "kind": "accelerate",
+    "t0": 8.26,
+    "t1": 8.69,
+    "detail": "ax_max=1.51 spd 18.9->19.4",
+    "center": 8.48
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 1.65,
+    "t1": 3.1,
+    "detail": "ax_min=-1.28 spd 22.0->20.4",
+    "center": 2.38
+   },
+   {
+    "kind": "accelerate",
+    "t0": 8.26,
+    "t1": 8.69,
+    "detail": "ax_max=1.51 spd 18.9->19.4",
+    "center": 8.48
+   }
+  ],
+  "kind_diff": false
+ },
+ "0bb0b453-0077-4175-bc9a-6707c4fa1938": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 0.01,
+    "t1": 0.87,
+    "detail": "ax_min=-2.28 spd 6.1->4.6",
+    "center": 0.44
+   },
+   {
+    "kind": "turn_left",
+    "t0": 0.93,
+    "t1": 4.52,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=68deg(raw=68) lat=11.3m",
+    "center": 2.72
+   },
+   {
+    "kind": "decelerate",
+    "t0": 5.78,
+    "t1": 6.54,
+    "detail": "ax_min=-1.44 spd 12.3->14.0",
+    "center": 6.16
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 0.01,
+    "t1": 0.87,
+    "detail": "ax_min=-2.28 spd 6.1->4.6",
+    "center": 0.44
+   },
+   {
+    "kind": "turn_left",
+    "t0": 0.93,
+    "t1": 4.52,
+    "curvature_correction_source": "map",
+    "lane_crossings": 14,
+    "detail": "net=94deg(raw=68) lat=11.3m",
+    "center": 2.72
+   },
+   {
+    "kind": "decelerate",
+    "t0": 5.78,
+    "t1": 6.54,
+    "detail": "ax_min=-1.44 spd 12.3->14.0",
+    "center": 6.16
+   }
+  ],
+  "kind_diff": false
+ },
+ "8d0149ae-03b9-401d-ba10-3a198b047efb": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 5.55,
+    "t1": 9.41,
+    "detail": "ax_min=-3.31 spd 18.5->9.5",
+    "center": 7.48
+   },
+   {
+    "kind": "decelerate",
+    "t0": 16.17,
+    "t1": 18.38,
+    "detail": "ax_min=-2.26 spd 5.0->1.3",
+    "center": 17.28
+   },
+   {
+    "kind": "stop",
+    "t0": 18.2,
+    "t1": 20.12,
+    "detail": "spd_min=0.7",
+    "center": 19.16
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 5.55,
+    "t1": 9.41,
+    "detail": "ax_min=-3.31 spd 18.5->9.5",
+    "center": 7.48
+   },
+   {
+    "kind": "decelerate",
+    "t0": 16.17,
+    "t1": 18.38,
+    "detail": "ax_min=-2.26 spd 5.0->1.3",
+    "center": 17.28
+   },
+   {
+    "kind": "stop",
+    "t0": 18.2,
+    "t1": 20.12,
+    "detail": "spd_min=0.7",
+    "center": 19.16
+   }
+  ],
+  "kind_diff": false
+ },
+ "5cbfe146-70db-4ad9-8a17-c4322a98a35a": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 9.37,
+    "detail": "spd_min=0.0",
+    "center": 4.69
+   },
+   {
+    "kind": "accelerate",
+    "t0": 8.85,
+    "t1": 11.26,
+    "detail": "ax_max=1.79 spd 0.7->4.4",
+    "center": 10.06
+   },
+   {
+    "kind": "turn_left",
+    "t0": 10.96,
+    "t1": 15.44,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=80deg(raw=80) lat=18.1m",
+    "center": 13.2
+   },
+   {
+    "kind": "decelerate",
+    "t0": 13.13,
+    "t1": 14.03,
+    "detail": "ax_min=-1.67 spd 5.7->6.7",
+    "center": 13.58
+   },
+   {
+    "kind": "decelerate",
+    "t0": 14.67,
+    "t1": 15.55,
+    "detail": "ax_min=-1.73 spd 7.4->8.3",
+    "center": 15.11
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 9.37,
+    "detail": "spd_min=0.0",
+    "center": 4.69
+   },
+   {
+    "kind": "accelerate",
+    "t0": 8.85,
+    "t1": 11.26,
+    "detail": "ax_max=1.79 spd 0.7->4.4",
+    "center": 10.06
+   },
+   {
+    "kind": "turn_left",
+    "t0": 10.96,
+    "t1": 15.44,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=80deg(raw=80) lat=18.1m",
+    "center": 13.2
+   },
+   {
+    "kind": "decelerate",
+    "t0": 13.13,
+    "t1": 14.03,
+    "detail": "ax_min=-1.67 spd 5.7->6.7",
+    "center": 13.58
+   },
+   {
+    "kind": "decelerate",
+    "t0": 14.67,
+    "t1": 15.55,
+    "detail": "ax_min=-1.73 spd 7.4->8.3",
+    "center": 15.11
+   }
+  ],
+  "kind_diff": false
+ },
+ "02d7faf9-28f9-47cc-9598-93c559e46fbd": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "accelerate",
+    "t0": 8.96,
+    "t1": 11.74,
+    "detail": "ax_max=2.16 spd 2.6->7.2",
+    "center": 10.35
+   },
+   {
+    "kind": "decelerate",
+    "t0": 14.15,
+    "t1": 17.63,
+    "detail": "ax_min=-1.41 spd 6.4->5.4",
+    "center": 15.89
+   },
+   {
+    "kind": "stop",
+    "t0": 17.25,
+    "t1": 20.13,
+    "detail": "spd_min=0.0",
+    "center": 18.69
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "accelerate",
+    "t0": 8.96,
+    "t1": 11.74,
+    "detail": "ax_max=2.16 spd 2.6->7.2",
+    "center": 10.35
+   },
+   {
+    "kind": "decelerate",
+    "t0": 14.15,
+    "t1": 17.63,
+    "detail": "ax_min=-1.41 spd 6.4->5.4",
+    "center": 15.89
+   },
+   {
+    "kind": "stop",
+    "t0": 17.25,
+    "t1": 20.13,
+    "detail": "spd_min=0.0",
+    "center": 18.69
+   }
+  ],
+  "kind_diff": false
+ },
+ "02a41ec5-ef12-46fe-b9fa-f90f6fb0072f": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 0.01,
+    "t1": 2.56,
+    "detail": "ax_min=-2.83 spd 5.7->0.1",
+    "center": 1.28
+   },
+   {
+    "kind": "stop",
+    "t0": 1.8,
+    "t1": 4.55,
+    "detail": "spd_min=0.0",
+    "center": 3.17
+   },
+   {
+    "kind": "accelerate",
+    "t0": 3.93,
+    "t1": 5.22,
+    "detail": "ax_max=2.00 spd 0.4->2.6",
+    "center": 4.57
+   },
+   {
+    "kind": "accelerate",
+    "t0": 11.04,
+    "t1": 14.15,
+    "detail": "ax_max=2.15 spd 7.3->11.6",
+    "center": 12.59
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 0.01,
+    "t1": 2.56,
+    "detail": "ax_min=-2.83 spd 5.7->0.1",
+    "center": 1.28
+   },
+   {
+    "kind": "stop",
+    "t0": 1.8,
+    "t1": 4.55,
+    "detail": "spd_min=0.0",
+    "center": 3.17
+   },
+   {
+    "kind": "accelerate",
+    "t0": 3.93,
+    "t1": 5.22,
+    "detail": "ax_max=2.00 spd 0.4->2.6",
+    "center": 4.57
+   },
+   {
+    "kind": "accelerate",
+    "t0": 11.04,
+    "t1": 14.15,
+    "detail": "ax_max=2.15 spd 7.3->11.6",
+    "center": 12.59
+   }
+  ],
+  "kind_diff": false
+ },
+ "0d335b77-3917-42d9-91fd-848ae98624ed": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 1.51,
+    "t1": 7.18,
+    "detail": "spd_min=0.7",
+    "center": 4.34
+   },
+   {
+    "kind": "turn_right",
+    "t0": 6.55,
+    "t1": 9.73,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-60deg(raw=-60) lat=-7.8m",
+    "center": 8.14
+   },
+   {
+    "kind": "accelerate",
+    "t0": 7.3,
+    "t1": 7.76,
+    "detail": "ax_max=1.54 spd 1.7->2.7",
+    "center": 7.53
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 1.51,
+    "t1": 7.18,
+    "detail": "spd_min=0.7",
+    "center": 4.34
+   },
+   {
+    "kind": "turn_right",
+    "t0": 6.55,
+    "t1": 9.73,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-60deg(raw=-60) lat=-7.8m",
+    "center": 8.14
+   },
+   {
+    "kind": "accelerate",
+    "t0": 7.3,
+    "t1": 7.76,
+    "detail": "ax_max=1.54 spd 1.7->2.7",
+    "center": 7.53
+   }
+  ],
+  "kind_diff": false
+ },
+ "29fc09c7-9b6e-4293-837e-cd996931760f": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 7.47,
+    "detail": "spd_min=0.0",
+    "center": 3.74
+   },
+   {
+    "kind": "accelerate",
+    "t0": 6.78,
+    "t1": 10.83,
+    "detail": "ax_max=2.46 spd 0.5->7.2",
+    "center": 8.81
+   },
+   {
+    "kind": "accelerate",
+    "t0": 11.97,
+    "t1": 12.56,
+    "detail": "ax_max=1.37 spd 8.4->9.1",
+    "center": 12.27
+   },
+   {
+    "kind": "accelerate",
+    "t0": 15.67,
+    "t1": 17.8,
+    "detail": "ax_max=1.56 spd 12.1->14.7",
+    "center": 16.74
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 7.47,
+    "detail": "spd_min=0.0",
+    "center": 3.74
+   },
+   {
+    "kind": "accelerate",
+    "t0": 6.78,
+    "t1": 10.83,
+    "detail": "ax_max=2.46 spd 0.5->7.2",
+    "center": 8.81
+   },
+   {
+    "kind": "accelerate",
+    "t0": 11.97,
+    "t1": 12.56,
+    "detail": "ax_max=1.37 spd 8.4->9.1",
+    "center": 12.27
+   },
+   {
+    "kind": "accelerate",
+    "t0": 15.67,
+    "t1": 17.8,
+    "detail": "ax_max=1.56 spd 12.1->14.7",
+    "center": 16.74
+   }
+  ],
+  "kind_diff": false
+ },
+ "2dff7cb5-255f-4ebe-9c8c-313ba0c03b5b": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 2.48,
+    "t1": 3.33,
+    "detail": "ax_min=-1.87 spd 20.8->19.6",
+    "center": 2.9
+   },
+   {
+    "kind": "decelerate",
+    "t0": 6.79,
+    "t1": 8.45,
+    "detail": "ax_min=-2.26 spd 18.0->15.0",
+    "center": 7.62
+   },
+   {
+    "kind": "decelerate",
+    "t0": 9.4,
+    "t1": 13.56,
+    "detail": "ax_min=-2.19 spd 14.3->10.0",
+    "center": 11.48
+   },
+   {
+    "kind": "turn_right",
+    "t0": 15.14,
+    "t1": 20.13,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-71deg(raw=-71) lat=-17.0m",
+    "center": 17.63
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 2.48,
+    "t1": 3.33,
+    "detail": "ax_min=-1.87 spd 20.8->19.6",
+    "center": 2.9
+   },
+   {
+    "kind": "decelerate",
+    "t0": 6.79,
+    "t1": 8.45,
+    "detail": "ax_min=-2.26 spd 18.0->15.0",
+    "center": 7.62
+   },
+   {
+    "kind": "decelerate",
+    "t0": 9.4,
+    "t1": 13.56,
+    "detail": "ax_min=-2.19 spd 14.3->10.0",
+    "center": 11.48
+   },
+   {
+    "kind": "turn_right",
+    "t0": 15.14,
+    "t1": 20.13,
+    "curvature_correction_source": "map",
+    "lane_crossings": 2,
+    "detail": "net=-75deg(raw=-71) lat=-17.0m",
+    "center": 17.63
+   }
+  ],
+  "kind_diff": false
+ },
+ "77c0f92d-504d-4636-80e9-7e75c6e0d0a2": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 3.46,
+    "detail": "spd_min=0.0",
+    "center": 1.73
+   },
+   {
+    "kind": "accelerate",
+    "t0": 2.85,
+    "t1": 4.85,
+    "detail": "ax_max=3.47 spd 0.2->5.4",
+    "center": 3.85
+   },
+   {
+    "kind": "turn_left",
+    "t0": 3.84,
+    "t1": 7.35,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=81deg(raw=81) lat=15.1m",
+    "center": 5.6
+   },
+   {
+    "kind": "decelerate",
+    "t0": 5.59,
+    "t1": 7.49,
+    "detail": "ax_min=-3.25 spd 6.4->10.3",
+    "center": 6.54
+   },
+   {
+    "kind": "stop",
+    "t0": 13.57,
+    "t1": 15.94,
+    "detail": "spd_min=0.1",
+    "center": 14.76
+   },
+   {
+    "kind": "turn_left",
+    "t0": 17.17,
+    "t1": 20.12,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=74deg(raw=74) lat=9.5m",
+    "center": 18.65
+   },
+   {
+    "kind": "decelerate",
+    "t0": 17.36,
+    "t1": 20.12,
+    "detail": "ax_min=-3.47 spd 4.3->7.9",
+    "center": 18.74
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 3.46,
+    "detail": "spd_min=0.0",
+    "center": 1.73
+   },
+   {
+    "kind": "accelerate",
+    "t0": 2.85,
+    "t1": 4.85,
+    "detail": "ax_max=3.47 spd 0.2->5.4",
+    "center": 3.85
+   },
+   {
+    "kind": "turn_left",
+    "t0": 3.84,
+    "t1": 7.35,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=81deg(raw=81) lat=15.1m",
+    "center": 5.6
+   },
+   {
+    "kind": "decelerate",
+    "t0": 5.59,
+    "t1": 7.49,
+    "detail": "ax_min=-3.25 spd 6.4->10.3",
+    "center": 6.54
+   },
+   {
+    "kind": "stop",
+    "t0": 13.57,
+    "t1": 15.94,
+    "detail": "spd_min=0.1",
+    "center": 14.76
+   },
+   {
+    "kind": "turn_left",
+    "t0": 17.17,
+    "t1": 20.12,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=74deg(raw=74) lat=9.5m",
+    "center": 18.65
+   },
+   {
+    "kind": "decelerate",
+    "t0": 17.36,
+    "t1": 20.12,
+    "detail": "ax_min=-3.47 spd 4.3->7.9",
+    "center": 18.74
+   }
+  ],
+  "kind_diff": false
+ },
+ "9103508a-dd5d-4be3-aab4-0a8e4c6a2b38": {
+  "dur": 20.133333333333333,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 1.3,
+    "t1": 5.04,
+    "detail": "ax_min=-3.38 spd 25.5->21.8",
+    "center": 3.17
+   },
+   {
+    "kind": "decelerate",
+    "t0": 6.45,
+    "t1": 13.94,
+    "detail": "ax_min=-2.50 spd 17.8->5.9",
+    "center": 10.19
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 1.3,
+    "t1": 5.04,
+    "detail": "ax_min=-3.38 spd 25.5->21.8",
+    "center": 3.17
+   },
+   {
+    "kind": "decelerate",
+    "t0": 6.45,
+    "t1": 13.94,
+    "detail": "ax_min=-2.50 spd 17.8->5.9",
+    "center": 10.19
+   }
+  ],
+  "kind_diff": false
+ },
+ "0268c800-523f-46d9-88b8-6cc780ec79ba": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "turn_right",
+    "t0": 0.01,
+    "t1": 4.07,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-63deg(raw=-63) lat=-24.7m",
+    "center": 2.04
+   },
+   {
+    "kind": "decelerate",
+    "t0": 0.07,
+    "t1": 4.34,
+    "detail": "ax_min=-1.63 spd 12.4->11.8",
+    "center": 2.2
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "turn_right",
+    "t0": 0.01,
+    "t1": 4.07,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-63deg(raw=-63) lat=-24.7m",
+    "center": 2.04
+   },
+   {
+    "kind": "decelerate",
+    "t0": 0.07,
+    "t1": 4.34,
+    "detail": "ax_min=-1.63 spd 12.4->11.8",
+    "center": 2.2
+   }
+  ],
+  "kind_diff": false
+ },
+ "8779c50d-b2d9-402a-b445-ae35f7dcf214": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 0.0,
+    "t1": 3.43,
+    "detail": "ax_min=-2.67 spd 6.7->0.0",
+    "center": 1.72
+   },
+   {
+    "kind": "stop",
+    "t0": 2.45,
+    "t1": 12.75,
+    "detail": "spd_min=0.0",
+    "center": 7.6
+   },
+   {
+    "kind": "turn_left",
+    "t0": 16.19,
+    "t1": 20.13,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=77deg(raw=77) lat=10.9m",
+    "center": 18.16
+   },
+   {
+    "kind": "decelerate",
+    "t0": 18.29,
+    "t1": 20.07,
+    "detail": "ax_min=-2.59 spd 4.8->6.1",
+    "center": 19.18
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 0.0,
+    "t1": 3.43,
+    "detail": "ax_min=-2.67 spd 6.7->0.0",
+    "center": 1.72
+   },
+   {
+    "kind": "stop",
+    "t0": 2.45,
+    "t1": 12.75,
+    "detail": "spd_min=0.0",
+    "center": 7.6
+   },
+   {
+    "kind": "turn_left",
+    "t0": 16.19,
+    "t1": 20.13,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=77deg(raw=77) lat=10.9m",
+    "center": 18.16
+   },
+   {
+    "kind": "decelerate",
+    "t0": 18.29,
+    "t1": 20.07,
+    "detail": "ax_min=-2.59 spd 4.8->6.1",
+    "center": 19.18
+   }
+  ],
+  "kind_diff": false
+ },
+ "2613a760-2839-4581-bd31-6cb5e0056a74": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 14.31,
+    "t1": 18.98,
+    "detail": "ax_min=-1.72 spd 25.8->24.6",
+    "center": 16.65
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 14.31,
+    "t1": 18.98,
+    "detail": "ax_min=-1.72 spd 25.8->24.6",
+    "center": 16.65
+   }
+  ],
+  "kind_diff": false
+ },
+ "b77dfbe6-1efd-4561-b04e-f2785e99dd1e": {
+  "dur": 20.133333333333333,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 3.9,
+    "t1": 5.53,
+    "detail": "ax_min=-1.51 spd 25.9->23.9",
+    "center": 4.71
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 3.9,
+    "t1": 5.53,
+    "detail": "ax_min=-1.51 spd 25.9->23.9",
+    "center": 4.71
+   }
+  ],
+  "kind_diff": false
+ },
+ "a0fa4ece-5081-4138-9ccb-34e06ea1cca3": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 11.61,
+    "t1": 15.07,
+    "detail": "spd_min=0.0",
+    "center": 13.34
+   },
+   {
+    "kind": "accelerate",
+    "t0": 14.53,
+    "t1": 16.25,
+    "detail": "ax_max=1.57 spd 0.4->2.5",
+    "center": 15.39
+   },
+   {
+    "kind": "decelerate",
+    "t0": 19.24,
+    "t1": 20.13,
+    "detail": "ax_min=-2.13 spd 4.7->5.1",
+    "center": 19.69
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 11.61,
+    "t1": 15.07,
+    "detail": "spd_min=0.0",
+    "center": 13.34
+   },
+   {
+    "kind": "accelerate",
+    "t0": 14.53,
+    "t1": 16.25,
+    "detail": "ax_max=1.57 spd 0.4->2.5",
+    "center": 15.39
+   },
+   {
+    "kind": "decelerate",
+    "t0": 19.24,
+    "t1": 20.13,
+    "detail": "ax_min=-2.13 spd 4.7->5.1",
+    "center": 19.69
+   }
+  ],
+  "kind_diff": false
+ },
+ "b3629fa6-00d8-4d09-a3fd-86360aab40f7": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 0.01,
+    "t1": 2.74,
+    "detail": "ax_min=-2.18 spd 5.2->3.5",
+    "center": 1.37
+   },
+   {
+    "kind": "stop",
+    "t0": 2.05,
+    "t1": 9.35,
+    "detail": "spd_min=0.0",
+    "center": 5.7
+   },
+   {
+    "kind": "accelerate",
+    "t0": 8.69,
+    "t1": 10.83,
+    "detail": "ax_max=2.24 spd 0.3->4.1",
+    "center": 9.76
+   },
+   {
+    "kind": "turn_right",
+    "t0": 10.03,
+    "t1": 14.0,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-77deg(raw=-77) lat=-12.5m",
+    "center": 12.01
+   },
+   {
+    "kind": "decelerate",
+    "t0": 12.36,
+    "t1": 14.01,
+    "detail": "ax_min=-2.38 spd 5.5->7.5",
+    "center": 13.18
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 0.01,
+    "t1": 2.74,
+    "detail": "ax_min=-2.18 spd 5.2->3.5",
+    "center": 1.37
+   },
+   {
+    "kind": "stop",
+    "t0": 2.05,
+    "t1": 9.35,
+    "detail": "spd_min=0.0",
+    "center": 5.7
+   },
+   {
+    "kind": "accelerate",
+    "t0": 8.69,
+    "t1": 10.83,
+    "detail": "ax_max=2.24 spd 0.3->4.1",
+    "center": 9.76
+   },
+   {
+    "kind": "turn_right",
+    "t0": 10.03,
+    "t1": 14.0,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-77deg(raw=-77) lat=-12.5m",
+    "center": 12.01
+   },
+   {
+    "kind": "decelerate",
+    "t0": 12.36,
+    "t1": 14.01,
+    "detail": "ax_min=-2.38 spd 5.5->7.5",
+    "center": 13.18
+   }
+  ],
+  "kind_diff": false
+ },
+ "5c794ccf-be3c-453f-b022-d71990cdb8d1": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 10.14,
+    "t1": 14.31,
+    "detail": "spd_min=1.4",
+    "center": 12.23
+   },
+   {
+    "kind": "turn_left",
+    "t0": 13.14,
+    "t1": 17.48,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=49deg(raw=49) lat=2.4m",
+    "center": 15.31
+   },
+   {
+    "kind": "stop",
+    "t0": 16.09,
+    "t1": 20.13,
+    "detail": "spd_min=1.0",
+    "center": 18.11
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 10.14,
+    "t1": 14.31,
+    "detail": "spd_min=1.4",
+    "center": 12.23
+   },
+   {
+    "kind": "turn_left",
+    "t0": 13.14,
+    "t1": 17.48,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=49deg(raw=49) lat=2.4m",
+    "center": 15.31
+   },
+   {
+    "kind": "stop",
+    "t0": 16.09,
+    "t1": 20.13,
+    "detail": "spd_min=1.0",
+    "center": 18.11
+   }
+  ],
+  "kind_diff": false
+ },
+ "2a8c293b-1560-4b81-994a-4ad5352a8e93": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 8.3,
+    "t1": 11.34,
+    "detail": "ax_min=-2.37 spd 13.2->10.6",
+    "center": 9.82
+   },
+   {
+    "kind": "accelerate",
+    "t0": 16.89,
+    "t1": 17.86,
+    "detail": "ax_max=1.36 spd 12.0->13.5",
+    "center": 17.38
+   },
+   {
+    "kind": "accelerate",
+    "t0": 18.56,
+    "t1": 19.04,
+    "detail": "ax_max=1.67 spd 14.6->15.3",
+    "center": 18.8
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 8.3,
+    "t1": 11.34,
+    "detail": "ax_min=-2.37 spd 13.2->10.6",
+    "center": 9.82
+   },
+   {
+    "kind": "accelerate",
+    "t0": 16.89,
+    "t1": 17.86,
+    "detail": "ax_max=1.36 spd 12.0->13.5",
+    "center": 17.38
+   },
+   {
+    "kind": "accelerate",
+    "t0": 18.56,
+    "t1": 19.04,
+    "detail": "ax_max=1.67 spd 14.6->15.3",
+    "center": 18.8
+   }
+  ],
+  "kind_diff": false
+ },
+ "63b147e1-1736-4050-b798-573b968dea28": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 15.45,
+    "t1": 20.13,
+    "detail": "spd_min=1.2",
+    "center": 17.79
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 15.45,
+    "t1": 20.13,
+    "detail": "spd_min=1.2",
+    "center": 17.79
+   }
+  ],
+  "kind_diff": false
+ },
+ "8cda92bb-179b-4484-b4e9-2325378c1ccf": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "turn_right",
+    "t0": 0.0,
+    "t1": 4.49,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-66deg(raw=-66) lat=-5.1m",
+    "center": 2.24
+   },
+   {
+    "kind": "turn_right",
+    "t0": 16.09,
+    "t1": 20.13,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-85deg(raw=-85) lat=-7.6m",
+    "center": 18.11
+   },
+   {
+    "kind": "decelerate",
+    "t0": 17.64,
+    "t1": 20.13,
+    "detail": "ax_min=-1.45 spd 2.6->2.8",
+    "center": 18.88
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "turn_right",
+    "t0": 0.0,
+    "t1": 4.49,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-66deg(raw=-66) lat=-5.1m",
+    "center": 2.24
+   },
+   {
+    "kind": "turn_right",
+    "t0": 16.09,
+    "t1": 20.13,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-85deg(raw=-85) lat=-7.6m",
+    "center": 18.11
+   },
+   {
+    "kind": "decelerate",
+    "t0": 17.64,
+    "t1": 20.13,
+    "detail": "ax_min=-1.45 spd 2.6->2.8",
+    "center": 18.88
+   }
+  ],
+  "kind_diff": false
+ },
+ "3a54e004-9c6c-4950-8947-53b10309aed7": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [],
+  "events_corrected": [],
+  "kind_diff": false
+ },
+ "dbc81317-379d-42bc-a630-ad90dfcf05cd": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 4.17,
+    "t1": 5.68,
+    "detail": "ax_min=-2.36 spd 7.8->5.2",
+    "center": 4.93
+   },
+   {
+    "kind": "turn_left",
+    "t0": 6.03,
+    "t1": 10.94,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=73deg(raw=73) lat=14.3m",
+    "center": 8.49
+   },
+   {
+    "kind": "decelerate",
+    "t0": 10.1,
+    "t1": 10.76,
+    "detail": "ax_min=-1.38 spd 5.8->6.3",
+    "center": 10.43
+   },
+   {
+    "kind": "stop",
+    "t0": 16.72,
+    "t1": 20.13,
+    "detail": "spd_min=0.0",
+    "center": 18.43
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 4.17,
+    "t1": 5.68,
+    "detail": "ax_min=-2.36 spd 7.8->5.2",
+    "center": 4.93
+   },
+   {
+    "kind": "turn_left",
+    "t0": 6.03,
+    "t1": 10.94,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=73deg(raw=73) lat=14.3m",
+    "center": 8.49
+   },
+   {
+    "kind": "decelerate",
+    "t0": 10.1,
+    "t1": 10.76,
+    "detail": "ax_min=-1.38 spd 5.8->6.3",
+    "center": 10.43
+   },
+   {
+    "kind": "stop",
+    "t0": 16.72,
+    "t1": 20.13,
+    "detail": "spd_min=0.0",
+    "center": 18.43
+   }
+  ],
+  "kind_diff": false
+ },
+ "f00fc3c0-e0a0-4322-833b-249bbfb2d258": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 13.32,
+    "t1": 14.67,
+    "detail": "ax_min=-2.06 spd 3.4->0.9",
+    "center": 13.99
+   },
+   {
+    "kind": "stop",
+    "t0": 14.29,
+    "t1": 20.13,
+    "detail": "spd_min=0.0",
+    "center": 17.21
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 13.32,
+    "t1": 14.67,
+    "detail": "ax_min=-2.06 spd 3.4->0.9",
+    "center": 13.99
+   },
+   {
+    "kind": "stop",
+    "t0": 14.29,
+    "t1": 20.13,
+    "detail": "spd_min=0.0",
+    "center": 17.21
+   }
+  ],
+  "kind_diff": false
+ },
+ "00bc2719-c610-4b58-a5dd-5911ed67238f": {
+  "dur": 20.133333333333333,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 2.22,
+    "detail": "spd_min=0.0",
+    "center": 1.11
+   },
+   {
+    "kind": "accelerate",
+    "t0": 1.22,
+    "t1": 2.98,
+    "detail": "ax_max=1.70 spd 0.1->2.7",
+    "center": 2.1
+   },
+   {
+    "kind": "turn_right",
+    "t0": 3.47,
+    "t1": 8.16,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-68deg(raw=-68) lat=-11.3m",
+    "center": 5.82
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 2.22,
+    "detail": "spd_min=0.0",
+    "center": 1.11
+   },
+   {
+    "kind": "accelerate",
+    "t0": 1.22,
+    "t1": 2.98,
+    "detail": "ax_max=1.70 spd 0.1->2.7",
+    "center": 2.1
+   },
+   {
+    "kind": "turn_right",
+    "t0": 3.47,
+    "t1": 8.16,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-68deg(raw=-68) lat=-11.3m",
+    "center": 5.82
+   }
+  ],
+  "kind_diff": false
+ },
+ "c91b44ea-ed36-473a-94ae-0a01542ea6f1": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [],
+  "events_corrected": [],
+  "kind_diff": false
+ },
+ "da573166-ceb0-4850-9da2-90fde4355c3f": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 2.46,
+    "t1": 5.15,
+    "detail": "ax_min=-3.54 spd 8.5->2.4",
+    "center": 3.8
+   },
+   {
+    "kind": "turn_right",
+    "t0": 4.69,
+    "t1": 9.32,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-96deg(raw=-96) lat=-8.7m",
+    "center": 7.0
+   },
+   {
+    "kind": "stop",
+    "t0": 19.52,
+    "t1": 20.13,
+    "detail": "spd_min=1.4",
+    "center": 19.82
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 2.46,
+    "t1": 5.15,
+    "detail": "ax_min=-3.54 spd 8.5->2.4",
+    "center": 3.8
+   },
+   {
+    "kind": "turn_right",
+    "t0": 4.69,
+    "t1": 9.32,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-96deg(raw=-96) lat=-8.7m",
+    "center": 7.0
+   },
+   {
+    "kind": "stop",
+    "t0": 19.52,
+    "t1": 20.13,
+    "detail": "spd_min=1.4",
+    "center": 19.82
+   }
+  ],
+  "kind_diff": false
+ },
+ "1c765afd-9e2c-420d-b18a-4245aa795130": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [
+   {
+    "kind": "accelerate",
+    "t0": 0.01,
+    "t1": 5.69,
+    "detail": "ax_max=2.47 spd 18.7->29.7",
+    "center": 2.85
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "accelerate",
+    "t0": 0.01,
+    "t1": 5.69,
+    "detail": "ax_max=2.47 spd 18.7->29.7",
+    "center": 2.85
+   }
+  ],
+  "kind_diff": false
+ },
+ "b234bf96-4999-49f1-a338-f74f4c49e865": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "turn_right",
+    "t0": 6.68,
+    "t1": 13.2,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-75deg(raw=-75) lat=-10.9m",
+    "center": 9.94
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "turn_right",
+    "t0": 6.68,
+    "t1": 13.2,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-75deg(raw=-75) lat=-10.9m",
+    "center": 9.94
+   }
+  ],
+  "kind_diff": false
+ },
+ "5cc50d6e-fdc2-45a5-bd1d-7aa6ab5c9af2": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 0.01,
+    "t1": 9.01,
+    "detail": "spd_min=0.0",
+    "center": 4.51
+   },
+   {
+    "kind": "accelerate",
+    "t0": 8.27,
+    "t1": 9.7,
+    "detail": "ax_max=1.53 spd 0.4->2.5",
+    "center": 8.98
+   },
+   {
+    "kind": "turn_right",
+    "t0": 10.07,
+    "t1": 13.2,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-88deg(raw=-88) lat=-8.0m",
+    "center": 11.63
+   },
+   {
+    "kind": "decelerate",
+    "t0": 11.62,
+    "t1": 13.18,
+    "detail": "ax_min=-2.06 spd 3.6->5.0",
+    "center": 12.4
+   },
+   {
+    "kind": "turn_right",
+    "t0": 14.85,
+    "t1": 20.13,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-129deg(raw=-129) lat=-16.3m",
+    "center": 17.49
+   },
+   {
+    "kind": "decelerate",
+    "t0": 16.27,
+    "t1": 17.7,
+    "detail": "ax_min=-1.73 spd 4.3->4.4",
+    "center": 16.98
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 0.01,
+    "t1": 9.01,
+    "detail": "spd_min=0.0",
+    "center": 4.51
+   },
+   {
+    "kind": "accelerate",
+    "t0": 8.27,
+    "t1": 9.7,
+    "detail": "ax_max=1.53 spd 0.4->2.5",
+    "center": 8.98
+   },
+   {
+    "kind": "turn_right",
+    "t0": 10.07,
+    "t1": 13.2,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-88deg(raw=-88) lat=-8.0m",
+    "center": 11.63
+   },
+   {
+    "kind": "decelerate",
+    "t0": 11.62,
+    "t1": 13.18,
+    "detail": "ax_min=-2.06 spd 3.6->5.0",
+    "center": 12.4
+   },
+   {
+    "kind": "turn_right",
+    "t0": 14.85,
+    "t1": 20.13,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-129deg(raw=-129) lat=-16.3m",
+    "center": 17.49
+   },
+   {
+    "kind": "decelerate",
+    "t0": 16.27,
+    "t1": 17.7,
+    "detail": "ax_min=-1.73 spd 4.3->4.4",
+    "center": 16.98
+   }
+  ],
+  "kind_diff": false
+ },
+ "4a43a251-9a2f-46b2-bba5-d81f9d53649c": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 0.01,
+    "t1": 5.9,
+    "detail": "ax_min=-2.77 spd 12.6->1.2",
+    "center": 2.95
+   },
+   {
+    "kind": "stop",
+    "t0": 5.73,
+    "t1": 7.11,
+    "detail": "spd_min=1.1",
+    "center": 6.42
+   },
+   {
+    "kind": "accelerate",
+    "t0": 6.96,
+    "t1": 9.87,
+    "detail": "ax_max=3.04 spd 1.3->7.1",
+    "center": 8.41
+   },
+   {
+    "kind": "decelerate",
+    "t0": 15.31,
+    "t1": 18.38,
+    "detail": "ax_min=-3.04 spd 8.4->2.0",
+    "center": 16.84
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 0.01,
+    "t1": 5.9,
+    "detail": "ax_min=-2.77 spd 12.6->1.2",
+    "center": 2.95
+   },
+   {
+    "kind": "stop",
+    "t0": 5.73,
+    "t1": 7.11,
+    "detail": "spd_min=1.1",
+    "center": 6.42
+   },
+   {
+    "kind": "accelerate",
+    "t0": 6.96,
+    "t1": 9.87,
+    "detail": "ax_max=3.04 spd 1.3->7.1",
+    "center": 8.41
+   },
+   {
+    "kind": "decelerate",
+    "t0": 15.31,
+    "t1": 18.38,
+    "detail": "ax_min=-3.04 spd 8.4->2.0",
+    "center": 16.84
+   }
+  ],
+  "kind_diff": false
+ },
+ "1b5c596d-4549-42ec-8c5f-c321d3e55a11": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [
+   {
+    "kind": "accelerate",
+    "t0": 0.92,
+    "t1": 1.78,
+    "detail": "ax_max=1.16 spd 17.6->18.0",
+    "center": 1.35
+   },
+   {
+    "kind": "accelerate",
+    "t0": 3.75,
+    "t1": 8.18,
+    "detail": "ax_max=1.93 spd 20.5->23.9",
+    "center": 5.97
+   },
+   {
+    "kind": "accelerate",
+    "t0": 10.02,
+    "t1": 10.82,
+    "detail": "ax_max=1.40 spd 28.3->29.3",
+    "center": 10.42
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "accelerate",
+    "t0": 0.92,
+    "t1": 1.78,
+    "detail": "ax_max=1.16 spd 17.6->18.0",
+    "center": 1.35
+   },
+   {
+    "kind": "accelerate",
+    "t0": 3.75,
+    "t1": 8.18,
+    "detail": "ax_max=1.93 spd 20.5->23.9",
+    "center": 5.97
+   },
+   {
+    "kind": "accelerate",
+    "t0": 10.02,
+    "t1": 10.82,
+    "detail": "ax_max=1.40 spd 28.3->29.3",
+    "center": 10.42
+   }
+  ],
+  "kind_diff": false
+ },
+ "294dfe6a-c624-466e-8f56-ff77db1a3ac7": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [
+   {
+    "kind": "accelerate",
+    "t0": 0.07,
+    "t1": 3.98,
+    "detail": "ax_max=2.12 spd 31.2->37.4",
+    "center": 2.02
+   },
+   {
+    "kind": "decelerate",
+    "t0": 13.43,
+    "t1": 14.55,
+    "detail": "ax_min=-2.88 spd 33.8->32.0",
+    "center": 13.99
+   },
+   {
+    "kind": "decelerate",
+    "t0": 15.62,
+    "t1": 17.4,
+    "detail": "ax_min=-2.66 spd 30.4->27.5",
+    "center": 16.51
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "accelerate",
+    "t0": 0.07,
+    "t1": 3.98,
+    "detail": "ax_max=2.12 spd 31.2->37.4",
+    "center": 2.02
+   },
+   {
+    "kind": "decelerate",
+    "t0": 13.43,
+    "t1": 14.55,
+    "detail": "ax_min=-2.88 spd 33.8->32.0",
+    "center": 13.99
+   },
+   {
+    "kind": "decelerate",
+    "t0": 15.62,
+    "t1": 17.4,
+    "detail": "ax_min=-2.66 spd 30.4->27.5",
+    "center": 16.51
+   }
+  ],
+  "kind_diff": false
+ },
+ "cb51a9c5-9691-47e2-83f3-79c584457b75": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "turn_left",
+    "t0": 1.92,
+    "t1": 11.42,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=218deg(raw=218) lat=10.9m",
+    "center": 6.67
+   },
+   {
+    "kind": "decelerate",
+    "t0": 6.62,
+    "t1": 7.64,
+    "detail": "ax_min=-1.51 spd 2.6->2.9",
+    "center": 7.13
+   },
+   {
+    "kind": "decelerate",
+    "t0": 14.89,
+    "t1": 18.03,
+    "detail": "ax_min=-1.43 spd 5.9->8.0",
+    "center": 16.46
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "turn_left",
+    "t0": 1.92,
+    "t1": 11.42,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=218deg(raw=218) lat=10.9m",
+    "center": 6.67
+   },
+   {
+    "kind": "decelerate",
+    "t0": 6.62,
+    "t1": 7.64,
+    "detail": "ax_min=-1.51 spd 2.6->2.9",
+    "center": 7.13
+   },
+   {
+    "kind": "decelerate",
+    "t0": 14.89,
+    "t1": 18.03,
+    "detail": "ax_min=-1.43 spd 5.9->8.0",
+    "center": 16.46
+   }
+  ],
+  "kind_diff": false
+ },
+ "490b3462-f465-4394-8800-490b125d473e": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 6.68,
+    "detail": "spd_min=0.4",
+    "center": 3.34
+   },
+   {
+    "kind": "turn_right",
+    "t0": 5.47,
+    "t1": 9.46,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-46deg(raw=-46) lat=-2.5m",
+    "center": 7.47
+   },
+   {
+    "kind": "stop",
+    "t0": 10.09,
+    "t1": 12.48,
+    "detail": "spd_min=1.4",
+    "center": 11.29
+   },
+   {
+    "kind": "turn_right",
+    "t0": 12.93,
+    "t1": 17.38,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-72deg(raw=-72) lat=-6.3m",
+    "center": 15.16
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "stop",
+    "t0": 0.0,
+    "t1": 6.68,
+    "detail": "spd_min=0.4",
+    "center": 3.34
+   },
+   {
+    "kind": "turn_right",
+    "t0": 5.47,
+    "t1": 9.46,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-46deg(raw=-46) lat=-2.5m",
+    "center": 7.47
+   },
+   {
+    "kind": "stop",
+    "t0": 10.09,
+    "t1": 12.48,
+    "detail": "spd_min=1.4",
+    "center": 11.29
+   },
+   {
+    "kind": "turn_right",
+    "t0": 12.93,
+    "t1": 17.38,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-72deg(raw=-72) lat=-6.3m",
+    "center": 15.16
+   }
+  ],
+  "kind_diff": false
+ },
+ "0c963419-8d75-4039-9ee0-8cd1d56004ed": {
+  "dur": 20.166666666666668,
+  "map_valid": true,
+  "events_raw": [],
+  "events_corrected": [],
+  "kind_diff": false
+ },
+ "563b1cc3-739e-424a-b690-dda75cf4599d": {
+  "dur": 20.166666666666668,
+  "map_valid": false,
+  "events_raw": [
+   {
+    "kind": "decelerate",
+    "t0": 1.66,
+    "t1": 3.58,
+    "detail": "ax_min=-1.50 spd 6.3->4.1",
+    "center": 2.62
+   },
+   {
+    "kind": "decelerate",
+    "t0": 4.36,
+    "t1": 6.24,
+    "detail": "ax_min=-2.28 spd 3.5->0.0",
+    "center": 5.3
+   },
+   {
+    "kind": "stop",
+    "t0": 5.45,
+    "t1": 8.92,
+    "detail": "spd_min=0.0",
+    "center": 7.18
+   },
+   {
+    "kind": "accelerate",
+    "t0": 8.28,
+    "t1": 9.16,
+    "detail": "ax_max=1.64 spd 0.6->1.8",
+    "center": 8.72
+   },
+   {
+    "kind": "turn_right",
+    "t0": 10.33,
+    "t1": 14.31,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-89deg(raw=-89) lat=-10.1m",
+    "center": 12.32
+   },
+   {
+    "kind": "accelerate",
+    "t0": 10.73,
+    "t1": 11.29,
+    "detail": "ax_max=1.55 spd 2.4->3.4",
+    "center": 11.01
+   },
+   {
+    "kind": "decelerate",
+    "t0": 12.03,
+    "t1": 14.21,
+    "detail": "ax_min=-2.41 spd 4.3->5.3",
+    "center": 13.12
+   },
+   {
+    "kind": "decelerate",
+    "t0": 18.17,
+    "t1": 19.76,
+    "detail": "ax_min=-1.87 spd 12.6->15.4",
+    "center": 18.96
+   }
+  ],
+  "events_corrected": [
+   {
+    "kind": "decelerate",
+    "t0": 1.66,
+    "t1": 3.58,
+    "detail": "ax_min=-1.50 spd 6.3->4.1",
+    "center": 2.62
+   },
+   {
+    "kind": "decelerate",
+    "t0": 4.36,
+    "t1": 6.24,
+    "detail": "ax_min=-2.28 spd 3.5->0.0",
+    "center": 5.3
+   },
+   {
+    "kind": "stop",
+    "t0": 5.45,
+    "t1": 8.92,
+    "detail": "spd_min=0.0",
+    "center": 7.18
+   },
+   {
+    "kind": "accelerate",
+    "t0": 8.28,
+    "t1": 9.16,
+    "detail": "ax_max=1.64 spd 0.6->1.8",
+    "center": 8.72
+   },
+   {
+    "kind": "turn_right",
+    "t0": 10.33,
+    "t1": 14.31,
+    "curvature_correction_source": "none",
+    "lane_crossings": null,
+    "detail": "net=-89deg(raw=-89) lat=-10.1m",
+    "center": 12.32
+   },
+   {
+    "kind": "accelerate",
+    "t0": 10.73,
+    "t1": 11.29,
+    "detail": "ax_max=1.55 spd 2.4->3.4",
+    "center": 11.01
+   },
+   {
+    "kind": "decelerate",
+    "t0": 12.03,
+    "t1": 14.21,
+    "detail": "ax_min=-2.41 spd 4.3->5.3",
+    "center": 13.12
+   },
+   {
+    "kind": "decelerate",
+    "t0": 18.17,
+    "t1": 19.76,
+    "detail": "ax_min=-1.87 spd 12.6->15.4",
+    "center": 18.96
+   }
+  ],
+  "kind_diff": false
+ }
+}

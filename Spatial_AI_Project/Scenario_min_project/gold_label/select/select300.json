@@ -11,6 +11,18 @@
     0.0,
     17.9
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "accelerate",
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_right",
+    "decelerate",
+    "accelerate",
+    "lane_change_left"
+   ],
    "event_type": "yield_negotiation",
    "reactive": true,
    "reason": "The ego vehicle is following a truck and must brake to maintain a safe distance as the truck slows and stops at the red light.",
@@ -37,6 +49,12 @@
     0.0,
     17.1
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "yield_negotiation",
    "reactive": true,
    "reason": "The ego vehicle yields to a cyclist crossing the intersection before proceeding, indicating a negotiation with the cyclist's movement.",
@@ -62,6 +80,12 @@
     0.0,
     16.3
    ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "stop",
+    "decelerate"
+   ],
    "event_type": "yield_negotiation",
    "reactive": true,
    "reason": "The ego vehicle slows and yields to oncoming traffic before making a left turn at the intersection, indicating a negotiation with cross traffic.",
@@ -86,6 +110,15 @@
     0.0,
     15.3
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_right",
+    "accelerate",
+    "decelerate"
+   ],
    "event_type": "cross_traffic",
    "reactive": true,
    "reason": "The ego vehicle stops at the intersection because the traffic light is red, and cross traffic is moving through the intersection.",
@@ -109,6 +142,12 @@
    "win": [
     1.1,
     15.2
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_left"
    ],
    "event_type": "yield_negotiation",
    "reactive": true,
@@ -135,6 +174,11 @@
     8.3,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "stop"
+   ],
    "event_type": "yield_negotiation",
    "reactive": true,
    "reason": "The ego vehicle is following a truck and must slow down and stop at the red light, which is an external agent (the truck) and traffic signal.",
@@ -158,6 +202,10 @@
     6.9,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
    "event_type": "yield_negotiation",
    "reactive": true,
    "reason": "The ego vehicle slows and stops behind a queue of vehicles at a red light, indicating it is reacting to the traffic signal and the presence of stopped vehicles.",
@@ -180,6 +228,13 @@
    "win": [
     0.0,
     20.2
+   ],
+   "kinds": [
+    "lane_change_right",
+    "decelerate",
+    "lane_change_right",
+    "turn_right",
+    "accelerate"
    ],
    "event_type": "cut_in",
    "reactive": true,
@@ -205,6 +260,13 @@
     0.0,
     13.4
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_right",
+    "decelerate"
+   ],
    "event_type": "yield_negotiation",
    "reactive": true,
    "reason": "The ego vehicle is stopped at a T-junction, yielding to oncoming traffic before proceeding. The presence of cross traffic necessitates waiting for a safe gap to",
@@ -228,6 +290,12 @@
    "win": [
     0.0,
     20.1
+   ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "lead_brake",
    "reactive": true,
@@ -254,6 +322,12 @@
     0.0,
     18.5
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
    "reason": "The ego vehicle is following a lead vehicle that brakes and stops at the intersection, causing the ego to slow and stop as well.",
@@ -279,6 +353,11 @@
     4.0,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
+   ],
    "event_type": "ped_cyclist",
    "reactive": true,
    "reason": "Pedestrians crossing the road in front of the ego vehicle, requiring the ego to stop and wait until they clear the path.",
@@ -302,6 +381,13 @@
    "win": [
     0.0,
     15.4
+   ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "stop",
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "yield_negotiation",
    "reactive": true,
@@ -327,6 +413,11 @@
     0.0,
     14.1
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
+   ],
    "event_type": "yield_negotiation",
    "reactive": true,
    "reason": "The ego vehicle stops at a stop sign and yields to cross traffic before proceeding, indicating a negotiation with other vehicles at the intersection.",
@@ -351,6 +442,13 @@
     5.3,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "stop",
+    "decelerate"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
    "reason": "The lead vehicle brakes and stops, causing the ego vehicle to slow and stop behind it.",
@@ -373,6 +471,13 @@
    "win": [
     1.8,
     16.9
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "yield_negotiation",
    "reactive": true,
@@ -397,6 +502,12 @@
    "win": [
     0.0,
     8.5
+   ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "cross_traffic",
    "reactive": true,
@@ -423,6 +534,12 @@
     0.0,
     14.8
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "turn_left",
+    "accelerate"
+   ],
    "event_type": "yield_negotiation",
    "reactive": true,
    "reason": "The ego vehicle stops at a stop sign and yields to a black SUV approaching from the right, which is an external agent directly influencing the ego's motion.",
@@ -447,6 +564,10 @@
     0.0,
     5.3
    ],
+   "kinds": [
+    "decelerate",
+    "turn_right"
+   ],
    "event_type": "cut_in",
    "reactive": true,
    "reason": "A vehicle cuts into the ego lane, causing the ego to slow down and yield.",
@@ -470,6 +591,11 @@
     8.0,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "stop"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
    "reason": "The ego vehicle slows and stops because the lead vehicle in front brakes and comes to a halt.",
@@ -491,6 +617,12 @@
    "win": [
     3.5,
     19.1
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "accelerate"
    ],
    "event_type": "lead_brake",
    "reactive": true,
@@ -514,6 +646,12 @@
    "win": [
     0.0,
     15.5
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_right"
    ],
    "event_type": "ped_cyclist",
    "reactive": true,
@@ -540,9 +678,14 @@
     0.0,
     10.9
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
+   ],
    "event_type": "yield_negotiation",
    "reactive": true,
-   "reason": "The ego vehicle stops at a STOP sign and yields to a vehicle making a left turn from the opposite direction, waiting for it to clear before proceeding.",
+   "reason": "The ego vehicle stops at a STOP sign and yields to a vehicle turning from the left, which is an external agent requiring the ego to wait before proceeding.",
    "ego_react": 2.8,
    "terms": {
     "decel_repeat": 1.0,
@@ -562,6 +705,11 @@
    "win": [
     6.2,
     18.7
+   ],
+   "kinds": [
+    "accelerate",
+    "stop",
+    "decelerate"
    ],
    "event_type": "lead_brake",
    "reactive": true,
@@ -586,9 +734,14 @@
     2.8,
     20.1
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
-   "reason": "The ego vehicle slows and stops behind a garbage truck that is braking and reversing, requiring the ego to maintain a safe following distance.",
+   "reason": "The ego vehicle slows and stops behind a garbage truck that is braking and reversing, requiring the ego to yield to avoid collision.",
    "ego_react": 2.8,
    "terms": {
     "decel_repeat": 1.0,
@@ -608,6 +761,11 @@
    "win": [
     3.8,
     20.2
+   ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "turn_right"
    ],
    "event_type": "yield_negotiation",
    "reactive": true,
@@ -631,9 +789,15 @@
     0.5,
     14.1
    ],
-   "event_type": "cross_traffic",
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_left"
+   ],
+   "event_type": "yield_negotiation",
    "reactive": true,
-   "reason": "The ego vehicle stops to yield to a large truck crossing its path, waiting for the truck to pass before proceeding.",
+   "reason": "The ego vehicle stops to yield to a large flatbed truck crossing its path, waiting for the truck to pass before proceeding.",
    "ego_react": 3.4,
    "terms": {
     "decel_repeat": 1.0,
@@ -654,6 +818,10 @@
    "win": [
     6.6,
     20.2
+   ],
+   "kinds": [
+    "decelerate",
+    "stop"
    ],
    "event_type": "lead_brake",
    "reactive": true,
@@ -678,9 +846,14 @@
     1.0,
     10.7
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
-   "reason": "The ego vehicle slows and stops because the lead vehicle in front is braking.",
+   "reason": "The ego vehicle slows and stops behind a lead vehicle that is braking and signaling a left turn.",
    "ego_react": 2.8,
    "terms": {
     "decel_repeat": 1.0,
@@ -701,9 +874,14 @@
     0.0,
     17.9
    ],
-   "event_type": "cross_traffic",
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
+   ],
+   "event_type": "yield_negotiation",
    "reactive": true,
-   "reason": "The ego vehicle stops at a red light, and cross traffic is present, requiring the ego to wait for the light to turn green before proceeding.",
+   "reason": "The ego vehicle stops at a red light and waits for the green signal, yielding to the traffic signal and cross traffic before proceeding.",
    "ego_react": 2.8,
    "terms": {
     "decel_repeat": 1.0,
@@ -724,9 +902,14 @@
     0.0,
     10.7
    ],
+   "kinds": [
+    "stop",
+    "turn_right",
+    "accelerate"
+   ],
    "event_type": "cross_traffic",
    "reactive": true,
-   "reason": "The ego vehicle stops at a stop sign and waits for cross traffic to clear before proceeding, indicating the motion change is caused by cross traffic.",
+   "reason": "The ego vehicle stops at a stop sign and waits for cross traffic to clear before proceeding, indicating the stop is caused by oncoming vehicles from the left.",
    "ego_react": 2.4,
    "terms": {
     "stop_go": 0.8,
@@ -736,23 +919,29 @@
   }
  },
  {
-  "clip_id": "0bb0b453-0077-4175-bc9a-6707c4fa1938",
-  "clip_score": 2.34,
-  "score_norm": 0.316,
-  "ego_norm": 0.236,
+  "clip_id": "27ecfec4-ada9-45bb-844e-11088bb1848b",
+  "clip_score": 2.31,
+  "score_norm": 0.312,
+  "ego_norm": 0.218,
   "vlm_score": 0.9,
-  "n_react_win": 1,
+  "n_react_win": 2,
   "best": {
    "win": [
     0.0,
-    7.5
+    5.7
    ],
-   "event_type": "yield_negotiation",
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_right"
+   ],
+   "event_type": "ped_cyclist",
    "reactive": true,
-   "reason": "The ego vehicle is turning left at an intersection, yielding to oncoming traffic before completing the maneuver.",
-   "ego_react": 2.6,
+   "reason": "A pedestrian is crossing the road, causing the ego vehicle to yield and wait until the pedestrian has safely crossed before proceeding.",
+   "ego_react": 2.4,
    "terms": {
-    "decel_repeat": 2.0,
+    "stop_go": 0.8,
+    "stop": 1.0,
     "turn": 0.6
    }
   }
@@ -768,6 +957,10 @@
    "win": [
     6.3,
     13.6
+   ],
+   "kinds": [
+    "decelerate",
+    "decelerate"
    ],
    "event_type": "lead_brake",
    "reactive": true,
@@ -790,9 +983,14 @@
     0.0,
     5.7
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
+   ],
    "event_type": "yield_negotiation",
    "reactive": true,
-   "reason": "A bus crosses the intersection from the left, requiring the ego vehicle to wait and yield before proceeding.",
+   "reason": "A bus cuts into the ego lane from the left, requiring the ego vehicle to yield and adjust its motion.",
    "ego_react": 2.8,
    "terms": {
     "decel_repeat": 1.0,
@@ -812,6 +1010,11 @@
    "win": [
     0.0,
     16.4
+   ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left"
    ],
    "event_type": "lead_brake",
    "reactive": true,
@@ -836,6 +1039,10 @@
     13.2,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
    "reason": "The black car in front brakes, causing the ego vehicle to brake.",
@@ -858,9 +1065,13 @@
     12.6,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
-   "reason": "The ego vehicle is slowing and stopping because the lead vehicle in front is braking and stopping.",
+   "reason": "The ego vehicle is slowing and stopping because the lead vehicle in front is braking and coming to a halt.",
    "ego_react": 2.0,
    "terms": {
     "decel_repeat": 1.0,
@@ -879,6 +1090,10 @@
    "win": [
     13.8,
     20.2
+   ],
+   "kinds": [
+    "decelerate",
+    "stop"
    ],
    "event_type": "lead_brake",
    "reactive": true,
@@ -902,6 +1117,10 @@
     5.7,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
    "reason": "The ego vehicle is slowing and stopping behind a white SUV that is braking and stopping ahead in the same lane.",
@@ -909,6 +1128,31 @@
    "terms": {
     "decel_repeat": 1.0,
     "stop": 1.0
+   }
+  }
+ },
+ {
+  "clip_id": "7e59b62a-1e13-45b5-8fd7-563f4d4b039f",
+  "clip_score": 1.98,
+  "score_norm": 0.267,
+  "ego_norm": 0.181,
+  "vlm_score": 0.99,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    11.6
+   ],
+   "kinds": [
+    "decelerate",
+    "decelerate"
+   ],
+   "event_type": "lead_brake",
+   "reactive": true,
+   "reason": "The white SUV ahead brakes, causing the ego vehicle to slow down and stop.",
+   "ego_react": 2.0,
+   "terms": {
+    "decel_repeat": 2.0
    }
   }
  },
@@ -924,12 +1168,42 @@
     8.4,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
    "reason": "The ego vehicle decelerates and stops behind a black pickup truck that is braking at the intersection.",
    "ego_react": 2.0,
    "terms": {
     "decel_repeat": 2.0
+   }
+  }
+ },
+ {
+  "clip_id": "80db1c36-a8ec-4e4f-9023-ffd90ca1cd11",
+  "clip_score": 1.98,
+  "score_norm": 0.267,
+  "ego_norm": 0.181,
+  "vlm_score": 0.99,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    10.0,
+    20.2
+   ],
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
+   "event_type": "lead_brake",
+   "reactive": true,
+   "reason": "The ego vehicle slows and stops behind a white van that is braking and stopped ahead in the same lane.",
+   "ego_react": 2.0,
+   "terms": {
+    "decel_repeat": 1.0,
+    "stop": 1.0
    }
   }
  },
@@ -945,6 +1219,10 @@
     10.4,
     18.4
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
    "reason": "Vehicles ahead are braking, causing the ego vehicle to slow down.",
@@ -952,29 +1230,6 @@
    "terms": {
     "harsh_brake": 0.44,
     "decel_repeat": 2.0
-   }
-  }
- },
- {
-  "clip_id": "27ecfec4-ada9-45bb-844e-11088bb1848b",
-  "clip_score": 1.95,
-  "score_norm": 0.263,
-  "ego_norm": 0.218,
-  "vlm_score": 0.75,
-  "n_react_win": 2,
-  "best": {
-   "win": [
-    0.0,
-    5.7
-   ],
-   "event_type": "ped_cyclist",
-   "reactive": true,
-   "reason": "A pedestrian is crossing the road, causing the ego vehicle to slow down and yield.",
-   "ego_react": 2.4,
-   "terms": {
-    "stop_go": 0.8,
-    "stop": 1.0,
-    "turn": 0.6
    }
   }
  },
@@ -989,6 +1244,10 @@
    "win": [
     0.0,
     12.0
+   ],
+   "kinds": [
+    "stop",
+    "accelerate"
    ],
    "event_type": "lead_brake",
    "reactive": true,
@@ -1012,6 +1271,10 @@
     0.0,
     5.9
    ],
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
    "event_type": "cut_in",
    "reactive": true,
    "reason": "A black SUV cuts into the ego lane from the right, causing the ego vehicle to stop.",
@@ -1033,6 +1296,11 @@
    "win": [
     0.0,
     13.0
+   ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "accelerate"
    ],
    "event_type": "lead_brake",
    "reactive": true,
@@ -1056,6 +1324,10 @@
     0.0,
     11.4
    ],
+   "kinds": [
+    "stop",
+    "accelerate"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
    "reason": "The ego vehicle is stopped behind a lead vehicle that is braking and signaling a left turn, requiring the ego to remain stationary and maintain a safe following",
@@ -1078,9 +1350,13 @@
     5.5,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
    "event_type": "yield_negotiation",
    "reactive": true,
-   "reason": "The ego vehicle is stopped at a red light, and the traffic light is the primary external agent causing the stop. The red light is clearly visible and governs",
+   "reason": "The ego vehicle is stopped at a red light, yielding to cross traffic and waiting for the signal to change. The presence of other vehicles and the red light are",
    "ego_react": 2.0,
    "terms": {
     "decel_repeat": 1.0,
@@ -1089,68 +1365,29 @@
   }
  },
  {
-  "clip_id": "80db1c36-a8ec-4e4f-9023-ffd90ca1cd11",
+  "clip_id": "f7295b9b-a67a-4f88-8764-7a2d6ec77b6e",
   "clip_score": 1.8,
   "score_norm": 0.243,
-  "ego_norm": 0.181,
-  "vlm_score": 0.9,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    10.0,
-    20.2
-   ],
-   "event_type": "lead_brake",
-   "reactive": true,
-   "reason": "The ego vehicle slows and stops behind a white van with flashing red lights, indicating the lead vehicle is braking and causing the ego to react.",
-   "ego_react": 2.0,
-   "terms": {
-    "decel_repeat": 1.0,
-    "stop": 1.0
-   }
-  }
- },
- {
-  "clip_id": "2fff5488-f4d8-4e04-94fa-375db63e6a9f",
-  "clip_score": 1.8,
-  "score_norm": 0.243,
-  "ego_norm": 0.181,
-  "vlm_score": 0.9,
+  "ego_norm": 0.163,
+  "vlm_score": 1.0,
   "n_react_win": 1,
   "best": {
    "win": [
     0.0,
-    10.9
+    12.1
    ],
-   "event_type": "none",
+   "kinds": [
+    "stop",
+    "accelerate",
+    "accelerate"
+   ],
+   "event_type": "lead_brake",
    "reactive": true,
-   "reason": "The ego vehicle comes to a complete stop at a STOP sign, which is a regulatory requirement. There are no other vehicles or agents directly influencing this stop",
-   "ego_react": 2.0,
+   "reason": "The ego vehicle is following a black sedan that brakes and stops, causing the ego to slow and stop as well.",
+   "ego_react": 1.8,
    "terms": {
-    "decel_repeat": 1.0,
+    "stop_go": 0.8,
     "stop": 1.0
-   }
-  }
- },
- {
-  "clip_id": "8779c50d-b2d9-402a-b445-ae35f7dcf214",
-  "clip_score": 1.75,
-  "score_norm": 0.236,
-  "ego_norm": 0.145,
-  "vlm_score": 1.0,
-  "n_react_win": 2,
-  "best": {
-   "win": [
-    13.2,
-    20.2
-   ],
-   "event_type": "yield_negotiation",
-   "reactive": true,
-   "reason": "The ego vehicle stops at a T-junction and waits for a vehicle from the left to pass before proceeding, indicating a yield to cross traffic.",
-   "ego_react": 1.6,
-   "terms": {
-    "decel_repeat": 1.0,
-    "turn": 0.6
    }
   }
  },
@@ -1165,6 +1402,11 @@
    "win": [
     0.0,
     16.1
+   ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "accelerate"
    ],
    "event_type": "lead_brake",
    "reactive": true,
@@ -1188,6 +1430,10 @@
     0.0,
     6.9
    ],
+   "kinds": [
+    "stop",
+    "accelerate"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
    "reason": "The bus ahead brakes, causing the ego vehicle to brake in response.",
@@ -1210,31 +1456,14 @@
     0.0,
     9.8
    ],
-   "event_type": "lead_brake",
-   "reactive": true,
-   "reason": "The ego vehicle is stopped behind a black pickup truck that is braking and signaling left, indicating a lead vehicle maneuver directly affecting the ego's path.",
-   "ego_react": 1.8,
-   "terms": {
-    "stop_go": 0.8,
-    "stop": 1.0
-   }
-  }
- },
- {
-  "clip_id": "f7295b9b-a67a-4f88-8764-7a2d6ec77b6e",
-  "clip_score": 1.62,
-  "score_norm": 0.218,
-  "ego_norm": 0.163,
-  "vlm_score": 0.9,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    12.1
+   "kinds": [
+    "stop",
+    "accelerate",
+    "accelerate"
    ],
    "event_type": "lead_brake",
    "reactive": true,
-   "reason": "The black car directly ahead is braking, causing the ego vehicle to slow down and maintain a safe following distance.",
+   "reason": "The ego vehicle is stopped behind a black pickup truck that is braking and signaling left, indicating a lead vehicle maneuver directly affecting the ego's path.",
    "ego_react": 1.8,
    "terms": {
     "stop_go": 0.8,
@@ -1254,34 +1483,17 @@
     0.0,
     11.0
    ],
+   "kinds": [
+    "stop",
+    "accelerate"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
-   "reason": "The ego vehicle is stopped behind a large truck in traffic, and the truck's brake lights are illuminated, indicating the lead vehicle is braking and causing the",
+   "reason": "The ego vehicle is stopped behind a truck that is braking, causing the ego to remain stationary.",
    "ego_react": 1.8,
    "terms": {
     "stop_go": 0.8,
     "stop": 1.0
-   }
-  }
- },
- {
-  "clip_id": "7e59b62a-1e13-45b5-8fd7-563f4d4b039f",
-  "clip_score": 1.6,
-  "score_norm": 0.216,
-  "ego_norm": 0.181,
-  "vlm_score": 0.8,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    11.6
-   ],
-   "event_type": "lead_brake",
-   "reactive": true,
-   "reason": "The white SUV ahead brakes, causing the ego vehicle to slow down.",
-   "ego_react": 2.0,
-   "terms": {
-    "decel_repeat": 2.0
    }
   }
  },
@@ -1296,6 +1508,10 @@
    "win": [
     13.9,
     20.2
+   ],
+   "kinds": [
+    "decelerate",
+    "decelerate"
    ],
    "event_type": "yield_negotiation",
    "reactive": true,
@@ -1317,6 +1533,11 @@
    "win": [
     0.0,
     5.9
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "ped_cyclist",
    "reactive": true,
@@ -1340,9 +1561,40 @@
     0.0,
     4.9
    ],
+   "kinds": [
+    "accelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "yield_negotiation",
    "reactive": true,
-   "reason": "A white car is crossing the intersection from the right, requiring the ego vehicle to yield before turning left.",
+   "reason": "A white car crosses the intersection from the right, requiring the ego vehicle to yield before turning left.",
+   "ego_react": 1.6,
+   "terms": {
+    "decel_repeat": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "8779c50d-b2d9-402a-b445-ae35f7dcf214",
+  "clip_score": 1.43,
+  "score_norm": 0.193,
+  "ego_norm": 0.145,
+  "vlm_score": 0.8,
+  "n_react_win": 2,
+  "best": {
+   "win": [
+    13.2,
+    20.2
+   ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
+   ],
+   "event_type": "cross_traffic",
+   "reactive": true,
+   "reason": "The ego vehicle stops and waits for a vehicle coming from the left to pass before making a left turn, indicating the motion change is caused by cross traffic.",
    "ego_react": 1.6,
    "terms": {
     "decel_repeat": 1.0,
@@ -1361,6 +1613,9 @@
    "win": [
     0.0,
     7.0
+   ],
+   "kinds": [
+    "decelerate"
    ],
    "event_type": "lead_brake",
    "reactive": true,
@@ -1384,6 +1639,10 @@
     2.3,
     12.6
    ],
+   "kinds": [
+    "stop",
+    "turn_right"
+   ],
    "event_type": "ped_cyclist",
    "reactive": true,
    "reason": "Pedestrians crossing the road cause the ego vehicle to slow down and yield.",
@@ -1406,6 +1665,10 @@
     4.5,
     11.8
    ],
+   "kinds": [
+    "turn_right",
+    "decelerate"
+   ],
    "event_type": "ped_cyclist",
    "reactive": true,
    "reason": "Pedestrians crossing the road cause the ego vehicle to slow down and yield.",
@@ -1413,27 +1676,6 @@
    "terms": {
     "decel_repeat": 1.0,
     "turn": 0.6
-   }
-  }
- },
- {
-  "clip_id": "37bbfc37-93c4-40d2-b021-3e376e03fde6",
-  "clip_score": 1.05,
-  "score_norm": 0.142,
-  "ego_norm": 0.091,
-  "vlm_score": 0.9,
-  "n_react_win": 2,
-  "best": {
-   "win": [
-    2.3,
-    10.1
-   ],
-   "event_type": "ped_cyclist",
-   "reactive": true,
-   "reason": "A pedestrian is crossing the road, causing the ego vehicle to slow down and yield.",
-   "ego_react": 1.0,
-   "terms": {
-    "decel_repeat": 1.0
    }
   }
  },
@@ -1449,33 +1691,15 @@
     1.7,
     16.0
    ],
+   "kinds": [
+    "stop"
+   ],
    "event_type": "ped_cyclist",
    "reactive": true,
    "reason": "Pedestrians crossing the road cause the ego vehicle to stop and wait.",
    "ego_react": 1.0,
    "terms": {
     "stop": 1.0
-   }
-  }
- },
- {
-  "clip_id": "9ae7c268-1d99-4658-9561-52e0cf4ceaa7",
-  "clip_score": 0.99,
-  "score_norm": 0.134,
-  "ego_norm": 0.091,
-  "vlm_score": 0.99,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    3.8,
-    10.9
-   ],
-   "event_type": "lead_brake",
-   "reactive": true,
-   "reason": "The vehicle in front is braking, causing the ego vehicle to slow down.",
-   "ego_react": 1.0,
-   "terms": {
-    "decel_repeat": 1.0
    }
   }
  },
@@ -1491,12 +1715,40 @@
     3.3,
     18.6
    ],
+   "kinds": [
+    "decelerate",
+    "accelerate"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
    "reason": "The red car in front brakes, causing the ego vehicle to slow down.",
    "ego_react": 1.0,
    "terms": {
     "decel_repeat": 1.0
+   }
+  }
+ },
+ {
+  "clip_id": "9f6fe5b9-0e5b-49b6-866f-9eb4e2957898",
+  "clip_score": 0.95,
+  "score_norm": 0.128,
+  "ego_norm": 0.091,
+  "vlm_score": 0.8,
+  "n_react_win": 2,
+  "best": {
+   "win": [
+    0.0,
+    2.1
+   ],
+   "kinds": [
+    "lane_change_left"
+   ],
+   "event_type": "lead_brake",
+   "reactive": true,
+   "reason": "The ego vehicle slows down as the white SUV ahead brakes, indicating a lead-vehicle-induced deceleration.",
+   "ego_react": 1.0,
+   "terms": {
+    "lane_change": 1.0
    }
   }
  },
@@ -1512,9 +1764,36 @@
     0.0,
     4.1
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
    "reason": "The ego vehicle is following a lead vehicle that is braking, causing the ego to slow down to maintain a safe following distance.",
+   "ego_react": 1.0,
+   "terms": {
+    "decel_repeat": 1.0
+   }
+  }
+ },
+ {
+  "clip_id": "9ae7c268-1d99-4658-9561-52e0cf4ceaa7",
+  "clip_score": 0.9,
+  "score_norm": 0.121,
+  "ego_norm": 0.091,
+  "vlm_score": 0.9,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    3.8,
+    10.9
+   ],
+   "kinds": [
+    "decelerate"
+   ],
+   "event_type": "lead_brake",
+   "reactive": true,
+   "reason": "The ego vehicle slows down because the vehicle directly ahead is braking, causing a reaction to maintain a safe following distance.",
    "ego_react": 1.0,
    "terms": {
     "decel_repeat": 1.0
@@ -1532,6 +1811,9 @@
    "win": [
     0.0,
     5.6
+   ],
+   "kinds": [
+    "stop"
    ],
    "event_type": "lead_brake",
    "reactive": true,
@@ -1554,9 +1836,12 @@
     11.3,
     20.0
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
-   "reason": "The ego vehicle is following a lead vehicle that brakes, causing the ego to slow down to maintain a safe following distance.",
+   "reason": "The ego vehicle is following a lead vehicle and must slow down as the lead vehicle brakes.",
    "ego_react": 1.0,
    "terms": {
     "decel_repeat": 1.0
@@ -1574,6 +1859,9 @@
    "win": [
     0.0,
     1.8
+   ],
+   "kinds": [
+    "decelerate"
    ],
    "event_type": "lead_brake",
    "reactive": true,
@@ -1596,9 +1884,60 @@
     0.0,
     7.0
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "lead_brake",
    "reactive": true,
    "reason": "The ego vehicle slows down and stops because a lead vehicle in front is braking and stopping.",
+   "ego_react": 1.0,
+   "terms": {
+    "decel_repeat": 1.0
+   }
+  }
+ },
+ {
+  "clip_id": "6a637d30-7b82-456b-a75f-f8bb442675b9",
+  "clip_score": 0.8,
+  "score_norm": 0.108,
+  "ego_norm": 0.091,
+  "vlm_score": 0.8,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.2,
+    4.6
+   ],
+   "kinds": [
+    "decelerate"
+   ],
+   "event_type": "lead_brake",
+   "reactive": true,
+   "reason": "The ego vehicle is following a lead vehicle that brakes, causing the ego to slow down and maintain a safe following distance.",
+   "ego_react": 1.0,
+   "terms": {
+    "decel_repeat": 1.0
+   }
+  }
+ },
+ {
+  "clip_id": "37bbfc37-93c4-40d2-b021-3e376e03fde6",
+  "clip_score": 0.65,
+  "score_norm": 0.088,
+  "ego_norm": 0.091,
+  "vlm_score": 0.5,
+  "n_react_win": 2,
+  "best": {
+   "win": [
+    2.3,
+    10.1
+   ],
+   "kinds": [
+    "decelerate"
+   ],
+   "event_type": "ped_cyclist",
+   "reactive": true,
+   "reason": "Pedestrians crossing the road cause the ego vehicle to slow down and yield.",
    "ego_react": 1.0,
    "terms": {
     "decel_repeat": 1.0
@@ -1616,6 +1955,9 @@
    "win": [
     0.0,
     2.1
+   ],
+   "kinds": [
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -1639,6 +1981,11 @@
     11.9,
     20.2
    ],
+   "kinds": [
+    "turn_left",
+    "decelerate",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle moves forward and turns left without any external agents or hazards in its path.",
@@ -1661,9 +2008,13 @@
     6.1,
     13.9
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is decelerating and preparing to stop at a red traffic light ahead. There are no other vehicles or agents directly in the ego lane causing the减速",
+   "reason": "The ego vehicle is decelerating and preparing to stop at a red traffic light, which is a standard response to traffic signals and not caused by any external ag",
    "ego_react": 2.0,
    "terms": {
     "decel_repeat": 2.0
@@ -1681,6 +2032,9 @@
    "win": [
     0.0,
     2.8
+   ],
+   "kinds": [
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -1702,6 +2056,11 @@
    "win": [
     5.6,
     17.8
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -1726,9 +2085,14 @@
     0.0,
     11.8
    ],
+   "kinds": [
+    "decelerate",
+    "turn_right",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is moving slowly and steadily through an empty parking lot with no visible obstacles, other vehicles, or agents in its path. The motion appears匀",
+   "reason": "The ego vehicle is moving forward in an empty parking lot with no other vehicles, pedestrians, or obstacles in its path. The motion appears to be a continuous,匀",
    "ego_react": 2.6,
    "terms": {
     "decel_repeat": 2.0,
@@ -1747,6 +2111,10 @@
    "win": [
     8.6,
     17.2
+   ],
+   "kinds": [
+    "stop",
+    "accelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -1770,6 +2138,11 @@
     1.2,
     11.9
    ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is decelerating and turning left at an intersection, but there are no visible external agents or hazards directly causing this motion. The turn/",
@@ -1791,6 +2164,10 @@
    "win": [
     0.0,
     10.3
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_right"
    ],
    "event_type": "none",
    "reactive": false,
@@ -1815,6 +2192,10 @@
     0.0,
     12.4
    ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is moving forward through a roundabout without any visible external agents or hazards in its path. The motion appears smooth and continuous, as",
@@ -1836,6 +2217,10 @@
    "win": [
     0.0,
     6.4
+   ],
+   "kinds": [
+    "turn_right",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -1860,6 +2245,11 @@
     0.0,
     8.5
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stopped at a red light, but there is no visible external agent or hazard directly causing the stop. The vehicle is stationary due to the red灯",
@@ -1883,9 +2273,14 @@
     8.7,
     19.6
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is stopped at a stop sign, then proceeds straight through the intersection. No other vehicles or pedestrians are present in the path, and the eg",
+   "reason": "The ego vehicle is stopped at a stop sign, then proceeds straight through the intersection without any external agents or hazards affecting its motion.",
    "ego_react": 1.8,
    "terms": {
     "stop_go": 0.8,
@@ -1905,9 +2300,15 @@
     7.4,
     19.0
    ],
+   "kinds": [
+    "decelerate",
+    "turn_right",
+    "decelerate",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is decelerating and preparing to make a right turn at an intersection. The deceleration is likely due to the upcoming turn and the need to stop,",
+   "reason": "The ego vehicle is driving straight and then makes a right turn at the intersection, with no visible external agents or hazards directly affecting its motion.",
    "ego_react": 4.27,
    "terms": {
     "harsh_brake": 0.67,
@@ -1927,6 +2328,11 @@
    "win": [
     5.7,
     20.2
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -1951,6 +2357,11 @@
     0.0,
     10.9
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is approaching a red light and will stop, but no other agents are directly causing the stop. The vehicle is simply following traffic rules at an",
@@ -1960,28 +2371,6 @@
     "decel_repeat": 1.0,
     "stop_go": 0.8,
     "stop": 1.0
-   }
-  }
- },
- {
-  "clip_id": "9f6fe5b9-0e5b-49b6-866f-9eb4e2957898",
-  "clip_score": 0.15,
-  "score_norm": 0.02,
-  "ego_norm": 0.145,
-  "vlm_score": 0.0,
-  "n_react_win": 2,
-  "best": {
-   "win": [
-    4.0,
-    13.4
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is driving straight on a clear road with no visible obstacles or agents in its path. The motion appears smooth and uninterrupted, indicating no-",
-   "ego_react": 1.6,
-   "terms": {
-    "decel_repeat": 1.0,
-    "turn": 0.6
    }
   }
  },
@@ -1997,9 +2386,16 @@
     0.6,
     17.6
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_right"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle approaches a stop sign and comes to a complete stop, then proceeds after checking for safety. No other vehicles or agents are present in the ego",
+   "reason": "The ego vehicle decelerates and stops at a stop sign, then proceeds after checking for safety. No other vehicles or agents are present in the path to cause the",
    "ego_react": 4.4,
    "terms": {
     "decel_repeat": 2.0,
@@ -2020,6 +2416,12 @@
    "win": [
     0.0,
     13.2
+   ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "stop",
+    "accelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -2045,6 +2447,9 @@
     5.9,
     15.7
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle maintains steady forward motion on a clear highway with no visible obstacles, cut-ins, or external agents affecting its path.",
@@ -2065,6 +2470,10 @@
    "win": [
     0.0,
     7.9
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_right"
    ],
    "event_type": "none",
    "reactive": false,
@@ -2088,9 +2497,15 @@
     0.4,
     15.3
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is driving straight and then makes a left turn at the intersection without any external agents or hazards affecting its motion.",
+   "reason": "The ego vehicle is moving straight and then turns left at the intersection without any external agents or hazards affecting its motion.",
    "ego_react": 5.76,
    "terms": {
     "harsh_brake": 2.16,
@@ -2110,6 +2525,9 @@
    "win": [
     0.0,
     4.5
+   ],
+   "kinds": [
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -2131,6 +2549,10 @@
    "win": [
     14.8,
     20.1
+   ],
+   "kinds": [
+    "turn_right",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -2154,6 +2576,9 @@
     10.9,
     19.4
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is decelerating and stopping at a stop sign, which is a standard traffic control device. There are no other vehicles or agents directly causing",
@@ -2176,9 +2601,13 @@
     0.0,
     9.1
    ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is driving straight on a curved road with no visible obstacles or agents causing a motion change.",
+   "reason": "The ego vehicle is driving straight on a curved road with no visible agents or obstacles in its path. The motion appears smooth and uninterrupted, indicating no",
    "ego_react": 1.6,
    "terms": {
     "decel_repeat": 1.0,
@@ -2197,6 +2626,10 @@
    "win": [
     0.1,
     8.7
+   ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -2220,6 +2653,11 @@
     4.1,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is driving straight on a clear road with no visible obstacles or agents in its path.",
@@ -2227,6 +2665,33 @@
    "terms": {
     "harsh_brake": 0.74,
     "decel_repeat": 2.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "a502b2fa-dac6-45e6-99ec-bfc0975a5302",
+  "clip_score": 0.15,
+  "score_norm": 0.02,
+  "ego_norm": 0.293,
+  "vlm_score": 0.0,
+  "n_react_win": 2,
+  "best": {
+   "win": [
+    12.8,
+    20.2
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_right"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is following a lead vehicle at a safe distance, maintaining consistent speed and lane position without any abrupt changes or external triggers.",
+   "ego_react": 3.23,
+   "terms": {
+    "harsh_brake": 1.63,
+    "decel_repeat": 1.0,
     "turn": 0.6
    }
   }
@@ -2243,12 +2708,39 @@
     11.8,
     18.8
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is decelerating and preparing to stop at a yield sign, but there are no other vehicles or pedestrians in its immediate path causing the reaction",
    "ego_react": 2.19,
    "terms": {
     "harsh_brake": 1.19,
+    "decel_repeat": 1.0
+   }
+  }
+ },
+ {
+  "clip_id": "f03a1984-1e24-418e-8272-3abf4836217d",
+  "clip_score": 0.15,
+  "score_norm": 0.02,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "n_react_win": 2,
+  "best": {
+   "win": [
+    5.5,
+    10.3
+   ],
+   "kinds": [
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "No visible external agent or hazard in the ego's path causing the motion change.",
+   "ego_react": 1.0,
+   "terms": {
     "decel_repeat": 1.0
    }
   }
@@ -2265,6 +2757,10 @@
     2.5,
     13.1
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is decelerating and stopping at a red light, which is a standard traffic control action and not caused by any external agent or hazard in the eg",
@@ -2272,50 +2768,6 @@
    "terms": {
     "harsh_brake": 1.48,
     "decel_repeat": 2.0
-   }
-  }
- },
- {
-  "clip_id": "f03a1984-1e24-418e-8272-3abf4836217d",
-  "clip_score": 0.15,
-  "score_norm": 0.02,
-  "ego_norm": 0.091,
-  "vlm_score": 0.0,
-  "n_react_win": 2,
-  "best": {
-   "win": [
-    5.5,
-    10.3
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "No visible external agent or hazard in the ego's path causing the motion change.",
-   "ego_react": 1.0,
-   "terms": {
-    "decel_repeat": 1.0
-   }
-  }
- },
- {
-  "clip_id": "a502b2fa-dac6-45e6-99ec-bfc0975a5302",
-  "clip_score": 0.15,
-  "score_norm": 0.02,
-  "ego_norm": 0.293,
-  "vlm_score": 0.0,
-  "n_react_win": 2,
-  "best": {
-   "win": [
-    12.8,
-    20.2
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is following a lead vehicle at a safe distance, maintaining consistent speed and lane position without any abrupt changes or external triggers.",
-   "ego_react": 3.23,
-   "terms": {
-    "harsh_brake": 1.63,
-    "decel_repeat": 1.0,
-    "turn": 0.6
    }
   }
  },
@@ -2330,6 +2782,9 @@
    "win": [
     1.4,
     6.4
+   ],
+   "kinds": [
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -2351,6 +2806,11 @@
    "win": [
     0.0,
     11.5
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -2375,6 +2835,11 @@
     8.0,
     17.5
    ],
+   "kinds": [
+    "turn_left",
+    "accelerate",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle decelerates and turns left at an intersection without any visible external agents or hazards in its path. The maneuver appears to be a planned,咎",
@@ -2398,9 +2863,13 @@
     0.0,
     10.7
    ],
+   "kinds": [
+    "turn_right",
+    "stop"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle begins moving forward from a stationary position without any visible external agents or obstacles in its path. The motion appears to be a smooth",
+   "reason": "The ego vehicle moves forward steadily without any visible reaction to external agents or hazards.",
    "ego_react": 1.6,
    "terms": {
     "stop": 1.0,
@@ -2420,13 +2889,45 @@
     6.9,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "turn_left"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is driving straight and then makes a left turn at an intersection without any external agents or hazards in its path. The motion change is due.",
+   "reason": "The ego vehicle is driving straight and then makes a left turn at an intersection without any external agents or hazards in its path. The maneuver is smooth and",
    "ego_react": 3.31,
    "terms": {
     "harsh_brake": 1.71,
     "decel_repeat": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "c2ef6d2c-ba8c-4fe4-b369-391cd5b71770",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    1.7,
+    16.8
+   ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "accelerate",
+    "turn_right"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle decelerates and stops at a stop sign, then proceeds to make a right turn. No other vehicles or agents are present in the path that cause this.",
+   "ego_react": 2.6,
+   "terms": {
+    "decel_repeat": 2.0,
     "turn": 0.6
    }
   }
@@ -2443,35 +2944,17 @@
     0.0,
     15.3
    ],
+   "kinds": [
+    "stop",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is stationary at a red light, waiting for the signal to change. There are no visible external agents or hazards directly affecting the ego's dec",
+   "reason": "The ego vehicle is stationary at a red light, and the motion change (waiting) is due to the traffic signal, not an external agent or hazard in the ego's path.",
    "ego_react": 1.8,
    "terms": {
     "stop_go": 0.8,
     "stop": 1.0
-   }
-  }
- },
- {
-  "clip_id": "c2ef6d2c-ba8c-4fe4-b369-391cd5b71770",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.236,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    1.7,
-    16.8
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is driving straight on a single-lane, two-way road with no other vehicles present. The road is clear, and there are no external agents or road.",
-   "ego_react": 2.6,
-   "terms": {
-    "decel_repeat": 2.0,
-    "turn": 0.6
    }
   }
  },
@@ -2487,9 +2970,13 @@
     8.7,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle drives straight on a highway at night with no visible obstacles or agents in its path. The motion is steady and unimpeded, with no indication of",
+   "reason": "The ego vehicle drives straight on a highway at night with no visible obstacles or agents in its path. The motion is steady and uninterrupted, with no signs of",
    "ego_react": 2.0,
    "terms": {
     "decel_repeat": 2.0
@@ -2508,6 +2995,11 @@
     4.0,
     13.2
    ],
+   "kinds": [
+    "accelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle moves forward and turns left at the intersection without any external agents or hazards affecting its motion.",
@@ -2515,6 +3007,33 @@
    "terms": {
     "harsh_brake": 1.41,
     "decel_repeat": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "0bb0b453-0077-4175-bc9a-6707c4fa1938",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    7.5
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is stationary at an intersection, then turns left and accelerates. No other vehicles or agents are present in the path to cause this motion.",
+   "ego_react": 2.6,
+   "terms": {
+    "decel_repeat": 2.0,
     "turn": 0.6
    }
   }
@@ -2530,6 +3049,12 @@
    "win": [
     0.0,
     17.8
+   ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -2555,6 +3080,11 @@
     0.6,
     15.2
    ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is driving straight on a clear residential road with no visible obstacles, other vehicles, or agents in its path. The motion is steady and unimp",
@@ -2576,6 +3106,11 @@
    "win": [
     0.0,
     6.2
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -2600,6 +3135,10 @@
     11.2,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is moving forward and then stops at a stop sign, with no other vehicles or agents directly influencing its motion.",
@@ -2622,6 +3161,13 @@
     0.0,
     16.6
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stationary at a red light and then proceeds when the light turns green. No other vehicles or agents are directly influencing its motion.",
@@ -2630,6 +3176,32 @@
     "decel_repeat": 2.0,
     "stop_go": 0.8,
     "stop": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "0268c800-523f-46d9-88b8-6cc780ec79ba",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    5.3
+   ],
+   "kinds": [
+    "turn_right",
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is moving forward on a clear road with no visible obstacles or agents in its path. The motion appears smooth and uninterrupted, indicating no re",
+   "ego_react": 1.6,
+   "terms": {
+    "decel_repeat": 1.0,
     "turn": 0.6
    }
   }
@@ -2646,57 +3218,18 @@
     0.0,
     13.6
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is stationary at a red light and begins moving when the light turns green. No other vehicles or agents are directly influencing its motion.",
+   "reason": "The ego vehicle is stopped at a red light and then proceeds when the light turns green. No other vehicles or agents are directly influencing the ego's motion.",
    "ego_react": 1.8,
    "terms": {
     "stop_go": 0.8,
     "stop": 1.0
-   }
-  }
- },
- {
-  "clip_id": "0268c800-523f-46d9-88b8-6cc780ec79ba",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.145,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    5.3
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is moving forward on a clear road with no visible obstacles or agents in its path. The motion appears smooth and uninterrupted, indicating no re",
-   "ego_react": 1.6,
-   "terms": {
-    "decel_repeat": 1.0,
-    "turn": 0.6
-   }
-  }
- },
- {
-  "clip_id": "9103508a-dd5d-4be3-aab4-0a8e4c6a2b38",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.267,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    14.9
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is decelerating and preparing to make a right turn at an intersection, but there are no visible external agents or hazards directly causing this",
-   "ego_react": 2.94,
-   "terms": {
-    "harsh_brake": 0.94,
-    "decel_repeat": 2.0
    }
   }
  },
@@ -2712,12 +3245,41 @@
     0.9,
     6.5
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle maintains steady forward motion on a multi-lane highway with no visible braking, lane changes, or interaction with other vehicles. No external h",
+   "reason": "No visible external agent or hazard in the ego's path causing the motion change.",
    "ego_react": 1.0,
    "terms": {
     "decel_repeat": 1.0
+   }
+  }
+ },
+ {
+  "clip_id": "9103508a-dd5d-4be3-aab4-0a8e4c6a2b38",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.267,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    14.9
+   ],
+   "kinds": [
+    "decelerate",
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is decelerating and preparing to make a right turn at a red light, which is a planned maneuver rather than a reaction to an external agent or突发的",
+   "ego_react": 2.94,
+   "terms": {
+    "harsh_brake": 0.94,
+    "decel_repeat": 2.0
    }
   }
  },
@@ -2731,6 +3293,30 @@
   "best": null
  },
  {
+  "clip_id": "2a8c293b-1560-4b81-994a-4ad5352a8e93",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    5.3,
+    12.3
+   ],
+   "kinds": [
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is driving straight on a single lane in each direction with a dedicated bicycle lane in the middle. There are no visible obstacles or agents in",
+   "ego_react": 1.0,
+   "terms": {
+    "decel_repeat": 1.0
+   }
+  }
+ },
+ {
   "clip_id": "b3629fa6-00d8-4d09-a3fd-86360aab40f7",
   "clip_score": 0.0,
   "score_norm": 0.0,
@@ -2741,6 +3327,13 @@
    "win": [
     0.0,
     15.0
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_right",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -2755,44 +3348,28 @@
   }
  },
  {
-  "clip_id": "2a8c293b-1560-4b81-994a-4ad5352a8e93",
+  "clip_id": "8cda92bb-179b-4484-b4e9-2325378c1ccf",
   "clip_score": 0.0,
   "score_norm": 0.0,
-  "ego_norm": 0.091,
+  "ego_norm": 0.145,
   "vlm_score": 0.0,
   "n_react_win": 1,
   "best": {
    "win": [
-    5.3,
-    12.3
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is driving straight on a single lane in each direction with a dedicated bicycle lane in the middle. There are no visible obstacles or agents in",
-   "ego_react": 1.0,
-   "terms": {
-    "decel_repeat": 1.0
-   }
-  }
- },
- {
-  "clip_id": "63b147e1-1736-4050-b798-573b968dea28",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.091,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    12.4,
+    13.1,
     20.2
    ],
+   "kinds": [
+    "turn_right",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "No visible external agent or hazard causing the ego vehicle's motion change.",
-   "ego_react": 1.0,
+   "reason": "The ego vehicle moves forward smoothly without any visible external agents or hazards affecting its motion.",
+   "ego_react": 1.6,
    "terms": {
-    "stop": 1.0
+    "decel_repeat": 1.0,
+    "turn": 0.6
    }
   }
  },
@@ -2804,6 +3381,33 @@
   "vlm_score": 0.0,
   "n_react_win": 0,
   "best": null
+ },
+ {
+  "clip_id": "5c794ccf-be3c-453f-b022-d71990cdb8d1",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    7.1,
+    20.2
+   ],
+   "kinds": [
+    "stop",
+    "turn_left",
+    "stop"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle moves slowly and steadily through a parking lot with no visible external agents or hazards directly affecting its motion. The movement appears自主",
+   "ego_react": 1.6,
+   "terms": {
+    "stop": 1.0,
+    "turn": 0.6
+   }
+  }
  },
  {
   "clip_id": "1c765afd-9e2c-420d-b18a-4245aa795130",
@@ -2824,24 +3428,26 @@
   "best": null
  },
  {
-  "clip_id": "8cda92bb-179b-4484-b4e9-2325378c1ccf",
+  "clip_id": "63b147e1-1736-4050-b798-573b968dea28",
   "clip_score": 0.0,
   "score_norm": 0.0,
-  "ego_norm": 0.145,
+  "ego_norm": 0.091,
   "vlm_score": 0.0,
   "n_react_win": 1,
   "best": {
    "win": [
-    13.1,
+    12.4,
     20.2
+   ],
+   "kinds": [
+    "stop"
    ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle moves forward smoothly without any visible external agents or hazards affecting its motion.",
-   "ego_react": 1.6,
+   "reason": "The ego vehicle is stationary in a parking lot with no visible motion change or external agents affecting its movement.",
+   "ego_react": 1.0,
    "terms": {
-    "decel_repeat": 1.0,
-    "turn": 0.6
+    "stop": 1.0
    }
   }
  },
@@ -2855,22 +3461,28 @@
   "best": null
  },
  {
-  "clip_id": "5c794ccf-be3c-453f-b022-d71990cdb8d1",
+  "clip_id": "00bc2719-c610-4b58-a5dd-5911ed67238f",
   "clip_score": 0.0,
   "score_norm": 0.0,
-  "ego_norm": 0.145,
+  "ego_norm": 0.218,
   "vlm_score": 0.0,
   "n_react_win": 1,
   "best": {
    "win": [
-    7.1,
-    20.2
+    0.0,
+    9.2
+   ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_right"
    ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle moves slowly and steadily through a parking lot with no visible external agents or hazards directly affecting its motion. The movement appears自主",
-   "ego_react": 1.6,
+   "reason": "The ego vehicle is stationary at a red light and then proceeds when the light turns green, with no other vehicles or pedestrians affecting its motion.",
+   "ego_react": 2.4,
    "terms": {
+    "stop_go": 0.8,
     "stop": 1.0,
     "turn": 0.6
    }
@@ -2888,6 +3500,10 @@
     10.3,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is moving slowly and stopping, but no specific external agent or hazard is clearly causing the motion change in the visible frames.",
@@ -2895,29 +3511,6 @@
    "terms": {
     "decel_repeat": 1.0,
     "stop": 1.0
-   }
-  }
- },
- {
-  "clip_id": "00bc2719-c610-4b58-a5dd-5911ed67238f",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.218,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    9.2
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is stationary at a red light and then proceeds when the light turns green, with no other vehicles or pedestrians affecting its motion.",
-   "ego_react": 2.4,
-   "terms": {
-    "stop_go": 0.8,
-    "stop": 1.0,
-    "turn": 0.6
    }
   }
  },
@@ -2931,27 +3524,6 @@
   "best": null
  },
  {
-  "clip_id": "0d99e260-e276-41f6-8ad8-5fb931b725e9",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.091,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    9.8,
-    17.6
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is moving straight and then stops at a stop sign, with no other vehicles or agents present in the path.",
-   "ego_react": 1.0,
-   "terms": {
-    "decel_repeat": 1.0
-   }
-  }
- },
- {
   "clip_id": "5cc50d6e-fdc2-45a5-bd1d-7aa6ab5c9af2",
   "clip_score": 0.0,
   "score_norm": 0.0,
@@ -2963,6 +3535,14 @@
     0.0,
     20.2
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_right",
+    "decelerate",
+    "turn_right",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is initially stationary, then begins to move forward slowly without any visible external agents or hazards in its path. The motion appears to be",
@@ -2972,6 +3552,30 @@
     "stop_go": 0.8,
     "stop": 1.0,
     "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "0d99e260-e276-41f6-8ad8-5fb931b725e9",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    9.8,
+    17.6
+   ],
+   "kinds": [
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is decelerating and stopping at a stop sign, which is a standard traffic control device. There are no other vehicles, pedestrians, or obstacles",
+   "ego_react": 1.0,
+   "terms": {
+    "decel_repeat": 1.0
    }
   }
  },
@@ -2996,9 +3600,15 @@
     0.0,
     18.4
    ],
+   "kinds": [
+    "stop",
+    "turn_right",
+    "stop",
+    "turn_right"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle moves forward slowly without any external agents or hazards in its path.",
+   "reason": "The ego vehicle is stationary at the beginning, then slowly moves forward in a parking lot without any visible external agents or hazards influencing the motion",
    "ego_react": 1.6,
    "terms": {
     "stop": 1.0,
@@ -3017,6 +3627,13 @@
    "win": [
     7.4,
     19.9
+   ],
+   "kinds": [
+    "decelerate",
+    "accelerate",
+    "turn_left",
+    "decelerate",
+    "stop"
    ],
    "event_type": "none",
    "reactive": false,
@@ -3051,6 +3668,10 @@
     6.4,
     14.6
    ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is moving slowly and turning left in a parking lot with no visible external agents or hazards in its path. The motion appears to be a planned,缓慢",
@@ -3072,6 +3693,9 @@
    "win": [
     14.1,
     20.2
+   ],
+   "kinds": [
+    "stop"
    ],
    "event_type": "none",
    "reactive": false,
@@ -3121,6 +3745,11 @@
     7.0,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is moving forward and turning left at a green light without any external agents or hazards in its path.",
@@ -3144,6 +3773,12 @@
     5.8,
     19.9
    ],
+   "kinds": [
+    "decelerate",
+    "turn_right",
+    "decelerate",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is decelerating and preparing to make a right turn at an intersection. The deceleration is likely due to the upcoming turn and the need to yield",
@@ -3166,6 +3801,9 @@
     14.9,
     20.2
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle maintains steady forward motion without any visible reaction to external agents or hazards. No braking, lane changes, or stops are observed, and",
@@ -3187,12 +3825,43 @@
     0.0,
     8.9
    ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is moving forward in a parking lot with no immediate obstacles or agents in its path. The motion appears to be a steady drive without any need",
+   "reason": "The ego vehicle is moving straight in a parking lot with no visible obstacles or agents causing a motion change.",
    "ego_react": 1.6,
    "terms": {
     "decel_repeat": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "963b6db2-095e-4250-8693-1045e65e0688",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    9.9,
+    20.2
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_right",
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is driving straight and then turns right at the intersection without any external agents or hazards in its path.",
+   "ego_react": 2.6,
+   "terms": {
+    "decel_repeat": 2.0,
     "turn": 0.6
    }
   }
@@ -3209,34 +3878,15 @@
     12.4,
     17.4
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle maintains steady forward motion without any visible reaction to external agents or hazards. No braking, lane changes, or yielding is observed.",
    "ego_react": 1.0,
    "terms": {
     "decel_repeat": 1.0
-   }
-  }
- },
- {
-  "clip_id": "963b6db2-095e-4250-8693-1045e65e0688",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.236,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    9.9,
-    20.2
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is driving straight and then turns right at the intersection without any external agents or hazards in its path.",
-   "ego_react": 2.6,
-   "terms": {
-    "decel_repeat": 2.0,
-    "turn": 0.6
    }
   }
  },
@@ -3251,6 +3901,11 @@
    "win": [
     1.0,
     13.9
+   ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "turn_right"
    ],
    "event_type": "none",
    "reactive": false,
@@ -3274,6 +3929,11 @@
     0.0,
     7.3
    ],
+   "kinds": [
+    "accelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is moving forward and turning left at an intersection with a green light, following the lead vehicle without any immediate external agents or ob",
@@ -3281,6 +3941,36 @@
    "terms": {
     "harsh_brake": 0.35,
     "decel_repeat": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "23af1521-1f35-4fc3-a94c-d2dc62a29697",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.308,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    12.0
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_left"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is stationary at the beginning, then slowly moves forward without any visible external agents or hazards in its path. The motion appears to be a",
+   "ego_react": 3.4,
+   "terms": {
+    "decel_repeat": 1.0,
+    "stop_go": 0.8,
+    "stop": 1.0,
     "turn": 0.6
    }
   }
@@ -3297,36 +3987,15 @@
     0.0,
     20.2
    ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is stationary in a parking garage with no visible motion change or external agents affecting its path.",
-   "ego_react": 1.0,
-   "terms": {
-    "stop": 1.0
-   }
-  }
- },
- {
-  "clip_id": "23af1521-1f35-4fc3-a94c-d2dc62a29697",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.308,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    12.0
+   "kinds": [
+    "stop"
    ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is stationary in a parking lot, then slowly moves forward and turns left onto a road. No external agents or hazards are present in its path.",
-   "ego_react": 3.4,
+   "reason": "The ego vehicle moves forward slowly in a parking garage without any visible external agents or hazards directly influencing its motion. The path is clear, and",
+   "ego_react": 1.0,
    "terms": {
-    "decel_repeat": 1.0,
-    "stop_go": 0.8,
-    "stop": 1.0,
-    "turn": 0.6
+    "stop": 1.0
    }
   }
  },
@@ -3342,6 +4011,13 @@
     0.0,
     15.3
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stopped at a red light and then proceeds when the light turns green, with no other vehicles or agents directly affecting its motion.",
@@ -3350,28 +4026,6 @@
     "decel_repeat": 2.0,
     "stop_go": 0.8,
     "stop": 1.0,
-    "turn": 0.6
-   }
-  }
- },
- {
-  "clip_id": "2c9bfbf8-b509-4096-ba65-7ade32174792",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.145,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    8.3
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is moving forward steadily along a clear residential road without any visible obstacles, external agents, or hazards in its path. There are no刹车",
-   "ego_react": 1.6,
-   "terms": {
-    "decel_repeat": 1.0,
     "turn": 0.6
    }
   }
@@ -3387,6 +4041,10 @@
    "win": [
     0.0,
     16.5
+   ],
+   "kinds": [
+    "turn_right",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -3411,6 +4069,12 @@
     0.0,
     13.9
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stationary at a red light, and the motion change (waiting) is due to the traffic signal, not an external agent or hazard in the path.",
@@ -3419,6 +4083,32 @@
     "decel_repeat": 1.0,
     "stop_go": 0.8,
     "stop": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "2c9bfbf8-b509-4096-ba65-7ade32174792",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    8.3
+   ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is moving forward steadily along a clear residential road without any visible obstacles, external agents, or hazards in its path. There are no刹车",
+   "ego_react": 1.6,
+   "terms": {
+    "decel_repeat": 1.0,
     "turn": 0.6
    }
   }
@@ -3444,6 +4134,10 @@
     6.6,
     16.3
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is driving straight and then turns right at an intersection without any visible external agents or hazards affecting its motion. No other moving",
@@ -3465,6 +4159,12 @@
     0.0,
     16.6
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stationary at a red light and then proceeds straight when the light turns green. No other vehicles or agents are directly influencing its dec",
@@ -3472,6 +4172,34 @@
    "terms": {
     "harsh_brake": 1.32,
     "decel_repeat": 1.0,
+    "stop_go": 0.8,
+    "stop": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "ec375c1b-1e6b-4026-9907-7e1c0cc5cc71",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.218,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    17.4
+   ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is stationary at a red light, and the motion change (waiting for the light) is due to the traffic signal itself, not an external agent or hazard",
+   "ego_react": 2.4,
+   "terms": {
     "stop_go": 0.8,
     "stop": 1.0,
     "turn": 0.6
@@ -3489,6 +4217,13 @@
    "win": [
     0.0,
     9.6
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -3513,29 +4248,6 @@
   "best": null
  },
  {
-  "clip_id": "ec375c1b-1e6b-4026-9907-7e1c0cc5cc71",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.218,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    17.4
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is stationary at a red light, and the motion change (waiting for the light) is due to the traffic signal itself, not an external agent or hazard",
-   "ego_react": 2.4,
-   "terms": {
-    "stop_go": 0.8,
-    "stop": 1.0,
-    "turn": 0.6
-   }
-  }
- },
- {
   "clip_id": "ef2f8e47-5c2d-4667-9f77-612009decd3d",
   "clip_score": 0.0,
   "score_norm": 0.0,
@@ -3547,24 +4259,19 @@
     0.0,
     12.9
    ],
+   "kinds": [
+    "stop",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is stationary at a red light and then proceeds when the light turns green. No other vehicles or pedestrians are present in the path, and the ego",
+   "reason": "The ego vehicle is stationary at a red light and proceeds when it turns green, with no other vehicles or pedestrians affecting its motion.",
    "ego_react": 1.8,
    "terms": {
     "stop_go": 0.8,
     "stop": 1.0
    }
   }
- },
- {
-  "clip_id": "3689d75d-6345-4392-b8f7-1d4c1394ead7",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.0,
-  "vlm_score": 0.0,
-  "n_react_win": 0,
-  "best": null
  },
  {
   "clip_id": "6564a20a-3fe5-476d-ac17-8d7db14033a2",
@@ -3578,9 +4285,15 @@
     0.0,
     15.1
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_right",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is stationary at a red light, and there are no visible external agents or hazards directly causing the stop. The scene is static with no motion,",
+   "reason": "The ego vehicle is stationary at a red light, and there are no visible external agents or hazards directly causing the stop. The scene is static with no moving",
    "ego_react": 3.4,
    "terms": {
     "decel_repeat": 1.0,
@@ -3589,6 +4302,15 @@
     "turn": 0.6
    }
   }
+ },
+ {
+  "clip_id": "3689d75d-6345-4392-b8f7-1d4c1394ead7",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "n_react_win": 0,
+  "best": null
  },
  {
   "clip_id": "1d9c3f2e-aca3-40ce-9a10-0beed5a6c3cd",
@@ -3602,9 +4324,12 @@
     14.6,
     20.0
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is moving straight at a steady speed with no visible change in motion or external agents affecting its path.",
+   "reason": "The ego vehicle is moving straight without any visible change in motion or interaction with other agents.",
    "ego_react": 1.0,
    "terms": {
     "decel_repeat": 1.0
@@ -3632,6 +4357,10 @@
     3.9,
     11.8
    ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle moves forward steadily without any visible reaction to external agents or hazards.",
@@ -3653,6 +4382,11 @@
    "win": [
     0.0,
     15.3
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_right",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -3677,24 +4411,18 @@
     15.4,
     20.2
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is decelerating and stopping at a red light, which is a standard traffic signal. There are no other vehicles, pedestrians, or obstacles in the E",
+   "reason": "The ego vehicle is decelerating and stopping at a red light, which is a standard traffic control action. There are no other vehicles or agents directly causing",
    "ego_react": 2.05,
    "terms": {
     "harsh_brake": 1.05,
     "decel_repeat": 1.0
    }
   }
- },
- {
-  "clip_id": "1da516e0-d0ff-469b-8375-1f57fb5f2280",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.0,
-  "vlm_score": 0.0,
-  "n_react_win": 0,
-  "best": null
  },
  {
   "clip_id": "ac94c0ee-3ea4-4783-8d4a-b14c27f27cb9",
@@ -3708,15 +4436,29 @@
     0.5,
     12.1
    ],
+   "kinds": [
+    "decelerate",
+    "turn_right",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle slows down and stops at the intersection due to a red traffic light, which is a standard traffic control device. There are no other vehicles, or",
+   "reason": "The ego vehicle slows down and stops at the intersection due to a red traffic light, which is a standard traffic control device. There are no other vehicles or路",
    "ego_react": 2.6,
    "terms": {
     "decel_repeat": 2.0,
     "turn": 0.6
    }
   }
+ },
+ {
+  "clip_id": "1da516e0-d0ff-469b-8375-1f57fb5f2280",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "n_react_win": 0,
+  "best": null
  },
  {
   "clip_id": "9d62bf02-0e8a-436e-914a-34e2e64cc365",
@@ -3729,6 +4471,10 @@
    "win": [
     10.4,
     20.2
+   ],
+   "kinds": [
+    "decelerate",
+    "stop"
    ],
    "event_type": "none",
    "reactive": false,
@@ -3752,6 +4498,10 @@
     0.0,
     18.3
    ],
+   "kinds": [
+    "stop",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stationary at a red light and begins moving when the light turns green. No other vehicles or agents directly influence this motion change.",
@@ -3773,6 +4523,11 @@
    "win": [
     0.0,
     13.0
+   ],
+   "kinds": [
+    "turn_right",
+    "turn_right",
+    "stop"
    ],
    "event_type": "none",
    "reactive": false,
@@ -3804,6 +4559,11 @@
    "win": [
     10.3,
     20.2
+   ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "stop"
    ],
    "event_type": "none",
    "reactive": false,
@@ -3845,6 +4605,10 @@
     4.7,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle decelerates and stops at a red traffic light, which is a standard response to a traffic signal and not caused by any external agent or hazard in",
@@ -3868,6 +4632,9 @@
     0.0,
     6.7
    ],
+   "kinds": [
+    "turn_left"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is turning left at an intersection with a green light, and there are no visible external agents or hazards in its path that would cause a change",
@@ -3890,9 +4657,13 @@
     12.8,
     20.2
    ],
+   "kinds": [
+    "turn_right",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is decelerating and turning right, but there is no visible external agent or hazard directly causing this motion change. The deceleration and/or",
+   "reason": "The ego vehicle is decelerating and turning right, likely due to its own navigation decision rather than an external agent or hazard in its path.",
    "ego_react": 1.6,
    "terms": {
     "decel_repeat": 1.0,
@@ -3912,6 +4683,10 @@
     0.0,
     14.9
    ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is moving forward on a clear road with no visible obstacles or agents in its path. The motion appears smooth and uninterrupted, indicating no re",
@@ -3920,28 +4695,6 @@
     "harsh_brake": 1.19,
     "decel_repeat": 1.0,
     "turn": 0.6
-   }
-  }
- },
- {
-  "clip_id": "2cd5796b-5aef-4463-95cc-aebf3b65ed09",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.163,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    14.8
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is stopped at a red light and proceeds when it turns green, with no other vehicles or agents directly affecting its motion.",
-   "ego_react": 1.8,
-   "terms": {
-    "stop_go": 0.8,
-    "stop": 1.0
    }
   }
  },
@@ -3955,6 +4708,32 @@
   "best": null
  },
  {
+  "clip_id": "2cd5796b-5aef-4463-95cc-aebf3b65ed09",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.163,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    14.8
+   ],
+   "kinds": [
+    "stop",
+    "accelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is stopped at a red light and proceeds when the light turns green. No other vehicles or agents are directly influencing the ego's motion.",
+   "ego_react": 1.8,
+   "terms": {
+    "stop_go": 0.8,
+    "stop": 1.0
+   }
+  }
+ },
+ {
   "clip_id": "58ed0212-8521-4184-a0ae-7d4f0dc423f7",
   "clip_score": 0.0,
   "score_norm": 0.0,
@@ -3966,9 +4745,12 @@
     15.9,
     20.2
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is decelerating smoothly as it approaches a stop sign, with no other vehicles or agents directly influencing its motion. The deceleration is due",
+   "reason": "No visible external agent or hazard in the ego's path causing the motion change.",
    "ego_react": 1.0,
    "terms": {
     "decel_repeat": 1.0
@@ -3977,6 +4759,43 @@
  },
  {
   "clip_id": "a2725491-4fbc-49e8-8ba4-7135408d09ea",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "n_react_win": 0,
+  "best": null
+ },
+ {
+  "clip_id": "28aa7b4e-a098-403f-8004-f45bf8a75228",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.286,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    12.9
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is moving forward and turning left at the intersection without any external agents or hazards in its path.",
+   "ego_react": 3.16,
+   "terms": {
+    "harsh_brake": 0.56,
+    "decel_repeat": 2.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "585daf3f-05d5-4143-9a33-796a584e600e",
   "clip_score": 0.0,
   "score_norm": 0.0,
   "ego_norm": 0.0,
@@ -3996,6 +4815,9 @@
     7.9,
     20.2
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is decelerating and stopping at a red traffic light, which is an external signal. No other vehicles or agents are directly causing the motion. A",
@@ -4004,15 +4826,6 @@
     "decel_repeat": 1.0
    }
   }
- },
- {
-  "clip_id": "585daf3f-05d5-4143-9a33-796a584e600e",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.0,
-  "vlm_score": 0.0,
-  "n_react_win": 0,
-  "best": null
  },
  {
   "clip_id": "f0db5d89-5a29-4323-9126-c3926a0cfd68",
@@ -4026,6 +4839,11 @@
     0.0,
     11.4
    ],
+   "kinds": [
+    "accelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle initiates a left turn at the intersection without any external agents or hazards in its path. The turn is executed smoothly, and there are no ob",
@@ -4038,39 +4856,7 @@
   }
  },
  {
-  "clip_id": "28aa7b4e-a098-403f-8004-f45bf8a75228",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.286,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    12.9
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is moving forward and turning left at the intersection without any external agents or hazards in its path.",
-   "ego_react": 3.16,
-   "terms": {
-    "harsh_brake": 0.56,
-    "decel_repeat": 2.0,
-    "turn": 0.6
-   }
-  }
- },
- {
   "clip_id": "19045b5b-6b04-4a74-b87f-f6cae2690589",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.0,
-  "vlm_score": 0.0,
-  "n_react_win": 0,
-  "best": null
- },
- {
-  "clip_id": "c3876bb9-67c3-46dc-af58-c98d521320f1",
   "clip_score": 0.0,
   "score_norm": 0.0,
   "ego_norm": 0.0,
@@ -4090,6 +4876,11 @@
     0.0,
     10.7
    ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is moving forward and turning left without any external agents or hazards in its path.",
@@ -4100,6 +4891,15 @@
     "turn": 0.6
    }
   }
+ },
+ {
+  "clip_id": "c3876bb9-67c3-46dc-af58-c98d521320f1",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "n_react_win": 0,
+  "best": null
  },
  {
   "clip_id": "317fea33-b13c-4168-98b2-c3fa45159909",
@@ -4113,36 +4913,15 @@
     8.4,
     15.3
    ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle drives straight at night with no visible agents or obstacles in its path, maintaining consistent speed and lane position throughout the segment.",
-   "ego_react": 1.0,
-   "terms": {
-    "decel_repeat": 1.0
-   }
-  }
- },
- {
-  "clip_id": "8c3b8a23-7e8e-4ae4-901a-d1f306d44cec",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.308,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    10.6
+   "kinds": [
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is stationary at a red light and then proceeds straight when the light turns green. No other vehicles or pedestrians are directly affecting its",
-   "ego_react": 3.4,
+   "reason": "The ego vehicle maintains steady forward motion on a clear road with no visible agents or obstacles in its path. No braking, stopping, or evasive maneuvers are",
+   "ego_react": 1.0,
    "terms": {
-    "decel_repeat": 1.0,
-    "stop_go": 0.8,
-    "stop": 1.0,
-    "turn": 0.6
+    "decel_repeat": 1.0
    }
   }
  },
@@ -4157,6 +4936,10 @@
    "win": [
     0.0,
     12.9
+   ],
+   "kinds": [
+    "stop",
+    "accelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -4180,12 +4963,47 @@
     0.0,
     14.2
    ],
+   "kinds": [
+    "stop",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is stationary in a parking lot with no visible external agents or hazards affecting its motion. The scene shows no moving vehicles, pedestrians,",
+   "reason": "The ego vehicle is stationary in a parking lot with no visible external agents or hazards affecting its motion. The scene shows a static environment with no cut",
    "ego_react": 2.6,
    "terms": {
     "decel_repeat": 1.0,
+    "stop": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "8c3b8a23-7e8e-4ae4-901a-d1f306d44cec",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.308,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    10.6
+   ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_right",
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is stationary at a red light and then proceeds straight when the light turns green. No other vehicles or pedestrians are directly affecting its",
+   "ego_react": 3.4,
+   "terms": {
+    "decel_repeat": 1.0,
+    "stop_go": 0.8,
     "stop": 1.0,
     "turn": 0.6
    }
@@ -4212,9 +5030,12 @@
     0.0,
     10.1
    ],
+   "kinds": [
+    "stop"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is stationary at the beginning and then begins to move forward slowly without any visible external agents or hazards in its path. The motion is渐",
+   "reason": "The ego vehicle is stationary in a parking lot with no visible agents or hazards in its path. The scene remains static throughout the frames, indicating no need",
    "ego_react": 1.0,
    "terms": {
     "stop": 1.0
@@ -4232,6 +5053,10 @@
    "win": [
     4.8,
     13.7
+   ],
+   "kinds": [
+    "decelerate",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -4263,6 +5088,10 @@
     0.0,
     12.3
    ],
+   "kinds": [
+    "decelerate",
+    "turn_right"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle moves forward and turns right without any external agents or hazards in its path.",
@@ -4285,6 +5114,9 @@
     15.0,
     20.2
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "No visible external agent or hazard in the ego's path causing the motion change.",
@@ -4305,6 +5137,14 @@
    "win": [
     0.0,
     20.2
+   ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_right",
+    "decelerate",
+    "decelerate",
+    "accelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -4329,6 +5169,13 @@
    "win": [
     0.0,
     11.7
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -4363,6 +5210,9 @@
     13.2,
     18.6
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle maintains steady forward motion without any visible reaction to external agents or hazards. No braking, lane changes, or interactions with other",
@@ -4384,6 +5234,12 @@
     0.0,
     19.5
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_right",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stopped at a red light and then proceeds straight through the intersection without any external agents or hazards affecting its motion.",
@@ -4393,6 +5249,35 @@
     "decel_repeat": 1.0,
     "stop_go": 0.8,
     "stop": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "d642ecdd-0d8a-437c-b766-0fd703480e41",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.639,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    18.5
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "decelerate",
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is decelerating and preparing to make a left turn at an intersection. There are no visible external agents or hazards in the ego's path that are",
+   "ego_react": 7.05,
+   "terms": {
+    "harsh_brake": 3.45,
+    "decel_repeat": 3.0,
     "turn": 0.6
    }
   }
@@ -4409,6 +5294,10 @@
     0.0,
     2.8
    ],
+   "kinds": [
+    "stop",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stationary, and no external agent or hazard is directly causing the stop. The surrounding vehicles and pedestrians are not obstructing the eg",
@@ -4420,29 +5309,6 @@
   }
  },
  {
-  "clip_id": "d642ecdd-0d8a-437c-b766-0fd703480e41",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.639,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    18.5
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is decelerating and preparing to make a left turn at an intersection. There are no visible external agents or hazards in the ego's path that are",
-   "ego_react": 7.05,
-   "terms": {
-    "harsh_brake": 3.45,
-    "decel_repeat": 3.0,
-    "turn": 0.6
-   }
-  }
- },
- {
   "clip_id": "8576e640-0cd5-41b6-a50f-428784f1bfc8",
   "clip_score": 0.0,
   "score_norm": 0.0,
@@ -4450,27 +5316,6 @@
   "vlm_score": 0.0,
   "n_react_win": 0,
   "best": null
- },
- {
-  "clip_id": "6a637d30-7b82-456b-a75f-f8bb442675b9",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.091,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.2,
-    4.6
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "No clear external agent or hazard in the ego's path causing the motion change.",
-   "ego_react": 1.0,
-   "terms": {
-    "decel_repeat": 1.0
-   }
-  }
  },
  {
   "clip_id": "b8e0474e-3686-453f-af64-9bdfe4d01b29",
@@ -4492,6 +5337,10 @@
    "win": [
     1.3,
     20.2
+   ],
+   "kinds": [
+    "decelerate",
+    "stop"
    ],
    "event_type": "none",
    "reactive": false,
@@ -4542,6 +5391,11 @@
     0.1,
     11.8
    ],
+   "kinds": [
+    "decelerate",
+    "turn_right",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle approaches an intersection and makes a right turn on a green light without any external agents or hazards affecting its motion.",
@@ -4563,6 +5417,10 @@
    "win": [
     0.0,
     7.7
+   ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -4586,9 +5444,15 @@
     0.0,
     15.7
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is initially stopped at a red light, then proceeds when the light turns green. The motion change is due to the traffic signal, not an external h",
+   "reason": "The ego vehicle is initially stopped at a red light, then proceeds when the light turns green, making a left turn and continuing straight. No other vehicles or路",
    "ego_react": 3.4,
    "terms": {
     "decel_repeat": 1.0,
@@ -4609,6 +5473,11 @@
    "win": [
     1.3,
     14.7
+   ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "turn_right"
    ],
    "event_type": "none",
    "reactive": false,
@@ -4633,6 +5502,12 @@
     0.2,
     12.0
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "stop",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is driving straight and then stops at a stop sign, with no other vehicles or agents directly influencing its motion.",
@@ -4641,6 +5516,33 @@
     "decel_repeat": 2.0,
     "stop_go": 0.8,
     "stop": 1.0
+   }
+  }
+ },
+ {
+  "clip_id": "1bdf43f5-0601-4a83-9836-09934960e72a",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.475,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    11.1
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_right"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle slows and turns right at a green light without any external agents or hazards in its path.",
+   "ego_react": 5.24,
+   "terms": {
+    "harsh_brake": 3.64,
+    "decel_repeat": 1.0,
+    "turn": 0.6
    }
   }
  },
@@ -4655,6 +5557,12 @@
    "win": [
     0.0,
     15.8
+   ],
+   "kinds": [
+    "decelerate",
+    "accelerate",
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -4679,6 +5587,11 @@
     0.0,
     15.2
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stopped at a red light and remains stationary until the light turns green, with no other vehicles or agents directly affecting its motion.",
@@ -4686,29 +5599,6 @@
    "terms": {
     "stop_go": 0.8,
     "stop": 1.0
-   }
-  }
- },
- {
-  "clip_id": "1bdf43f5-0601-4a83-9836-09934960e72a",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.475,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    11.1
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle slows down and turns right at the intersection, but there are no external agents or hazards in its path causing the motion change.",
-   "ego_react": 5.24,
-   "terms": {
-    "harsh_brake": 3.64,
-    "decel_repeat": 1.0,
-    "turn": 0.6
    }
   }
  },
@@ -4732,6 +5622,10 @@
    "win": [
     2.7,
     13.3
+   ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -4764,6 +5658,14 @@
     0.0,
     15.5
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "yield_negotiation",
    "reactive": false,
    "reason": "The ego vehicle comes to a complete stop at a STOP sign, waits for a safe gap in traffic, and then proceeds to make a left turn. This behavior is a standard at‑",
@@ -4788,6 +5690,11 @@
     0.1,
     18.6
    ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle maintains steady forward motion without any visible reaction to external agents or hazards.",
@@ -4810,6 +5717,10 @@
     5.5,
     17.4
    ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is moving forward on a clear road with no visible obstacles or agents causing a motion change.",
@@ -4821,7 +5732,7 @@
   }
  },
  {
-  "clip_id": "208a9fee-7da8-4fde-a111-a4d1ea79d3bb",
+  "clip_id": "351c7fb7-85f4-42de-bd41-a8e84a89ab71",
   "clip_score": 0.0,
   "score_norm": 0.0,
   "ego_norm": 0.308,
@@ -4829,12 +5740,18 @@
   "n_react_win": 1,
   "best": {
    "win": [
-    0.0,
-    11.3
+    4.0,
+    20.2
    ],
-   "event_type": "none",
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_right"
+   ],
+   "event_type": "yield_negotiation",
    "reactive": false,
-   "reason": "The ego vehicle is stationary at a stop line, then proceeds forward without any visible external agents or hazards influencing its motion. The scene appears to",
+   "reason": "The ego vehicle comes to a complete stop at a STOP sign, yielding to cross traffic before proceeding. This is a standard traffic rule compliance rather than a反应",
    "ego_react": 3.4,
    "terms": {
     "decel_repeat": 1.0,
@@ -4854,7 +5771,7 @@
   "best": null
  },
  {
-  "clip_id": "351c7fb7-85f4-42de-bd41-a8e84a89ab71",
+  "clip_id": "208a9fee-7da8-4fde-a111-a4d1ea79d3bb",
   "clip_score": 0.0,
   "score_norm": 0.0,
   "ego_norm": 0.308,
@@ -4862,12 +5779,19 @@
   "n_react_win": 1,
   "best": {
    "win": [
-    4.0,
-    20.2
+    0.0,
+    11.3
    ],
-   "event_type": "yield_negotiation",
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left",
+    "accelerate",
+    "decelerate"
+   ],
+   "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle comes to a complete stop at a STOP sign, yielding to cross traffic before proceeding. This is a standard traffic rule compliance rather than a反应",
+   "reason": "The ego vehicle is stationary at a stop line, then proceeds straight without any external agents or hazards affecting its motion.",
    "ego_react": 3.4,
    "terms": {
     "decel_repeat": 1.0,
@@ -4876,6 +5800,15 @@
     "turn": 0.6
    }
   }
+ },
+ {
+  "clip_id": "ca7ab4b8-abf2-427e-972d-91c814c7c375",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.0,
+  "vlm_score": 0.0,
+  "n_react_win": 0,
+  "best": null
  },
  {
   "clip_id": "3f5974b8-a9ae-4f2b-96a6-9fc0db6587ea",
@@ -4889,6 +5822,9 @@
     1.0,
     6.3
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle maintains steady forward motion without any visible reaction to external agents or hazards. No braking, lane changes, or yielding is observed,",
@@ -4897,15 +5833,6 @@
     "decel_repeat": 1.0
    }
   }
- },
- {
-  "clip_id": "ca7ab4b8-abf2-427e-972d-91c814c7c375",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.0,
-  "vlm_score": 0.0,
-  "n_react_win": 0,
-  "best": null
  },
  {
   "clip_id": "d0962d4d-23c0-4b5d-a059-2c1435f81468",
@@ -4927,6 +5854,12 @@
    "win": [
     0.0,
     16.6
+   ],
+   "kinds": [
+    "decelerate",
+    "accelerate",
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -4969,9 +5902,12 @@
     11.8,
     18.6
    ],
+   "kinds": [
+    "stop"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is stationary at a stop sign, and there are no visible external agents or hazards causing the motion change. The scene appears to be a quiet, un",
+   "reason": "The ego vehicle is stationary at a stop sign, and there are no visible moving agents or hazards in its path that would cause a motion change. The scene is calm,",
    "ego_react": 1.0,
    "terms": {
     "stop": 1.0
@@ -4999,6 +5935,12 @@
     7.8,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "turn_right",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is driving straight and maintaining speed without any visible reaction to external agents or hazards.",
@@ -5007,27 +5949,6 @@
     "harsh_brake": 0.28,
     "decel_repeat": 3.0,
     "turn": 0.6
-   }
-  }
- },
- {
-  "clip_id": "413bdfbe-9def-48ef-ac43-78ed0734bafb",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.091,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    9.0,
-    14.3
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "No visible external agent or hazard in the ego's path causing the motion change.",
-   "ego_react": 1.0,
-   "terms": {
-    "decel_repeat": 1.0
    }
   }
  },
@@ -5042,6 +5963,10 @@
    "win": [
     0.0,
     10.0
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_left"
    ],
    "event_type": "none",
    "reactive": false,
@@ -5064,6 +5989,30 @@
   "best": null
  },
  {
+  "clip_id": "413bdfbe-9def-48ef-ac43-78ed0734bafb",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    9.0,
+    14.3
+   ],
+   "kinds": [
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "No visible external agent or hazard in the ego's path causing the motion change.",
+   "ego_react": 1.0,
+   "terms": {
+    "decel_repeat": 1.0
+   }
+  }
+ },
+ {
   "clip_id": "fef866c2-72f9-4eab-bab6-fb989e262832",
   "clip_score": 0.0,
   "score_norm": 0.0,
@@ -5075,9 +6024,14 @@
     10.3,
     20.2
    ],
+   "kinds": [
+    "turn_right",
+    "decelerate",
+    "stop"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is moving forward in a parking lot with no immediate obstacles or agents in its path. The motion appears to be a slow, controlled drive without",
+   "reason": "The ego vehicle is moving slowly and then stops in a parking lot, likely due to the driver's own decision to park or navigate the area, without any visible外部代理或",
    "ego_react": 2.6,
    "terms": {
     "decel_repeat": 1.0,
@@ -5098,9 +6052,15 @@
     4.3,
     14.8
    ],
+   "kinds": [
+    "decelerate",
+    "turn_right",
+    "decelerate",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is driving straight and then makes a right turn at the intersection without any external agents or hazards in its path.",
+   "reason": "The ego vehicle is moving straight and then turns right at the intersection without any external agents or hazards in its path.",
    "ego_react": 3.6,
    "terms": {
     "decel_repeat": 3.0,
@@ -5120,9 +6080,13 @@
     6.1,
     17.1
    ],
+   "kinds": [
+    "decelerate",
+    "turn_left"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is moving straight and then turns left without any external agents or hazards in its path.",
+   "reason": "The ego vehicle is moving forward and then turns left at an intersection without any visible external agents or hazards in its path. The motion change is due to",
    "ego_react": 1.6,
    "terms": {
     "decel_repeat": 1.0,
@@ -5142,6 +6106,10 @@
     0.0,
     14.0
    ],
+   "kinds": [
+    "stop",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stopped at a red light and then proceeds when the light turns green. No other vehicles or pedestrians are directly affecting the ego's motion",
@@ -5160,27 +6128,6 @@
   "vlm_score": 0.0,
   "n_react_win": 0,
   "best": null
- },
- {
-  "clip_id": "c969a003-7db8-46b9-afe3-5924bcb15f99",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.091,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    10.3,
-    20.1
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is decelerating and stopping at a red light, which is a standard traffic control action. There are no other vehicles or agents directly causing",
-   "ego_react": 1.0,
-   "terms": {
-    "decel_repeat": 1.0
-   }
-  }
  },
  {
   "clip_id": "6d0c9f00-cac9-4267-8fd9-6cf38fd65718",
@@ -5212,15 +6159,46 @@
     0.0,
     15.8
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle comes to a stop at a stop sign and then proceeds to turn left. There are no other vehicles or agents in the path that cause this behavior.",
+   "reason": "The ego vehicle approaches a stop sign, stops, and then turns left. No other vehicles or agents are present in the path that cause this behavior.",
    "ego_react": 4.4,
    "terms": {
     "decel_repeat": 2.0,
     "stop_go": 0.8,
     "stop": 1.0,
     "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "c969a003-7db8-46b9-afe3-5924bcb15f99",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.091,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    10.3,
+    20.1
+   ],
+   "kinds": [
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is decelerating and preparing to stop at a red light, which is a standard traffic response and not caused by any external agent or hazard in the",
+   "ego_react": 1.0,
+   "terms": {
+    "decel_repeat": 1.0
    }
   }
  },
@@ -5245,34 +6223,17 @@
     0.0,
     13.6
    ],
-   "event_type": "yield_negotiation",
-   "reactive": false,
-   "reason": "The ego vehicle slows down and yields at an intersection, but no other vehicles or pedestrians are present to cause the reaction.",
-   "ego_react": 3.18,
-   "terms": {
-    "harsh_brake": 0.58,
-    "decel_repeat": 2.0,
-    "turn": 0.6
-   }
-  }
- },
- {
-  "clip_id": "1dd205f2-e519-4935-b496-cd169e5553ae",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.236,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    6.4,
-    20.2
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is moving straight and then turns left at the intersection without any external agents or hazards in its path.",
-   "ego_react": 2.6,
+   "reason": "The ego vehicle is driving straight at night with no visible agents or obstacles in its path. The motion appears smooth and uninterrupted, with no signs of decr",
+   "ego_react": 3.18,
    "terms": {
+    "harsh_brake": 0.58,
     "decel_repeat": 2.0,
     "turn": 0.6
    }
@@ -5290,6 +6251,12 @@
     0.0,
     16.2
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stationary at a red light, and the motion change (waiting) is due to the traffic signal, not an external agent or hazard in the ego's path.",
@@ -5299,6 +6266,33 @@
     "decel_repeat": 1.0,
     "stop_go": 0.8,
     "stop": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "1dd205f2-e519-4935-b496-cd169e5553ae",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    6.4,
+    20.2
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is moving straight and then turns left at the intersection without any external agents or hazards affecting its motion.",
+   "ego_react": 2.6,
+   "terms": {
+    "decel_repeat": 2.0,
     "turn": 0.6
    }
   }
@@ -5324,6 +6318,11 @@
     0.0,
     8.2
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_right"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stationary at a red light and then proceeds straight when the light turns green. No other vehicles or pedestrians are present in the path, so",
@@ -5347,9 +6346,13 @@
     0.0,
     5.3
    ],
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "No visible external agent or hazard in the ego's path; the scene is static with no moving vehicles or pedestrians.",
+   "reason": "No visible external agent or hazard affecting ego motion; scene is static with no moving vehicles or pedestrians.",
    "ego_react": 2.0,
    "terms": {
     "decel_repeat": 1.0,
@@ -5376,6 +6379,33 @@
   "best": null
  },
  {
+  "clip_id": "5397c62a-4a94-445d-b47c-e1b5e530929e",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.236,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    10.3,
+    20.2
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is driving straight on a local street with no visible traffic or obstacles. The road is clear, and there are no external agents or hazards in or",
+   "ego_react": 2.6,
+   "terms": {
+    "decel_repeat": 2.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
   "clip_id": "422234b2-33c7-4d43-bb18-793e20308904",
   "clip_score": 0.0,
   "score_norm": 0.0,
@@ -5386,6 +6416,10 @@
    "win": [
     3.6,
     15.6
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_right"
    ],
    "event_type": "none",
    "reactive": false,
@@ -5409,35 +6443,17 @@
     0.0,
     14.4
    ],
+   "kinds": [
+    "stop",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is stopped at a red light and proceeds when it turns green, with no other vehicles or agents directly affecting its motion.",
+   "reason": "The ego vehicle is stopped at a red light and proceeds when it turns green, with no other vehicles or pedestrians affecting its motion.",
    "ego_react": 1.8,
    "terms": {
     "stop_go": 0.8,
     "stop": 1.0
-   }
-  }
- },
- {
-  "clip_id": "5397c62a-4a94-445d-b47c-e1b5e530929e",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.236,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    10.3,
-    20.2
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is driving straight on a local street with no visible obstacles or agents in its path. The road is clear, and there are no signs of braking, dec",
-   "ego_react": 2.6,
-   "terms": {
-    "decel_repeat": 2.0,
-    "turn": 0.6
    }
   }
  },
@@ -5453,6 +6469,12 @@
     0.0,
     13.6
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_right",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is initially stopped at a red light and then proceeds straight when the light turns green. The motion change is due to the traffic signal, not a",
@@ -5460,28 +6482,6 @@
    "terms": {
     "decel_repeat": 1.0,
     "stop_go": 0.8,
-    "stop": 1.0,
-    "turn": 0.6
-   }
-  }
- },
- {
-  "clip_id": "2bee5dfe-de9e-4de3-b5f0-2c430cd54e38",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.145,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    11.6
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is stationary at the beginning and then begins moving forward slowly in a parking lot. No other vehicles or agents are directly influencing this",
-   "ego_react": 1.6,
-   "terms": {
     "stop": 1.0,
     "turn": 0.6
    }
@@ -5498,6 +6498,9 @@
    "win": [
     12.1,
     20.2
+   ],
+   "kinds": [
+    "stop"
    ],
    "event_type": "none",
    "reactive": false,
@@ -5519,6 +6522,10 @@
    "win": [
     3.2,
     13.4
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_right"
    ],
    "event_type": "none",
    "reactive": false,
@@ -5542,12 +6549,42 @@
     0.4,
     15.0
    ],
+   "kinds": [
+    "decelerate",
+    "turn_right"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is driving straight on a clear road with no visible obstacles, other vehicles, or agents in its path. The motion appears smooth and unobstructed",
+   "reason": "The ego vehicle is driving straight on a clear road with no visible obstacles, other vehicles, or agents in its path. There are no sudden changes in speed or ev",
    "ego_react": 1.6,
    "terms": {
     "decel_repeat": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "2bee5dfe-de9e-4de3-b5f0-2c430cd54e38",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.145,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    11.6
+   ],
+   "kinds": [
+    "stop",
+    "turn_left"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is stationary at the beginning and then begins to move forward slowly without any visible external agents or hazards in its path.",
+   "ego_react": 1.6,
+   "terms": {
+    "stop": 1.0,
     "turn": 0.6
    }
   }
@@ -5573,6 +6610,9 @@
     10.0,
     20.2
    ],
+   "kinds": [
+    "stop"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stationary with no visible motion change or external agents affecting its path.",
@@ -5594,9 +6634,15 @@
     0.2,
     15.8
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "turn_right",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is driving straight in the right-turn lane, then turns right at the intersection without any external agents or hazards affecting its motion.",
+   "reason": "The ego vehicle is driving straight on a clear road with no visible obstacles or agents in its path.",
    "ego_react": 2.6,
    "terms": {
     "decel_repeat": 2.0,
@@ -5625,6 +6671,10 @@
     0.0,
     10.2
    ],
+   "kinds": [
+    "stop",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stationary in front of a decorative archway with no visible external agents or hazards affecting its motion. The scene is static, and there's",
@@ -5647,6 +6697,12 @@
     0.0,
     14.5
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "stop",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle comes to a stop at a STOP sign, which is a standard traffic control device. There are no other vehicles or agents directly causing the stop; itâ",
@@ -5660,23 +6716,33 @@
   }
  },
  {
-  "clip_id": "06208cdb-9893-4580-a83e-6b1b3cc70618",
+  "clip_id": "08d2050b-68a3-4d53-89f0-025b44294a2a",
   "clip_score": 0.0,
   "score_norm": 0.0,
-  "ego_norm": 0.236,
+  "ego_norm": 1.0,
   "vlm_score": 0.0,
   "n_react_win": 1,
   "best": {
    "win": [
     0.0,
-    13.9
+    20.2
+   ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_left",
+    "decelerate",
+    "decelerate",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is stopped at a red light, and the motion change is due to the traffic signal, not an external agent or hazard in the ego's path.",
-   "ego_react": 2.6,
+   "reason": "The ego vehicle is initially stopped at a red light and then proceeds to make a left turn when the light turns green. The motion change is due to the traffic信号,",
+   "ego_react": 11.03,
    "terms": {
-    "decel_repeat": 1.0,
+    "harsh_brake": 5.63,
+    "decel_repeat": 3.0,
+    "stop_go": 0.8,
     "stop": 1.0,
     "turn": 0.6
    }
@@ -5692,25 +6758,28 @@
   "best": null
  },
  {
-  "clip_id": "08d2050b-68a3-4d53-89f0-025b44294a2a",
+  "clip_id": "06208cdb-9893-4580-a83e-6b1b3cc70618",
   "clip_score": 0.0,
   "score_norm": 0.0,
-  "ego_norm": 1.0,
+  "ego_norm": 0.236,
   "vlm_score": 0.0,
   "n_react_win": 1,
   "best": {
    "win": [
     0.0,
-    20.2
+    13.9
+   ],
+   "kinds": [
+    "stop",
+    "turn_right",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is initially stopped at a red light and then proceeds to make a left turn when the light turns green. The motion change is due to the traffic信号,",
-   "ego_react": 11.03,
+   "reason": "The ego vehicle is stopped at a red light, and the motion change is due to the traffic signal, not an external agent or hazard in the ego's path.",
+   "ego_react": 2.6,
    "terms": {
-    "harsh_brake": 5.63,
-    "decel_repeat": 3.0,
-    "stop_go": 0.8,
+    "decel_repeat": 1.0,
     "stop": 1.0,
     "turn": 0.6
    }
@@ -5737,11 +6806,44 @@
     0.0,
     20.2
    ],
+   "kinds": [
+    "stop",
+    "turn_right"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is initially stopped and then slowly moves forward without any visible external agents or hazards in its path. The motion appears to be a gentle",
    "ego_react": 1.6,
    "terms": {
+    "stop": 1.0,
+    "turn": 0.6
+   }
+  }
+ },
+ {
+  "clip_id": "2cc7c8d4-1cd6-4037-92ac-12fb37d924cc",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.326,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    13.8
+   ],
+   "kinds": [
+    "decelerate",
+    "turn_left",
+    "stop",
+    "decelerate"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is making a left turn at an intersection, and there are no visible external agents or hazards in its path that cause the motion change.",
+   "ego_react": 3.6,
+   "terms": {
+    "decel_repeat": 2.0,
     "stop": 1.0,
     "turn": 0.6
    }
@@ -5759,36 +6861,18 @@
     1.3,
     20.2
    ],
+   "kinds": [
+    "decelerate",
+    "decelerate",
+    "turn_left"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is driving straight on a clear road with no visible obstacles or agents in its path. The motion appears smooth and uninterrupted, indicating no-",
+   "reason": "The ego vehicle is driving straight on a clear road with no visible obstacles, other vehicles, or agents in its path. The motion appears smooth and unimpeded,",
    "ego_react": 5.37,
    "terms": {
     "harsh_brake": 2.77,
     "decel_repeat": 2.0,
-    "turn": 0.6
-   }
-  }
- },
- {
-  "clip_id": "2cc7c8d4-1cd6-4037-92ac-12fb37d924cc",
-  "clip_score": 0.0,
-  "score_norm": 0.0,
-  "ego_norm": 0.326,
-  "vlm_score": 0.0,
-  "n_react_win": 1,
-  "best": {
-   "win": [
-    0.0,
-    13.8
-   ],
-   "event_type": "none",
-   "reactive": false,
-   "reason": "The ego vehicle is making a left turn at an intersection, and there are no visible external agents or hazards in its path that cause the motion change.",
-   "ego_react": 3.6,
-   "terms": {
-    "decel_repeat": 2.0,
-    "stop": 1.0,
     "turn": 0.6
    }
   }
@@ -5804,6 +6888,10 @@
    "win": [
     0.0,
     4.6
+   ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -5837,6 +6925,11 @@
     3.2,
     13.2
    ],
+   "kinds": [
+    "decelerate",
+    "turn_right",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is moving straight and then turns right at the intersection without any external agents or hazards affecting its motion.",
@@ -5859,9 +6952,13 @@
     1.3,
     10.6
    ],
+   "kinds": [
+    "turn_left",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
-   "reason": "The ego vehicle is initially stopped at a green light, then proceeds to make a left turn and continues straight. No external agents or hazards are present in or",
+   "reason": "The ego vehicle is following a white car at a safe distance and turning left at a green light without any external agents or hazards affecting its motion.",
    "ego_react": 1.6,
    "terms": {
     "decel_repeat": 1.0,
@@ -5890,6 +6987,13 @@
     0.0,
     15.2
    ],
+   "kinds": [
+    "stop",
+    "accelerate",
+    "turn_right",
+    "accelerate",
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is stopped at a red light, waiting for the signal to change. There are no other vehicles or pedestrians directly affecting its motion, and the停牌",
@@ -5914,6 +7018,11 @@
     0.0,
     11.4
    ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle is moving slowly and stopping in a parking lot, likely due to its own decision to navigate the area, not because of an external agent or hazard.",
@@ -5921,6 +7030,32 @@
    "terms": {
     "decel_repeat": 1.0,
     "stop_go": 0.8,
+    "stop": 1.0
+   }
+  }
+ },
+ {
+  "clip_id": "2fff5488-f4d8-4e04-94fa-375db63e6a9f",
+  "clip_score": 0.0,
+  "score_norm": 0.0,
+  "ego_norm": 0.181,
+  "vlm_score": 0.0,
+  "n_react_win": 1,
+  "best": {
+   "win": [
+    0.0,
+    10.9
+   ],
+   "kinds": [
+    "decelerate",
+    "stop"
+   ],
+   "event_type": "none",
+   "reactive": false,
+   "reason": "The ego vehicle is approaching a stop sign and comes to a complete stop. There are no other vehicles or pedestrians in the immediate path, and the stop is due",
+   "ego_react": 2.0,
+   "terms": {
+    "decel_repeat": 1.0,
     "stop": 1.0
    }
   }
@@ -5936,6 +7071,10 @@
    "win": [
     0.0,
     15.0
+   ],
+   "kinds": [
+    "stop",
+    "accelerate"
    ],
    "event_type": "none",
    "reactive": false,
@@ -5959,6 +7098,9 @@
     11.9,
     17.3
    ],
+   "kinds": [
+    "decelerate"
+   ],
    "event_type": "none",
    "reactive": false,
    "reason": "The ego vehicle maintains steady forward motion without any visible change in speed or direction due to external agents or hazards.",
@@ -5979,6 +7121,12 @@
    "win": [
     0.0,
     20.1
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_right"
    ],
    "event_type": "none",
    "reactive": false,
@@ -6004,6 +7152,13 @@
    "win": [
     0.0,
     11.7
+   ],
+   "kinds": [
+    "decelerate",
+    "stop",
+    "accelerate",
+    "turn_right",
+    "decelerate"
    ],
    "event_type": "none",
    "reactive": false,

@@ -9,6 +9,9 @@ egomotion arc로 클립을 에피소드로 분할.
 기존 트랜스코드 영상(gold_label/vids)·sample_clips.json 재사용.
 
 실행: ./run.sh task_episode/gold_tool.py  (PYTHONPATH로 common 로드)
+      ./run.sh task_episode/gold_tool.py <디렉토리>  (예: gold_label/s0_validation —
+      해당 디렉토리의 sample_clips.json/episodes.json을 읽어 같은 디렉토리에 index.html 생성.
+      기본 gold_label/ 워크플로우는 인자 없이 호출하므로 영향 없음.)
 """
 import os, sys, json
 # common(taxonomy)·task_episode 경로 확보 — run.sh PYTHONPATH 밖에서 직접 실행도 대비
@@ -18,7 +21,7 @@ for _p in (f"{_ROOT}/common", f"{_ROOT}/task_episode", _ROOT):
         sys.path.insert(0, _p)
 import taxonomy
 
-OUTDIR = "/home/daejun/vla-tagging/gold_label"
+OUTDIR = os.path.abspath(sys.argv[1]) if len(sys.argv) > 1 else "/home/daejun/vla-tagging/gold_label"
 sample = json.load(open(f"{OUTDIR}/sample_clips.json"))
 episodes = json.load(open(f"{OUTDIR}/episodes.json"))
 
